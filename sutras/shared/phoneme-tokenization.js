@@ -104,9 +104,8 @@ export function tokenizeDevanagariPhonemes(text) {
       // Simple check for Consonant + Halanta + Consonant pattern
       // This is a basic heuristic and might need refinement for all conjuncts
       if (DEVANAGARI_PHONEMES.includes(char1) && char2 === '्' && DEVANAGARI_PHONEMES.includes(char3)) {
-        // Construct the conjunct string (e.g., क्त)
-        const conjunct = char1 + char2 + char3;
-        phonemes.push(conjunct);
+        // The goal is to tokenize, so we push the constituent parts, not the combined conjunct.
+        phonemes.push(char1, char2, char3);
         position += 3;
         matchFound = true;
       }
