@@ -305,8 +305,8 @@ describe('Sutra 1.1.7: हलन्त्यम् (halantyam) - Comprehensive S
 
     test('getAllConsonants should return complete consonant sets', () => {
       const consonants = getAllConsonants();
-      expect(consonants.iast).toHaveLength(36);
-      expect(consonants.devanagari).toHaveLength(36);
+      expect(consonants.iast).toHaveLength(33);
+      expect(consonants.devanagari).toHaveLength(33);
       expect(consonants.categories.velars.iast).toEqual(['k', 'kh', 'g', 'gh', 'ṅ']);
     });
   });
@@ -550,6 +550,271 @@ describe('Sutra 1.1.7: हलन्त्यम् (halantyam) - Comprehensive S
       const sandhiAnalysis = analyzeConsonantSandhi(sandhiWord, 'īśa');
       expect(sandhiAnalysis.isValid).toBe(true);
       expect(sandhiAnalysis.sandhiRules.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('Enhanced Devanagari Consonant Ending Tests', () => {
+    describe('Inherent vowel behavior (consonant letters without halanta)', () => {
+      test('राम (rāma) - consonant letter म without halanta should be vowel-ending', () => {
+        const result = endsWithConsonant('राम');
+        const analysis = getFinalConsonant('राम');
+        
+        expect(result).toBe(false);
+        expect(analysis.isConsonant).toBe(false);
+        expect(analysis.explanation).toContain('does not end with a consonant');
+        expect(analysis.explanation).toContain('inherent vowel');
+      });
+
+      test('गज (gaja) - consonant letter ज without halanta should be vowel-ending', () => {
+        const result = endsWithConsonant('गज');
+        const analysis = getFinalConsonant('गज');
+        
+        expect(result).toBe(false);
+        expect(analysis.isConsonant).toBe(false);
+        expect(analysis.explanation).toContain('does not end with a consonant');
+      });
+
+      test('सुर (sura) - consonant letter र without halanta should be vowel-ending', () => {
+        const result = endsWithConsonant('सुर');
+        const analysis = getFinalConsonant('सुर');
+        
+        expect(result).toBe(false);
+        expect(analysis.isConsonant).toBe(false);
+      });
+
+      test('नरक (naraka) - consonant letter क without halanta should be vowel-ending', () => {
+        const result = endsWithConsonant('नरक');
+        const analysis = getFinalConsonant('नरक');
+        
+        expect(result).toBe(false);
+        expect(analysis.isConsonant).toBe(false);
+      });
+    });
+
+    describe('Explicit halanta behavior (true consonant endings)', () => {
+      test('राम् (rām) - म with explicit halanta should be consonant-ending', () => {
+        const result = endsWithConsonant('राम्');
+        const analysis = getFinalConsonant('राम्');
+        
+        expect(result).toBe(true);
+        expect(analysis.isConsonant).toBe(true);
+        expect(analysis.finalChar).toBe('म');
+        expect(analysis.consonantType).toContain('labial');
+      });
+
+      test('गज् (gaj) - ज with explicit halanta should be consonant-ending', () => {
+        const result = endsWithConsonant('गज्');
+        const analysis = getFinalConsonant('गज्');
+        
+        expect(result).toBe(true);
+        expect(analysis.isConsonant).toBe(true);
+        expect(analysis.finalChar).toBe('ज');
+        expect(analysis.consonantType).toContain('palatal');
+      });
+
+      test('सुर् (sur) - र with explicit halanta should be consonant-ending', () => {
+        const result = endsWithConsonant('सुर्');
+        const analysis = getFinalConsonant('सुर्');
+        
+        expect(result).toBe(true);
+        expect(analysis.isConsonant).toBe(true);
+        expect(analysis.finalChar).toBe('र');
+        expect(analysis.consonantType).toContain('semivowel');
+      });
+    });
+
+    describe('Special consonant endings', () => {
+      test('रामः (rāmaḥ) - visarga should be consonant-ending', () => {
+        const result = endsWithConsonant('रामः');
+        const analysis = getFinalConsonant('रामः');
+        
+        expect(result).toBe(true);
+        expect(analysis.isConsonant).toBe(true);
+        expect(analysis.finalChar).toBe('ः');
+      });
+
+      test('गजं (gajaṃ) - anusvara should be consonant-ending', () => {
+        const result = endsWithConsonant('गजं');
+        const analysis = getFinalConsonant('गजं');
+        
+        expect(result).toBe(true);
+        expect(analysis.isConsonant).toBe(true);
+        expect(analysis.finalChar).toBe('ं');
+      });
+    });
+  });
+
+  describe('Granular consonantType Tests', () => {
+    describe('Velar consonants (कण्ठ्य)', () => {
+      test('क (ka) should be classified as velar', () => {
+        const analysis = getFinalConsonant('अक्');
+        expect(analysis.consonantType).toBe('velar (कण्ठ्य)');
+        expect(analysis.finalChar).toBe('क');
+      });
+
+      test('ग (ga) should be classified as velar', () => {
+        const analysis = getFinalConsonant('अग्');
+        expect(analysis.consonantType).toBe('velar (कण्ठ्य)');
+        expect(analysis.finalChar).toBe('ग');
+      });
+
+      test('ङ (ṅa) should be classified as velar', () => {
+        const analysis = getFinalConsonant('अङ्');
+        expect(analysis.consonantType).toBe('velar (कण्ठ्य)');
+        expect(analysis.finalChar).toBe('ङ');
+      });
+    });
+
+    describe('Palatal consonants (तालव्य)', () => {
+      test('च (ca) should be classified as palatal', () => {
+        const analysis = getFinalConsonant('अच्');
+        expect(analysis.consonantType).toBe('palatal (तालव्य)');
+        expect(analysis.finalChar).toBe('च');
+      });
+
+      test('ज (ja) should be classified as palatal', () => {
+        const analysis = getFinalConsonant('अज्');
+        expect(analysis.consonantType).toBe('palatal (तालव्य)');
+        expect(analysis.finalChar).toBe('ज');
+      });
+
+      test('ञ (ña) should be classified as palatal', () => {
+        const analysis = getFinalConsonant('अञ्');
+        expect(analysis.consonantType).toBe('palatal (तालव्य)');
+        expect(analysis.finalChar).toBe('ञ');
+      });
+    });
+
+    describe('Retroflex consonants (मूर्धन्य)', () => {
+      test('ट (ṭa) should be classified as retroflex', () => {
+        const analysis = getFinalConsonant('अट्');
+        expect(analysis.consonantType).toBe('retroflex (मूर्धन्य)');
+        expect(analysis.finalChar).toBe('ट');
+      });
+
+      test('ड (ḍa) should be classified as retroflex', () => {
+        const analysis = getFinalConsonant('अड्');
+        expect(analysis.consonantType).toBe('retroflex (मूर्धन्य)');
+        expect(analysis.finalChar).toBe('ड');
+      });
+
+      test('ण (ṇa) should be classified as retroflex', () => {
+        const analysis = getFinalConsonant('अण्');
+        expect(analysis.consonantType).toBe('retroflex (मूर्धन्य)');
+        expect(analysis.finalChar).toBe('ण');
+      });
+    });
+
+    describe('Dental consonants (दन्त्य)', () => {
+      test('त (ta) should be classified as dental', () => {
+        const analysis = getFinalConsonant('अत्');
+        expect(analysis.consonantType).toBe('dental (दन्त्य)');
+        expect(analysis.finalChar).toBe('त');
+      });
+
+      test('द (da) should be classified as dental', () => {
+        const analysis = getFinalConsonant('अद्');
+        expect(analysis.consonantType).toBe('dental (दन्त्य)');
+        expect(analysis.finalChar).toBe('द');
+      });
+
+      test('न (na) should be classified as dental', () => {
+        const analysis = getFinalConsonant('अन्');
+        expect(analysis.consonantType).toBe('dental (दन्त्य)');
+        expect(analysis.finalChar).toBe('न');
+      });
+    });
+
+    describe('Labial consonants (ओष्ठ्य)', () => {
+      test('प (pa) should be classified as labial', () => {
+        const analysis = getFinalConsonant('अप्');
+        expect(analysis.consonantType).toBe('labial (ओष्ठ्य)');
+        expect(analysis.finalChar).toBe('प');
+      });
+
+      test('ब (ba) should be classified as labial', () => {
+        const analysis = getFinalConsonant('अब्');
+        expect(analysis.consonantType).toBe('labial (ओष्ठ्य)');
+        expect(analysis.finalChar).toBe('ब');
+      });
+
+      test('म (ma) should be classified as labial', () => {
+        const analysis = getFinalConsonant('अम्');
+        expect(analysis.consonantType).toBe('labial (ओष्ठ्य)');
+        expect(analysis.finalChar).toBe('म');
+      });
+    });
+
+    describe('Semivowels (अन्तःस्थ)', () => {
+      test('य (ya) should be classified as semivowel', () => {
+        const analysis = getFinalConsonant('अय्');
+        expect(analysis.consonantType).toBe('semivowel (अन्तःस्थ)');
+        expect(analysis.finalChar).toBe('य');
+      });
+
+      test('र (ra) should be classified as semivowel', () => {
+        const analysis = getFinalConsonant('अर्');
+        expect(analysis.consonantType).toBe('semivowel (अन्तःस्थ)');
+        expect(analysis.finalChar).toBe('र');
+      });
+
+      test('ल (la) should be classified as semivowel', () => {
+        const analysis = getFinalConsonant('अल्');
+        expect(analysis.consonantType).toBe('semivowel (अन्तःस्थ)');
+        expect(analysis.finalChar).toBe('ल');
+      });
+
+      test('व (va) should be classified as semivowel', () => {
+        const analysis = getFinalConsonant('अव्');
+        expect(analysis.consonantType).toBe('semivowel (अन्तःस्थ)');
+        expect(analysis.finalChar).toBe('व');
+      });
+    });
+
+    describe('Sibilants (ऊष्म)', () => {
+      test('श (śa) should be classified as sibilant', () => {
+        const analysis = getFinalConsonant('अश्');
+        expect(analysis.consonantType).toBe('sibilant (ऊष्म)');
+        expect(analysis.finalChar).toBe('श');
+      });
+
+      test('ष (ṣa) should be classified as sibilant', () => {
+        const analysis = getFinalConsonant('अष्');
+        expect(analysis.consonantType).toBe('sibilant (ऊष्म)');
+        expect(analysis.finalChar).toBe('ष');
+      });
+
+      test('स (sa) should be classified as sibilant', () => {
+        const analysis = getFinalConsonant('अस्');
+        expect(analysis.consonantType).toBe('sibilant (ऊष्म)');
+        expect(analysis.finalChar).toBe('स');
+      });
+
+      test('ह (ha) should be classified as sibilant', () => {
+        const analysis = getFinalConsonant('अह्');
+        expect(analysis.consonantType).toBe('sibilant (ऊष्म)');
+        expect(analysis.finalChar).toBe('ह');
+      });
+    });
+
+    describe('IAST consonant type mapping', () => {
+      test('k should be classified as velar', () => {
+        const analysis = getFinalConsonant('vāk');
+        expect(analysis.consonantType).toBe('velar (कण्ठ्य)');
+        expect(analysis.finalChar).toBe('k');
+      });
+
+      test('t should be classified as dental', () => {
+        const analysis = getFinalConsonant('jagat');
+        expect(analysis.consonantType).toBe('dental (दन्त्य)');
+        expect(analysis.finalChar).toBe('t');
+      });
+
+      test('r should be classified as semivowel', () => {
+        const analysis = getFinalConsonant('svar');
+        expect(analysis.consonantType).toBe('semivowel (अन्तःस्थ)');
+        expect(analysis.finalChar).toBe('r');
+      });
     });
   });
 });

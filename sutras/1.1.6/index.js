@@ -12,6 +12,9 @@
  * This is a crucial meta-rule that governs rule application throughout the Aṣṭādhyāyī.
  */
 
+// Import shared phoneme tokenization utilities
+import { tokenizeIastPhonemes, tokenizeDevanagariPhonemes } from '../shared/phoneme-tokenization.js';
+
 /**
  * Determines precedence between two elements based on their order.
  *
@@ -67,6 +70,8 @@ function determinePrecedence(elements, index1, index2) {
 
 /**
  * Analyzes compound precedence according to Sutra 1.1.6.
+ * Focuses purely on precedence analysis without making oversimplified 
+ * compound type classifications.
  *
  * @param {Array} compoundParts Array of compound parts in order.
  * @returns {Object} Compound precedence analysis.
@@ -91,7 +96,6 @@ function analyzeCompoundPrecedence(compoundParts) {
   return {
     isValid: true,
     error: null,
-    compoundType: compoundParts.length === 2 ? 'द्वन्द्व (dvandva)' : 'बहुव्रीहि (bahuvrīhi)',
     primary: precedenceChain[0],
     secondary: precedenceChain.slice(1),
     precedenceChain: precedenceChain,
@@ -102,6 +106,12 @@ function analyzeCompoundPrecedence(compoundParts) {
 
 /**
  * Determines rule precedence in grammatical operations.
+ * 
+ * Note: This function expects the input rules array to be pre-ordered or contain 
+ * order/priority properties that reflect the correct Pāṇinian rule precedence 
+ * according to meta-rules such as "vipratiṣedhe paraṁ kāryam" (in case of conflict, 
+ * the later rule prevails) or "pūrvatrāsiddham" (earlier rule is as if not existing 
+ * for later rule).
  *
  * @param {Array} rules Array of applicable rules with their priorities.
  * @returns {Object} Rule precedence determination.
@@ -146,8 +156,9 @@ function determineRulePrecedence(rules) {
 
 /**
  * Analyzes phoneme sequence precedence for sandhi operations.
+ * Uses proper phoneme tokenization for accurate analysis.
  *
- * @param {string} sequence String of phonemes/sounds.
+ * @param {string} sequence String of phonemes/sounds in IAST or Devanagari.
  * @returns {Object} Phoneme precedence analysis.
  */
 function analyzePhonemeSequence(sequence) {
@@ -159,7 +170,27 @@ function analyzePhonemeSequence(sequence) {
     };
   }
 
-  const phonemes = sequence.split('');
+  // Determine script and tokenize accordingly
+  const isDevanagari = /[\u0900-\u097F]/.test(sequence);
+  const phonemes = isDevanagari ? 
+    tokenizeDevanagariPhonemes(sequence) : 
+    tokenizeIastPhonemes(sequence);
+
+  if (phonemes.length === 0) {
+    return {
+      isValid: false,
+      error: 'No phonemes could be extracted from sequence',
+      analysis: null
+    };
+  }
+
+  // Extract the primary phoneme, handling conjuncts by taking the first constituent
+  let primaryPhonemeValue = phonemes[0];
+  if (isDevanagari && primaryPhonemeValue.length > 1 && primaryPhonemeValue.includes('्')) {
+    // If it's a Devanagari conjunct, take the first character before the halanta
+    primaryPhonemeValue = primaryPhonemeValue.charAt(0);
+  }
+
   const precedenceAnalysis = phonemes.map((phoneme, index) => ({
     phoneme: phoneme,
     position: index,
@@ -173,12 +204,25 @@ function analyzePhonemeSequence(sequence) {
     isValid: true,
     error: null,
     sequence: sequence,
+    script: isDevanagari ? 'Devanagari' : 'IAST',
     phonemes: precedenceAnalysis,
-    primaryPhoneme: precedenceAnalysis[0],
+    primaryPhoneme: {
+      phoneme: primaryPhonemeValue,
+      position: 0,
+      precedenceLevel: 1,
+      category: 'पूर्व (pūrva)',
+      influenceDirection: 'rightward (दक्षिणावर्त)',
+      isPrimary: true
+    },
     dependentPhonemes: precedenceAnalysis.slice(1),
     principle: 'पूर्वोऽवरः',
     sandhiDirection: 'पूर्व influences अवर',
-    analysis: `In sequence "${sequence}", "${precedenceAnalysis[0].phoneme}" has primary influence`
+    analysis: `In sequence "${sequence}", "${primaryPhonemeValue}" has primary influence`,
+    tokenization: {
+      method: isDevanagari ? 'Devanagari phoneme tokenization' : 'IAST phoneme tokenization',
+      phonemeCount: phonemes.length,
+      rawPhonemes: phonemes
+    }
   };
 }
 

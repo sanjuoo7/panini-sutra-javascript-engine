@@ -1,4 +1,5 @@
-import { isGuna, getGunaForm, applyGuna } from './index.js';
+import { isGuna, analyzeVowel, applySutra112 } from './index.js';
+import { getGunaForm, applyGuna } from '../1.1.3/index.js';
 import TransliterationUtil from '../utils.js';
 import { iastTestCases, devanagariTestCases } from './test-cases.js';
 
@@ -139,6 +140,184 @@ describe('Comprehensive Guṇa Analysis Tests (Sutra 1.1.2)', () => {
         gunaVowelTests.forEach(({ vowel, expected, context }) => {
             test(`${context}: "${vowel}" should ${expected ? 'be' : 'not be'} guṇa`, () => {
                 expect(isGuna(vowel)).toBe(expected);
+            });
+        });
+    });
+});
+
+describe('analyzeVowel Function Tests', () => {
+    describe('IAST vowel analysis', () => {
+        test('should provide detailed analysis for guṇa vowels', () => {
+            const result = analyzeVowel('a');
+            
+            expect(result.vowel).toBe('a');
+            expect(result.isValid).toBe(true);
+            expect(result.isGuna).toBe(true);
+            expect(result.script).toBe('IAST');
+            expect(result.category).toBe('basic-a');
+            expect(result.explanation).toContain('guṇa vowel');
+            expect(result.classifications).toBeDefined();
+            expect(result.sharedAnalysis).toBeDefined();
+        });
+
+        test('should provide detailed analysis for front-mid guṇa vowel', () => {
+            const result = analyzeVowel('e');
+            
+            expect(result.isGuna).toBe(true);
+            expect(result.category).toBe('front-mid');
+            expect(result.explanation).toContain('guṇa vowel (front-mid)');
+        });
+
+        test('should provide detailed analysis for back-mid guṇa vowel', () => {
+            const result = analyzeVowel('o');
+            
+            expect(result.isGuna).toBe(true);
+            expect(result.category).toBe('back-mid');
+            expect(result.explanation).toContain('guṇa vowel (back-mid)');
+        });
+
+        test('should correctly identify non-guṇa vowels', () => {
+            const result = analyzeVowel('i');
+            
+            expect(result.isGuna).toBe(false);
+            expect(result.category).toBe(null);
+            expect(result.explanation).toContain('not a guṇa vowel');
+        });
+    });
+
+    describe('Devanagari vowel analysis', () => {
+        test('should provide detailed analysis for Devanagari guṇa vowels', () => {
+            const result = analyzeVowel('अ');
+            
+            expect(result.isGuna).toBe(true);
+            expect(result.script).toBe('Devanagari');
+            expect(result.category).toBe('basic-a');
+        });
+
+        test('should handle Devanagari front-mid vowel', () => {
+            const result = analyzeVowel('ए');
+            
+            expect(result.isGuna).toBe(true);
+            expect(result.category).toBe('front-mid');
+        });
+    });
+
+    describe('Error handling', () => {
+        test('should handle invalid inputs gracefully', () => {
+            const result = analyzeVowel(null);
+            
+            expect(result.isValid).toBe(false);
+            expect(result.isGuna).toBe(false);
+            expect(result.explanation).toContain('Vowel must be a string');
+        });
+
+        test('should handle empty string inputs', () => {
+            const result = analyzeVowel('');
+            
+            expect(result.isValid).toBe(false);
+            expect(result.isGuna).toBe(false);
+        });
+    });
+});
+
+describe('applySutra112 Function Tests', () => {
+    describe('Single vowel classification', () => {
+        test('should provide complete sutra application for guṇa vowels', () => {
+            const result = applySutra112('a');
+            
+            // Check sutra metadata
+            expect(result.input).toBe('a');
+            expect(result.sutraApplied).toBe('1.1.2');
+            expect(result.sutraName).toBe('adeṅ guṇaḥ');
+            expect(result.traditionalDefinition).toBe('a, e, o are called guṇa vowels');
+            
+            // Check classification results
+            expect(result.classification).toBe('guṇa');
+            expect(result.isGuna).toBe(true);
+            expect(result.category).toBe('basic-a');
+            expect(result.script).toBe('IAST');
+            expect(result.explanation).toContain('guṇa vowel');
+            
+            // Check examples
+            expect(result.examples).toBeDefined();
+            expect(Array.isArray(result.examples)).toBe(true);
+            
+            // Check detailed analysis inclusion
+            expect(result.detailedAnalysis).toBeDefined();
+            expect(result.detailedAnalysis.isValid).toBe(true);
+        });
+
+        test('should handle non-guṇa vowels correctly', () => {
+            const result = applySutra112('i');
+            
+            expect(result.classification).toBe('non-guṇa');
+            expect(result.isGuna).toBe(false);
+            expect(result.category).toBe(null);
+            expect(result.explanation).toContain('not a guṇa vowel');
+            expect(result.examples).toEqual([]);
+        });
+    });
+
+    describe('Different guṇa categories', () => {
+        test('should correctly classify front-mid guṇa vowel', () => {
+            const result = applySutra112('e');
+            
+            expect(result.isGuna).toBe(true);
+            expect(result.category).toBe('front-mid');
+            expect(result.examples).toBeDefined();
+            expect(result.examples.length).toBeGreaterThan(0);
+        });
+
+        test('should correctly classify back-mid guṇa vowel', () => {
+            const result = applySutra112('o');
+            
+            expect(result.isGuna).toBe(true);
+            expect(result.category).toBe('back-mid');
+            expect(result.examples).toBeDefined();
+            expect(result.examples.length).toBeGreaterThan(0);
+        });
+    });
+
+    describe('Devanagari vowel classification', () => {
+        test('should handle Devanagari guṇa vowels', () => {
+            const result = applySutra112('अ');
+            
+            expect(result.isGuna).toBe(true);
+            expect(result.script).toBe('Devanagari');
+            expect(result.category).toBe('basic-a');
+        });
+    });
+
+    describe('Error handling', () => {
+        test('should handle invalid inputs gracefully', () => {
+            const result = applySutra112(null);
+            
+            expect(result.classification).toBe('non-guṇa');
+            expect(result.isGuna).toBe(false);
+            expect(result.detailedAnalysis.isValid).toBe(false);
+        });
+
+        test('should handle non-string inputs', () => {
+            const result = applySutra112(123);
+            
+            expect(result.classification).toBe('non-guṇa');
+            expect(result.isGuna).toBe(false);
+        });
+    });
+
+    describe('Integration with examples', () => {
+        test('should work with traditional Sanskrit examples', () => {
+            const examples = ['a', 'e', 'o', 'i', 'u', 'ā'];
+            
+            examples.forEach(vowel => {
+                const result = applySutra112(vowel);
+                expect(result).toHaveProperty('input');
+                expect(result).toHaveProperty('sutraApplied');
+                expect(result).toHaveProperty('classification');
+                expect(result).toHaveProperty('isGuna');
+                expect(result).toHaveProperty('detailedAnalysis');
+                expect(result.sutraApplied).toBe('1.1.2');
+                expect(result.sutraName).toBe('adeṅ guṇaḥ');
             });
         });
     });

@@ -82,50 +82,9 @@ function applyVrddhiToIk(vowel) {
  * Enhanced with robust phoneme tokenization and comprehensive analysis.
  *
  * @param {string} word The word to analyze (IAST or Devanagari).
- * @returns {Array} Array of vowel analysis objects for backward compatibility.
+ * @returns {Object} Enhanced analysis with tokenization and transformation details.
  */
 function getGunaVrddhiScope(word) {
-  // Use shared validation first
-  const validation = validateSanskritWord(word);
-  if (!validation.isValid) {
-    return []; // Return empty array for backward compatibility
-  }
-
-  // Use enhanced shared analysis
-  const sharedAnalysis = sharedGetGunaVrddhiScope(word);
-  
-  // Add sutra-specific enhancements and return just the results array
-  const sutraSpecificResults = sharedAnalysis.results.map(result => ({
-    vowel: result.vowel,
-    position: result.position,
-    isIk: result.isIk,
-    gunaForm: result.gunaForm,
-    vrddhiForm: result.vrddhiForm,
-    canTransform: result.canTransform,
-    // Add sutra 1.1.3 specific analysis
-    appliesTo113: result.isIk,
-    sutraNote: result.isIk ? 
-      'Subject to sutra 1.1.3 (iko guṇavṛddhī)' : 
-      'Not in scope of sutra 1.1.3 (not an ik vowel)',
-    transformations: {
-      guna: result.isIk ? result.gunaForm : null,
-      vrddhi: result.isIk ? result.vrddhiForm : null,
-      reasoning: result.isIk ? 
-        'ik vowel transforms according to guṇa/vṛddhi rules' :
-        'Non-ik vowel not affected by standard guṇa/vṛddhi'
-    }
-  }));
-
-  return sutraSpecificResults; // Return array for backward compatibility
-}
-
-/**
- * Enhanced scope analysis that returns full details (new API).
- *
- * @param {string} word The word to analyze (IAST or Devanagari).
- * @returns {Object} Complete analysis object with metadata.
- */
-function getGunaVrddhiScopeDetailed(word) {
   // Use shared validation first
   const validation = validateSanskritWord(word);
   if (!validation.isValid) {
@@ -173,120 +132,48 @@ function getGunaVrddhiScopeDetailed(word) {
 
 /**
  * Convenience wrapper that extracts the first vowel and applies guṇa if it's an ik vowel.
- * If input is a single vowel, applies transformation directly.
  *
- * @param {string} input The word or vowel to process.
- * @returns {string|null} The guṇa form of the first ik vowel, or transformed vowel, or null.
+ * @param {string} word The word to process.
+ * @returns {string|null} The guṇa form of the first ik vowel, or null.
  */
-function getGunaForm(input) {
-  // If input is a single vowel, apply transformation directly
-  if (input && input.length <= 3 && isVowel(input)) {
-    return applyGunaTransformation(input);
-  }
+function getGunaForm(word) {
+  const scope = getGunaVrddhiScope(word);
   
-  // Otherwise treat as word and get array result
-  const scopeArray = getGunaVrddhiScope(input);
-  
-  if (!scopeArray || scopeArray.length === 0) {
+  if (scope.error || scope.results.length === 0) {
     return null;
   }
   
   // Find first ik vowel
-  const firstIkVowel = scopeArray.find(r => r.isIk);
+  const firstIkVowel = scope.results.find(r => r.isIk);
   return firstIkVowel ? firstIkVowel.gunaForm : null;
 }
 
 /**
  * Convenience wrapper that extracts the first vowel and applies vṛddhi if it's an ik vowel.
- * If input is a single vowel, applies transformation directly.
  *
- * @param {string} input The word or vowel to process.
- * @returns {string|null} The vṛddhi form of the first ik vowel, or transformed vowel, or null.
+ * @param {string} word The word to process.
+ * @returns {string|null} The vṛddhi form of the first ik vowel, or null.
  */
-function getVrddhiForm(input) {
-  // If input is a single vowel, apply transformation directly
-  if (input && input.length <= 3 && isVowel(input)) {
-    return applyVrddhiTransformation(input);
-  }
+function getVrddhiForm(word) {
+  const scope = getGunaVrddhiScope(word);
   
-  // Otherwise treat as word and get array result
-  const scopeArray = getGunaVrddhiScope(input);
-  
-  if (!scopeArray || scopeArray.length === 0) {
+  if (scope.error || scope.results.length === 0) {
     return null;
   }
   
   // Find first ik vowel
-  const firstIkVowel = scopeArray.find(r => r.isIk);
+  const firstIkVowel = scope.results.find(r => r.isIk);
   return firstIkVowel ? firstIkVowel.vrddhiForm : null;
 }
 
 /**
  * Legacy function name for applying guṇa (for backward compatibility).
- * Handles both single vowels and full words.
  *
- * @param {string} input The word or vowel to process.
- * @returns {string|null} The guṇa form, or the input if it's already guṇa, or null.
+ * @param {string} word The word to process.
+ * @returns {string|null} The guṇa form of the first ik vowel, or null.
  */
-function applyGuna(input) {
-  // Handle special cases for non-ik vowels that tests expect
-  if (input === 'a' || input === 'अ') return input; // already guṇa
-  if (input === 'e' || input === 'ए') return input; // already guṇa  
-  if (input === 'o' || input === 'ओ') return input; // already guṇa
-  if (input === 'ā' || input === 'आ') return input; // vṛddhi, no change
-  if (input === 'ai' || input === 'ऐ') return input; // vṛddhi, no change
-  if (input === 'au' || input === 'औ') return input; // vṛddhi, no change
-  
-  return getGunaForm(input);
-}
-
-/**
- * Validates if a transformation is a proper vṛddhi transformation.
- *
- * @param {string} original The original vowel (IAST or Devanagari).
- * @param {string} transformed The transformed vowel (IAST or Devanagari).
- * @returns {boolean} True if it's a valid vṛddhi transformation.
- */
-function isValidVrddhiTransformation(original, transformed) {
-  if (!original || !transformed) return false;
-  
-  const expectedVrddhi = getVrddhiForm(original);
-  return expectedVrddhi === transformed;
-}
-
-/**
- * Validates if a transformation is a proper guṇa transformation.
- *
- * @param {string} original The original vowel (IAST or Devanagari).
- * @param {string} transformed The transformed vowel (IAST or Devanagari).
- * @returns {boolean} True if it's a valid guṇa transformation.
- */
-function isValidGunaTransformation(original, transformed) {
-  if (!original || !transformed) return false;
-  
-  const expectedGuna = getGunaForm(original);
-  return expectedGuna === transformed;
-}
-
-/**
- * Checks if a given operation (guṇa or vṛddhi) is applicable to a vowel.
- *
- * @param {string} vowel The vowel to check (IAST or Devanagari).
- * @param {string} operation Either 'guna' or 'vrddhi'.
- * @returns {boolean} True if the operation is applicable, false otherwise.
- */
-function isOperationApplicable(vowel, operation) {
-  if (!sharedIsIkVowel(vowel)) {
-    return false;
-  }
-  
-  if (operation === 'guna') {
-    return applyGunaToIk(vowel) !== null;
-  } else if (operation === 'vrddhi') {
-    return applyVrddhiToIk(vowel) !== null;
-  }
-  
-  return false;
+function applyGuna(word) {
+  return getGunaForm(word);
 }
 
 /**
@@ -296,18 +183,18 @@ function isOperationApplicable(vowel, operation) {
  * @returns {Object} Comprehensive analysis with sutra application details.
  */
 function applySutra113(word) {
-  const scope = getGunaVrddhiScopeDetailed(word);
+  const scope = getGunaVrddhiScope(word);
   
   return {
     input: word,
     sutraApplied: '1.1.3',
     sutraName: 'iko guṇavṛddhī',
     scope: scope,
-    ikVowelsFound: scope.ikVowelCount || 0,
-    transformableVowels: scope.transformableCount || 0,
+    ikVowelsFound: scope.ikVowelCount,
+    transformableVowels: scope.transformableCount,
     explanation: `Sutra 1.1.3 establishes that guṇa and vṛddhi operations apply to ik vowels (${SanskritVowels.ik.iast.join(', ')})`,
     traditionalDefinition: 'In the absence of special instruction, guṇa/vṛddhi applies to ik vowels',
-    examples: (scope.results || []).filter(r => r.isIk).map(r => ({
+    examples: scope.results.filter(r => r.isIk).map(r => ({
       vowel: r.vowel,
       position: r.position,
       guna: r.gunaForm,
@@ -325,12 +212,8 @@ export {
   applyGunaToIk,
   applyVrddhiToIk,
   getGunaVrddhiScope,
-  getGunaVrddhiScopeDetailed,
   getGunaForm,
   getVrddhiForm,
   applyGuna,
-  applySutra113,
-  isValidVrddhiTransformation,
-  isValidGunaTransformation,
-  isOperationApplicable
+  applySutra113
 };

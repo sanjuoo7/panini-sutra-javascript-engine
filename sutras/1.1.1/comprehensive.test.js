@@ -13,9 +13,9 @@ import {
   vrddhiVowelsDevanagari,
   getAllVrddhiVowels,
   analyzeVowel,
-  isValidVrddhiTransformation,
   applySutra111
 } from './index.js';
+import { isValidVrddhiTransformation } from '../1.1.3/index.js';
 import TransliterationUtil from '../utils.js';
 import { iastTestCases, devanagariTestCases } from './test-cases.js';
 

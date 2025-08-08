@@ -1,44 +1,100 @@
-Project: Panini Sutra to JavaScript Engine
-This project aims to convert the ancient grammatical rules of Sanskrit, as laid out in Panini's Ashtadhyayi (the Sutras), into a functional and testable JavaScript library. The ultimate goal is to create a robust "Panini Rule Engine" that can be used for computational linguistics and natural language processing tasks related to Sanskrit.
+Panini Sutra to JavaScript Engine
+This project is a collaborative effort to computationally model Panini's ancient Sanskrit grammar. Our goal is to convert each of the thousands of "Sutras" (aphoristic rules) from Panini's Aṣṭādhyāyī into a functional and rigorously tested JavaScript function. These functions will eventually be consolidated to form a powerful "Panini Engine" for advanced natural language processing tasks in Sanskrit.
+
+Your role in this project is crucial. You will be acting as a core developer, responsible for the accurate and verifiable conversion of each Sutra.
 
 Project Structure
-The file structure is as follows:
+The project directory is organized to manage the Sutras and their associated code:
 
-/.github/instructions/paniniruleengine.instructions...: This directory likely contains high-level instructions or documentation for the project, possibly including details on the structure of the Sutras and the conversion logic.
+enhanced-panini-sutras.json: A structured data file containing the Sutras and additional metadata to aid in the conversion process.
 
-/sutras/: This directory is the core of the project. It contains individual files for each Sutra.
+├── .github/
+│   └── instructions/
+│       └── paniniruleengine.instructions.md
+├── sutras/
+│   ├── enhanced-panini-sutras.json
+│   ├── utils.js
+│   ├── 1.1.1/
+│   │   ├── index.js
+│   │   ├── index.test.js
+│   │   ├── test-cases.js
+│   │   └── comprehensive.test.js
+│   ├── 1.1.2/
+│   │   ├── index.js
+│   │   ├── index.test.js
+│   │   ├── test-cases.js
+│   │   ├── comprehensive-test-cases.js
+│   │   ├── README.md
+│   │   └── IMPLEMENTATION_SUMMARY.md
+│   └── ... (additional sutras)
+└── README.md
 
-1.1.1, 1.1.2, ...: These files represent individual Sutras from the first book, first chapter of the Ashtadhyayi. Each file is a dedicated module for a single Sutra's logic.
+Your Primary Task: Conversion and Testing
+Your core responsibility is a two-step process for each Sutra:
 
-enhanced-panini-sutras.json: This file likely contains a structured, machine-readable version of the Sutras, possibly with additional metadata or annotations that are useful for the conversion process.
+1. Sutra to Function Conversion
+For each Sutra, you must:
 
-utils.js: A utility file containing helper functions, common logic, or constants that are used across multiple Sutra conversion files.
+Interpret the Rule: Carefully analyze the Sutra's grammatical rule. Understand its conditions, inputs, and the specific transformation it performs on a word or grammatical state.
 
-Core Task for AI: Sutra Conversion and Testing
-Your primary task is to focus on the conversion of each Panini Sutra into a standalone, well-tested JavaScript function. The workflow is as follows:
+Write the JavaScript Function: Create a dedicated JavaScript function that accurately implements this rule. The function should be named logically (e.g., sutra_1_1_1) and should be a pure function—meaning it always returns the same output for the same input and has no side effects.
 
-Sutra Interpretation: For each Sutra (e.g., 1.1.1, 1.1.2, etc.), analyze its grammatical rule. This requires understanding the original Sanskrit text and its meaning within the context of the Ashtadhyayi.
+2. Comprehensive Unit Testing
+This is the most critical part of the process. The reliability of the final engine depends entirely on the accuracy of these individual functions. For each Sutra function you create, you must also generate a corresponding test file with a robust test suite.
 
-JavaScript Function Creation: Translate the Sutra's logic into a JavaScript function. This function should take specific inputs (e.g., a word, a context, a grammatical state) and apply the rule to produce an output (e.g., a modified word, a new state, a boolean result). The function should be named descriptively, perhaps corresponding to the Sutra number (sutra1_1_1, etc.).
+The test suite must include a wide range of test cases to ensure the function works as expected under all circumstances:
 
-Comprehensive Testing: This is the most critical step. For each function you create, you must also generate a comprehensive set of unit tests. These tests should cover:
+Positive Tests: Test cases where the Sutra's rule should apply successfully.
 
-Positive Cases: Inputs where the rule should apply correctly.
+Negative Tests: Test cases where the Sutra's conditions are not met, and the rule should not apply.
 
-Negative Cases: Inputs where the rule should not apply.
+Edge Cases: Boundary conditions where the rule might be ambiguous or requires careful handling.
 
-Edge Cases: Inputs that are at the boundaries of the rule's application (e.g., specific word endings, preceding or succeeding sounds that trigger or prevent the rule).
+Dependencies: If a Sutra's rule depends on the outcome of a previous Sutra, include tests that simulate this dependency.
 
-Corner Cases: Combinations of conditions that are rare but valid.
+Best Practices for Conversion and Testing
+To maintain consistency and accuracy, please adhere to the following guidelines:
 
-The tests should be robust and should ensure that the JavaScript function accurately reflects the original Sutra's behavior. A separate test file (e.g., 1.1.1.test.js) should be created for each Sutra's function.
+What to Do:
+Use Proper Transliteration: All test cases and examples must use standard Sanskrit characters and their corresponding IAST (International Alphabet of Sanskrit Transliteration) representation. This is essential for correctly handling diacritics and phonetic nuances.
 
-Post-Conversion: Consolidation and Integration
-Once each Sutra has been converted into a tested JavaScript function, the next phase will involve consolidating all these functions.
+Parameterize Functions: Your JavaScript functions should accept data as parameters (e.g., a word, a list of phonemes, or a state object). This ensures they are reusable and not tied to specific hardcoded words.
 
-Consolidation: The individual Sutra functions will be gathered into a central library.
+Leverage Structured Data: Where applicable, use the data from enhanced-panini-sutras.json to generate your test cases. This avoids manual transcription errors and ensures consistency with the project's canonical Sutra data.
 
-Engine Integration: These functions will then be used as building blocks for the "Panini Rule Engine." This engine will be a higher-level program that can chain these functions together in the correct sequence to parse and generate Sanskrit words according to Panini's grammar.
+What Not to Do:
+Do Not Hardcode Words: Avoid writing functions with hardcoded strings like "rāmaḥ" or "hariḥ". The logic should be general and operate on the input provided.
+
+Do Not Use Non-Standard Transliteration: Avoid using informal or non-standard Romanization. Consistency in IAST is non-negotiable for accurate phonetic representation.
+
+Avoid Side Effects: Functions should not modify global variables, write to external files, or perform any other action that would make them impure.
+
+The Consolidation Phase
+Once all Sutras have been converted and thoroughly tested, the next phase of the project will begin: building the "Panini Engine."
+
+The individual, tested Sutra functions will be imported into a central library. This library will then be used as the foundation for the "Panini Engine," a master program that can apply these rules in the correct order to derive the forms of Sanskrit words.
+
+The Engine's Logic
+The engine's logic is a complex but crucial part of this project. It will be responsible for:
+
+Sutra Application Order: Applying the Sutras in the correct sequence as defined by Panini. The order of operations is critical, as the output of one Sutra often serves as the input for the next.
+
+State Management: The engine will need to maintain and update a grammatical "state" object as it processes a word. This state will include information about the word's current form, its grammatical properties, and any pending rules.
+
+Rule Conflict Resolution: When multiple Sutras are potentially applicable, the engine must correctly identify and apply the highest-priority rule as dictated by Panini's meta-rules.
+
+Documentation and Collaboration
+To ensure the long-term success of this collaborative project, please also keep the following in mind:
+
+Documentation:
+Code Comments: Every JavaScript function, especially those for the Sutras, must be extensively commented. Use JSDoc format to describe the function's purpose, its parameters, and what it returns.
+
+README Updates: As you work on specific sections or make significant changes, update this README.md file to reflect your progress.
+
+Version Control:
+Git Workflow: Follow a standard Git workflow. Create a new branch for each Sutra you are working on, make your changes, and submit a pull request for review.
+
+Clear Commit Messages: Write clear, concise, and descriptive commit messages. A good commit message should explain what was changed and why.
 
 Final Goal
-The final output is a complete and reliable JavaScript library that serves as a computational model of Panini's grammar. The quality and accuracy of this library are directly dependent on the rigorous testing of each individual Sutra function. Your focus on comprehensive testing is paramount to the success of this project.
+The final goal of this project is to create an open-source, verifiable, and highly accurate computational model of Panini's Aṣṭādhyāyī in JavaScript. Your attention to detail in the conversion and testing of each Sutra is fundamental to achieving this vision.

@@ -438,7 +438,8 @@ describe('Sutra 1.1.6: पूर्वोऽवरः (pūrvo\'varaḥ) - Compre
       const result = analyzeCompoundPrecedence(vedicCompound);
       expect(result.isValid).toBe(true);
       expect(result.primary.part).toBe('अग्नि');
-      expect(result.compoundType).toBe('बहुव्रीहि (bahuvrīhi)');
+      expect(result.secondary.length).toBe(2);
+      expect(result.principleApplied).toBe('पूर्वोऽवरः');
     });
   });
 

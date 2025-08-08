@@ -2,7 +2,9 @@ import {
   isIkVowel, 
   applyGunaToIk, 
   applyVrddhiToIk, 
-  getGunaVrddhiScope, 
+  getGunaVrddhiScope,
+  getGunaVrddhiScopeDetailed,
+  applySutra113,
   isOperationApplicable
 } from './index.js';
 import TransliterationUtil from '../utils.js';
@@ -286,6 +288,197 @@ describe('Comprehensive Ik Vowel Analysis Tests (Sutra 1.1.3)', () => {
                 const result = isGuna ? applyGunaToIk(vowel) : applyVrddhiToIk(vowel);
                 expect(result).toBe(expected);
                 expect(isOperationApplicable(vowel, operation)).toBe(true);
+            });
+        });
+    });
+});
+
+describe('getGunaVrddhiScopeDetailed Function Tests', () => {
+    describe('Detailed word analysis', () => {
+        test('should provide comprehensive analysis for words with ik vowels', () => {
+            const result = getGunaVrddhiScopeDetailed('kṛṣṇa');
+            
+            expect(result.word).toBe('kṛṣṇa');
+            expect(result.error).toBeUndefined();
+            expect(result.results).toBeDefined();
+            expect(Array.isArray(result.results)).toBe(true);
+            expect(result.ikVowelCount).toBeDefined();
+            expect(result.transformableCount).toBeDefined();
+            
+            // Check that each result has sutra-specific enhancements
+            result.results.forEach(r => {
+                expect(r).toHaveProperty('appliesTo113');
+                expect(r).toHaveProperty('sutraNote');
+                if (r.isIk) {
+                    expect(r.appliesTo113).toBe(true);
+                    expect(r.sutraNote).toContain('1.1.3');
+                }
+            });
+        });
+
+        test('should handle words with multiple ik vowels', () => {
+            const result = getGunaVrddhiScopeDetailed('pṛtivi');
+            
+            expect(result.ikVowelCount).toBeGreaterThan(0);
+            expect(result.results.length).toBeGreaterThan(0);
+            
+            // Verify detailed analysis for each vowel
+            const ikVowels = result.results.filter(r => r.isIk);
+            expect(ikVowels.length).toBe(result.ikVowelCount);
+            
+            ikVowels.forEach(vowel => {
+                expect(vowel.appliesTo113).toBe(true);
+                expect(vowel.sutraNote).toContain('iko guṇavṛddhī');
+            });
+        });
+
+        test('should provide detailed metadata', () => {
+            const result = getGunaVrddhiScopeDetailed('guru');
+            
+            expect(result).toHaveProperty('word');
+            expect(result).toHaveProperty('results');
+            expect(result).toHaveProperty('ikVowelCount');
+            expect(result).toHaveProperty('transformableCount');
+            expect(result).toHaveProperty('totalVowels');
+            expect(result).toHaveProperty('tokenization');
+            expect(result).toHaveProperty('sutraApplication');
+            expect(result.sutraApplication).toBe('iko guṇavṛddhī (1.1.3)');
+            expect(result.scope).toBe('ik vowels only');
+        });
+    });
+
+    describe('Error handling', () => {
+        test('should handle invalid inputs gracefully', () => {
+            const result = getGunaVrddhiScopeDetailed(null);
+            
+            expect(result.word).toBe(null);
+            expect(result.error).toBeDefined();
+            expect(result.results).toEqual([]);
+            expect(result.ikVowelCount).toBe(0);
+            expect(result.transformableCount).toBe(0);
+        });
+
+        test('should handle empty strings', () => {
+            const result = getGunaVrddhiScopeDetailed('');
+            
+            expect(result.error).toBeDefined();
+            expect(result.results).toEqual([]);
+        });
+    });
+
+    describe('Script compatibility', () => {
+        test('should handle Devanagari words', () => {
+            const result = getGunaVrddhiScopeDetailed('गुरु');
+            
+            expect(result.word).toBe('गुरु');
+            expect(result.results).toBeDefined();
+            // Note: Script detection might not work perfectly for single character tests
+            // Focus on the structure rather than count for Devanagari compatibility
+            expect(result.script).toBeDefined();
+            expect(Array.isArray(result.results)).toBe(true);
+        });
+    });
+});
+
+describe('applySutra113 Function Tests', () => {
+    describe('Complete sutra application', () => {
+        test('should provide comprehensive sutra analysis', () => {
+            const result = applySutra113('guru');
+            
+            // Check sutra metadata
+            expect(result.input).toBe('guru');
+            expect(result.sutraApplied).toBe('1.1.3');
+            expect(result.sutraName).toBe('iko guṇavṛddhī');
+            expect(result.traditionalDefinition).toContain('guṇa/vṛddhi applies to ik vowels');
+            expect(result.explanation).toContain('Sutra 1.1.3');
+            
+            // Check analysis details
+            expect(result.scope).toBeDefined();
+            expect(result.ikVowelsFound).toBeDefined();
+            expect(result.transformableVowels).toBeDefined();
+            expect(result.examples).toBeDefined();
+            expect(Array.isArray(result.examples)).toBe(true);
+        });
+
+        test('should correctly count ik vowels', () => {
+            const result = applySutra113('kṛti');
+            
+            expect(result.ikVowelsFound).toBeGreaterThan(0);
+            expect(result.examples.length).toBe(result.ikVowelsFound);
+            
+            result.examples.forEach(example => {
+                expect(example).toHaveProperty('vowel');
+                expect(example).toHaveProperty('position');
+                expect(example).toHaveProperty('guna');
+                expect(example).toHaveProperty('vrddhi');
+            });
+        });
+
+        test('should handle words without ik vowels', () => {
+            const result = applySutra113('nama');
+            
+            expect(result.ikVowelsFound).toBe(0);
+            expect(result.examples).toEqual([]);
+        });
+    });
+
+    describe('Complex word analysis', () => {
+        test('should analyze complex Sanskrit words', () => {
+            const result = applySutra113('upaniṣad');
+            
+            expect(result.scope.results).toBeDefined();
+            expect(result.ikVowelsFound).toBeGreaterThanOrEqual(0);
+            
+            // Verify that all examples are valid transformations
+            result.examples.forEach(example => {
+                expect(typeof example.vowel).toBe('string');
+                expect(typeof example.position).toBe('number');
+                expect(typeof example.guna).toBe('string');
+                expect(typeof example.vrddhi).toBe('string');
+            });
+        });
+
+        test('should provide consistent analysis', () => {
+            const word = 'pitṛ';
+            const result1 = applySutra113(word);
+            const result2 = applySutra113(word);
+            
+            expect(result1.ikVowelsFound).toBe(result2.ikVowelsFound);
+            expect(result1.examples.length).toBe(result2.examples.length);
+        });
+    });
+
+    describe('Error handling', () => {
+        test('should handle invalid inputs gracefully', () => {
+            const result = applySutra113(null);
+            
+            expect(result.input).toBe(null);
+            expect(result.scope.error).toBeDefined();
+            expect(result.ikVowelsFound).toBe(0);
+            expect(result.examples).toEqual([]);
+        });
+
+        test('should handle non-string inputs', () => {
+            const result = applySutra113(123);
+            
+            expect(result.input).toBe(123);
+            expect(result.scope.error).toBeDefined();
+        });
+    });
+
+    describe('Integration with traditional examples', () => {
+        test('should work with canonical Sanskrit examples', () => {
+            const examples = ['kṛṣṇa', 'guruḥ', 'buddhiḥ', 'muniḥ', 'ṛṣiḥ'];
+            
+            examples.forEach(word => {
+                const result = applySutra113(word);
+                expect(result).toHaveProperty('input');
+                expect(result).toHaveProperty('sutraApplied');
+                expect(result).toHaveProperty('scope');
+                expect(result).toHaveProperty('ikVowelsFound');
+                expect(result).toHaveProperty('examples');
+                expect(result.sutraApplied).toBe('1.1.3');
+                expect(result.sutraName).toBe('iko guṇavṛddhī');
             });
         });
     });

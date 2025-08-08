@@ -7,10 +7,25 @@
  * that includes the vowels "ai" (ऐ) and "au" (औ).
  * 
  * This is the foundational sutra that establishes the vowel categories used throughout Sanskrit grammar.
+ * 
+ * Enhanced with shared utilities integration for consistency and maintainability.
  */
 
-const vrddhiVowels = ['ā', 'ai', 'au'];
-const vrddhiVowelsDevanagari = ['आ', 'ऐ', 'औ'];
+// Import shared utilities for enhanced functionality
+import { detectScript } from '../shared/script-detection.js';
+import { validateSanskritWord } from '../shared/validation.js';
+import { SanskritVowels } from '../shared/constants.js';
+
+// Use centralized vṛddhi vowel definitions from shared constants
+const vrddhiVowels = SanskritVowels.vrddhi.iast;
+const vrddhiVowelsDevanagari = SanskritVowels.vrddhi.devanagari;
+
+// Enhanced vowel category mapping
+const vowelCategoryMap = {
+  'ā': 'long-a', 'आ': 'long-a',
+  'ai': 'diphthong-ai', 'ऐ': 'diphthong-ai', 
+  'au': 'diphthong-au', 'औ': 'diphthong-au'
+};
 
 /**
  * Checks if a given vowel is a vṛddhi vowel.
@@ -38,62 +53,40 @@ function getAllVrddhiVowels() {
 
 /**
  * Analyzes a vowel and provides detailed information about its vṛddhi status.
+ * Enhanced with shared script detection and improved error handling.
  *
  * @param {string} vowel The vowel to analyze.
  * @returns {Object} Analysis object with detailed information.
  */
 function analyzeVowel(vowel) {
-  if (!vowel) {
+  // Enhanced input validation
+  if (!vowel || typeof vowel !== 'string') {
     return {
-      vowel: null,
+      vowel: vowel,
       isValid: false,
       isVrddhi: false,
       script: null,
       category: null,
-      explanation: 'Invalid or empty vowel'
+      explanation: 'Invalid or empty vowel input'
     };
   }
 
+  // Use shared script detection for consistency
+  const script = detectScript(vowel);
   const isVrddhiVowel = isVrddhi(vowel);
-  const isIAST = vrddhiVowels.includes(vowel);
-  const isDevanagari = vrddhiVowelsDevanagari.includes(vowel);
+  const category = vowelCategoryMap[vowel] || null;
   
-  let category = null;
-  if (vowel === 'ā' || vowel === 'आ') category = 'long-a';
-  else if (vowel === 'ai' || vowel === 'ऐ') category = 'diphthong-ai';
-  else if (vowel === 'au' || vowel === 'औ') category = 'diphthong-au';
-
   return {
     vowel: vowel,
     isValid: true,
     isVrddhi: isVrddhiVowel,
-    script: isIAST ? 'IAST' : (isDevanagari ? 'Devanagari' : 'Unknown'),
+    script: script,
     category: category,
     explanation: isVrddhiVowel ? 
       `${vowel} is a vṛddhi vowel (${category})` : 
-      `${vowel} is not a vṛddhi vowel`
+      `${vowel} is not a vṛddhi vowel`,
+    traditionalClassification: isVrddhiVowel ? 'vṛddhi' : 'non-vṛddhi'
   };
-}
-
-/**
- * Validates if a string represents a proper vṛddhi transformation.
- * This checks if the given transformation follows vṛddhi rules.
- *
- * @param {string} original The original vowel.
- * @param {string} transformed The transformed vowel.
- * @returns {boolean} True if it's a valid vṛddhi transformation.
- */
-function isValidVrddhiTransformation(original, transformed) {
-  if (!original || !transformed) return false;
-  
-  // Common vṛddhi transformations
-  const transformations = {
-    'a': 'ā', 'i': 'ai', 'u': 'au',
-    'ī': 'ai', 'ū': 'au', 'ṛ': 'ār',
-    'e': 'ai', 'o': 'au'
-  };
-
-  return transformations[original] === transformed && isVrddhi(transformed);
 }
 
 /**
@@ -129,6 +122,5 @@ export {
   vrddhiVowelsDevanagari,
   getAllVrddhiVowels,
   analyzeVowel,
-  isValidVrddhiTransformation,
   applySutra111
 };

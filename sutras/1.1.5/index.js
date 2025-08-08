@@ -6,62 +6,33 @@
  * 
  * This sutra establishes that affixes with indicatory letters (it-markers) 
  * क्, ग्, or ङ् do not cause guṇa or vṛddhi transformations.
+ * 
+ * IMPLEMENTATION NOTES:
+ * 
+ * Current Status: Enhanced with shared utilities
+ * - Robust script detection using shared utilities
+ * - Complete bilingual support (IAST/Devanagari) 
+ * - Systematic it-marker detection
+ * - Optimized performance with pre-computed sets
+ * 
+ * Architecture: Lookup-based classification with shared utilities
+ * Enhanced with shared script detection for consistent handling across sutras.
  */
 
-/**
- * Enhanced function to handle both IAST and Devanagari scripts
- * @param {string} text - Text in IAST or Devanagari
- * @returns {string} - Text processed for comparison
- */
-function normalizeScript(text) {
-    if (!text) return '';
-    
-    // If already in IAST (contains only ASCII), return as is
-    if (!/[\u0900-\u097F]/.test(text)) {
-        return text.toLowerCase();
-    }
-    
-    // Simple Devanagari to IAST mapping for key affixes
-    const mappings = {
-        // Kit affixes
-        'कत्': 'kta',
-        'कत्वा': 'ktvā', 
-        'कुप्': 'kvip',
-        'कुअन्': 'kvan',
-        'कतवत्': 'ktavat',
-        'कतिन्': 'ktin',
-        
-        // Git affixes  
-        'घञ्': 'ghañ',
-        'घन्': 'ghan',
-        'घ': 'gha',
-        'ग': 'ga',
-        
-        // Ngit affixes
-        'ङीप्': 'ṅīp',
-        'ङीन्': 'ṅīn', 
-        'अङ्': 'aṅ',
-        'ङ': 'ṅa',
-        
-        // Regular affixes (no it-markers)
-        'ति': 'ti',
-        'अन': 'ana',
-        'य': 'ya',
-        'तृच्': 'tṛc',
-        'अच्': 'ac'
-    };
-    
-    // Check for direct mapping first
-    if (mappings[text]) {
-        return mappings[text];
-    }
-    
-    // For complex cases, return original for now
-    return text;
-}
+// Import shared utilities
+import { detectScript, isDevanagari } from '../shared/script-detection.js';
+import { validateSanskritWord } from '../shared/validation.js';
+import { ItMarkedAffixes } from '../shared/constants.js';
+import { normalizeScript } from '../shared/transliteration.js';
+
+// Use shared affix sets for optimal performance (convert arrays to Sets)
+const KIT_MARKED_AFFIXES = new Set(ItMarkedAffixes.KIT_MARKED);
+const GIT_MARKED_AFFIXES = new Set(ItMarkedAffixes.GIT_MARKED);
+const NGIT_MARKED_AFFIXES = new Set(ItMarkedAffixes.NGIT_MARKED);
 
 /**
  * Checks if an affix has indicatory letters क्, ग्, or ङ्
+ * Optimized version using pre-computed sets for better performance
  * @param {string} affix - The affix to check (IAST or Devanagari)
  * @returns {boolean} - True if affix has k, g, or ṅ it-markers
  */
@@ -70,32 +41,19 @@ export function hasKitGitNgitMarkers(affix) {
         return false;
     }
     
-    // Normalize the script
+    // Normalize the script for consistent lookup using shared utility
     const normalized = normalizeScript(affix);
     
-    // Common affixes with k, g, ṅ it-markers
-    const kitMarkedAffixes = new Set([
-        'kta', 'ktvā', 'ktva', 'kvip', 'kvan', 'ktavat', 'ktin', 'ktu',
-        'kmat', 'kvi', 'kvarap', 'kvasuc', 'kt'
-    ]);
-    
-    const gitMarkedAffixes = new Set([
-        'gha', 'ghañ', 'ghan', 'ghaṇ', 'ghasi', 'ghāsi', 'ga'
-    ]);
-    
-    const ngitMarkedAffixes = new Set([
-        'ṅa', 'ṅīp', 'ṅīn', 'ṅīṣ', 'ṅau', 'aṅ', 'iṅ', 'uṅ'
-    ]);
-    
-    // Check if the affix matches any known marked affixes
-    return kitMarkedAffixes.has(normalized) || 
-           gitMarkedAffixes.has(normalized) || 
-           ngitMarkedAffixes.has(normalized);
+    // Check against shared affix sets (O(1) lookup)
+    return KIT_MARKED_AFFIXES.has(normalized) || 
+           GIT_MARKED_AFFIXES.has(normalized) || 
+           NGIT_MARKED_AFFIXES.has(normalized);
 }
 
 /**
  * Checks if an affix has क् (k) it-marker
- * @param {string} affix - The affix to check
+ * Optimized version using shared affix sets
+ * @param {string} affix - The affix to check (IAST or Devanagari)
  * @returns {boolean} - True if affix has k it-marker
  */
 export function hasKitMarker(affix) {
@@ -104,19 +62,13 @@ export function hasKitMarker(affix) {
     }
     
     const normalized = normalizeScript(affix);
-    
-    // Affixes with क् it-marker
-    const kitAffixes = new Set([
-        'kta', 'ktvā', 'ktva', 'kvip', 'kvan', 'ktavat', 'ktin', 'ktu',
-        'kmat', 'kvi', 'kvarap', 'kvasuc', 'kt'
-    ]);
-    
-    return kitAffixes.has(normalized);
+    return KIT_MARKED_AFFIXES.has(normalized);
 }
 
 /**
  * Checks if an affix has ग् (g) it-marker
- * @param {string} affix - The affix to check
+ * Optimized version using shared affix sets
+ * @param {string} affix - The affix to check (IAST or Devanagari)
  * @returns {boolean} - True if affix has g it-marker
  */
 export function hasGitMarker(affix) {
@@ -125,18 +77,13 @@ export function hasGitMarker(affix) {
     }
     
     const normalized = normalizeScript(affix);
-    
-    // Affixes with ग् it-marker
-    const gitAffixes = new Set([
-        'gha', 'ghañ', 'ghan', 'ghaṇ', 'ghasi', 'ghāsi', 'ga'
-    ]);
-    
-    return gitAffixes.has(normalized);
+    return GIT_MARKED_AFFIXES.has(normalized);
 }
 
 /**
  * Checks if an affix has ङ् (ṅ) it-marker
- * @param {string} affix - The affix to check
+ * Optimized version using shared affix sets
+ * @param {string} affix - The affix to check (IAST or Devanagari)
  * @returns {boolean} - True if affix has ṅ it-marker
  */
 export function hasNgitMarker(affix) {
@@ -145,13 +92,7 @@ export function hasNgitMarker(affix) {
     }
     
     const normalized = normalizeScript(affix);
-    
-    // Affixes with ङ् it-marker
-    const ngitAffixes = new Set([
-        'ṅa', 'ṅīp', 'ṅīn', 'ṅīṣ', 'ṅau', 'aṅ', 'iṅ', 'uṅ'
-    ]);
-    
-    return ngitAffixes.has(normalized);
+    return NGIT_MARKED_AFFIXES.has(normalized);
 }
 
 /**
@@ -162,6 +103,14 @@ export function hasNgitMarker(affix) {
  * @returns {boolean} - True if transformation should be blocked
  */
 export function shouldBlockDueToItMarkers(dhatu, affix, operation) {
+    // Enhanced validation using shared utilities
+    if (dhatu && typeof dhatu === 'string') {
+        const validation = validateSanskritWord(dhatu);
+        if (!validation.isValid) {
+            return false; // Don't block if dhatu is invalid
+        }
+    }
+    
     if (!dhatu || !affix || !operation) {
         return false;
     }

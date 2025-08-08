@@ -2,11 +2,12 @@
   "name": "panini-sutra-javascript-engine",
   "version": "1.0.0",
   "description": "A JavaScript implementation of Panini's Ashtadhyayi (Sanskrit grammar rules) for computational linguistics",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
+    "test:watch": "NODE_OPTIONS='--experimental-vm-modules' jest --watch",
+    "test:coverage": "NODE_OPTIONS='--experimental-vm-modules' jest --coverage"
   },
   "keywords": [
     "panini",
@@ -29,5 +30,9 @@
   "bugs": {
     "url": "https://github.com/[your-username]/panini-sutra-javascript-engine/issues"
   },
-  "homepage": "https://github.com/[your-username]/panini-sutra-javascript-engine#readme"
+  "homepage": "https://github.com/[your-username]/panini-sutra-javascript-engine#readme",
+  "jest": {
+    "transform": {},
+    "testEnvironment": "node"
+  }
 }

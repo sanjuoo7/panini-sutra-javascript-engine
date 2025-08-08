@@ -14,37 +14,12 @@
  * how they behave in various grammatical operations.
  */
 
-// All Sanskrit consonants (हल्) in IAST
-const consonants = [
-  // Stops (स्पर्श)
-  'k', 'kh', 'g', 'gh', 'ṅ',      // Velars (कण्ठ्य)
-  'c', 'ch', 'j', 'jh', 'ñ',      // Palatals (तालव्य)
-  'ṭ', 'ṭh', 'ḍ', 'ḍh', 'ṇ',     // Retroflexes (मूर्धन्य)
-  't', 'th', 'd', 'dh', 'n',      // Dentals (दन्त्य)
-  'p', 'ph', 'b', 'bh', 'm',      // Labials (ओष्ठ्य)
-  // Semivowels (अन्तःस्थ)
-  'y', 'r', 'l', 'v',
-  // Sibilants (ऊष्म)
-  'ś', 'ṣ', 's', 'h',
-  // Special characters
-  'ḥ', 'ṃ', '्'                  // Visarga, anusvara, halanta
-];
+// Import shared constants to avoid duplication
+import { SanskritConsonants } from '../shared/constants.js';
 
-// Sanskrit consonants in Devanagari
-const consonantsDevanagari = [
-  // Stops
-  'क', 'ख', 'ग', 'घ', 'ङ',
-  'च', 'छ', 'ज', 'झ', 'ञ',
-  'ट', 'ठ', 'ड', 'ढ', 'ण',
-  'त', 'थ', 'द', 'ध', 'न',
-  'प', 'फ', 'ब', 'भ', 'म',
-  // Semivowels
-  'य', 'र', 'ल', 'व',
-  // Sibilants
-  'श', 'ष', 'स', 'ह',
-  // Special characters
-  'ः', 'ं', '्'                   // Visarga, anusvara, halanta
-];
+// Use shared consonant arrays instead of local definitions
+const consonants = SanskritConsonants.all.iast;
+const consonantsDevanagari = SanskritConsonants.all.devanagari;
 
 /**
  * Checks if a given character is a consonant (हल्).
@@ -58,10 +33,22 @@ function isConsonant(char) {
 }
 
 /**
- * Determines if a word ends with a consonant sound.
- *
- * @param {string} word The word to analyze.
- * @returns {boolean} True if the word ends with a consonant sound.
+ * Check if a word ends with a consonant (हलन्त्यम्)
+ * 
+ * Sanskrit phonology distinguishes between consonant-ending and vowel-ending words:
+ * 
+ * IAST Logic:
+ * - Last character is a consonant → consonant-ending
+ * - Special endings (ḥ, ṃ) → consonant-ending
+ * 
+ * Devanagari Logic (more complex due to inherent vowels):
+ * - Explicit halanta (्) → always consonant-ending  
+ * - Visarga (ः) or anusvara (ं) → consonant-ending
+ * - Bare consonant (क, त, प) → vowel-ending (has inherent 'a')
+ * - Consonant + vowel mark → vowel-ending
+ * 
+ * @param {string} word - The word to analyze
+ * @returns {boolean} - True if word ends with consonant
  */
 function endsWithConsonant(word) {
   if (!word || typeof word !== 'string') {
@@ -69,9 +56,10 @@ function endsWithConsonant(word) {
   }
 
   const lastChar = word.slice(-1);
-  
-  // Check for explicit halanta (्) at the end
-  if (lastChar === '्') {
+  const secondLastChar = word.length > 1 ? word.slice(-2, -1) : '';
+
+  // Check for explicit halanta (्) at the end, and if the character before it is a consonant
+  if (lastChar === '्' && secondLastChar && consonantsDevanagari.includes(secondLastChar)) {
     return true;
   }
   
@@ -86,25 +74,24 @@ function endsWithConsonant(word) {
     return true;
   }
   
-  // Critical Fix: For Devanagari, consonant letters have inherent 'a' vowel
+  // Critical Fix: For Devanagari, consonant letters have inherent 'a' vowel.
   // They are only truly consonant-ending if:
-  // 1. They have explicit halanta (्) - already checked above
-  // 2. They are special consonants (visarga/anusvara) - already checked above
-  // 3. The word ends with halanta + consonant (like वाक्)
+  // 1. They have explicit halanta (्) - already checked above.
+  // 2. They are special consonants (visarga/anusvara) - already checked above.
+  // 3. The word ends with a pure consonant (e.g., क्, त्) which might be a single Unicode character
+  //    or a character followed by a halanta.
   
-  // Check if word ends with halanta + consonant pattern
-  if (word.length >= 2 && word.slice(-1) !== '्') {
-    const lastChar = word.slice(-1);
-    const secondLastChar = word.slice(-2, -1);
-    
-    // If second-to-last is halanta and last is consonant, it's consonant-ending
-    if (secondLastChar === '्' && consonantsDevanagari.includes(lastChar)) {
-      return true;
-    }
+  // For Devanagari, if the last character is a consonant from our list,
+  // it's only truly consonant-ending if it's followed by an explicit halanta
+  // or if it's a special character (visarga/anusvara).
+  // Otherwise, it's considered vowel-ending due to the inherent 'a' vowel.
+  if (consonantsDevanagari.includes(lastChar)) {
+    // If it's a Devanagari consonant, it's only consonant-ending if it's a special case
+    // (visarga/anusvara) or if the previous character was a halanta (already handled).
+    // Otherwise, it has an inherent 'a' vowel and is vowel-ending.
+    return false;
   }
-  
-  // All other Devanagari consonants carry inherent 'a' vowel, so they're vowel-ending
-  // Examples: राम (rāma), गुरु (guru), देव (deva) - all vowel-ending
+
   return false;
 }
 
@@ -132,7 +119,6 @@ function getFinalConsonant(word) {
   // Handle halanta case
   if (finalChar === '्' && word.length >= 2) {
     actualConsonant = word.slice(-2, -1);
-    finalChar = actualConsonant + '्';
   }
   
   // Use the same logic as endsWithConsonant to determine if it's consonant-ending
@@ -223,11 +209,21 @@ function analyzeConsonantEndings(words) {
 }
 
 /**
- * Determines sandhi behavior for consonant-ending words.
- *
- * @param {string} word The word ending with a consonant.
- * @param {string} nextWord The following word (optional).
- * @returns {Object} Sandhi analysis for consonant endings.
+ * Analyze consonant sandhi rules for word endings (हलन्त्यम्)
+ * 
+ * This function provides sandhi analysis for consonant-ending words.
+ * Note: This is a simplified implementation. Complete sandhi analysis
+ * requires considering multiple factors:
+ * - Following sound context
+ * - Morphological boundaries  
+ * - Specific Paninian sutras (8.2.x, 8.3.x, 8.4.x series)
+ * - Euphonic combinations
+ * 
+ * For production use, implement full sandhi rule engine.
+ * 
+ * @param {string} word - The consonant-ending word
+ * @param {string} nextWord - Optional following word for context
+ * @returns {Object} Sandhi analysis with applicable rules
  */
 function analyzeConsonantSandhi(word, nextWord = null) {
   const finalAnalysis = getFinalConsonant(word);
@@ -235,26 +231,54 @@ function analyzeConsonantSandhi(word, nextWord = null) {
   if (!finalAnalysis.isConsonant) {
     return {
       isValid: false,
-      error: 'Word does not end with consonant',
-      sandhiRules: []
+      error: 'Word does not end with consonant - no consonant sandhi applicable',
+      sandhiRules: [],
+      limitations: 'This function only analyzes consonant-ending words'
     };
   }
 
   const finalConsonant = finalAnalysis.finalChar;
   let sandhiRules = [];
+  let specificRules = [];
 
-  // Basic sandhi rules for consonant endings
-  if (['क', 'ग', 'ङ', 'k', 'g', 'ṅ'].includes(finalConsonant)) {
-    sandhiRules.push('Velar consonant sandhi applies');
+  // Enhanced sandhi categorization by place of articulation
+  if (['क', 'ख', 'ग', 'घ', 'ङ', 'k', 'kh', 'g', 'gh', 'ṅ'].includes(finalConsonant)) {
+    sandhiRules.push('Velar consonant sandhi (कण्ठ्य संधि) applies');
+    specificRules.push('Sutra 8.2.30 (च्योः कु वशि), 8.4.55 (खरि च)');
   }
-  if (['त', 'द', 'न', 't', 'd', 'n'].includes(finalConsonant)) {
-    sandhiRules.push('Dental consonant sandhi applies');
+  if (['च', 'छ', 'ज', 'झ', 'ञ', 'c', 'ch', 'j', 'jh', 'ñ'].includes(finalConsonant)) {
+    sandhiRules.push('Palatal consonant sandhi (तालव्य संधि) applies');
+    specificRules.push('Sutra 8.4.40 (स्तोः श्चुना श्चुः)');
   }
-  if (['प', 'ब', 'म', 'p', 'b', 'm'].includes(finalConsonant)) {
-    sandhiRules.push('Labial consonant sandhi applies');
+  if (['ट', 'ठ', 'ड', 'ढ', 'ण', 'ṭ', 'ṭh', 'ḍ', 'ḍh', 'ṇ'].includes(finalConsonant)) {
+    sandhiRules.push('Retroflex consonant sandhi (मूर्धन्य संधि) applies');
+    specificRules.push('Cerebral assimilation rules (8.4.41)');
   }
-  if (['स', 'ह', 's', 'h'].includes(finalConsonant)) {
-    sandhiRules.push('Sibilant/aspirate sandhi applies');
+  if (['त', 'थ', 'द', 'ध', 'न', 't', 'th', 'd', 'dh', 'n'].includes(finalConsonant)) {
+    sandhiRules.push('Dental consonant sandhi (दन्त्य संधि) applies');
+    specificRules.push('Most common final consonant changes (8.2.39, 8.4.56)');
+  }
+  if (['प', 'फ', 'ब', 'भ', 'म', 'p', 'ph', 'b', 'bh', 'm'].includes(finalConsonant)) {
+    sandhiRules.push('Labial consonant sandhi (ओष्ठ्य संधि) applies');
+    specificRules.push('Labial to labial assimilation (8.4.58)');
+  }
+  if (['य', 'र', 'ल', 'व', 'y', 'r', 'l', 'v'].includes(finalConsonant)) {
+    sandhiRules.push('Semivowel sandhi (अन्तःस्थ संधि) applies');
+    specificRules.push('Liquid and glide modifications');
+  }
+  if (['श', 'ष', 'स', 'ह', 'ś', 'ṣ', 's', 'h'].includes(finalConsonant)) {
+    sandhiRules.push('Sibilant/aspirate sandhi (ऊष्म संधि) applies');
+    specificRules.push('Sibilant assimilation rules (8.3.34-36)');
+  }
+
+  // Special endings
+  if (['ः', 'ḥ'].includes(finalConsonant)) {
+    sandhiRules.push('Visarga sandhi (विसर्ग संधि) - complex rules apply');
+    specificRules.push('Sutras 8.3.15, 8.3.34 (रुँण्णो रुः), contextual changes');
+  }
+  if (['ं', 'ṃ'].includes(finalConsonant)) {
+    sandhiRules.push('Anusvara sandhi (अनुस्वार संधि) applies');
+    specificRules.push('Nasal assimilation based on following consonant');
   }
 
   return {
@@ -265,8 +289,10 @@ function analyzeConsonantSandhi(word, nextWord = null) {
     consonantType: finalAnalysis.consonantType,
     nextWord: nextWord,
     sandhiRules: sandhiRules,
+    specificSutras: specificRules,
     applicableSutras: ['हलन्त्यम् (1.1.7)', 'Various sandhi sutras'],
-    explanation: `Consonant "${finalConsonant}" at end of "${word}" triggers specific sandhi rules`
+    explanation: `Consonant "${finalConsonant}" at end of "${word}" triggers specific sandhi rules`,
+    limitations: 'Simplified sandhi analysis - complete implementation requires context-aware rule engine covering all Paninian sutras (8.2.x-8.4.x series)'
   };
 }
 
@@ -353,7 +379,7 @@ function getAllConsonants() {
       'labials': { iast: ['p', 'ph', 'b', 'bh', 'm'], devanagari: ['प', 'फ', 'ब', 'भ', 'म'] },
       'semivowels': { iast: ['y', 'r', 'l', 'v'], devanagari: ['य', 'र', 'ल', 'व'] },
       'sibilants': { iast: ['ś', 'ṣ', 's', 'h'], devanagari: ['श', 'ष', 'स', 'ह'] },
-      'special': { iast: ['ḥ', 'ṃ', 'ṛ'], devanagari: ['ः', 'ं', '्'] }
+      'special': { iast: ['ḥ', 'ṃ'], devanagari: ['ः', 'ं'] }
     }
   };
 }
