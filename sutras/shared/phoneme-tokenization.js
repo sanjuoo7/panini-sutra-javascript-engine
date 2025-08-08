@@ -94,39 +94,20 @@ export function tokenizeDevanagariPhonemes(text) {
 
   while (position < text.length) {
     let matchFound = false;
-    
-    // Prioritize matching conjuncts (consonant + halanta + consonant)
-    if (position + 2 < text.length) {
-      const char1 = text.charAt(position);
-      const char2 = text.charAt(position + 1);
-      const char3 = text.charAt(position + 2);
 
-      // Simple check for Consonant + Halanta + Consonant pattern
-      // This is a basic heuristic and might need refinement for all conjuncts
-      if (DEVANAGARI_PHONEMES.includes(char1) && char2 === '्' && DEVANAGARI_PHONEMES.includes(char3)) {
-        // Construct the conjunct string (e.g., क्त)
-        const conjunct = char1 + char2 + char3;
-        phonemes.push(conjunct);
-        position += 3;
+    // Match predefined single code-point phonemes (no conjunct grouping;
+    // tests expect explicit halant + consonant separation e.g. 'स्था' => ['स','्','थ','ा'])
+    for (const phoneme of DEVANAGARI_PHONEMES) {
+      if (text.substring(position, position + phoneme.length) === phoneme) {
+        phonemes.push(phoneme);
+        position += phoneme.length;
         matchFound = true;
+        break;
       }
     }
 
     if (!matchFound) {
-      // Try to match other predefined phonemes (longest first)
-      for (const phoneme of DEVANAGARI_PHONEMES) {
-        if (text.substring(position, position + phoneme.length) === phoneme) {
-          phonemes.push(phoneme);
-          position += phoneme.length;
-          matchFound = true;
-          break;
-        }
-      }
-    }
-    
-    // If no phoneme matched, take the single character
-    if (!matchFound) {
-      phonemes.push(text.charAt(position));
+      phonemes.push(text[position]);
       position++;
     }
   }

@@ -107,3 +107,82 @@ This sutra is fundamental to Sanskrit morphology as it:
 - Provides detailed analysis for linguistic research
 - Includes comprehensive error handling
 - Follows authentic Pāṇinian grammatical principles
+
+## Engine Configuration & Diagnostics (Refactored System)
+
+The Sutra 1.1.4 implementation has an extensible configuration and diagnostics API enabling experimentation beyond static rule lists.
+
+### Modes
+`hybrid` (default) – Uses rule scoring first; if below threshold it may fall back to a minimal explicit mapping for backward compatibility.
+`rules` – Pure rule engine. Ignores legacy overrides and explicit mapping fallbacks (except for weight/scoring evidence). Best for forward-looking evaluation.
+`legacy` – Preserves historical negative/positive overrides where still required by older tests.
+
+Set mode:
+```js
+import { setSutra114Mode } from './index.js';
+setSutra114Mode('rules');
+```
+
+### Configurable Parameters
+Use `setSutra114Config(partialConfig)` to adjust:
+```
+{
+  evidenceWeights: { monosyllabic, canonicalCVC, finalStopOrNasal, shortCentralVowel, affixDerivative, difficultCluster, heterorganicCluster },
+  lopaScoreThreshold: Number,
+  logistic: { slope, midpoint, floorNonLopa, floorLopa, cap, mappingMargin },
+  diagnosticsEnabled: Boolean,
+  advancedSyllableCounting: Boolean
+}
+```
+Example:
+```js
+setSutra114Config({
+  evidenceWeights: { monosyllabic: 0.2 },
+  lopaScoreThreshold: 0.62,
+  logistic: { slope: 5 }
+});
+```
+
+### Syllable Counting
+`advancedSyllableCounting` (default true) enables phoneme-based counting (with fallback to a diphthong-aware regex). Disable to revert to the basic counter:
+```js
+setSutra114Config({ advancedSyllableCounting: false });
+```
+
+### Diagnostics & Metrics
+Enable/disable with `diagnosticsEnabled` (on by default). Retrieve data:
+```js
+import { getSutra114Diagnostics, getSutra114Metrics } from './index.js';
+const diagnostics = getSutra114Diagnostics();           // array of recorded analyses
+const metrics = getSutra114Metrics();                   // aggregate counts
+getSutra114Diagnostics({ reset: true });                // fetch & clear
+getSutra114Metrics({ reset: true });                    // fetch & reset counters
+```
+
+### Config Summary Utility
+```js
+import { getSutra114ConfigSummary } from './index.js';
+console.log(getSutra114ConfigSummary());
+```
+Returns current weights, logistic sample mapping, threshold, mode flags, and whether legacy overrides are active.
+
+### Confidence Mapping
+Raw evidence score (sum of satisfied weights minus penalties) is mapped via a calibrated logistic (tanh) function. Floors (`floorNonLopa`, `floorLopa`) guarantee minimum confidence for clearly classified outcomes; `cap` sets an upper bound ensuring stability. Adjust `midpoint` to shift where probability accelerates; tweak `slope` for sharper or softer transitions.
+
+### Factors & Penalties
+Penalties (e.g., heterogeneous voiced→voiceless stop transitions) reduce the evidence score instead of hard failing. Legacy negative combos (`sad+kta`, etc.) are only considered outside `rules` mode. This facilitates incremental replacement with derived phonological penalties.
+
+### Mapping Fallback
+In `hybrid` / `legacy` modes, an explicit minimal set of historically expected lopa combinations can still trigger positive detection when the computed score is just below threshold; `mappingMargin` enforces a minimum gap before fallback engages. In `rules` mode this is fully disabled to surface scoring gaps.
+
+### Testing Additions
+- `rules-mode.test.js`: Ensures pure rule operation (no mapping / override leakage).
+- `advanced-syllables.test.js`: Verifies advanced syllable counter default enablement & toggle safety.
+
+### Planned Enhancements
+- Further reduction of legacy override reliance by refining penalty derivations.
+- Confidence granularity tests (monotonicity under weight adjustments).
+- Optional fuzz harness to stress phonological environments.
+
+---
+This refactored architecture supports controlled experimentation while maintaining backward-compatible behavior via modes. Use `rules` mode for pure research evaluation and `hybrid` for stable integration contexts.

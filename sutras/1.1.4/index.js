@@ -41,6 +41,12 @@ const SUTRA_114_CONFIG = {
   },
   diagnosticsEnabled: true,
   advancedSyllableCounting: true,
+  // Toggle normalization of approximants to semivowels in phonological features (for theoretical purity)
+  normalizeSemivowels: true,
+  /**
+   * Evidence weights for affix classification; empirically tuned to sum ~1.0.
+   * Adjust via setSutra114Config({ evidenceWeights: {...} }) as needed for calibration.
+   */
   useExplicitFallbackMappings: true, // allow disabling explicit mapping set
   useDeclarativePenaltyRules: true    // toggle new declarative penalty engine
 };
@@ -408,11 +414,11 @@ function analyzeAffixClassification(affix) {
   }
   const derivativePattern=/^(ya|tvā|tavya|ktavat|śa|ka|na|ta|tra|man|tha)$/;
   if (derivativePattern.test(affix)) { ardhaScore+=weights.derivativeForm; analysis.evidence.derivativeForm=true; }
-  const vowelInitial=/^[aāiīuūṛṝḷḹeēoō]/.test(affix);
-  if (vowelInitial) {
-    const mf=analysis.morphologicalAnalysis.morphologicalFunction;
-    if (mf.isPrimaryDerivative||mf.isSecondaryDerivative) { ardhaScore+=weights.vowelInitialDerivative; analysis.evidence.vowelInitialDerivative=true; }
-    else { sarvaScore+=weights.vowelInitialDerivative; analysis.evidence.vowelInitialNonDerivative=true; }
+  const vowelInitial = /^[aāiīuūṛṝḷḹeēoō]/.test(affix);
+  if (vowelInitial && (analysis.morphologicalAnalysis.morphologicalFunction.isPrimaryDerivative || analysis.morphologicalAnalysis.morphologicalFunction.isSecondaryDerivative)) {
+    // Only derivative vowel-initial affixes contribute to ārdhadhātuka evidence
+    ardhaScore += weights.vowelInitialDerivative;
+    analysis.evidence.vowelInitialDerivative = true;
   }
   const mf=analysis.morphologicalAnalysis.morphologicalFunction;
   if (mf.isVerbalEnding) { sarvaScore+=weights.verbalEnding; analysis.evidence.verbalEnding=true; }
