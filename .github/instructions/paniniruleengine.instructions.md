@@ -98,3 +98,5 @@ Clear Commit Messages: Write clear, concise, and descriptive commit messages. A 
 
 Final Goal
 The final goal of this project is to create an open-source, verifiable, and highly accurate computational model of Panini's Aṣṭādhyāyī in JavaScript. Your attention to detail in the conversion and testing of each Sutra is fundamental to achieving this vision.
+
+Note: please before writing a new functionality check if it generic and available in utility or not, if not then create one in utility and leverage it in every other sutra.

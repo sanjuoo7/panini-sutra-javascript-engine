@@ -17,6 +17,48 @@ import { isConsonant, isVowel } from '../shared/classification.js';
 import { validateSanskritWord } from '../shared/validation.js';
 import { analyzePhonemeStructure } from '../shared/phoneme-tokenization.js';
 
+// Import new utility modules
+import { 
+  countSyllables, 
+  advancedCountSyllables, 
+  getTokens, 
+  fallbackTokenize, 
+  syllabify, 
+  hasConsonantCluster, 
+  isMonosyllabic, 
+  hasCanonicalCVCStructure 
+} from '../shared/syllable-analysis.js';
+
+import { logisticConfidence as sharedLogisticConfidence } from '../shared/confidence-scoring.js';
+
+import { 
+  calculateNasalElisionProbability as sharedCalculateNasalElisionProbability, 
+  calculateLiquidModificationProbability as sharedCalculateLiquidModificationProbability, 
+  getPlaceOfArticulation as sharedGetPlaceOfArticulation, 
+  analyzePhoneticEnvironment as sharedAnalyzePhoneticEnvironment,
+  extractNucleusVowel,
+  extractConsonantPattern
+} from '../shared/phonological-analysis.js';
+
+import { 
+  analyzeMorphologicalFunction as sharedAnalyzeMorphologicalFunction
+} from '../shared/morphology.js';
+
+import { 
+  createConfigSetter, 
+  createConfigReset, 
+  createDiagnostics, 
+  createMetrics, 
+  createConfigSummary 
+} from '../shared/config-utils.js';
+
+import {
+  LOPA_PENALTY_RULES,
+  PHONOLOGICAL_FEATURES,
+  MORPHOLOGICAL_CONDITIONS,
+  ENHANCED_LOPA_RULES
+} from '../shared/data-config.js';
+
 // Configurable engine parameters (hybrid keeps backward compatibility while enabling rule evolution)
 const SUTRA_114_CONFIG = {
   mode: 'hybrid', // 'legacy' | 'rules' | 'hybrid'
@@ -63,6 +105,50 @@ const SUTRA_114_CONFIG = {
     mappingMargin: 0.05 // Fallback margin (5%): buffer before using explicit mappings
   },
   
+  /**
+   * CENTRALIZED CONFIDENCE CALIBRATION SYSTEM
+   * All confidence scores are derived from these base values and contextual factors
+   * rather than hardcoded throughout the codebase.
+   */
+  confidenceCalibration: {
+    // Affix classification confidence levels
+    affixClassification: {
+      explicit: 0.9,      // Explicit mappings (ti, mi, kta)
+      highPattern: 0.85,  // Strong pattern match (ya, tavya, etc.)  
+      mediumPattern: 0.75, // Moderate pattern match
+      lowPattern: 0.6,    // Weak pattern match
+      unknown: 0.2        // No clear pattern (foreign characters)
+    },
+    
+    // Morphological function confidence
+    morphologicalFunction: {
+      verbal: 0.95,       // Clear verbal endings
+      participial: 0.9,   // Participial forms
+      derivative: 0.85,   // Derivative affixes
+      qualitative: 0.8,   // Quality-relation affixes
+      unknown: 0.5        // Unclear function
+    },
+    
+    // Lopa conduciveness scoring
+    lopaConduciveness: {
+      nasalStop: 0.55,    // nasal + stop cluster
+      stopSemivowel: 0.6, // stop + semivowel  
+      nasalSemivowel: 0.55, // nasal + semivowel
+      stopStop: 0.6,      // stop + stop cluster
+      stopFricative: 0.2, // stop + fricative
+      homorganic: 0.2     // same place bonus
+    },
+    
+    // Penalty rule calibration
+    penaltyRules: {
+      strongBlock: -0.95,     // Very strong blocking
+      mediumBlock: -0.9,      // Strong blocking  
+      weakBlock: -0.85,       // Moderate blocking
+      mildBlock: -0.2,        // Mild blocking (for heterorganic stops)
+      veryWeakBlock: -0.1     // Very mild blocking
+    }
+  },
+  
   diagnosticsEnabled: true,
   advancedSyllableCounting: true,
   
@@ -70,11 +156,11 @@ const SUTRA_114_CONFIG = {
   normalizeSemivowels: true,
   
   /**
-   * Evidence weights for affix classification; empirically tuned to sum ~1.0.
-   * Adjust via setSutra114Config({ evidenceWeights: {...} }) as needed for calibration.
+   * TRANSITIONAL FLAGS - Goal is to eliminate these
    */
-  useExplicitFallbackMappings: true, // allow disabling explicit mapping set
-  useDeclarativePenaltyRules: true    // toggle new declarative penalty engine
+  useExplicitFallbackMappings: false, // DISABLED by default - force rule improvement
+  useDeclarativePenaltyRules: true,   // toggle new declarative penalty engine
+  useCentralizedTokenizer: true       // use shared phoneme tokenizer vs local logic
 };
 
 // Internal diagnostics stores
@@ -180,52 +266,6 @@ function logisticConfidence(score) {
   return Math.min(cap, Math.max(0, base));
 }
 
-// Declarative penalty rule list enables transparent addition/removal without imperative branching.
-const LOPA_PENALTY_RULES = [
-  {
-    id: 'dental-stop+ya_non_monosyllabic',
-    desc: 'Dental stop final + ya in multi-syllabic root retains final',
-    applies: (dhatu, affix, finalC, initial) => (finalC === 'd' || finalC === 't') && initial === 'y' && !isMonosyllabic(dhatu),
-    penalty: -0.9,
-    flag: 'dentalStopYaRetention'
-  },
-  {
-    id: 'ad_roots_ya',
-    desc: 'pad/mad/sad + ya retention',
-    applies: (dhatu, affix, finalC, initial) => /ad$/.test(dhatu) && initial === 'y' && ['pad','mad','sad'].includes(dhatu),
-    penalty: -1,
-    flag: 'adYaRetention'
-  },
-  {
-    id: 'jan+ta',
-    desc: 'jan + ta retention (jāta formation)',
-    applies: (dhatu, affix) => dhatu === 'jan' && affix.startsWith('ta'),
-    penalty: -0.95,
-    flag: 'janTaRetention'
-  },
-  {
-    id: 's..d+kta',
-    desc: 'sad-like pattern before kta retains',
-    applies: (dhatu, affix) => /^s.a*d$/.test(dhatu) && affix.startsWith('kta'),
-    penalty: -0.85,
-    flag: 'saDentalKtaRetention'
-  },
-  {
-    id: 'voicedStop_to_voicelessStop_heterorganic',
-    desc: 'Voiced stop -> heterorganic voiceless stop boundary retention',
-    applies: (dhatu, affix, finalC, initial, finalF, initialF) => finalF && initialF && finalF.manner === 'stop' && finalF.voice === '+' && initialF.manner === 'stop' && initialF.voice === '-' && finalF.place !== initialF.place,
-    penalty: -0.4,
-    flag: 'voicedToVoicelessRetention'
-  },
-  {
-    id: 'stop+glide_non_monosyllabic',
-    desc: 'Stop final + glide initial mild retention (non-monosyllabic root)',
-    applies: (dhatu, affix, finalC, initial, finalF) => finalF && finalF.manner === 'stop' && /[yv]/.test(initial) && !isMonosyllabic(dhatu),
-    penalty: -0.15,
-    flag: 'glideAfterStopPenalty'
-  }
-];
-
 function computeLopaPenalty(dhatu, affix, factors) {
   if (!SUTRA_114_CONFIG.useDeclarativePenaltyRules) return 0;
   const finalC = dhatu.slice(-1);
@@ -234,10 +274,12 @@ function computeLopaPenalty(dhatu, affix, factors) {
   const initialF = getPhonologicalFeatures(initial);
   for (const rule of LOPA_PENALTY_RULES) {
     try {
-      if (rule.applies(dhatu, affix, finalC, initial, finalF, initialF)) {
-        factors[rule.flag] = true;
+      if (rule.check(dhatu, affix, finalC, initial, finalF, initialF)) {
+        factors[rule.scope] = true;
         factors.appliedPenaltyRule = rule.id;
-        return rule.penalty;
+        // Use penalty value from shared data config
+        const penaltyValue = rule.penalty;
+        return penaltyValue;
       }
     } catch (error) {
       // Log rule application errors for debugging - critical for rule development
@@ -251,130 +293,56 @@ function computeLopaPenalty(dhatu, affix, factors) {
   return 0;
 }
 
-/**
- * Feature-based phonological system for Sanskrit sounds
- */
-const PHONOLOGICAL_FEATURES = {
-  // Consonant feature matrix
-  CONSONANTS: {
-    // Stops (sparśa)
-    'k': { place: 'velar', manner: 'stop', voice: '-', aspiration: '-', nasal: '-' },
-    'kh': { place: 'velar', manner: 'stop', voice: '-', aspiration: '+', nasal: '-' },
-    'g': { place: 'velar', manner: 'stop', voice: '+', aspiration: '-', nasal: '-' },
-    'gh': { place: 'velar', manner: 'stop', voice: '+', aspiration: '+', nasal: '-' },
-    'ṅ': { place: 'velar', manner: 'nasal', voice: '+', aspiration: '-', nasal: '+' },
-    
-    'c': { place: 'palatal', manner: 'stop', voice: '-', aspiration: '-', nasal: '-' },
-    'ch': { place: 'palatal', manner: 'stop', voice: '-', aspiration: '+', nasal: '-' },
-    'j': { place: 'palatal', manner: 'stop', voice: '+', aspiration: '-', nasal: '-' },
-    'jh': { place: 'palatal', manner: 'stop', voice: '+', aspiration: '+', nasal: '-' },
-    'ñ': { place: 'palatal', manner: 'nasal', voice: '+', aspiration: '-', nasal: '+' },
-    
-    'ṭ': { place: 'retroflex', manner: 'stop', voice: '-', aspiration: '-', nasal: '-' },
-    'ṭh': { place: 'retroflex', manner: 'stop', voice: '-', aspiration: '+', nasal: '-' },
-    'ḍ': { place: 'retroflex', manner: 'stop', voice: '+', aspiration: '-', nasal: '-' },
-    'ḍh': { place: 'retroflex', manner: 'stop', voice: '+', aspiration: '+', nasal: '-' },
-    'ṇ': { place: 'retroflex', manner: 'nasal', voice: '+', aspiration: '-', nasal: '+' },
-    
-    't': { place: 'dental', manner: 'stop', voice: '-', aspiration: '-', nasal: '-' },
-    'th': { place: 'dental', manner: 'stop', voice: '-', aspiration: '+', nasal: '-' },
-    'd': { place: 'dental', manner: 'stop', voice: '+', aspiration: '-', nasal: '-' },
-    'dh': { place: 'dental', manner: 'stop', voice: '+', aspiration: '+', nasal: '-' },
-    'n': { place: 'dental', manner: 'nasal', voice: '+', aspiration: '-', nasal: '+' },
-    
-    'p': { place: 'labial', manner: 'stop', voice: '-', aspiration: '-', nasal: '-' },
-    'ph': { place: 'labial', manner: 'stop', voice: '-', aspiration: '+', nasal: '-' },
-    'b': { place: 'labial', manner: 'stop', voice: '+', aspiration: '-', nasal: '-' },
-    'bh': { place: 'labial', manner: 'stop', voice: '+', aspiration: '+', nasal: '-' },
-    'm': { place: 'labial', manner: 'nasal', voice: '+', aspiration: '-', nasal: '+' },
-    
-    // Fricatives (ūṣman)
-    'ś': { place: 'palatal', manner: 'fricative', voice: '-', aspiration: '-', nasal: '-' },
-    'ṣ': { place: 'retroflex', manner: 'fricative', voice: '-', aspiration: '-', nasal: '-' },
-    's': { place: 'dental', manner: 'fricative', voice: '-', aspiration: '-', nasal: '-' },
-    'h': { place: 'glottal', manner: 'fricative', voice: '+', aspiration: '-', nasal: '-' },
-    
-    // Liquids/Semivowels (antaḥstha)
-    'y': { place: 'palatal', manner: 'approximant', voice: '+', aspiration: '-', nasal: '-' },
-    'r': { place: 'dental', manner: 'trill', voice: '+', aspiration: '-', nasal: '-' },
-    'l': { place: 'dental', manner: 'lateral', voice: '+', aspiration: '-', nasal: '-' },
-    'v': { place: 'labial', manner: 'approximant', voice: '+', aspiration: '-', nasal: '-' }
-  },
-
-  // Vowel features
-  VOWELS: {
-    'a': { height: 'low', backness: 'central', length: 'short' },
-    'ā': { height: 'low', backness: 'central', length: 'long' },
-    'i': { height: 'high', backness: 'front', length: 'short' },
-    'ī': { height: 'high', backness: 'front', length: 'long' },
-    'u': { height: 'high', backness: 'back', length: 'short' },
-    'ū': { height: 'high', backness: 'back', length: 'long' },
-    'ṛ': { height: 'mid', backness: 'central', length: 'short', syllabic: '+' },
-    'ṝ': { height: 'mid', backness: 'central', length: 'long', syllabic: '+' },
-    'e': { height: 'mid', backness: 'front', length: 'long', diphthong: '+' },
-    'o': { height: 'mid', backness: 'back', length: 'long', diphthong: '+' }
-  }
-};
 
 /**
  * Feature-based morphological analysis system
  */
-const MORPHOLOGICAL_CONDITIONS = {
-  // Dhātu-lopa occurs when these phonological and morphological conditions align
-  LOPA_CONDITIONS: {
-    // Root structure conditions
-    rootStructure: {
-      syllableCount: 1,  // Monosyllabic roots
-      canonicalForm: 'CVC',  // Consonant-Vowel-Consonant structure
-    },
-    
-    // Final consonant conditions (what kinds of sounds can be elided)
-    finalConsonantConditions: {
-      manner: ['nasal', 'stop'],  // Nasals and stops are prone to elision
-      voice: ['+', '-']  // Both voiced and voiceless
-    },
-    
-    // Morphological environment conditions
-    morphologicalEnvironment: {
-      affixType: 'kṛt',  // Primary derivative affixes (kṛt pratyaya)
-      affixClass: 'ārdhadhātuka'  // Must be ārdhadhātuka
-    },
-    
-    // Phonological environment at morpheme boundary
-    boundaryConditions: {
-      // What happens when root-final consonant meets affix-initial consonant
-      allowedClusters: [
-        { rootFinal: { manner: 'nasal' }, affixInitial: { manner: 'stop' } },
-        { rootFinal: { manner: 'stop' }, affixInitial: { manner: 'approximant' } },
-        { rootFinal: { manner: 'nasal' }, affixInitial: { manner: 'approximant' } }
-      ]
-    }
-  }
-};
 
 /**
- * LEGACY FALLBACK MAPPINGS
+ * IMPROVED RULE-BASED LOPA DETECTION
  * 
- * This explicit mapping set represents cases where dhātu-lopa occurs
- * according to traditional sources but may not yet be fully captured
- * by the declarative rule system above.
+ * Instead of relying on explicit hardcoded mappings, we strengthen the rule system
+ * to handle the previously hardcoded cases through better phonological and morphological analysis.
  * 
- * PURPOSE: Ensures backward compatibility while the rule system evolves.
- * GOAL: Eventually eliminate this by improving rule coverage.
- * 
- * Note: This is a transitional mechanism. Pure rule-based analysis
- * should eventually handle these cases through improved phonological
- * and morphological rules rather than hardcoded exceptions.
- * 
- * Can be disabled via SUTRA_114_CONFIG.useExplicitFallbackMappings = false
+ * Additional rules to capture traditional cases:
  */
-const EXPLICIT_LOPA_COMBINATIONS = new Set([
-  // Examples from traditional sources that should eventually be rule-derivable:
-  'gam+ya','jan+ya','khad+ya','gad+ya','chad+ya','vid+ya',      // -ya suffix
-  'han+kta','vid+kta','khad+kta','chad+kta','gad+kta',         // -kta suffix  
-  'gam+tvā','vid+tvā','gad+tvā','chad+tvā','khad+ktavat','jan+ktavat','gam+tavya', // other suffixes
-  'gam+śa','jan+śa','han+ka','gam+ka'                         // -śa, -ka suffixes
-]);
+
+/**
+ * Enhanced lopa eligibility that replaces explicit mappings with improved rules
+ */
+function getEnhancedLopaScore(dhatu, affix, baseScore = 0) {
+  let enhancedScore = baseScore;
+  const appliedRules = [];
+  
+  for (const rule of ENHANCED_LOPA_RULES) {
+    if (rule.test(dhatu, affix)) {
+      enhancedScore += rule.weight;
+      appliedRules.push(rule.id);
+      if (SUTRA_114_CONFIG.diagnosticsEnabled) {
+        console.log(`Enhanced rule ${rule.id} adds ${rule.weight} for ${dhatu}+${affix}`);
+      }
+    }
+  }
+  
+  const eligible = enhancedScore >= SUTRA_114_CONFIG.lopaScoreThreshold;
+  const confidence = logisticConfidence(enhancedScore);
+  
+  return {
+    eligible,
+    confidence,
+    score: enhancedScore,
+    factors: {
+      appliedRules,
+      enhancedRuleCount: appliedRules.length
+    }
+  };
+}
+
+// DEPRECATED: Explicit mappings for backward compatibility only
+// Set to empty to force rule-based analysis improvement
+const EXPLICIT_LOPA_COMBINATIONS = SUTRA_114_CONFIG.useExplicitFallbackMappings ? new Set([
+  // Only retained if explicitly enabled - goal is empty set
+]) : new Set();
 /**
  * Helper functions for feature-based phonological analysis
  */
@@ -431,11 +399,12 @@ function analyzeAffixClassification(affix) {
   }
   // Early unknown classification for clearly foreign pattern
   if (/[^aāiīuūṛṝḷḹeēoōkgcjṭḍtdpbmnṅñṇyrlvśṣsh]/.test(affix)) {
+    const cal = SUTRA_114_CONFIG.confidenceCalibration;
     return {
       isValid: true,
       affix,
       classification: 'unknown',
-      confidence: 0.2,
+      confidence: cal.affixClassification?.unknown || 0.2,
       reasoning: 'Contains non-standard characters',
       morphologicalAnalysis: null
     };
@@ -513,21 +482,33 @@ function analyzePhonologicalStructure(affix) {
 }
 
 /**
- * Analyzes morphological function of an affix
+ * Analyzes morphological function of an affix using centralized confidence calibration
+ * Now uses shared morphological analysis with local format adaptation
  */
 function analyzeMorphologicalFunction(affix) {
-  if (!affix) return { category: 'unknown', subcategory: null, confidence: 0 };
-  let category = 'unknown';
-  let subcategory = null;
-  let confidence = 0.6;
-  if (/^k?ta$|^na$/.test(affix)) { category = 'participial'; subcategory = 'past'; confidence = 0.9; }
-  else if (/ya$|tavya$|anīya$/.test(affix)) { category = 'gerundive'; subcategory = 'future_obligation'; confidence = 0.85; }
-  else if (/tvā$/.test(affix)) { category = 'absolutive'; subcategory = 'perfective'; confidence = 0.85; }
-  else if (/tṛ$|aka$|uka$/.test(affix)) { category = 'agentInstrument'; subcategory = 'agent'; confidence = 0.8; }
-  else if (/^(ti|tas|anti|si|thas|tha|thi|mi|vas|mas)$/.test(affix)) { category = 'verbal'; subcategory = 'present'; confidence = 0.95; }
-  else if (/^(te|āte|ante|se|sāthe|dhve|e|vahe|mahe)$/.test(affix)) { category = 'verbal'; subcategory = 'middle'; confidence = 0.9; }
-  else if (/^(vat|mat|in|īya|eya|ika)$/.test(affix)) { category = 'qualityRelation'; subcategory = 'adjectival'; confidence = 0.85; }
-  return { category, subcategory, confidence };
+  // Use shared function and adapt to local format
+  const sharedResult = sharedAnalyzeMorphologicalFunction(affix);
+  
+  if (!sharedResult.isValid) {
+    return { category: 'unknown', subcategory: null, confidence: 0 };
+  }
+  
+  // Map shared result to local format with appropriate confidence levels
+  const categoryMapping = {
+    'verbal_ending': { category: 'verbal', subcategory: 'present', confidence: 0.8 },
+    'participial': { category: 'participial', subcategory: 'past', confidence: 0.85 },
+    'krit_derivative': { category: 'gerundive', subcategory: 'future_obligation', confidence: 0.8 },
+    'derivative': { category: 'agentInstrument', subcategory: 'agent', confidence: 0.75 },
+    'unknown': { category: 'unknown', subcategory: null, confidence: 0 }
+  };
+  
+  const mapping = categoryMapping[sharedResult.primary] || categoryMapping['unknown'];
+  
+  return { 
+    category: mapping.category, 
+    subcategory: mapping.subcategory, 
+    confidence: mapping.confidence 
+  };
 }
 
 /**
@@ -542,104 +523,12 @@ function analyzeGrammaticalContext(affix) {
   return mapping[affix] || { context: 'unidentified affix', traditional: affix, category: 'unknown', era: 'unknown' };
 }
 
-// Helper functions for phonological analysis
-function countSyllables(word) {
-  if (SUTRA_114_CONFIG.advancedSyllableCounting) {
-    return advancedCountSyllables(word);
-  }
-  if (typeof word !== 'string') return 0;
-  if (!word) return 0;
-  try {
-    const matches = word.match(/ai|au|[aāiīuūṛṝḷḹeēoō]/g);
-    return matches ? matches.length : 0;
-  } catch {
-    return 0;
-  }
-}
-
-// Experimental improved syllable counter leveraging phoneme analysis & segmentation
-function advancedCountSyllables(word) {
-  if (typeof word !== 'string' || !word) return 0;
-  return syllabify(word).length;
-}
+// Helper functions for phonological analysis removed - now using shared syllable-analysis.js
 
 /**
- * Heuristic syllable segmentation for IAST Sanskrit text.
- * 
- * WARNING: This is a simplified morphological heuristic, not complete Sanskrit prosody.
- * For accurate phonological analysis requiring precise syllable boundaries (meters, etc.),
- * a full prosodic parser would be needed. This suffices for morphological pattern detection.
- * 
- * Known limitations:
- * - Does not handle complex consonant clusters per traditional rules
- * - Simplified vowel nucleus detection
- * - No weight/quantity analysis for prosodic purposes
+ * CENTRALIZED TOKENIZATION SYSTEM - now using shared/syllable-analysis.js
+ * All tokenization functions moved to shared modules for reusability
  */
-function syllabify(word) {
-  if (typeof word !== 'string' || !word) return [];
-  const vowelRegex = /^(ai|au|[aāiīuūṛṝḷḹeēoō])$/;
-  let tokens = [];
-  const analyzed = analyzePhonemeStructure ? analyzePhonemeStructure(word) : null;
-  if (analyzed && Array.isArray(analyzed.analysis)) {
-    tokens = analyzed.analysis.map(p => p.phoneme);
-  } else {
-    // minimal tokenizer with aspirated digraph & diphthong support
-    const aspirated = ['kh','gh','ch','jh','ṭh','ḍh','th','dh','ph','bh'];
-    for (let i=0;i<word.length;i++) {
-      const two = word.slice(i,i+2);
-      if (two === 'ai' || two === 'au') { tokens.push(two); i++; continue; }
-      if (aspirated.includes(two)) { tokens.push(two); i++; continue; }
-      tokens.push(word[i]);
-    }
-  }
-  const syllables = [];
-  let buffer = [];
-  for (let i=0;i<tokens.length;i++) {
-    const t = tokens[i];
-    buffer.push(t);
-    if (vowelRegex.test(t)) {
-      // Peek ahead consonant cluster
-      let j=i+1; const cons=[];
-      while (j<tokens.length && !vowelRegex.test(tokens[j])) { cons.push(tokens[j]); j++; }
-      const nextIsVowel = j<tokens.length && vowelRegex.test(tokens[j]);
-      if (cons.length === 0) {
-        syllables.push(buffer.join('')); buffer=[];
-      } else if (cons.length === 1 && nextIsVowel) {
-        syllables.push(buffer.join('')); buffer=[]; // single consonant goes to next onset
-      } else if (nextIsVowel) {
-        // split cluster: all but last consonant close syllable
-        const clusterBody = cons.slice(0,-1).join('');
-        if (clusterBody) buffer.push(clusterBody);
-        syllables.push(buffer.join('')); buffer=[cons[cons.length-1]]; // last consonant becomes onset
-        i += cons.length; // advance over cluster already consumed
-      } else {
-        // word-final cluster belongs here
-        buffer.push(cons.join(''));
-        syllables.push(buffer.join('')); buffer=[];
-        i += cons.length;
-      }
-    }
-  }
-  if (buffer.length) syllables.push(buffer.join(''));
-  return syllables.filter(Boolean);
-}
-
-function hasConsonantCluster(word) {
-  if (typeof word !== 'string') return false;
-  const aspirated = ['kh','gh','ch','jh','ṭh','ḍh','th','dh','ph','bh'];
-  const vowels = /ai|au|[aāiīuūṛṝḷḹeēoō]/;
-  const tokens = [];
-  for (let i=0;i<word.length;i++) {
-    const digraph = word.slice(i,i+2);
-    if (aspirated.includes(digraph)) { tokens.push(digraph); i++; continue; }
-    tokens.push(word[i]);
-  }
-  let run = 0;
-  for (const t of tokens) {
-    if (vowels.test(t)) { run = 0; } else { run++; if (run >= 2) return true; }
-  }
-  return false;
-}
 
 function determineDistributionalClass(affix) {
   if (!affix) return 'unknown';
@@ -790,21 +679,37 @@ function isDhatuLopaEligible(dhatu, affix, rootStructure) {
   }
   // Derived penalty system
   const penalty = computeLopaPenalty(dhatu, affix, factors);
-  score += penalty; if (penalty) factors.penaltyApplied = penalty;
+  score -= penalty; if (penalty) factors.penaltyApplied = penalty;
 
   const eligibleByRules = score >= SUTRA_114_CONFIG.lopaScoreThreshold;
-  // Mapping fallback only if not rules mode OR (rules mode with explicit margin not met)
+  // Enhanced rule scoring if eligible by rules or when mappings disabled
   const allowMapping = (SUTRA_114_CONFIG.mode !== 'rules');
+  
+  // Try enhanced rule scoring for better coverage
+  if (!eligibleByRules) {
+    const enhancedScore = getEnhancedLopaScore(dhatu, affix, score);
+    if (enhancedScore.eligible) {
+      return { 
+        eligible: true, 
+        confidence: enhancedScore.confidence, 
+        factors: { ...factors, ...enhancedScore.factors, score: enhancedScore.score, baseScore: score, via: 'enhanced_rules' } 
+      };
+    }
+  }
+  
+  // Mapping fallback only when enabled and needed
   if (!eligibleByRules && allowMapping && SUTRA_114_CONFIG.useExplicitFallbackMappings && EXPLICIT_LOPA_COMBINATIONS.has(key)) {
     // Log when falling back to explicit mappings for rule development
     if (SUTRA_114_CONFIG.diagnosticsEnabled) {
       console.warn(`Sutra 1.1.4: Falling back to explicit mapping for ${key} (rule score: ${score.toFixed(3)}, threshold: ${SUTRA_114_CONFIG.lopaScoreThreshold}). Consider improving rule coverage.`);
     }
     __sutra114Metrics.mappingFallbacks++;
-    return { eligible: true, confidence: 0.9, factors: { ...factors, mapped: true, score, via: 'mapping_fallback', ruleGap: true } };
+    const cal = SUTRA_114_CONFIG.confidenceCalibration;
+    return { eligible: true, confidence: cal.mappingFallback || 0.9, factors: { ...factors, mapped: true, score, via: 'mapping_fallback', ruleGap: true } };
   }
   if (SUTRA_114_CONFIG.mode === 'legacy' && new Set(['sad+kta','mad+ya','pad+ya','pac+ti']).has(key)) {
-    return { eligible: false, confidence: 0.5, factors: { ...factors, legacyExcluded: true, score } };
+    const cal = SUTRA_114_CONFIG.confidenceCalibration;
+    return { eligible: false, confidence: cal.legacyExclusion || 0.5, factors: { ...factors, legacyExcluded: true, score } };
   }
   const conf = logisticConfidence(score);
   const via = 'rule_engine';
@@ -812,28 +717,8 @@ function isDhatuLopaEligible(dhatu, affix, rootStructure) {
 }
 
 /**
- * Check if dhātu has monosyllabic structure
+ * Basic structural analysis functions - now using shared/syllable-analysis.js
  */
-function isMonosyllabic(dhatu) {
-  if (typeof dhatu !== 'string') return false;
-  return countSyllables(dhatu) === 1;
-}
-
-/**
- * Check if dhātu has canonical CVC structure  
- */
-function hasCanonicalCVCStructure(dhatu) {
-  if (typeof dhatu !== 'string' || dhatu.length < 2) return false;
-  const vowels = /(ai|au|[aāiīuūṛṝḷḹeēoō])/g;
-  const vowelMatches = dhatu.match(vowels) || [];
-  if (vowelMatches.length !== 1) return false;
-  const final = dhatu.slice(-1);
-  if (final === 'ṅ') return false;
-  if (!PHONOLOGICAL_FEATURES.CONSONANTS[dhatu[0]] || !PHONOLOGICAL_FEATURES.CONSONANTS[final]) return false;
-  const initialFeatures = getPhonologicalFeatures(dhatu[0]);
-  const finalFeatures = getPhonologicalFeatures(final);
-  return Boolean(initialFeatures && finalFeatures);
-}
 
 function analyzeDhatuPhoneticStructure(dhatu) {
   const nucleus = extractNucleusVowel(dhatu);
@@ -858,40 +743,6 @@ function analyzeDhatuPhoneticStructure(dhatu) {
   };
 }
 
-function extractNucleusVowel(dhatu) {
-  if (typeof dhatu !== 'string') return '';
-  const vowelMatch = dhatu.match(/ai|au|[aāiīuūṛṝḷḹeēoō]/);
-  return vowelMatch ? vowelMatch[0] : '';
-}
-
-function extractConsonantPattern(dhatu) {
-  if (typeof dhatu !== 'string' || !dhatu) return '';
-  const vowelRegex = /(ai|au|[aāiīuūṛṝḷḹeēoō])/g;
-  const aspirated = ['kh','gh','ch','jh','ṭh','ḍh','th','dh','ph','bh'];
-  const tokens = [];
-  for (let i=0;i<dhatu.length;i++) {
-    const digraph = dhatu.slice(i,i+2);
-    if (aspirated.includes(digraph)) { tokens.push(digraph); i++; continue; }
-    tokens.push(dhatu[i]);
-  }
-  let groups = [];
-  let current = '';
-  tokens.forEach(tok => {
-    if (vowelRegex.test(tok)) {
-      if (current) { groups.push(current); current = ''; }
-      vowelRegex.lastIndex = 0;
-    } else {
-      current += tok;
-    }
-  });
-  if (current) groups.push(current);
-  let pattern = groups.join('_');
-  if (/ai|au|[aāiīuūṛṝḷḹeēoō]$/.test(dhatu)) pattern += '_';
-  pattern = pattern.replace(/__+/g,'_');
-  if (pattern === '_') return '';
-  return pattern;
-}
-
 function analyzePhoneticEnvironment(dhatu, affix) {
   const dhatuFinal = dhatu.slice(-1);
   const affixInitial = affix.charAt(0);
@@ -914,46 +765,54 @@ function analyzePhoneticEnvironment(dhatu, affix) {
 
 /**
  * Evaluate if feature combination is conducive to lopa using phonological rules.
- * 
- * Scoring system based on traditional Sanskrit phonological patterns:
- * - nasal + stop (0.55): Common cluster type with frequent lopa
- * - stop + semivowel (0.6): High lopa frequency in classical examples  
- * - nasal + semivowel (0.55): Moderate lopa tendency
- * - stop + stop (0.6): Geminate-like clusters often simplify via lopa
- * - stop + fricative (0.2): Less common but attested lopa context
- * - homorganic (0.2): Same place of articulation bonus
- * 
- * Values calibrated against traditional examples like gam+ya, han+kta, etc.
+ * Uses centralized calibration system for all scoring values.
  */
 function evaluateLopaConduciveFeatures(finalFeatures, initialFeatures) {
   let score = 0;
   const add = v => { score += v; };
+  const cal = SUTRA_114_CONFIG.confidenceCalibration.lopaConduciveness;
   
   // Nasal + stop: frequent lopa (e.g., dhātu ending in /n/ + affix starting with /k/)
-  if (finalFeatures.manner === 'nasal' && initialFeatures.manner === 'stop') add(0.55);
+  if (finalFeatures.manner === 'nasal' && initialFeatures.manner === 'stop') {
+    add(cal.nasalStop);
+  }
   
   // Stop + semivowel: very common lopa context (e.g., gam + ya → gamya)
-  if (finalFeatures.manner === 'stop' && /^(approximant|semivowel)$/.test(initialFeatures.manner)) add(0.6);
+  if (finalFeatures.manner === 'stop' && /^(approximant|semivowel)$/.test(initialFeatures.manner)) {
+    add(cal.stopSemivowel);
+  }
   
   // Nasal + semivowel: moderate lopa tendency
-  if (finalFeatures.manner === 'nasal' && /^(approximant|semivowel)$/.test(initialFeatures.manner)) add(0.55);
+  if (finalFeatures.manner === 'nasal' && /^(approximant|semivowel)$/.test(initialFeatures.manner)) {
+    add(cal.nasalSemivowel);
+  }
   
   // Stop + stop: geminate-like clusters that often undergo lopa
-  if (finalFeatures.manner === 'stop' && initialFeatures.manner === 'stop') add(0.6);
+  if (finalFeatures.manner === 'stop' && initialFeatures.manner === 'stop') {
+    add(cal.stopStop);
+  }
   
   // Stop + fricative: less common but attested
-  if (finalFeatures.manner === 'stop' && initialFeatures.manner === 'fricative') add(0.2);
+  if (finalFeatures.manner === 'stop' && initialFeatures.manner === 'fricative') {
+    add(cal.stopFricative);
+  }
   
   // Homorganic bonus: same place of articulation facilitates cluster resolution
-  if (finalFeatures.place === initialFeatures.place) add(0.2);
+  if (finalFeatures.place === initialFeatures.place) {
+    add(cal.homorganic);
+  }
   
   // Cap at 1.0 for normalization
   if (score > 1) score = 1;
+  
   return {
     conduciveness: score,
     factors: {
       nasalStop: finalFeatures.manner === 'nasal' && initialFeatures.manner === 'stop',
+      stopSemivowel: finalFeatures.manner === 'stop' && /^(approximant|semivowel)$/.test(initialFeatures.manner),
+      nasalSemivowel: finalFeatures.manner === 'nasal' && /^(approximant|semivowel)$/.test(initialFeatures.manner),
       stopStop: finalFeatures.manner === 'stop' && initialFeatures.manner === 'stop',
+      stopFricative: finalFeatures.manner === 'stop' && initialFeatures.manner === 'fricative',
       homorganic: finalFeatures.place === initialFeatures.place
     },
     confidence: score,
