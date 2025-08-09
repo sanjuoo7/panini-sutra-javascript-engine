@@ -40,6 +40,11 @@ import {
   getGunaVrddhiScope as sharedGetGunaVrddhiScope 
 } from '../shared/vowel-analysis.js';
 import { validateSanskritWord } from '../shared/validation.js';
+import { 
+  getGunaForm, 
+  applyGuna, 
+  isValidGunaTransformation 
+} from '../shared/guna-utilities.js';
 
 // Re-export isIkVowel for backward compatibility
 export { isIkVowel } from '../shared/classification.js';
@@ -172,31 +177,6 @@ function getGunaVrddhiScopeDetailed(word) {
 }
 
 /**
- * Convenience wrapper that extracts the first vowel and applies guṇa if it's an ik vowel.
- * If input is a single vowel, applies transformation directly.
- *
- * @param {string} input The word or vowel to process.
- * @returns {string|null} The guṇa form of the first ik vowel, or transformed vowel, or null.
- */
-function getGunaForm(input) {
-  // If input is a single vowel, apply transformation directly
-  if (input && input.length <= 3 && isVowel(input)) {
-    return applyGunaTransformation(input);
-  }
-  
-  // Otherwise treat as word and get array result
-  const scopeArray = getGunaVrddhiScope(input);
-  
-  if (!scopeArray || scopeArray.length === 0) {
-    return null;
-  }
-  
-  // Find first ik vowel
-  const firstIkVowel = scopeArray.find(r => r.isIk);
-  return firstIkVowel ? firstIkVowel.gunaForm : null;
-}
-
-/**
  * Convenience wrapper that extracts the first vowel and applies vṛddhi if it's an ik vowel.
  * If input is a single vowel, applies transformation directly.
  *
@@ -222,24 +202,6 @@ function getVrddhiForm(input) {
 }
 
 /**
- * Legacy function name for applying guṇa (for backward compatibility).
- * Handles both single vowels and full words.
- *
- * @param {string} input The word or vowel to process.
- * @returns {string|null} The guṇa form, or the input if it's already guṇa, or null.
- */
-function applyGuna(input) {
-  // Handle special cases for non-ik vowels that tests expect
-  if (input === 'a' || input === 'अ') return input; // already guṇa
-  if (input === 'e' || input === 'ए') return input; // already guṇa  
-  if (input === 'o' || input === 'ओ') return input; // already guṇa
-  if (input === 'ā' || input === 'आ') return input; // vṛddhi, no change
-  if (input === 'ai' || input === 'ऐ') return input; // vṛddhi, no change
-  if (input === 'au' || input === 'औ') return input; // vṛddhi, no change
-  
-  return getGunaForm(input);
-}
-
 /**
  * Validates if a transformation is a proper vṛddhi transformation.
  *
@@ -255,19 +217,6 @@ function isValidVrddhiTransformation(original, transformed) {
 }
 
 /**
- * Validates if a transformation is a proper guṇa transformation.
- *
- * @param {string} original The original vowel (IAST or Devanagari).
- * @param {string} transformed The transformed vowel (IAST or Devanagari).
- * @returns {boolean} True if it's a valid guṇa transformation.
- */
-function isValidGunaTransformation(original, transformed) {
-  if (!original || !transformed) return false;
-  
-  const expectedGuna = getGunaForm(original);
-  return expectedGuna === transformed;
-}
-
 /**
  * Checks if a given operation (guṇa or vṛddhi) is applicable to a vowel.
  *
@@ -320,17 +269,21 @@ function applySutra113(word) {
 export const ikVowels = SanskritVowels.ik.iast;
 export const ikVowelsDevanagari = SanskritVowels.ik.devanagari;
 
-// Export functions
+// Export functions - re-export shared utilities to maintain backward compatibility
 export {
   applyGunaToIk,
   applyVrddhiToIk,
   getGunaVrddhiScope,
   getGunaVrddhiScopeDetailed,
-  getGunaForm,
   getVrddhiForm,
-  applyGuna,
   applySutra113,
   isValidVrddhiTransformation,
-  isValidGunaTransformation,
   isOperationApplicable
 };
+
+// Re-export shared guṇa utilities
+export { 
+  getGunaForm, 
+  applyGuna, 
+  isValidGunaTransformation 
+} from '../shared/guna-utilities.js';

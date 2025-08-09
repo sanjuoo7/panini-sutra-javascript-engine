@@ -1,5 +1,5 @@
 import { isGuna, analyzeVowel, applySutra112 } from './index.js';
-import { getGunaForm, applyGuna } from '../1.1.3/index.js';
+import { getGunaForm, applyGuna } from '../shared/guna-utilities.js';
 import TransliterationUtil from '../utils.js';
 import { iastTestCases, devanagariTestCases } from './test-cases.js';
 
