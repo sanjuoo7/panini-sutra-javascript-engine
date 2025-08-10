@@ -16,7 +16,7 @@ import {
   applySutra111
 } from './index.js';
 import { isValidVrddhiTransformation } from '../1.1.3/index.js';
-import TransliterationUtil from '../utils.js';
+import TransliterationUtil from '../shared/transliteration.js';
 import { iastTestCases, devanagariTestCases } from './test-cases.js';
 
 // Comprehensive Sanskrit examples for vṛddhi vowel testing

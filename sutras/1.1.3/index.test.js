@@ -7,7 +7,7 @@ import {
   applySutra113,
   isOperationApplicable
 } from './index.js';
-import TransliterationUtil from '../utils.js';
+import TransliterationUtil from '../shared/transliteration.js';
 import { iastTestCases, devanagariTestCases } from './test-cases.js';
 
 // Simple function to extract the first vowel-like sound from a word in IAST.

@@ -1,6 +1,6 @@
 import { isGuna, analyzeVowel, applySutra112 } from './index.js';
 import { getGunaForm, applyGuna } from '../shared/guna-utilities.js';
-import TransliterationUtil from '../utils.js';
+import TransliterationUtil from '../shared/transliteration.js';
 import { iastTestCases, devanagariTestCases } from './test-cases.js';
 
 // Simple function to extract the first vowel-like sound from a word in IAST.

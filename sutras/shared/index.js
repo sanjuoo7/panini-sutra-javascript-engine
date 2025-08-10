@@ -33,6 +33,12 @@ export * from './vowel-analysis.js';
 // Validation
 export * from './validation.js';
 
+// Similarity Analysis
+export * from './similarity-analysis.js';
+
+// Transliteration
+export * from './transliteration.js';
+
 // ==================== CONVENIENCE EXPORTS ====================
 
 // Re-export commonly used functions with descriptive names
@@ -75,6 +81,18 @@ import {
   sanitizeInput
 } from './validation.js';
 
+import {
+  analyzeSimilarity,
+  findClosestSubstitute,
+  calculatePhoneticSimilarity,
+  calculateArticulatorySimilarity,
+  calculateGrammaticalSimilarity,
+  calculatePositionalSimilarity,
+  getVowelLength,
+  getConsonantType,
+  getElementGrammaticalType
+} from './similarity-analysis.js';
+
 // Core utility functions commonly used across sutras
 export const CoreUtils = {
   // Script utilities
@@ -111,7 +129,18 @@ export const CoreUtils = {
   validateSanskritWord,
   validatePhonemeSequence,
   validateVowel,
-  sanitizeInput
+  sanitizeInput,
+  
+  // Similarity Analysis
+  analyzeSimilarity,
+  findClosestSubstitute,
+  calculatePhoneticSimilarity,
+  calculateArticulatorySimilarity,
+  calculateGrammaticalSimilarity,
+  calculatePositionalSimilarity,
+  getVowelLength,
+  getConsonantType,
+  getElementGrammaticalType
 };
 
 // ==================== LEGACY COMPATIBILITY ====================
