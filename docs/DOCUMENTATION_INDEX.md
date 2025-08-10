@@ -30,7 +30,7 @@
 ### **Template**
 - **[SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)** - Standardized template for sutra documentation
 
-### **Individual Sutras** (64 files)
+### **Individual Sutras** (69 files)
 Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.1: Fundamental Rules**
@@ -65,6 +65,13 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.1.63** - न लुमताऽङ्गस्य (Exception to 1.1.62 for `luk`, `ślu`, `lup`)
 - **1.1.64** - अचोऽन्त्यादि टि (Defines the technical term `ṭi`)
 - **1.1.65** - अलोऽन्त्यात् पूर्व उपधा (Defines the technical term `upadhā`)
+
+#### **Volume 1.1.66-1.1.70: Meta-Rules and Interpretation**
+- **1.1.66** - तस्मिन्निति निर्दिष्टे पूर्वस्य (Locative case defines preceding context)
+- **1.1.67** - तस्मादित्युत्तरस्य (Ablative case defines following context)
+- **1.1.68** - स्वं रूपं शब्दस्याशब्दसंज्ञा (A term denotes its own form)
+- **1.1.69** - अणुदित् सवर्णस्य चाप्रत्ययः (A phoneme can denote its homogeneous variations)
+- **1.1.70** - तपरस्तत्कालस्य (Length restriction for `tapara` vowels)
   
 *For complete list and details, see individual sutra README files*
 
