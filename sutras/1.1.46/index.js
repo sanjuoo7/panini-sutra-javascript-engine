@@ -12,6 +12,9 @@
  * indicating the boundary positions in phonetic sequences.
  */
 
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
+const { vowelProperties, consonantProperties } = SanskritWordLists;
+
 /**
  * Main function to apply Sutra 1.1.46
  * @param {string} word - The word or sequence to analyze
@@ -102,53 +105,10 @@ function analyzeFinalSound(word, context = {}) {
  */
 function analyzePhoneticProperties(char) {
     // Vowel patterns
-    const vowels = {
-        'a': { type: 'vowel', grade: 'short', quality: 'central' },
-        'ā': { type: 'vowel', grade: 'long', quality: 'central' },
-        'i': { type: 'vowel', grade: 'short', quality: 'front' },
-        'ī': { type: 'vowel', grade: 'long', quality: 'front' },
-        'u': { type: 'vowel', grade: 'short', quality: 'back' },
-        'ū': { type: 'vowel', grade: 'long', quality: 'back' },
-        'ṛ': { type: 'vowel', grade: 'short', quality: 'liquid' },
-        'ṝ': { type: 'vowel', grade: 'long', quality: 'liquid' },
-        'ḷ': { type: 'vowel', grade: 'short', quality: 'liquid' },
-        'e': { type: 'vowel', grade: 'long', quality: 'compound' },
-        'o': { type: 'vowel', grade: 'long', quality: 'compound' },
-        'ai': { type: 'vowel', grade: 'long', quality: 'diphthong' },
-        'au': { type: 'vowel', grade: 'long', quality: 'diphthong' }
-    };
+    const vowels = vowelProperties;
 
     // Consonant patterns
-    const consonantGroups = {
-        // Stops
-        'k': { type: 'consonant', class: 'stop', voice: 'voiceless', aspiration: 'unaspirated', place: 'velar' },
-        'g': { type: 'consonant', class: 'stop', voice: 'voiced', aspiration: 'unaspirated', place: 'velar' },
-        'c': { type: 'consonant', class: 'stop', voice: 'voiceless', aspiration: 'unaspirated', place: 'palatal' },
-        'j': { type: 'consonant', class: 'stop', voice: 'voiced', aspiration: 'unaspirated', place: 'palatal' },
-        't': { type: 'consonant', class: 'stop', voice: 'voiceless', aspiration: 'unaspirated', place: 'dental' },
-        'd': { type: 'consonant', class: 'stop', voice: 'voiced', aspiration: 'unaspirated', place: 'dental' },
-        'p': { type: 'consonant', class: 'stop', voice: 'voiceless', aspiration: 'unaspirated', place: 'labial' },
-        'b': { type: 'consonant', class: 'stop', voice: 'voiced', aspiration: 'unaspirated', place: 'labial' },
-        
-        // Nasals
-        'n': { type: 'consonant', class: 'nasal', voice: 'voiced', place: 'dental' },
-        'm': { type: 'consonant', class: 'nasal', voice: 'voiced', place: 'labial' },
-        'ṅ': { type: 'consonant', class: 'nasal', voice: 'voiced', place: 'velar' },
-        'ñ': { type: 'consonant', class: 'nasal', voice: 'voiced', place: 'palatal' },
-        'ṇ': { type: 'consonant', class: 'nasal', voice: 'voiced', place: 'retroflex' },
-        
-        // Liquids
-        'r': { type: 'consonant', class: 'liquid', voice: 'voiced', subtype: 'trill' },
-        'l': { type: 'consonant', class: 'liquid', voice: 'voiced', subtype: 'lateral' },
-        
-        // Sibilants
-        's': { type: 'consonant', class: 'sibilant', voice: 'voiceless', place: 'dental' },
-        'ś': { type: 'consonant', class: 'sibilant', voice: 'voiceless', place: 'palatal' },
-        'ṣ': { type: 'consonant', class: 'sibilant', voice: 'voiceless', place: 'retroflex' },
-        
-        // Fricative
-        'h': { type: 'consonant', class: 'fricative', voice: 'voiced', place: 'glottal' }
-    };
+    const consonantGroups = consonantProperties;
 
     if (vowels[char]) {
         return vowels[char];

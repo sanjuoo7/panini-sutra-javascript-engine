@@ -11,6 +11,9 @@
  * particularly in morphological operations where sounds are replaced.
  */
 
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
+const { substitutionPatterns, declensionSubstitutes, conjugationSubstitutes, derivationSubstitutes, sandhiSubstitutes, generalSubstitutes } = SanskritWordLists;
+
 /**
  * Main function to apply Sutra 1.1.47
  * @param {string} originalWord - The original word before substitution
@@ -104,33 +107,9 @@ function analyzeMidSubstitution(originalWord, substitute, context = {}) {
  */
 function determineMidType(substitute, context = {}) {
     // Common substitution patterns in Sanskrit
-    const substitutionPatterns = {
-        // Vowel substitutions
-        'a': 'vowel_substitution',
-        'ā': 'vowel_lengthening',
-        'i': 'i_substitution',
-        'ī': 'i_lengthening',
-        'u': 'u_substitution',
-        'ū': 'u_lengthening',
-        'e': 'guna_substitution',
-        'o': 'guna_substitution',
-        'ar': 'vriddhi_substitution',
-        'al': 'vriddhi_substitution',
-        
-        // Consonant substitutions
-        'n': 'nasal_substitution',
-        'm': 'anusvara_substitution',
-        't': 'dental_substitution',
-        's': 'sibilant_substitution',
-        'ḥ': 'visarga_substitution',
-        
-        // Special substitutions
-        'guṇa': 'vowel_gradation',
-        'vṛddhi': 'vowel_strengthening',
-        'samprasāraṇa': 'semivowel_substitution'
-    };
+    const substitutionPatternsMap = substitutionPatterns;
 
-    return substitutionPatterns[substitute] || 'general_substitution';
+    return substitutionPatternsMap[substitute] || 'general_substitution';
 }
 
 /**
@@ -212,15 +191,7 @@ export function identifyMidSubstitutions(word, morphProcess = 'general', context
  * @returns {Array} Possible substitutes
  */
 function getDeclensionSubstitutes(finalSound) {
-    const declensionMap = {
-        'a': ['as', 'āt', 'e', 'āni'],
-        'ā': ['ām', 'āyāḥ', 'āsu'],
-        'i': ['iḥ', 'in', 'au', 'īn'],
-        'u': ['uḥ', 'un', 'ū', 'ūn'],
-        'ṛ': ['ā', 'ur', 'ṝn']
-    };
-    
-    return declensionMap[finalSound] || [];
+    return declensionSubstitutes[finalSound] || [];
 }
 
 /**
@@ -229,18 +200,7 @@ function getDeclensionSubstitutes(finalSound) {
  * @returns {Array} Possible substitutes
  */
 function getConjugationSubstitutes(finalSound) {
-    const conjugationMap = {
-        'a': ['ati', 'anti', 'āmi'],
-        'i': ['eti', 'enti', 'emi'],
-        'u': ['oti', 'enti', 'omi'],
-        'ṛ': ['arti', 'anti', 'armi'],
-        'm': ['ati', 'anti', 'āmi'], // For roots ending in 'm' like 'gam'
-        'c': ['ati', 'anti', 'āmi'], // For roots ending in 'c' like 'pac'
-        't': ['ati', 'anti', 'āmi'], // For roots ending in 't'
-        'n': ['ati', 'anti', 'āmi']  // For roots ending in 'n'
-    };
-    
-    return conjugationMap[finalSound] || ['ati', 'anti', 'āmi']; // Default conjugation endings
+    return conjugationSubstitutes[finalSound] || ['ati', 'anti', 'āmi']; // Default conjugation endings
 }
 
 /**
@@ -249,7 +209,7 @@ function getConjugationSubstitutes(finalSound) {
  * @returns {Array} Possible substitutes
  */
 function getDerivationSubstitutes(finalSound) {
-    return ['aka', 'ya', 'ana', 'ta', 'ika', 'in', 'vat'];
+    return derivationSubstitutes;
 }
 
 /**
@@ -258,18 +218,7 @@ function getDerivationSubstitutes(finalSound) {
  * @returns {Array} Possible substitutes
  */
 function getSandhiSubstitutes(finalSound) {
-    const sandhiMap = {
-        'a': ['o', 'e', 'ā'],
-        'ā': ['e', 'o'],
-        'i': ['y', 'e'],
-        'ī': ['y', 'e'],
-        'u': ['v', 'o'],
-        'ū': ['v', 'o'],
-        't': ['d', 'n', 'c'],
-        'n': ['m', 'ṅ', 'ñ']
-    };
-    
-    return sandhiMap[finalSound] || [];
+    return sandhiSubstitutes[finalSound] || [];
 }
 
 /**
@@ -278,7 +227,7 @@ function getSandhiSubstitutes(finalSound) {
  * @returns {Array} Possible substitutes
  */
 function getGeneralSubstitutes(finalSound) {
-    return ['a', 'i', 'u', 'e', 'o', 't', 'n', 'm', 's'];
+    return generalSubstitutes;
 }
 
 /**

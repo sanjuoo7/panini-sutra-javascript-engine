@@ -7,14 +7,14 @@
  */
 
 // Import shared utilities
-import { SanskritVowels } from '../shared/constants.js';
-import { detectScript } from '../shared/script-detection.js';
-import { isGuna as sharedIsGuna, getVowelClassifications } from '../shared/classification.js';
-import { analyzeVowel as sharedAnalyzeVowel } from '../shared/vowel-analysis.js';
-import { validateVowel } from '../shared/validation.js';
+import { SanskritVowels } from '../sanskrit-utils/constants.js';
+import { detectScript } from '../sanskrit-utils/script-detection.js';
+import { isGuna as sharedIsGuna, getVowelClassifications } from '../sanskrit-utils/classification.js';
+import { analyzeVowel as sharedAnalyzeVowel } from '../sanskrit-utils/vowel-analysis.js';
+import { validateVowel } from '../sanskrit-utils/validation.js';
 
 // Re-export isGuna for backward compatibility
-export { isGuna } from '../shared/classification.js';
+export { isGuna } from '../sanskrit-utils/classification.js';
 
 /**
  * Gets all guṇa vowels in both IAST and Devanagari scripts.

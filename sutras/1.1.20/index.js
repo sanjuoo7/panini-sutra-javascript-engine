@@ -8,7 +8,7 @@
  * @fileoverview Implementation of Panini's Sutra 1.1.20
  */
 
-import { detectScript } from '../shared/index.js';
+import { detectScript } from '../sanskrit-utils/index.js';
 
 /**
  * Checks if a word/root is classified as घु according to Sutra 1.1.20

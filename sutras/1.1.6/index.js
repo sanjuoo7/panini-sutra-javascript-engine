@@ -13,7 +13,7 @@
  */
 
 // Import shared phoneme tokenization utilities
-import { tokenizeIastPhonemes, tokenizeDevanagariPhonemes } from '../shared/phoneme-tokenization.js';
+import { tokenizeIastPhonemes, tokenizeDevanagariPhonemes } from '../sanskrit-utils/phoneme-tokenization.js';
 
 /**
  * Determines precedence between two elements based on their order.

@@ -1,5 +1,5 @@
 import { isVrddhi, analyzeVowel, applySutra111 } from './index.js';
-import TransliterationUtil from '../shared/transliteration.js';
+import TransliterationUtil from '../sanskrit-utils/transliteration.js';
 import { iastTestCases, devanagariTestCases } from './test-cases.js';
 
 // Simple function to extract the first vowel-like sound from a word in IAST.

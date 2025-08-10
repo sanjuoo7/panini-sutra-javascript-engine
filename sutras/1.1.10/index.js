@@ -8,7 +8,7 @@
  * @fileoverview Implementation of Panini's Sutra 1.1.10
  */
 
-import { isVowel, isConsonant } from '../shared/index.js';
+import { isVowel, isConsonant } from '../sanskrit-utils/index.js';
 
 /**
  * Checks if two phonemes are homogeneous (savarṇa) according to Sutra 1.1.10.

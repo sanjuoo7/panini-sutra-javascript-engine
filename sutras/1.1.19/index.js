@@ -8,7 +8,7 @@
  * @fileoverview Implementation of Panini's Sutra 1.1.19
  */
 
-import { detectScript } from '../shared/script-detection.js';
+import { detectScript } from '../sanskrit-utils/script-detection.js';
 import { isPragrhya as basePragrhya } from '../1.1.18/index.js';
 
 /**

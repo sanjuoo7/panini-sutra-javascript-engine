@@ -7,7 +7,7 @@ import {
   tokenizeIastPhonemes, 
   tokenizeDevanagariPhonemes,
   tokenizePhonemes 
-} from './shared/phoneme-tokenization.js';
+} from ../sanskrit-utils/phoneme-tokenization.js';
 
 console.log('=== Shared Phoneme Tokenization Functions Verification ===\n');
 

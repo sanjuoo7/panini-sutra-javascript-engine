@@ -12,6 +12,9 @@
  * where substitution operations are described using the genitive case.
  */
 
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
+const { genitivePatterns, substitutionTypes } = SanskritWordLists;
+
 /**
  * Main function to apply Sutra 1.1.49
  * @param {string} genitiveExpression - Expression in genitive case
@@ -63,25 +66,13 @@ export function applySutra1_1_49(genitiveExpression, context = {}) {
  */
 function analyzeGenitiveExpression(expression, context = {}) {
     // Common genitive endings in Sanskrit (as array to ensure length-based matching)
-    const genitivePatterns = [
-        // Longer endings first to ensure proper matching
-        { ending: 'ानाम्', gender: 'masculine', number: 'plural', declension: 'a_stem' },
-        { ending: 'आनाम्', gender: 'feminine', number: 'plural', declension: 'a_stem' },
-        { ending: 'आयाः', gender: 'feminine', number: 'singular', declension: 'a_stem' },
-        { ending: 'आयोः', gender: 'feminine', number: 'dual', declension: 'a_stem' },
-        { ending: 'योः', gender: 'masculine', number: 'dual', declension: 'a_stem' },
-        { ending: 'यास्', gender: 'feminine', number: 'singular', declension: 'a_stem' },
-        { ending: 'ोः', gender: 'various', number: 'dual', declension: 'consonant_stem' },
-        { ending: 'स्य', gender: 'masculine', number: 'singular', declension: 'a_stem' },
-        { ending: 'आम्', gender: 'various', number: 'plural', declension: 'consonant_stem' },
-        { ending: 'ः', gender: 'various', number: 'singular', declension: 'consonant_stem' }
-    ];
+    const genitivePatternsData = genitivePatterns;
 
     // Find matching genitive pattern
     let matchedPattern = null;
     let stem = expression;
     
-    for (const pattern of genitivePatterns) {
+    for (const pattern of genitivePatternsData) {
         if (expression.endsWith(pattern.ending)) {
             matchedPattern = pattern;
             stem = expression.substring(0, expression.length - pattern.ending.length);
@@ -142,28 +133,7 @@ function interpretAsSubstitution(genitiveAnalysis, context = {}) {
  */
 function determineSubstitutionType(stem, context = {}) {
     // Common substitution contexts in Sanskrit grammar
-    const substitutionTypes = {
-        phoneme: {
-            process: 'phonemic_substitution',
-            context: 'sound_change',
-            description: 'One sound replaces another'
-        },
-        morpheme: {
-            process: 'morphemic_substitution', 
-            context: 'morphological_change',
-            description: 'One morpheme replaces another'
-        },
-        word: {
-            process: 'lexical_substitution',
-            context: 'word_replacement',
-            description: 'One word replaces another'
-        },
-        affix: {
-            process: 'affixal_substitution',
-            context: 'derivational_change', 
-            description: 'One affix replaces another'
-        }
-    };
+    const substitutionTypesData = substitutionTypes;
 
     // Determine type based on stem characteristics and context
     let substitutionType = 'general';
@@ -181,7 +151,7 @@ function determineSubstitutionType(stem, context = {}) {
         substitutionType = 'phoneme';
     }
 
-    return substitutionTypes[substitutionType] || {
+    return substitutionTypesData[substitutionType] || {
         process: 'general_substitution',
         context: 'grammatical_replacement',
         description: 'General substitution process'

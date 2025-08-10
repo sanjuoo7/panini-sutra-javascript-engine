@@ -1,4 +1,4 @@
-import { Phoneme } from '../shared/phoneme.js';
+import { Phoneme } from '../sanskrit-utils/phoneme.js';
 
 /**
  * Checks if a phoneme is an anunasika (nasal) according to Sutra 1.1.8.

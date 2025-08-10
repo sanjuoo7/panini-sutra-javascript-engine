@@ -13,9 +13,9 @@
  */
 
 // Import shared utilities for basic functions
-import { isConsonant, isVowel } from '../shared/classification.js';
-import { validateSanskritWord } from '../shared/validation.js';
-import { analyzePhonemeStructure } from '../shared/phoneme-tokenization.js';
+import { isConsonant, isVowel } from '../sanskrit-utils/classification.js';
+import { validateSanskritWord } from '../sanskrit-utils/validation.js';
+import { analyzePhonemeStructure } from '../sanskrit-utils/phoneme-tokenization.js';
 
 // Import new utility modules
 import { 
@@ -27,9 +27,9 @@ import {
   hasConsonantCluster, 
   isMonosyllabic, 
   hasCanonicalCVCStructure 
-} from '../shared/syllable-analysis.js';
+} from '../sanskrit-utils/syllable-analysis.js';
 
-import { logisticConfidence as sharedLogisticConfidence } from '../shared/confidence-scoring.js';
+import { logisticConfidence as sharedLogisticConfidence } from '../sanskrit-utils/confidence-scoring.js';
 
 import { 
   calculateNasalElisionProbability as sharedCalculateNasalElisionProbability, 
@@ -38,11 +38,11 @@ import {
   analyzePhoneticEnvironment as sharedAnalyzePhoneticEnvironment,
   extractNucleusVowel,
   extractConsonantPattern
-} from '../shared/phonological-analysis.js';
+} from '../sanskrit-utils/phonological-analysis.js';
 
 import { 
   analyzeMorphologicalFunction as sharedAnalyzeMorphologicalFunction
-} from '../shared/morphology.js';
+} from '../sanskrit-utils/morphology.js';
 
 import { 
   createConfigSetter, 
@@ -50,14 +50,14 @@ import {
   createDiagnostics, 
   createMetrics, 
   createConfigSummary 
-} from '../shared/config-utils.js';
+} from '../sanskrit-utils/config-utils.js';
 
 import {
   LOPA_PENALTY_RULES,
   PHONOLOGICAL_FEATURES,
   MORPHOLOGICAL_CONDITIONS,
   ENHANCED_LOPA_RULES
-} from '../shared/data-config.js';
+} from '../sanskrit-utils/data-config.js';
 
 // Configurable engine parameters (hybrid keeps backward compatibility while enabling rule evolution)
 const SUTRA_114_CONFIG = {

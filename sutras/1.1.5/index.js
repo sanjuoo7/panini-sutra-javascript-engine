@@ -20,10 +20,10 @@
  */
 
 // Import shared utilities
-import { detectScript, isDevanagari } from '../shared/script-detection.js';
-import { validateSanskritWord } from '../shared/validation.js';
-import { ItMarkedAffixes } from '../shared/constants.js';
-import { normalizeScript } from '../shared/transliteration.js';
+import { detectScript, isDevanagari } from '../sanskrit-utils/script-detection.js';
+import { validateSanskritWord } from '../sanskrit-utils/validation.js';
+import { ItMarkedAffixes } from '../sanskrit-utils/constants.js';
+import { normalizeScript } from '../sanskrit-utils/transliteration.js';
 
 // Use shared affix sets for optimal performance (convert arrays to Sets)
 const KIT_MARKED_AFFIXES = new Set(ItMarkedAffixes.KIT_MARKED);

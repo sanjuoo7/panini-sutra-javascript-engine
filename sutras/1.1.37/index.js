@@ -11,6 +11,8 @@
  * अव्यय words do not change their form regardless of case, number, or gender.
  */
 
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
+
 /**
  * Determines if a word is अव्यय according to sutra 1.1.37
  * @param {string} word - The word to analyze
@@ -61,25 +63,8 @@ function isNipata(word, context) {
         return true;
     }
 
-    // Known nipata words (particles)
-    const nipata_words = [
-        // Single vowel particles (as per 1.1.14)
-        'a', 'ā', 'i', 'ī', 'u', 'ū', 'e', 'o', 'ai', 'au',
-        
-        // Common particles
-        'ca', 'vā', 'hi', 'tu', 'nu', 'kila', 'nāma', 'vai', 'sma', 'ha',
-        'atha', 'atho', 'uta', 'atha vā', 'kiṃ ca', 'yathā ca',
-        'iti', 'cet', 'yadi', 'ced', 'no', 'mā', 'na',
-        
-        // Emphatic particles
-        'eva', 'tu', 'hi', 'vai', 'nūnam', 'khalu', 'kila',
-        
-        // Conjunctions
-        'atha', 'tathā', 'yathā', 'tadvat', 'evam',
-        
-        // Negation particles
-        'na', 'mā', 'no'
-    ];
+    // Known nipata words (particles) using shared constants
+    const nipata_words = SanskritWordLists.nipataWordsAvyaya;
 
     const word_lower = word.toLowerCase();
     return nipata_words.includes(word_lower);
@@ -97,32 +82,8 @@ function isSvaradi(word, context) {
         return true;
     }
 
-    // स्वरादि words (words beginning with स्वर् etc.)
-    const svaradi_words = [
-        'svar',      // स्वर् - heaven
-        'punar',     // पुनर् - again
-        'santar',    // सन्तर् - within
-        'antar',     // अन्तर् - between/within
-        'prātar',    // प्रातर् - morning
-        'ciraṃ',     // चिरम् - long time
-        'sāyam',     // सायम् - evening
-        'sadyaḥ',    // सद्यः - immediately
-        'śaśvat',    // शश्वत् - always
-        'sanāt',     // सनात् - from old times
-        'purā',      // पुरा - formerly
-        'yugapat',   // युगपत् - simultaneously
-        'ekadā',     // एकदा - once
-        'kadā',      // कदा - when
-        'tadā',      // तदा - then
-        'yadā',      // यदा - when
-        'sarvadā',   // सर्वदा - always
-        'kadācit',   // कदाचित् - sometimes
-        'muhur',     // मुहुर् - repeatedly
-        'drāk',      // द्राक् - quickly
-        'śīghram',   // शीघ्रम् - quickly
-        'sahasā',    // सहसा - suddenly
-        'akasmat'    // अकस्मात् - suddenly
-    ];
+    // स्वरादि words (words beginning with स्वर् etc.) using shared constants
+    const svaradi_words = SanskritWordLists.svaradiWords;
 
     const word_lower = word.toLowerCase();
     
@@ -131,8 +92,8 @@ function isSvaradi(word, context) {
         return true;
     }
 
-    // Check if word starts with known svaradi roots
-    const svaradi_prefixes = ['svar', 'punar', 'antar', 'santar', 'prātar'];
+    // Check if word starts with known svaradi roots using shared constants
+    const svaradi_prefixes = SanskritWordLists.svaradiPrefixes;
     return svaradi_prefixes.some(prefix => word_lower.startsWith(prefix));
 }
 

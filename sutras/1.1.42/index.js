@@ -11,6 +11,8 @@
  * सर्वनामस्थान includes various case endings like शि, सु, औ, जस्, अम्, औट्, शस्, ङे, भ्याम्, भिस्, etc.
  */
 
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
+
 /**
  * Determines if an affix is सर्वनामस्थान according to sutra 1.1.42 and related rules
  * @param {string} affix - The affix to analyze
@@ -57,27 +59,7 @@ function applySutra1_1_42(affix, context = {}) {
  * @returns {Array} List of sarvanāmasthāna affixes
  */
 function getSarvanāmasthānaAffixes() {
-    return [
-        // From 1.1.42
-        'śi', 'शि',
-        
-        // From 1.1.43: सुडनपुंसकस्य (su, am, auṭ for neuter)
-        'su', 'am', 'auṭ',
-        'सु', 'अम्', 'औट्',
-        
-        // Other common sarvanāmasthāna affixes
-        'au', 'औ',           // dual endings
-        'jas', 'जस्',        // plural nominative
-        'śas', 'शस्',        // plural accusative  
-        'ṅe', 'ङे',          // singular dative
-        'bhyām', 'भ्याम्',    // dual dative/ablative
-        'bhis', 'भिस्',      // plural instrumental
-        'ṅas', 'ङस्',        // singular ablative
-        'bhyas', 'भ्यस्',    // plural dative/ablative
-        'ṅi', 'ङि',          // singular locative
-        'os', 'ओस्',         // dual locative
-        'sup', 'सुप्'         // general term for nominal endings
-    ];
+    return SanskritWordLists.sarvanāmasthānaAffixes;
 }
 
 /**
@@ -86,38 +68,7 @@ function getSarvanāmasthānaAffixes() {
  * @returns {string} Affix type
  */
 function getAffixType(affix) {
-    const affix_categories = {
-        // Nominative
-        'su': 'nominative_singular',
-        'au': 'nominative_dual', 
-        'jas': 'nominative_plural',
-        
-        // Accusative
-        'am': 'accusative_singular',
-        'auṭ': 'accusative_dual',
-        'śas': 'accusative_plural',
-        
-        // Instrumental
-        'ṭā': 'instrumental_singular',
-        'bhyām': 'instrumental_dual',
-        'bhis': 'instrumental_plural',
-        
-        // Dative
-        'ṅe': 'dative_singular',
-        'bhyas': 'dative_plural',
-        
-        // Ablative  
-        'ṅas': 'ablative_singular',
-        
-        // Locative
-        'ṅi': 'locative_singular',
-        'os': 'locative_dual',
-        
-        // Special
-        'śi': 'locative_singular_special'
-    };
-
-    return affix_categories[affix] || 'unknown';
+    return SanskritWordLists.affixCategories[affix] || 'unknown';
 }
 
 /**

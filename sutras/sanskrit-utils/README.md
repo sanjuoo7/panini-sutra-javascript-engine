@@ -2,12 +2,12 @@
 
 ## Overview
 
-The shared utilities have been organized into focused modules to improve maintainability and reduce code duplication across all Panini sutras. This modular approach replaces the monolithic 533-line `shared-utils.js` file.
+The sanskrit-utils utilities have been organized into focused modules to improve maintainability and reduce code duplication across all Panini sutras. This modular approach replaces the monolithic 533-line `sanskrit-utils-utils.js` file.
 
 ## Module Structure
 
 ```
-sutras/shared/
+sutras/sanskrit-utils/
 ├── index.js              # Main export file with all utilities
 ├── constants.js          # Sanskrit language constants and data
 ├── script-detection.js   # Script detection and analysis utilities  
@@ -56,9 +56,9 @@ sutras/shared/
 
 ### Option 1: Direct Module Imports (Recommended)
 ```javascript
-import { detectScript } from './shared/script-detection.js';
-import { tokenizePhonemes } from './shared/phoneme-tokenization.js';
-import { isVrddhi, isGuna } from './shared/classification.js';
+import { detectScript } from './sanskrit-utils/script-detection.js';
+import { tokenizePhonemes } from './sanskrit-utils/phoneme-tokenization.js';
+import { isVrddhi, isGuna } from './sanskrit-utils/classification.js';
 ```
 
 ### Option 2: Index File Imports
@@ -68,12 +68,12 @@ import {
   tokenizePhonemes, 
   isVrddhi, 
   isGuna 
-} from './shared/index.js';
+} from './sanskrit-utils/index.js';
 ```
 
 ### Option 3: Core Utils Bundle
 ```javascript
-import { CoreUtils } from './shared/index.js';
+import { CoreUtils } from './sanskrit-utils/index.js';
 // Access as CoreUtils.detectScript(), CoreUtils.tokenizePhonemes(), etc.
 ```
 
@@ -82,7 +82,7 @@ import { CoreUtils } from './shared/index.js';
 ### Code Reduction
 - **1.1.1**: 113 → 89 lines (21% reduction) 
 - **Expected total**: 126+ lines saved across all sutras
-- **Maintainability**: Single source of truth for shared logic
+- **Maintainability**: Single source of truth for sanskrit-utils logic
 
 ### Enhanced Functionality
 - Robust phoneme tokenization fixes multi-character IAST handling
@@ -98,12 +98,12 @@ import { CoreUtils } from './shared/index.js';
 
 1. **Sutra 1.1.2**: Replace guṇa vowel constants and `analyzeVowel()` 
 2. **Sutra 1.1.3**: Integrate tokenization and ik vowel classification
-3. **Sutra 1.1.4**: Apply shared validation and analysis utilities
+3. **Sutra 1.1.4**: Apply sanskrit-utils validation and analysis utilities
 4. **Sutra 1.1.5**: Leverage enhanced phoneme handling
 
 ## Testing Strategy
 
-All shared utilities maintain backward compatibility with existing tests while providing enhanced functionality for new implementations.
+All sanskrit-utils utilities maintain backward compatibility with existing tests while providing enhanced functionality for new implementations.
 
 ---
 

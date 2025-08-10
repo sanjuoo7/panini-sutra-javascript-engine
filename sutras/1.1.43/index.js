@@ -6,6 +6,9 @@
  * the stem is considered as the referent for grammatical operations.
  */
 
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
+const { neuterSupEndings, neuterPatterns, neuterWords, neuterStemPatterns, stemExtractionRules, neuterIndicators } = SanskritWordLists;
+
 /**
  * Main function to apply Sutra 1.1.43
  * @param {string} word - The word to analyze
@@ -84,50 +87,10 @@ function analyzeSupEnding(word, context = {}) {
     }
 
     // Sup endings for neuter forms (simplified set)
-    const neuter_sup_endings = {
-        // Nominative/Accusative
-        'am': { case: 'nominative/accusative', number: 'singular', example: 'phalam' },
-        'ā': { case: 'nominative/accusative', number: 'dual', example: 'phale' },
-        'e': { case: 'nominative/accusative', number: 'dual', example: 'phale' },
-        'āni': { case: 'nominative/accusative', number: 'plural', example: 'phalāni' },
-        'i': { case: 'nominative/accusative', number: 'plural', example: 'nāmāni' },
-        
-        // Instrumental
-        'ena': { case: 'instrumental', number: 'singular', example: 'phalena' },
-        'ābhyām': { case: 'instrumental/dative', number: 'dual', example: 'phalābhyām' },
-        'aiḥ': { case: 'instrumental', number: 'plural', example: 'phalaiḥ' },
-        'ais': { case: 'instrumental', number: 'plural', example: 'phalais' },
-        
-        // Dative
-        'āya': { case: 'dative', number: 'singular', example: 'phalāya' },
-        'ebhyaḥ': { case: 'dative/ablative', number: 'plural', example: 'phalebhyaḥ' },
-        
-        // Ablative
-        'āt': { case: 'ablative', number: 'singular', example: 'phalāt' },
-        
-        // Genitive
-        'asya': { case: 'genitive', number: 'singular', example: 'phalasya' },
-        'ayoḥ': { case: 'genitive/locative', number: 'dual', example: 'phalayoḥ' },
-        'ānām': { case: 'genitive', number: 'plural', example: 'phalānām' },
-        
-        // Locative
-        'e': { case: 'locative', number: 'singular', alt_case: 'nominative/accusative dual', example: 'phale' },
-        'eṣu': { case: 'locative', number: 'plural', example: 'phaleṣu' }
-    };
+    const neuter_sup_endings = neuterSupEndings;
 
     // Special patterns for neuter words
-    const neuter_patterns = [
-        { pattern: /.*am$/, ending: 'am', case: 'nom/acc', number: 'sg' },
-        { pattern: /.*e$/, ending: 'e', case: 'nom/acc/loc', number: 'dual/sg' },
-        { pattern: /.*āni$/, ending: 'āni', case: 'nom/acc', number: 'pl' },
-        { pattern: /.*ōni$/, ending: 'ōni', case: 'nom/acc', number: 'pl' },
-        { pattern: /.*ūni$/, ending: 'ūni', case: 'nom/acc', number: 'pl' },
-        { pattern: /.*ena$/, ending: 'ena', case: 'instrumental', number: 'sg' },
-        { pattern: /.*asya$/, ending: 'asya', case: 'genitive', number: 'sg' },
-        { pattern: /.*āya$/, ending: 'āya', case: 'dative', number: 'sg' },
-        { pattern: /.*āt$/, ending: 'āt', case: 'ablative', number: 'sg' },
-        { pattern: /^nāma$/, ending: '', case: 'nom/acc', number: 'sg' } // Special for nāma
-    ];
+    const neuter_patterns = neuterPatterns;
 
     // Normalize word for analysis
     const normalized_word = word.toLowerCase();
@@ -204,70 +167,10 @@ function analyzeNeuterGender(word, context = {}) {
     }
 
     // Common neuter word patterns and stems
-    const neuter_words = {
-        // Common neuter nouns
-        'phala': { 
-            meaning: 'fruit', 
-            stem: 'phala',
-            examples: ['phalam', 'phale', 'phalāni']
-        },
-        'nāma': { 
-            meaning: 'name', 
-            stem: 'nāman',
-            examples: ['nāma', 'nāmāni', 'nāmnā']
-        },
-        'karma': { 
-            meaning: 'action', 
-            stem: 'karman',
-            examples: ['karma', 'karmāṇi', 'karmaṇā']
-        },
-        'jala': { 
-            meaning: 'water', 
-            stem: 'jala',
-            examples: ['jalam', 'jale', 'jalāni']
-        },
-        'vana': { 
-            meaning: 'forest', 
-            stem: 'vana',
-            examples: ['vanam', 'vane', 'vanāni']
-        },
-        'gṛha': { 
-            meaning: 'house', 
-            stem: 'gṛha',
-            examples: ['gṛham', 'gṛhe', 'gṛhāṇi']
-        },
-        'puṣpa': { 
-            meaning: 'flower', 
-            stem: 'puṣpa',
-            examples: ['puṣpam', 'puṣpe', 'puṣpāṇi']
-        },
-        'yuga': { 
-            meaning: 'age, yoke', 
-            stem: 'yuga',
-            examples: ['yugam', 'yuge', 'yugāni']
-        },
-        'śrī': { 
-            meaning: 'prosperity', 
-            stem: 'śrī',
-            examples: ['śrī', 'śriyau', 'śrīs'] // Note: can also be feminine
-        },
-        'citta': { 
-            meaning: 'mind', 
-            stem: 'citta',
-            examples: ['cittam', 'citte', 'cittāni']
-        }
-    };
+    const neuter_words = neuterWords;
 
     // Typical neuter endings and patterns
-    const neuter_stem_patterns = [
-        { pattern: /.*a$/, type: 'a_stem' },
-        { pattern: /.*i$/, type: 'i_stem' },
-        { pattern: /.*u$/, type: 'u_stem' },
-        { pattern: /.*man$/, type: 'man_stem' },
-        { pattern: /.*as$/, type: 'as_stem' },
-        { pattern: /.*is$/, type: 'is_stem' },
-        { pattern: /.*us$/, type: 'us_stem' }
-    ];
+    const neuter_stem_patterns = neuterStemPatterns;
 
     // Extract stem from inflected form
     const stem = extractStem(word);
@@ -329,18 +232,7 @@ function analyzeNeuterGender(word, context = {}) {
  */
 function extractStem(word) {
     // Simple stem extraction rules for neuter words
-    const stem_extraction_rules = [
-        { pattern: /(.*)am$/, replacement: '$1a' },
-        { pattern: /(.*)āni$/, replacement: '$1a' },
-        { pattern: /(.*)ena$/, replacement: '$1a' },
-        { pattern: /(.*)asya$/, replacement: '$1a' },
-        { pattern: /(.*)āya$/, replacement: '$1a' },
-        { pattern: /(.*)āt$/, replacement: '$1a' },
-        { pattern: /(.*)e$/, replacement: '$1a' }, // Could also be locative
-        { pattern: /(.*)ā$/, replacement: '$1a' }, // Dual forms
-        { pattern: /(.*)ūni$/, replacement: '$1u' },
-        { pattern: /(.*)ōni$/, replacement: '$1o' }
-    ];
+    const stem_extraction_rules = stemExtractionRules;
 
     for (const rule of stem_extraction_rules) {
         if (rule.pattern.test(word)) {
@@ -358,18 +250,7 @@ function extractStem(word) {
  */
 function isLikelyNeuterAStem(stem) {
     // Common patterns for neuter a-stems
-    const neuter_indicators = [
-        /.*phala$/, // fruit words
-        /.*vana$/, // forest words
-        /.*gṛha$/, // house words
-        /.*puṣpa$/, // flower words
-        /.*yuga$/, // time/yoke words
-        /.*kṣetra$/, // field words
-        /.*śāstra$/, // text words
-        /.*rūpa$/, // form words
-        /.*citta$/, // mind words
-        /.*hṛdaya$/ // heart words
-    ];
+    const neuter_indicators = neuterIndicators;
 
     return neuter_indicators.some(pattern => pattern.test(stem));
 }

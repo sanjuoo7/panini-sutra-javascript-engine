@@ -16,7 +16,7 @@
 import { 
     analyzeSimilarity, 
     findClosestSubstitute 
-} from '../shared/similarity-analysis.js';
+} from '../sanskrit-utils/similarity-analysis.js';
 
 /**
  * Main function to apply Sutra 1.1.50

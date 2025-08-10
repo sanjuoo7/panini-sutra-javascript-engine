@@ -8,7 +8,7 @@
  * @fileoverview Implementation of Panini's Sutra 1.1.22
  */
 
-import { detectScript } from '../shared/script-detection.js';
+import { detectScript } from '../sanskrit-utils/script-detection.js';
 
 /**
  * List of affixes that are classified as घ

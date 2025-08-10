@@ -6,7 +6,14 @@
  * 
  * This sutra states that when the nominal words सर्व etc. are in द्वन्द्व compounds 
  * and followed by the nominative plural ending जस्, they optionally retain their सर्वनाम status.
+ * 
+ * REFACTORED: Now uses shared constants to eliminate hardcoded word lists
  */
+
+// Import shared utilities
+import { detectScript } from '../sanskrit-utils/script-detection.js';
+import { validateSanskritWord } from '../sanskrit-utils/validation.js';
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
 
 /**
  * Determines if a dvandva compound with sarvaadi words optionally has sarvanama status before jas
@@ -23,6 +30,12 @@ function applySutra1_1_32(word, context = {}) {
         description: 'Optional sarvanama status for dvandva compounds before jas'
     };
 
+    // Validate input using shared utility
+    if (!validateSanskritWord(word).isValid) {
+        result.reason = 'Invalid Sanskrit word';
+        return result;
+    }
+
     // Check if context indicates dvandva compound
     if (!context.compound || !context.compound.type || context.compound.type !== 'dvandva') {
         result.reason = 'Not a dvandva compound';
@@ -35,11 +48,8 @@ function applySutra1_1_32(word, context = {}) {
         return result;
     }
 
-    // Check if compound contains sarvaadi words
-    const sarvaadi_words = [
-        'sarva', 'viśva', 'ubha', 'ubhaya', 'anya', 'anyatara', 'itara', 'tvat', 'tva',
-        'nema', 'sama', 'sima', 'pūrva', 'para', 'avara', 'dakṣiṇa', 'uttara', 'apara', 'adhara'
-    ];
+    // Use shared constants instead of hardcoded array
+    const sarvaadi_words = SanskritWordLists.sarvaadi.iast;
 
     const compound_parts = context.compound.parts || [];
     const has_sarvaadi = compound_parts.some(part => 

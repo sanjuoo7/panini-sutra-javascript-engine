@@ -2,11 +2,11 @@
 
 ## ✅ Task Completed Successfully
 
-**Request**: Create dedicated unit tests for `tokenizeIastPhonemes` and `tokenizeDevanagariPhonemes` in `sutras/shared/phoneme-tokenization.test.js` to ensure their accuracy and robustness independently.
+**Request**: Create dedicated unit tests for `tokenizeIastPhonemes` and `tokenizeDevanagariPhonemes` in `sutras/sanskrit-utils/phoneme-tokenization.test.js` to ensure their accuracy and robustness independently.
 
 ## 📋 Implementation Details
 
-### **Test File Created**: `sutras/shared/phoneme-tokenization.test.js`
+### **Test File Created**: `sutras/sanskrit-utils/phoneme-tokenization.test.js`
 
 **Comprehensive Test Coverage**: 47 test cases across 8 major categories
 
@@ -98,11 +98,11 @@
 
 ```
 sutras/
-├── shared/
+├── sanskrit-utils/
 │   ├── phoneme-tokenization.js        # Implementation
 │   └── phoneme-tokenization.test.js   # ✅ NEW: Comprehensive unit tests
 └── 1.1.6/
-    ├── index.js                       # Uses shared functions
+    ├── index.js                       # Uses sanskrit-utils functions
     └── index.test.js                  # Integration tests (85 passing)
 ```
 

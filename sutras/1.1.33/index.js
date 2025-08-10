@@ -8,7 +8,18 @@
  * 
  * This sutra extends the optional sarvanama status to additional specific words
  * when they appear before the nominative plural ending जस्.
+ * 
+ * REFACTORED: Now uses shared case operations and word lists to eliminate redundancy
  */
+
+// Import shared utilities to eliminate redundant code
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
+import { 
+  validatePrathmaadi, 
+  isFollowedByJas,
+  getWordBase as sharedGetWordBase,
+  hasTayaAffix as sharedHasTayaAffix 
+} from '../sanskrit-utils/case-operations.js';
 
 /**
  * Determines if specific words (prathama, carama, etc.) have optional sarvanama status before jas
@@ -25,114 +36,78 @@ function applySutra1_1_33(word, context = {}) {
         description: 'Optional sarvanama status for specific words before jas'
     };
 
-    // Check if followed by jas (nominative plural)
-    if (!context.case || context.case.vibhakti !== 'prathama' || context.case.vacana !== 'bahuvacana') {
+        // Check if followed by jas (nominative plural) using shared utility
+    if (!isFollowedByJas(word, context)) {
         result.reason = 'Not followed by nominative plural (jas)';
         return result;
     }
 
-    // Define the specific words mentioned in the sutra
-    const specified_words = [
-        'pratham',    // प्रथम - first (base without final 'a')
-        'prathama',   // प्रथम - first (with final 'a')
-        'caram',      // चरम - last (base without final 'a')
-        'carama',     // चरम - last (with final 'a')
-        'alp',        // अल्प - few (base)
-        'alpa',       // अल्प - few (with final 'a')
-        'ardh',       // अर्ध - half (base)
-        'ardha',      // अर्ध - half (with final 'a')
-        'katipay',    // कतिपय - some (base)
-        'katipaya',   // कतिपय - some (with final 'a')
-        'nem',        // नेम - half (base)
-        'nema'        // नेम - half (with final 'a')
-    ];
-
-    // Check for words with तय affix (taya)
-    const has_taya_affix = hasTayaAffix(word, context);
+    // Use shared utility to validate word qualification
+    const validation = validatePrathmaadi(word, context);
     
-    // Check if word is one of the specified words
-    const word_base = getWordBase(word);
-    const is_specified_word = specified_words.some(specWord => 
-        word_base === specWord || word_base.startsWith(specWord)
-    );
-
-    if (!is_specified_word && !has_taya_affix) {
-        result.reason = 'Word is not among the specified words (prathama, carama, etc.) or does not have taya affix';
-        return result;
+    if (validation.qualifies) {
+        result.applies = true;
+        result.sarvanama_status = 'optional';
+        result.reason = validation.has_taya_affix ? 
+            'Word with taya affix before jas - optional sarvanama status' :
+            `Specified word (${validation.word_base}) before jas - optional sarvanama status`;
+        result.word_base = validation.word_base;
+        result.is_prathmaadi = validation.is_prathmaadi;
+        result.has_taya_affix = validation.has_taya_affix;
+    } else {
+        result.reason = `Word '${validation.word_base}' is not among the specified words and lacks तय affix`;
     }
-
-    result.applies = true;
-    result.sarvanama_status = 'optional'; // The sutra indicates optionality
-    result.reason = has_taya_affix ? 
-        'Word with taya affix before jas - optional sarvanama status' :
-        `Specified word (${word_base}) before jas - optional sarvanama status`;
 
     return result;
 }
 
 /**
- * Checks if a word has the तय (taya) affix
+ * Checks if a word has तय (taya) affix - now using shared utility
  * @param {string} word - The word to check
  * @param {Object} context - Context with affix information
- * @returns {boolean} True if word has taya affix
+ * @returns {boolean} True if has taya affix
  */
 function hasTayaAffix(word, context) {
-    // Check context for affix information
-    if (context.affixes && context.affixes.includes('taya')) {
-        return true;
-    }
-    
-    // Check word ending pattern for taya
-    const taya_patterns = ['taya', 'tīya', 'tya'];
-    return taya_patterns.some(pattern => word.includes(pattern));
+    // Wrapper for backward compatibility - delegates to shared utility
+    return sharedHasTayaAffix(word, context);
 }
 
 /**
- * Extracts the base form of a word for comparison
+ * Extracts the base form of a word for comparison - now using shared utility
  * @param {string} word - The inflected word
  * @returns {string} Base form
  */
 function getWordBase(word) {
-    // Remove common case endings to get base
-    const case_endings = ['āḥ', 'ān', 'aiḥ', 'aḥ', 'e', 'au', 'am', 'ena', 'ābhyām', 'bhis'];
-    
-    let base = word.toLowerCase();
-    for (const ending of case_endings) {
-        if (base.endsWith(ending)) {
-            base = base.slice(0, -ending.length);
-            break;
-        }
-    }
-    
-    return base;
+    // Wrapper for backward compatibility - delegates to shared utility
+    return sharedGetWordBase(word);
 }
 
 /**
- * Checks if the case is nominative plural (jas)
+ * Checks if the case is nominative plural (jas) - now using shared utility
  * @param {Object} caseInfo - Case information
  * @returns {boolean} True if nominative plural
  */
 function isNominativePlural(caseInfo) {
-    if (!caseInfo) return false;
-    return caseInfo.vibhakti === 'prathama' && caseInfo.vacana === 'bahuvacana';
+    // Wrapper for backward compatibility - delegates to shared utility
+    return isFollowedByJas('', { case: caseInfo });
 }
 
 /**
- * Validates if a word qualifies under this sutra
+ * Validates if a word qualifies under this sutra - now using shared utility
  * @param {string} word - Word to validate
  * @param {Object} context - Context information
  * @returns {Object} Validation result
  */
 function validateWord1_1_33(word, context) {
-    const specified_words = ['pratham', 'prathama', 'caram', 'carama', 'alp', 'alpa', 'ardh', 'ardha', 'katipay', 'katipaya', 'nem', 'nema'];
-    const word_base = getWordBase(word);
-    const has_taya = hasTayaAffix(word, context);
+    // Get enhanced validation from shared utility
+    const validation = validatePrathmaadi(word, context);
     
+    // Transform to match expected API format
     return {
-        is_specified_word: specified_words.includes(word_base),
-        has_taya_affix: has_taya,
-        word_base,
-        qualifies: specified_words.includes(word_base) || has_taya
+        is_specified_word: validation.is_prathmaadi,
+        has_taya_affix: validation.has_taya_affix,
+        word_base: validation.word_base,
+        qualifies: validation.qualifies
     };
 }
 

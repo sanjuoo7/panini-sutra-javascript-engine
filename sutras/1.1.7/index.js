@@ -15,8 +15,8 @@
  */
 
 // Import shared utilities
-import { SanskritConsonants } from '../shared/constants.js';
-import { isConsonant } from '../shared/classification.js';
+import { SanskritConsonants } from '../sanskrit-utils/constants.js';
+import { isConsonant } from '../sanskrit-utils/classification.js';
 
 // Use shared consonant arrays for specific needs
 const consonants = SanskritConsonants.all.iast;
@@ -54,7 +54,10 @@ function endsWithConsonant(word) {
   }
   
   // Special consonant endings that are always consonant-final
-  const specialConsonantEndings = ['ः', 'ं', 'ḥ', 'ṃ']; // visarga, anusvara
+  const specialConsonantEndings = [
+    ...SanskritConsonants.specialEndings.devanagari,
+    ...SanskritConsonants.specialEndings.iast
+  ]; // visarga, anusvara
   if (specialConsonantEndings.includes(lastChar)) {
     return true;
   }

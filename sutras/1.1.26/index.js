@@ -15,7 +15,7 @@
  * crucial in Sanskrit grammar for expressing completed actions.
  */
 
-import { detectScript } from '../shared/script-detection.js';
+import { detectScript } from '../sanskrit-utils/script-detection.js';
 
 // निष्ठा affixes - क्त and क्तवतु
 const NISHTHA_AFFIXES = {

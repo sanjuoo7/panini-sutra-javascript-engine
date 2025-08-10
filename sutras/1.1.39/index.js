@@ -9,6 +9,8 @@
  * letters (म्, ए, ओ, ऐ, औ) as अव्यय (indeclinables).
  */
 
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
+
 /**
  * Determines if a word with krit affixes is avyaya according to sutra 1.1.39
  * @param {string} word - The word to analyze
@@ -93,45 +95,8 @@ function analyzeKrit(word, context = {}) {
         };
     }
 
-    // Common कृत् affixes and their patterns
-    const krit_patterns = [
-        // Infinitive patterns (ending in -um)
-        { pattern: /.*tum$/, type: 'tum', ending: 'उम्', meaning: 'infinitive' },
-        { pattern: /.*itum$/, type: 'itum', ending: 'उम्', meaning: 'infinitive' },
-        
-        // Participial patterns (ending in -ḥ, -aḥ, etc.)
-        { pattern: /.*aḥ$/, type: 'aḥ', ending: 'अः', meaning: 'participle' },
-        { pattern: /.*taḥ$/, type: 'taḥ', ending: 'अः', meaning: 'participle' },
-        { pattern: /.*itaḥ$/, type: 'itaḥ', ending: 'अः', meaning: 'participle' },
-        
-        // Participles ending in qualifying letters
-        { pattern: /.*am$/, type: 'am', ending: 'म्', meaning: 'absolutive' },
-        { pattern: /.*tvā$/, type: 'tvā', ending: 'आ', meaning: 'absolutive' },
-        
-        // Words ending in ए (e)
-        { pattern: /.*ne$/, type: 'ne', ending: 'ए', meaning: 'infinitive-like' },
-        { pattern: /.*se$/, type: 'se', ending: 'ए', meaning: 'infinitive-like' },
-        { pattern: /.*te$/, type: 'te', ending: 'ए', meaning: 'locative infinitive' },
-        
-        // Words ending in ओ (o)
-        { pattern: /.*to$/, type: 'to', ending: 'ओ', meaning: 'adverbial' },
-        { pattern: /.*no$/, type: 'no', ending: 'ओ', meaning: 'adverbial' },
-        
-        // Words ending in ऐ (ai) - less common
-        { pattern: /.*ai$/, type: 'ai', ending: 'ऐ', meaning: 'adverbial' },
-        
-        // Words ending in औ (au) - less common
-        { pattern: /.*au$/, type: 'au', ending: 'औ', meaning: 'adverbial' },
-        
-        // Gerundive and participial forms that may end in qualifying letters
-        { pattern: /.*ya$/, type: 'ya', ending: 'अ', meaning: 'gerundive' }, // This doesn't qualify
-        { pattern: /.*tavya$/, type: 'tavya', ending: 'अ', meaning: 'gerundive' }, // This doesn't qualify
-        
-        // Specific indeclinable formations
-        { pattern: /.*tam$/, type: 'tam', ending: 'म्', meaning: 'superlative adverb' },
-        { pattern: /.*vam$/, type: 'vam', ending: 'म्', meaning: 'adverbial' },
-        { pattern: /.*vām$/, type: 'vām', ending: 'म्', meaning: 'adverbial' }
-    ];
+    // Common कृत् affixes and their patterns using shared constants
+    const krit_patterns = SanskritWordLists.kritPatterns;
 
     for (const pattern_info of krit_patterns) {
         if (pattern_info.pattern.test(word.toLowerCase())) {
@@ -178,13 +143,7 @@ function analyzeKritEnding(krit_analysis, word, context = {}) {
         };
     }
 
-    const qualifying_endings = {
-        'm': 'म्',     // म्
-        'e': 'ए',     // ए  
-        'o': 'ओ',     // ओ
-        'ai': 'ऐ',    // ऐ
-        'au': 'औ'     // औ
-    };
+    const qualifying_endings = SanskritWordLists.kritQualifyingEndings;
 
     // If krit analysis already identified the ending
     if (krit_analysis && krit_analysis.ending && Object.values(qualifying_endings).includes(krit_analysis.ending)) {
@@ -225,18 +184,7 @@ function analyzeKritEnding(krit_analysis, word, context = {}) {
  * @returns {boolean} True if typically has qualifying endings
  */
 function hasQualifyingEndings(affix_type) {
-    const qualifying_affixes = [
-        'am',       // absolutive ending in म्
-        'tam',      // superlative adverb ending in म्
-        'vam',      // adverbial ending in म्
-        'ne',       // infinitive-like ending in ए
-        'se',       // infinitive-like ending in ए
-        'te',       // locative infinitive ending in ए
-        'to',       // adverbial ending in ओ
-        'no',       // adverbial ending in ओ
-        'ai',       // adverbial ending in ऐ
-        'au'        // adverbial ending in औ
-    ];
+    const qualifying_affixes = SanskritWordLists.kritQualifyingAffixes;
     
     return qualifying_affixes.includes(affix_type);
 }

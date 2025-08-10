@@ -1,5 +1,5 @@
 
-import { Phoneme } from '../shared/phoneme.js';
+import { Phoneme } from '../sanskrit-utils/phoneme.js';
 
 /**
  * Checks if two phonemes are savarna (homogeneous) according to Sutra 1.1.9.

@@ -12,9 +12,9 @@
  */
 
 // Import shared utilities for enhanced functionality
-import { detectScript } from '../shared/script-detection.js';
-import { validateSanskritWord } from '../shared/validation.js';
-import { SanskritVowels } from '../shared/constants.js';
+import { detectScript } from '../sanskrit-utils/script-detection.js';
+import { validateSanskritWord } from '../sanskrit-utils/validation.js';
+import { SanskritVowels } from '../sanskrit-utils/constants.js';
 
 // Use centralized vṛddhi vowel definitions from shared constants
 const vrddhiVowels = SanskritVowels.vrddhi.iast;

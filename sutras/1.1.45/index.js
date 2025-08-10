@@ -8,6 +8,9 @@
  * This is a crucial rule for understanding Sanskrit vowel gradation (guna/vriddhi).
  */
 
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
+const { verbalSuffixes, ikVowels, gunaMap, vriddhiMap, knownDhatus } = SanskritWordLists;
+
 /**
  * Main function to apply Sutra 1.1.45
  * @param {string} word - The word/root to analyze
@@ -81,12 +84,7 @@ function analyzeRootStructure(word, context = {}) {
     let root = word.toLowerCase();
     
     // Remove common verbal suffixes to get to root
-    const verbal_suffixes = [
-        'tvā', // Handle this first for special transformation
-        'ati', 'anti', 'asi', 'ama', 'atha', 'a', // present tense
-        'tum', 'ya', 'ta', // infinitive/gerund markers
-        'āna', 'ant', 'at' // participle markers
-    ];
+    const verbal_suffixes = verbalSuffixes;
 
     for (const suffix of verbal_suffixes) {
         if (root.endsWith(suffix) && root.length > suffix.length) {
@@ -216,16 +214,7 @@ function analyzeIkSound(sound, context = {}) {
     }
 
     // Ik vowels are i, u, ṛ, ḷ (and their long counterparts)
-    const ik_vowels = {
-        'i': { type: 'short_i', grade: 'basic' },
-        'ī': { type: 'long_i', grade: 'basic' },
-        'u': { type: 'short_u', grade: 'basic' },
-        'ū': { type: 'long_u', grade: 'basic' },
-        'ṛ': { type: 'short_r', grade: 'basic' },
-        'ṝ': { type: 'long_r', grade: 'basic' },
-        'ḷ': { type: 'short_l', grade: 'basic' },
-        'ḹ': { type: 'long_l', grade: 'basic' }
-    };
+    const ik_vowels = ikVowels;
 
     const normalized_sound = sound.toLowerCase();
     
@@ -253,18 +242,7 @@ function analyzeIkSound(sound, context = {}) {
  * @returns {string} Guna form
  */
 function getGunaForm(ikVowel) {
-    const guna_map = {
-        'i': 'e',
-        'ī': 'e',
-        'u': 'o',
-        'ū': 'o',
-        'ṛ': 'ar',
-        'ṝ': 'ar',
-        'ḷ': 'al',
-        'ḹ': 'al'
-    };
-    
-    return guna_map[ikVowel] || ikVowel;
+    return gunaMap[ikVowel] || ikVowel;
 }
 
 /**
@@ -273,18 +251,7 @@ function getGunaForm(ikVowel) {
  * @returns {string} Vriddhi form
  */
 function getVriddhiForm(ikVowel) {
-    const vriddhi_map = {
-        'i': 'ai',
-        'ī': 'ai',
-        'u': 'au',
-        'ū': 'au',
-        'ṛ': 'ār',
-        'ṝ': 'ār',
-        'ḷ': 'āl',
-        'ḹ': 'āl'
-    };
-    
-    return vriddhi_map[ikVowel] || ikVowel;
+    return vriddhiMap[ikVowel] || ikVowel;
 }
 
 /**
@@ -295,13 +262,7 @@ function getVriddhiForm(ikVowel) {
  */
 function isLikelyDhatu(word, context = {}) {
     // Known verbal roots with ik upadha
-    const known_dhatus = [
-        'kṛ', 'bhṛ', 'smṛ', 'sṛ', 'tṛ', 'dṛ', 'pṛ', // ṛ-ending roots
-        'ji', 'ci', 'śi', 'hi', 'mi', 'di', 'vi', 'ni', // i-ending roots  
-        'yu', 'ru', 'śru', 'stu', 'nu', 'hu', 'ku', 'tu', // u-ending roots
-        'gam', 'han', 'jan', 'man', 'tan', 'van', // roots that can have ik upadha in derived forms
-        'gṛha', 'vṛdh', 'mṛd' // roots with ṛ in them
-    ];
+    const known_dhatus = knownDhatus;
 
     const normalized = word.toLowerCase();
     

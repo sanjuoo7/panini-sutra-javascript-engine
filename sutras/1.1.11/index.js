@@ -9,7 +9,7 @@
  * @fileoverview Implementation of Panini's Sutra 1.1.11
  */
 
-import { detectScript, isVowel } from '../shared/index.js';
+import { detectScript, isVowel } from '../sanskrit-utils/index.js';
 
 /**
  * Checks if a word ending qualifies as प्रगृह्य according to Sutra 1.1.11

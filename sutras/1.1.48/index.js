@@ -11,6 +11,9 @@
  * in various grammatical operations where shortening is required.
  */
 
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
+const { ecVowels, ecToIkMapping, articulatoryPositions } = SanskritWordLists;
+
 /**
  * Main function to apply Sutra 1.1.48
  * @param {string} originalVowel - The original ec vowel (e, o, ai, au)
@@ -68,18 +71,9 @@ export function applySutra1_1_48(originalVowel, context = {}) {
  */
 function analyzeEcVowel(vowel) {
     // ec group: e, o, ai, au (as per traditional classification)
-    const ecVowels = {
-        'e': { type: 'simple_guna', base: 'a+i', description: 'guna of a and i' },
-        'o': { type: 'simple_guna', base: 'a+u', description: 'guna of a and u' },
-        'ai': { type: 'vriddhi', base: 'a+a+i', description: 'vriddhi of i' },
-        'au': { type: 'vriddhi', base: 'a+a+u', description: 'vriddhi of u' },
-        'ै': { type: 'vriddhi', base: 'a+a+i', description: 'vriddhi of i (Devanagari)' },
-        'ौ': { type: 'vriddhi', base: 'a+a+u', description: 'vriddhi of u (Devanagari)' },
-        'े': { type: 'simple_guna', base: 'a+i', description: 'guna of a and i (Devanagari)' },
-        'ो': { type: 'simple_guna', base: 'a+u', description: 'guna of a and u (Devanagari)' }
-    };
+    const ecVowelsMap = ecVowels;
 
-    const vowelInfo = ecVowels[vowel];
+    const vowelInfo = ecVowelsMap[vowel];
     
     return {
         is_ec_vowel: vowelInfo !== undefined,
@@ -98,58 +92,9 @@ function analyzeEcVowel(vowel) {
  */
 function getIkSubstitute(ecVowel, context = {}) {
     // Mapping from ec vowels to their ik substitutes for short substitution
-    const ecToIkMapping = {
-        'e': { 
-            substitute: 'i', 
-            type: 'simple_shortening',
-            reasoning: 'e (guna) → i (original simple vowel)',
-            process: 'guna_to_simple'
-        },
-        'o': { 
-            substitute: 'u', 
-            type: 'simple_shortening',
-            reasoning: 'o (guna) → u (original simple vowel)',
-            process: 'guna_to_simple'
-        },
-        'ai': { 
-            substitute: 'i', 
-            type: 'vriddhi_shortening',
-            reasoning: 'ai (vriddhi) → i (simple vowel)',
-            process: 'vriddhi_to_simple'
-        },
-        'au': { 
-            substitute: 'u', 
-            type: 'vriddhi_shortening',
-            reasoning: 'au (vriddhi) → u (simple vowel)',
-            process: 'vriddhi_to_simple'
-        },
-        'ै': { 
-            substitute: 'ि', 
-            type: 'vriddhi_shortening',
-            reasoning: 'ै (vriddhi) → ि (simple vowel)',
-            process: 'vriddhi_to_simple'
-        },
-        'ौ': { 
-            substitute: 'ु', 
-            type: 'vriddhi_shortening',
-            reasoning: 'ौ (vriddhi) → ु (simple vowel)',
-            process: 'vriddhi_to_simple'
-        },
-        'े': { 
-            substitute: 'ि', 
-            type: 'simple_shortening',
-            reasoning: 'े (guna) → ि (simple vowel)',
-            process: 'guna_to_simple'
-        },
-        'ो': { 
-            substitute: 'ु', 
-            type: 'simple_shortening',
-            reasoning: 'ो (guna) → ु (simple vowel)',
-            process: 'guna_to_simple'
-        }
-    };
+    const ecToIkMappingData = ecToIkMapping;
 
-    const mapping = ecToIkMapping[ecVowel];
+    const mapping = ecToIkMappingData[ecVowel];
     
     if (!mapping) {
         return {
@@ -183,13 +128,7 @@ function analyzeVowelQualityChange(original, substitute) {
     };
 
     // Determine articulatory position change
-    const articulatoryMap = {
-        'e': 'front_mid', 'i': 'front_high', 'ि': 'front_high',
-        'o': 'back_mid', 'u': 'back_high', 'ु': 'back_high',
-        'ai': 'front_diphthong', 'ै': 'front_diphthong',
-        'au': 'back_diphthong', 'ौ': 'back_diphthong',
-        'े': 'front_mid', 'ो': 'back_mid'
-    };
+    const articulatoryMap = articulatoryPositions;
 
     const originalPosition = articulatoryMap[original];
     const substitutePosition = articulatoryMap[substitute];

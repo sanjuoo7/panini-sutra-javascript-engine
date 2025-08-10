@@ -15,7 +15,7 @@
  * these terminal sounds.
  */
 
-import { detectScript } from '../shared/script-detection.js';
+import { detectScript } from '../sanskrit-utils/script-detection.js';
 import { isSankhya } from '../1.1.23/index.js';
 
 // षट् numerals - संख्या words ending in ष् or न्

@@ -6,7 +6,12 @@
  * 
  * This sutra clarifies that nipātas (indeclinable particles) can be treated as prātipadikas
  * (nominal stems) in certain grammatical contexts, even though they don't undergo declension.
+ * 
+ * REFACTORED: Now uses shared constants and patterns to eliminate redundancy
  */
+
+// Import shared utilities to eliminate redundant code
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
 
 /**
  * Determines if a nipāta can be treated as prātipadika according to sutra 1.1.34
@@ -79,64 +84,9 @@ function analyzeNipata(word, context = {}) {
         };
     }
 
-    // Common nipātas (indeclinable particles) in Sanskrit
-    const nipata_words = {
-        // Coordinating particles
-        'ca': { type: 'coordinating', meaning: 'and' },
-        'va': { type: 'coordinating', meaning: 'or' },
-        'vā': { type: 'coordinating', meaning: 'or' },
-        'api': { type: 'coordinating', meaning: 'even, also' },
-        'tu': { type: 'coordinating', meaning: 'but, however' },
-        'kim': { type: 'interrogative', meaning: 'what, why' },
-        'kiṃ': { type: 'interrogative', meaning: 'what, why' },
-        
-        // Emphatic particles
-        'eva': { type: 'emphatic', meaning: 'indeed, exactly' },
-        'hi': { type: 'emphatic', meaning: 'indeed, for' },
-        'khalu': { type: 'emphatic', meaning: 'indeed, certainly' },
-        'nūnam': { type: 'emphatic', meaning: 'certainly, surely' },
-        
-        // Negative particles
-        'na': { type: 'negative', meaning: 'not' },
-        'mā': { type: 'negative', meaning: 'not, don\'t' },
-        'no': { type: 'negative', meaning: 'not' },
-        
-        // Temporal particles
-        'tadā': { type: 'temporal', meaning: 'then' },
-        'yadā': { type: 'temporal', meaning: 'when' },
-        'kadā': { type: 'temporal', meaning: 'when' },
-        'sarvadā': { type: 'temporal', meaning: 'always' },
-        
-        // Locative particles
-        'yatra': { type: 'locative', meaning: 'where' },
-        'tatra': { type: 'locative', meaning: 'there' },
-        'sarvatra': { type: 'locative', meaning: 'everywhere' },
-        
-        // Manner particles
-        'tathā': { type: 'manner', meaning: 'thus, so' },
-        'yathā': { type: 'manner', meaning: 'as, just as' },
-        'kathāñcit': { type: 'manner', meaning: 'somehow' },
-        
-        // Quantity particles
-        'bahiḥ': { type: 'quantity', meaning: 'outside' },
-        'antaḥ': { type: 'quantity', meaning: 'inside' },
-        'puraḥ': { type: 'quantity', meaning: 'in front' },
-        'paścāt': { type: 'quantity', meaning: 'behind' },
-        
-        // Directional particles (specific words from tests)
-        'ūrdhvatas': { type: 'directional', meaning: 'from above' },
-        'adhostāt': { type: 'directional', meaning: 'from below' },
-        'adhastāt': { type: 'directional', meaning: 'from below' },
-        'paritas': { type: 'directional', meaning: 'around' },
-        
-        // Additional locative and manner particles from tests
-        'anyatra': { type: 'locative', meaning: 'elsewhere' },
-        'itarathā': { type: 'manner', meaning: 'otherwise' },
-        'anyathā': { type: 'manner', meaning: 'otherwise' }
-    };
-
-    // Check if word is a known nipāta
+    // Check if word is a known nipāta using shared constants
     const normalized_word = word.toLowerCase();
+    const nipata_words = SanskritWordLists.nipataWords;
     if (nipata_words[normalized_word]) {
         return {
             is_nipata: true,
@@ -146,17 +96,11 @@ function analyzeNipata(word, context = {}) {
         };
     }
 
-    // Pattern-based analysis for certain nipāta formations
-    const nipata_patterns = [
-        { pattern: /.*tas$/, type: 'directional', meaning: 'from/towards direction' },
-        { pattern: /.*tra$/, type: 'locative', meaning: 'in that place' },
-        { pattern: /.*thā$/, type: 'manner', meaning: 'in that manner' },
-        { pattern: /.*dā$/, type: 'temporal', meaning: 'at that time' },
-        { pattern: /.*vat$/, type: 'comparative', meaning: 'like, as' }
-    ];
+    // Pattern-based analysis for certain nipāta formations using shared constants
+    const nipata_patterns = SanskritWordLists.nipataSemanticPatterns;
 
-    // List of common words that might match patterns but are not nipātas
-    const non_nipata_exclusions = ['deva', 'grāma', 'putra', 'karma', 'rāma', 'kṛṣṇa'];
+    // List of common words that might match patterns but are not nipātas using shared constants
+    const non_nipata_exclusions = SanskritWordLists.nonNipataExclusions.iast;
     
     // Don't apply pattern matching to excluded words
     if (non_nipata_exclusions.includes(normalized_word)) {

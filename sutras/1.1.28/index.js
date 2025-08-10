@@ -3,7 +3,7 @@
  * Classification: saṃjñā (technical definition)
  */
 
-import { detectScript } from '../shared/script-detection.js';
+import { detectScript } from '../sanskrit-utils/script-detection.js';
 import { isSarvanama } from '../1.1.27/index.js';
 
 // Direction-related terms for दिक्समास

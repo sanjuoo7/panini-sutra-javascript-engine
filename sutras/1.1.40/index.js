@@ -10,6 +10,8 @@
  * - कसुन् (kasun): Specific verbal derivative affix
  */
 
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
+
 /**
  * Determines if a word ending in ktvā, tosun, or kasun is avyaya according to sutra 1.1.40
  * @param {string} word - The word to analyze
@@ -66,7 +68,7 @@ function analyzeQualifyingAffixes(word, context = {}) {
 
     // Check context for explicit affix information
     if (context && context.affixes) {
-        const qualifying_context_affixes = ['ktvā', 'tosun', 'kasun', 'क्त्व', 'तोसुन्', 'कसुन्'];
+        const qualifying_context_affixes = SanskritWordLists.qualifyingContextAffixes;
         const found_affix = context.affixes.find(affix => 
             qualifying_context_affixes.includes(affix)
         );
@@ -80,38 +82,8 @@ function analyzeQualifyingAffixes(word, context = {}) {
         }
     }
 
-    // Pattern matching for the specific affixes
-    const affix_patterns = [
-        // क्त्व (ktvā) - absolutive/gerund
-        {
-            patterns: [
-                /.*ktvā$/, /.*tvā$/, /.*ṭvā$/, /.*ttvā$/, /.*sṭvā$/, 
-                /.*ya$/, /.*iya$/, /.*tya$/, /.*sya$/
-            ], 
-            type: 'ktvā',
-            devanagari: 'क्त्व',
-            meaning: 'absolutive/gerund',
-            examples: ['gatvā', 'kṛtvā', 'bhuktvā', 'dṛṣṭvā']
-        },
-        
-        // तोसुन् (tosun) - specific verbal derivative
-        {
-            patterns: [/.*tosun$/, /.*toṣ$/, /.*tos$/],
-            type: 'tosun',
-            devanagari: 'तोसुन्',
-            meaning: 'verbal derivative',
-            examples: ['less common in classical Sanskrit']
-        },
-        
-        // कसुन् (kasun) - specific verbal derivative  
-        {
-            patterns: [/.*kasun$/, /.*kas$/, /.*kasu$/],
-            type: 'kasun',
-            devanagari: 'कसुन्',
-            meaning: 'verbal derivative',
-            examples: ['specialized formations']
-        }
-    ];
+    // Pattern matching for the specific affixes using shared constants
+    const affix_patterns = SanskritWordLists.sutra140AffixPatterns;
 
     const word_lower = word.toLowerCase();
     
@@ -148,17 +120,8 @@ function isKtvaForm(word, context = {}) {
         return false;
     }
 
-    // Common ktvā patterns
-    const ktva_patterns = [
-        /.*tvā$/,     // most common: gatvā, kṛtvā, etc.
-        /.*ṭvā$/,     // with retroflex: dṛṣṭvā, etc.
-        /.*ttvā$/,    // with double consonant
-        /.*sṭvā$/,    // consonant clusters
-        /.*ya$/,      // alternate form: gacchya, etc.
-        /.*iya$/,     // with connecting vowel
-        /.*itvā$/,    // with connecting vowel
-        /.*etvā$/     // with connecting vowel
-    ];
+    // Common ktvā patterns using shared constants
+    const ktva_patterns = SanskritWordLists.ktvaPatterns;
     
     const word_lower = word.toLowerCase();
     

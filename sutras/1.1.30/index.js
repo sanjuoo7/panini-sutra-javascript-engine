@@ -9,23 +9,16 @@
  * @fileoverview Implementation of Panini's Sutra 1.1.30
  */
 
-import { detectScript } from '../shared/index.js';
+import { detectScript } from '../sanskrit-utils/index.js';
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
 
 /**
  * List of words that are normally सर्वनाम but lose this classification in तृतीयासमास
+ * Using shared constants for consistency across sutras
  */
 const SARVA_WORDS = [
-  // IAST forms
-  'sarva', 'viśva', 'ubha', 'ubhaya', 'itara', 'anya', 'anyatara', 
-  'ka', 'yat', 'tad', 'etad', 'idam', 'adas', 'ena', 'sva', 'para',
-  'apara', 'adhara', 'avara', 'dakṣiṇa', 'uttara', 'apara', 'para',
-  'antara', 'sima', 'pūrva', 'eka', 'dvaya', 'dvi', 'tri', 'catur',
-  
-  // Devanagari forms
-  'सर्व', 'विश्व', 'उभ', 'उभय', 'इतर', 'अन्य', 'अन्यतर',
-  'क', 'यत्', 'तत्', 'एतत्', 'इदम्', 'अदस्', 'एन', 'स्व', 'पर',
-  'अपर', 'अधर', 'अवर', 'दक्षिण', 'उत्तर', 'अपर', 'पर',
-  'अन्तर', 'सीम', 'पूर्व', 'एक', 'द्वय', 'द्वि', 'त्रि', 'चतुर्'
+  ...SanskritWordLists.sarvaadi.iast,
+  ...SanskritWordLists.sarvaadi.devanagari
 ];
 
 /**

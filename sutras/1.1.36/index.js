@@ -6,6 +6,17 @@
  * are generally intransitive and do not take direct objects.
  */
 
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
+const { 
+    avikaranaTransitiveExceptions, 
+    intransitivityContexts, 
+    vikaranaPatterns, 
+    avikaranaInflectionPatterns, 
+    avikaranaRootMappings,
+    avikaranaVerbs: avikaranaVerbsData,
+    vikaranaIndicators: vikaranaIndicatorsData
+} = SanskritWordLists;
+
 /**
  * Main function to apply Sutra 1.1.36
  * @param {string} verb - The verb to analyze
@@ -78,300 +89,11 @@ function analyzeVikaranaPresence(verb, context = {}) {
         };
     }
 
-    // Avikaraṇa verbs (Class II and Class III primarily)
-    const avikarana_verbs = {
-        // Class II (adi-gaṇa) - typically intransitive
-        'i': { 
-            meaning: 'to go', 
-            forms: ['eti', 'ite'],
-            examples: ['gṛhaṃ eti', 'vanaṃ eti'],
-            class: 'Class II (adi)',
-            transitivity: 'intransitive'
-        },
-        'as': { 
-            meaning: 'to be, exist', 
-            forms: ['asti', 'āste'],
-            examples: ['sūryo asti', 'rājā āste'],
-            class: 'Class II (adi)',
-            transitivity: 'intransitive'
-        },
-        'dvis': { 
-            meaning: 'to hate', 
-            forms: ['dveṣṭi', 'dviṣṭe'],
-            examples: ['śatruṃ dveṣṭi'],
-            class: 'Class II (adi)',
-            transitivity: 'transitive' // Exception
-        },
-        'śās': { 
-            meaning: 'to rule, govern', 
-            forms: ['śāsti', 'śiṣṭe'],
-            examples: ['rājyaṃ śāsti'],
-            class: 'Class II (adi)',
-            transitivity: 'transitive' // Exception
-        },
-        
-        // Class III (hu-gaṇa) - typically intransitive
-        'hu': { 
-            meaning: 'to sacrifice, offer', 
-            forms: ['juhoti', 'juhute'],
-            examples: ['agniṃ juhoti', 'haviṣ juhoti'],
-            class: 'Class III (hu)',
-            transitivity: 'transitive' // Exception - takes object
-        },
-        'dā': { 
-            meaning: 'to give', 
-            forms: ['dadāti', 'datte'],
-            examples: ['dānaṃ dadāti', 'dhanaṃ datte'],
-            class: 'Class III (hu)',
-            transitivity: 'transitive' // Exception
-        },
-        'dhā': { 
-            meaning: 'to place, put', 
-            forms: ['dadhāti', 'dhatte'],
-            examples: ['bhūmau dadhāti'],
-            class: 'Class III (hu)',
-            transitivity: 'transitive' // Exception
-        },
-        'mā': { 
-            meaning: 'to measure', 
-            forms: ['mimāti', 'mimate'],
-            examples: ['bhūmiṃ mimāti'],
-            class: 'Class III (hu)',
-            transitivity: 'transitive' // Exception
-        },
-        'hā': { 
-            meaning: 'to abandon', 
-            forms: ['jahāti', 'jahīte'],
-            examples: ['gṛhaṃ jahāti'],
-            class: 'Class III (hu)',
-            transitivity: 'transitive' // Exception
-        },
-        
-        // Truly intransitive avikaraṇa verbs
-        'ās': { 
-            meaning: 'to sit', 
-            forms: ['āste'],
-            examples: ['āsane āste', 'vṛkṣe āste'],
-            class: 'Class II (adi)',
-            transitivity: 'intransitive'
-        },
-        'śī': { 
-            meaning: 'to lie down', 
-            forms: ['śete'],
-            examples: ['śayyāyāṃ śete'],
-            class: 'Class II (adi)',
-            transitivity: 'intransitive'
-        },
-        'sthā': { 
-            meaning: 'to stand', 
-            forms: ['tiṣṭhati', 'tiṣṭhate'],
-            examples: ['dvāre tiṣṭhati'],
-            class: 'Class I (bhū)', // Actually has vikaraṇa 'a'
-            transitivity: 'intransitive'
-        },
-        
-        // Additional inflected forms for easier recognition
-        'eti': { 
-            meaning: 'goes', 
-            forms: ['eti'],
-            examples: ['gṛhaṃ eti'],
-            root: 'i',
-            class: 'Class II (adi)',
-            transitivity: 'intransitive',
-            form_type: 'class_ii_active'
-        },
-        'ite': { 
-            meaning: 'goes (middle)', 
-            forms: ['ite'],
-            examples: ['svargaṃ ite'],
-            root: 'i',
-            class: 'Class II (adi)',
-            transitivity: 'intransitive',
-            form_type: 'class_ii_middle'
-        },
-        'asti': { 
-            meaning: 'is, exists', 
-            forms: ['asti'],
-            examples: ['sūryo asti'],
-            root: 'as',
-            class: 'Class II (adi)',
-            transitivity: 'intransitive',
-            form_type: 'class_ii_active_s'
-        },
-        'āste': { 
-            meaning: 'sits', 
-            forms: ['āste'],
-            examples: ['āsane āste'],
-            root: 'ās',
-            class: 'Class II (adi)',
-            transitivity: 'intransitive',
-            form_type: 'class_ii_middle'
-        },
-        'śete': { 
-            meaning: 'lies down', 
-            forms: ['śete'],
-            examples: ['śayyāyāṃ śete'],
-            root: 'śī',
-            class: 'Class II (adi)',
-            transitivity: 'intransitive',
-            form_type: 'class_ii_middle'
-        },
-        'juhoti': { 
-            meaning: 'offers, sacrifices', 
-            forms: ['juhoti'],
-            examples: ['agniṃ juhoti'],
-            root: 'hu',
-            class: 'Class III (hu)',
-            transitivity: 'transitive',
-            form_type: 'class_iii_active'
-        },
-        'juhute': { 
-            meaning: 'offers (middle)', 
-            forms: ['juhute'],
-            examples: ['haviṣ juhute'],
-            root: 'hu',
-            class: 'Class III (hu)',
-            transitivity: 'transitive',
-            form_type: 'class_iii_middle'
-        },
-        'dadāti': { 
-            meaning: 'gives', 
-            forms: ['dadāti'],
-            examples: ['dānaṃ dadāti'],
-            root: 'dā',
-            class: 'Class III (hu)',
-            transitivity: 'transitive',
-            form_type: 'class_iii_long'
-        },
-        'datte': { 
-            meaning: 'gives (middle)', 
-            forms: ['datte'],
-            examples: ['dhanaṃ datte'],
-            root: 'dā',
-            class: 'Class III (hu)',
-            transitivity: 'transitive',
-            form_type: 'class_iii_long_middle'
-        },
-        'dadhāti': { 
-            meaning: 'places, puts', 
-            forms: ['dadhāti'],
-            examples: ['bhūmau dadhāti'],
-            root: 'dhā',
-            class: 'Class III (hu)',
-            transitivity: 'transitive',
-            form_type: 'class_iii_long'
-        },
-        'dhatte': { 
-            meaning: 'places (middle)', 
-            forms: ['dhatte'],
-            examples: ['hṛdaye dhatte'],
-            root: 'dhā',
-            class: 'Class III (hu)',
-            transitivity: 'transitive',
-            form_type: 'class_iii_long_middle'
-        },
-        'mimāti': { 
-            meaning: 'measures', 
-            forms: ['mimāti'],
-            examples: ['bhūmiṃ mimāti'],
-            root: 'mā',
-            class: 'Class III (hu)',
-            transitivity: 'transitive',
-            form_type: 'class_iii_long'
-        },
-        'mimate': { 
-            meaning: 'measures (middle)', 
-            forms: ['mimate'],
-            examples: ['kṣetraṃ mimate'],
-            root: 'mā',
-            class: 'Class III (hu)',
-            transitivity: 'transitive',
-            form_type: 'class_iii_long_middle'
-        },
-        'jahāti': { 
-            meaning: 'abandons', 
-            forms: ['jahāti'],
-            examples: ['gṛhaṃ jahāti'],
-            root: 'hā',
-            class: 'Class III (hu)',
-            transitivity: 'transitive',
-            form_type: 'class_iii_long'
-        },
-        'jahīte': { 
-            meaning: 'abandons (middle)', 
-            forms: ['jahīte'],
-            examples: ['sarvaṃ jahīte'],
-            root: 'hā',
-            class: 'Class III (hu)',
-            transitivity: 'transitive',
-            form_type: 'class_iii_long_middle'
-        }
-    };
+    // Avikaraṇa verbs (Class II and Class III primarily) - using shared constants
+    const avikarana_verbs = avikaranaVerbsData;
 
-    // Verbs with vikaraṇa (Classes I, IV, VI, X)
-    const vikarana_indicators = {
-        // Class I (bhū-gaṇa) - vikaraṇa 'a'
-        'bhū': { 
-            vikarana: 'a', 
-            class: 'Class I (bhū)',
-            forms: ['bhavati', 'bhavate'],
-            transitivity: 'intransitive'
-        },
-        'gam': { 
-            vikarana: 'a', 
-            class: 'Class I (bhū)',
-            forms: ['gacchati', 'gacchate'],
-            transitivity: 'intransitive'
-        },
-        'pat': { 
-            vikarana: 'a', 
-            class: 'Class I (bhū)',
-            forms: ['patati', 'patate'],
-            transitivity: 'intransitive'
-        },
-        
-        // Class IV (div-gaṇa) - vikaraṇa 'ya'
-        'div': { 
-            vikarana: 'ya', 
-            class: 'Class IV (div)',
-            forms: ['dīvyati', 'dīvyate'],
-            transitivity: 'intransitive'
-        },
-        'nṛt': { 
-            vikarana: 'ya', 
-            class: 'Class IV (div)',
-            forms: ['nṛtyati', 'nṛtyate'],
-            transitivity: 'intransitive'
-        },
-        
-        // Class VI (tud-gaṇa) - vikaraṇa 'a'
-        'tud': { 
-            vikarana: 'a', 
-            class: 'Class VI (tud)',
-            forms: ['tudati', 'tudate'],
-            transitivity: 'transitive'
-        },
-        'kṛṣ': { 
-            vikarana: 'a', 
-            class: 'Class VI (tud)',
-            forms: ['kṛṣati', 'kṛṣate'],
-            transitivity: 'transitive'
-        },
-        
-        // Class X (cur-gaṇa) - vikaraṇa 'aya'
-        'cur': { 
-            vikarana: 'aya', 
-            class: 'Class X (cur)',
-            forms: ['corayati', 'corayate'],
-            transitivity: 'transitive'
-        },
-        'cint': { 
-            vikarana: 'aya', 
-            class: 'Class X (cur)',
-            forms: ['cintayati', 'cintayate'],
-            transitivity: 'transitive'
-        }
-    };
+    // Verbs with vikaraṇa (Classes I, IV, VI, X) - using shared constants
+    const vikarana_indicators = vikaranaIndicatorsData;
 
     // Normalize verb for lookup
     const normalized_verb = verb.toLowerCase();
@@ -407,31 +129,15 @@ function analyzeVikaranaPresence(verb, context = {}) {
         };
     }
 
-    // Pattern-based analysis for inflected forms
-    const avikarana_patterns = [
-        { pattern: /^.*eti$/, type: 'class_ii_active', extraction: verb => verb.replace(/eti$/, 'i') },
-        { pattern: /^.*ite$/, type: 'class_ii_middle', extraction: verb => verb.replace(/ite$/, 'i') },
-        { pattern: /^.*sti$/, type: 'class_ii_active_s', extraction: verb => verb.replace(/sti$/, 's') },
-        { pattern: /^.*ṣṭi$/, type: 'class_ii_active_dental', extraction: verb => verb.replace(/ṣṭi$/, 's') },
-        { pattern: /^.*oti$/, type: 'class_iii_active', extraction: verb => verb.replace(/oti$/, 'u') },
-        { pattern: /^.*ute$/, type: 'class_iii_middle', extraction: verb => verb.replace(/ute$/, 'u') },
-        { pattern: /^.*āti$/, type: 'class_iii_long', extraction: verb => verb.replace(/āti$/, 'ā') },
-        { pattern: /^.*ate$/, type: 'class_iii_long_middle', extraction: verb => verb.replace(/ate$/, 'ā') }
-    ];
+    // Pattern-based analysis for inflected forms using shared constants
+    const avikarana_patterns = avikaranaInflectionPatterns;
 
     for (const pattern_info of avikarana_patterns) {
         if (pattern_info.pattern.test(normalized_verb)) {
             const potential_root = pattern_info.extraction(normalized_verb);
             
-            // Special mappings for irregular forms
-            const root_mappings = {
-                'dadā': 'dā',
-                'dadhā': 'dhā',
-                'jahā': 'hā',
-                'mimā': 'mā',
-                'juho': 'hu',
-                'tiṣṭha': 'sthā'
-            };
+            // Special mappings for irregular forms using shared constants
+            const root_mappings = avikaranaRootMappings;
             
             const mapped_root = root_mappings[potential_root] || potential_root;
             
@@ -451,12 +157,8 @@ function analyzeVikaranaPresence(verb, context = {}) {
         }
     }
 
-    // If not found in specific lists, check for vikaraṇa patterns in the verb
-    const vikarana_patterns = [
-        /.*ati$/, /.*ate$/,  // Class I, VI patterns
-        /.*yati$/, /.*yate$/, // Class IV patterns  
-        /.*ayati$/, /.*ayate$/ // Class X patterns
-    ];
+    // If not found in specific lists, check for vikaraṇa patterns in the verb using shared constants
+    const vikarana_patterns = vikaranaPatterns;
 
     for (const pattern of vikarana_patterns) {
         if (pattern.test(normalized_verb)) {
@@ -502,15 +204,8 @@ function analyzeIntransitivityContext(verb, context = {}) {
         };
     }
 
-    // Analyze grammatical context for intransitivity indicators
-    const intransitivity_contexts = [
-        'no_object_present',       // No direct object
-        'motion_verb',             // Verbs of motion (typically intransitive)
-        'state_verb',              // Verbs of state/condition
-        'existence_verb',          // Verbs of existence
-        'intransitive_usage',      // Explicitly intransitive usage
-        'syntactic_analysis'       // General syntactic analysis
-    ];
+    // Analyze grammatical context for intransitivity indicators using shared constants
+    const intransitivity_contexts = intransitivityContexts;
 
     if (context && context.grammatical_context) {
         if (intransitivity_contexts.includes(context.grammatical_context)) {
@@ -573,8 +268,8 @@ function validateAvikaranaIntransitive(verb, context = {}) {
         confidence += 0.1; // Examples support the analysis
     }
 
-    // Handle exceptions (avikaraṇa verbs that can be transitive)
-    const transitive_exceptions = ['dvis', 'śās', 'hu', 'dā', 'dhā', 'mā', 'hā'];
+    // Handle exceptions (avikaraṇa verbs that can be transitive) using shared constants
+    const transitive_exceptions = avikaranaTransitiveExceptions.iast;
     if (transitive_exceptions.includes(sutra_result.root)) {
         confidence = 0.3; // Lower confidence for exceptional cases
     }

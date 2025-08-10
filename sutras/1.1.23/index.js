@@ -13,7 +13,7 @@
  * 5. Collective numbers (द्वय, त्रय etc.)
  */
 
-import { detectScript } from '../shared/script-detection.js';
+import { detectScript } from '../sanskrit-utils/script-detection.js';
 
 // Comprehensive list of संख्या (numerals)
 const SANKHYA_WORDS = {

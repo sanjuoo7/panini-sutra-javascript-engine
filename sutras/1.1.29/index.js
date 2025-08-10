@@ -9,7 +9,7 @@
  * in बहुव्रीही contexts, creating an exception to 1.1.27.
  */
 
-import { detectScript } from '../shared/script-detection.js';
+import { detectScript } from '../sanskrit-utils/script-detection.js';
 import { isSarvanama } from '../1.1.27/index.js';
 
 /**

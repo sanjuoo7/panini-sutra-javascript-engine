@@ -31,23 +31,23 @@
  */
 
 // Import shared utilities
-import { SanskritVowels } from '../shared/constants.js';
-import { tokenizePhonemes } from '../shared/phoneme-tokenization.js';
-import { isIkVowel as sharedIsIkVowel, isVowel } from '../shared/classification.js';
+import { SanskritVowels } from '../sanskrit-utils/constants.js';
+import { tokenizePhonemes } from '../sanskrit-utils/phoneme-tokenization.js';
+import { isIkVowel as sharedIsIkVowel, isVowel } from '../sanskrit-utils/classification.js';
 import { 
   applyGunaTransformation, 
   applyVrddhiTransformation,
   getGunaVrddhiScope as sharedGetGunaVrddhiScope 
-} from '../shared/vowel-analysis.js';
-import { validateSanskritWord } from '../shared/validation.js';
+} from '../sanskrit-utils/vowel-analysis.js';
+import { validateSanskritWord } from '../sanskrit-utils/validation.js';
 import { 
   getGunaForm, 
   applyGuna, 
   isValidGunaTransformation 
-} from '../shared/guna-utilities.js';
+} from '../sanskrit-utils/guna-utilities.js';
 
 // Re-export isIkVowel for backward compatibility
-export { isIkVowel } from '../shared/classification.js';
+export { isIkVowel } from '../sanskrit-utils/classification.js';
 
 /**
  * Applies guṇa transformation to an 'ik' vowel.
@@ -286,4 +286,4 @@ export {
   getGunaForm, 
   applyGuna, 
   isValidGunaTransformation 
-} from '../shared/guna-utilities.js';
+} from '../sanskrit-utils/guna-utilities.js';

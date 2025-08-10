@@ -8,7 +8,7 @@
  * @fileoverview Implementation of Panini's Sutra 1.1.27
  */
 
-import { detectScript } from '../shared/script-detection.js';
+import { detectScript } from '../sanskrit-utils/script-detection.js';
 
 /**
  * List of सर्वादि (sarvādi) words that are classified as सर्वनाम

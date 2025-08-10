@@ -20,7 +20,8 @@
  * that specifically target this extended class of numerals.
  */
 
-import { detectScript } from '../shared/script-detection.js';
+import { detectScript } from '../sanskrit-utils/script-detection.js';
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
 import { isShat } from '../1.1.24/index.js';
 import { isSankhya } from '../1.1.23/index.js';
 
@@ -228,7 +229,9 @@ export function isInterrogativeDati(word) {
   if (!word) return false;
   
   const script = detectScript(word);
-  const interrogatives = script === 'IAST' ? ['kati', 'kiyati'] : ['कति', 'कियति'];
+  const interrogatives = script === 'IAST' 
+    ? SanskritWordLists.interrogatives.iast 
+    : SanskritWordLists.interrogatives.devanagari;
   
   return interrogatives.includes(word);
 }

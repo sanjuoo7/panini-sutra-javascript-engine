@@ -13,6 +13,8 @@
  * Examples: अधिगङ्गम् (adhigaṅgam - near the Ganges), प्रतिदिनम् (pratidinam - daily)
  */
 
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
+
 /**
  * Determines if a compound is an avyayībhāva and therefore avyaya according to sutra 1.1.41
  * @param {string} word - The compound word to analyze
@@ -120,11 +122,8 @@ function analyzeAvyayībhāvaPatterns(word) {
 
     const word_lower = word.toLowerCase();
     
-    // Check for known avyayībhāva examples first (highest confidence)
-    const known_compounds = [
-        'adhigaṅgam', 'pratidinam', 'prativarṣam', 'anukūlam', 'pratikūlam',
-        'upanagaraṃ', 'adhipatha', 'abhimukham', 'āsamudram', 'samayas'
-    ];
+    // Check for known avyayībhāva examples first (highest confidence) using shared constants
+    const known_compounds = SanskritWordLists.knownAvyayibhavaCompounds;
 
     if (known_compounds.includes(word_lower)) {
         return {
@@ -135,31 +134,8 @@ function analyzeAvyayībhāvaPatterns(word) {
         };
     }
 
-    // Common avyayībhāva prefixes (first members that are avyaya)
-    const avyaya_prefixes = [
-        // Spatial/directional prefixes
-        { prefix: 'adhi', meaning: 'above/over', examples: ['adhigaṅgam', 'adhipatha'] },
-        { prefix: 'anu', meaning: 'after/along', examples: ['anugaṅgam', 'anuvṛkṣam'] },
-        { prefix: 'apa', meaning: 'away from', examples: ['apagaṅgam'] },
-        { prefix: 'abhi', meaning: 'towards/against', examples: ['abhimukham'] },
-        { prefix: 'ava', meaning: 'down/away', examples: ['avagaṅgam'] },
-        { prefix: 'ā', meaning: 'up to/until', examples: ['āsamudram'] },
-        { prefix: 'ud', meaning: 'up/out', examples: ['udbhavam'] },
-        { prefix: 'upa', meaning: 'near/towards', examples: ['upagaṅgam', 'upanagaraṃ'] },
-        { prefix: 'pari', meaning: 'around', examples: ['parigṛham'] },
-        { prefix: 'pra', meaning: 'forth/forward', examples: ['prabhātam'] },
-        { prefix: 'prati', meaning: 'towards/each', examples: ['pratidinam', 'prativarṣam'] },
-        { prefix: 'vi', meaning: 'apart/without', examples: ['vigṛham'] },
-        { prefix: 'sam', meaning: 'together/with', examples: ['samayas'] },
-        
-        // Temporal prefixes
-        { prefix: 'sadā', meaning: 'always', examples: ['sadākālam'] },
-        { prefix: 'kadā', meaning: 'when', examples: ['kadācit'] },
-        
-        // Negation
-        { prefix: 'a', meaning: 'not/without', examples: ['aśubham'] },
-        { prefix: 'an', meaning: 'not/without', examples: ['anarthakam'] }
-    ];
+    // Common avyayībhāva prefixes (first members that are avyaya) using shared constants
+    const avyaya_prefixes = SanskritWordLists.avyayaPrefixes;
 
     // Sort by length (longest first) to match longer prefixes first
     avyaya_prefixes.sort((a, b) => b.prefix.length - a.prefix.length);
@@ -200,11 +176,8 @@ function isAvyayaElement(element, context = {}) {
         return false;
     }
 
-    // Common avyaya elements
-    const common_avyayas = [
-        'adhi', 'anu', 'apa', 'abhi', 'ava', 'ā', 'ud', 'upa', 'pari', 'pra', 'prati', 'vi', 'sam',
-        'sadā', 'kadā', 'yāvat', 'tāvat', 'ittham', 'evam', 'kim', 'na', 'mā'
-    ];
+    // Common avyaya elements using shared constants
+    const common_avyayas = SanskritWordLists.commonAvyayaElements;
 
     const element_lower = element.toLowerCase();
     
@@ -234,8 +207,8 @@ function isAvyayaElement(element, context = {}) {
 function extractFirstMember(word) {
     const word_lower = word.toLowerCase();
     
-    // Try common prefixes
-    const prefixes = ['adhi', 'prati', 'anu', 'apa', 'abhi', 'ava', 'upa', 'pari', 'pra', 'vi', 'sam', 'ud'];
+    // Try common prefixes using shared constants
+    const prefixes = SanskritWordLists.compoundPrefixes;
     
     for (const prefix of prefixes) {
         if (word_lower.startsWith(prefix)) {

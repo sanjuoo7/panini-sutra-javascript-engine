@@ -12,6 +12,9 @@
  * in terms of grammatical analysis and behavior.
  */
 
+import { SanskritWordLists } from '../sanskrit-utils/constants.js';
+const { nañPrefixes, ñuPatterns, upasargaList } = SanskritWordLists;
+
 /**
  * Main function to apply Sutra 1.1.44
  * @param {string} word - The word to analyze
@@ -69,20 +72,7 @@ export function applySutra1_1_44(word, context = {}) {
  */
 function analyzeNañPrefix(word, context = {}) {
     // Common nañ (negative) prefixes
-    const nañ_prefixes = [
-        // Basic negative prefixes
-        { prefix: 'na', meaning: 'not', example: 'na-kāma (not desire)' },
-        { prefix: 'an', meaning: 'not/without', example: 'an-anta (endless)' },
-        { prefix: 'a', meaning: 'not', example: 'a-dharma (non-dharma)' },
-        { prefix: 'nir', meaning: 'without/out', example: 'nir-guṇa (without qualities)' },
-        { prefix: 'niḥ', meaning: 'without/out', example: 'niḥ-śaṅka (without doubt)' },
-        { prefix: 'nis', meaning: 'without/out', example: 'nis-phala (fruitless)' },
-        
-        // Compound negative forms
-        { prefix: 'duḥ', meaning: 'bad/difficult', example: 'duḥ-kha (suffering)' },
-        { prefix: 'dur', meaning: 'bad/difficult', example: 'dur-gama (difficult to reach)' },
-        { prefix: 'dus', meaning: 'bad/difficult', example: 'dus-kṛta (badly done)' }
-    ];
+    const nañ_prefixes = nañPrefixes;
 
     // Check for context-provided information
     if (context.has_nañ) {
@@ -143,18 +133,7 @@ function analyzeNañPrefix(word, context = {}) {
 function analyzeÑuElement(word, context = {}) {
     // ñu is a specific technical term in Paninian grammar
     // referring to certain types of suffixes
-    const ñu_patterns = [
-        // ñu suffixes (kṛt and taddhita)
-        { suffix: 'aka', type: 'kṛt', meaning: 'doer/agent', example: 'kāraka (doer)' },
-        { suffix: 'ika', type: 'taddhita', meaning: 'relating to', example: 'vaidika (relating to Veda)' },
-        { suffix: 'iya', type: 'taddhita', meaning: 'worthy of', example: 'pūjiya (worthy of worship)' },
-        { suffix: 'ya', type: 'kṛt', meaning: 'to be done', example: 'kārya (to be done)' },
-        { suffix: 'ana', type: 'kṛt', meaning: 'action/instrument', example: 'karaṇa (instrument)' },
-        { suffix: 'aṇa', type: 'kṛt', meaning: 'action/instrument', example: 'karaṇa (instrument)' },
-        { suffix: 'in', type: 'taddhita', meaning: 'possessing', example: 'balin (strong)' },
-        { suffix: 'vat', type: 'taddhita', meaning: 'possessing', example: 'dhanavat (wealthy)' },
-        { suffix: 'mat', type: 'taddhita', meaning: 'possessing', example: 'śrīmat (prosperous)' }
-    ];
+    const ñu_patterns = ñuPatterns;
 
     // Check for context-provided information
     if (context.has_ñu) {
@@ -213,29 +192,7 @@ function analyzeÑuElement(word, context = {}) {
  */
 function analyzeUpasarga(word, context = {}) {
     // Standard upasarga (verbal prefixes) in Sanskrit
-    const upasarga_list = [
-        // Most common upasargas
-        { prefix: 'pra', meaning: 'forth/forward', example: 'pra-gam (to go forth)' },
-        { prefix: 'vi', meaning: 'apart/special', example: 'vi-car (to move about)' },
-        { prefix: 'sam', meaning: 'together/complete', example: 'sam-gam (to come together)' },
-        { prefix: 'upa', meaning: 'near/towards', example: 'upa-gam (to approach)' },
-        { prefix: 'ni', meaning: 'down/into', example: 'ni-pat (to fall down)' },
-        { prefix: 'anu', meaning: 'after/along', example: 'anu-gam (to follow)' },
-        { prefix: 'ava', meaning: 'down/away', example: 'ava-gam (to understand)' },
-        { prefix: 'ud', meaning: 'up/out', example: 'ud-gam (to rise)' },
-        { prefix: 'adhi', meaning: 'over/above', example: 'adhi-gam (to study)' },
-        { prefix: 'abhi', meaning: 'towards/against', example: 'abhi-gam (to approach)' },
-        { prefix: 'pari', meaning: 'around/completely', example: 'pari-gam (to surround)' },
-        { prefix: 'ā', meaning: 'towards/until', example: 'ā-gam (to come)' },
-        
-        // Additional upasargas
-        { prefix: 'prati', meaning: 'against/back', example: 'prati-gam (to go back)' },
-        { prefix: 'api', meaning: 'also/even', example: 'api-gam (to reach also)' },
-        { prefix: 'ati', meaning: 'beyond/very', example: 'ati-gam (to surpass)' },
-        { prefix: 'su', meaning: 'well/good', example: 'su-gam (easy to reach)' },
-        { prefix: 'dus', meaning: 'bad/difficult', example: 'dus-gam (difficult to reach)' },
-        { prefix: 'parā', meaning: 'away/forth', example: 'parā-gam (to go away)' }
-    ];
+    const upasarga_list = upasargaList;
 
     // Check for context-provided information
     if (context.has_upasarga) {
