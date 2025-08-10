@@ -1,170 +1,122 @@
-# Sutra 1.1.41: अव्ययीभावश्च (avyayībhāvaśca)
+# Sutra 1.1.41: अव्ययीभावश्च
 
-## Text
-**Sanskrit**: अव्ययीभावश्च  
-**IAST**: avyayībhāvaśca  
-**Translation**: And अव्ययीभाव (avyayībhāva) compounds are also अव्यय (avyaya/indeclinables).
+## Overview
+
+**Sanskrit Text**: `अव्ययीभावश्च`
+**Transliteration**: avyayībhāvaśca
+**Translation**: And अव्ययीभाव compounds are also अव्यय (indeclinables).
 
 ## Purpose
-This sutra completes the avyaya classification system by including अव्ययीभाव (avyayībhāva) compounds as indeclinable words. This is a specific type of compound formation where the entire compound becomes indeclinable based on its structure.
 
-## Technical Analysis
+This `saṃjñā` (definition) sutra further expands the class of `avyaya` (अव्यय), or indeclinable words, in Sanskrit. It specifically states that `avyayībhāva` (अव्ययीभाव) compounds are classified as `avyaya`. An `avyayībhāva` compound is typically formed when an indeclinable (`avyaya`) word is the first member, and the entire compound then functions as an indeclinable, often with an adverbial meaning. This rule is crucial for recognizing and correctly handling these compounds, as they maintain a constant form regardless of case, number, or gender.
 
-### Avyayībhāva Compound Structure
-1. **First Member**: Must be an अव्यय (indeclinable word)
-2. **Second Member**: Usually a noun or nominal form
-3. **Result**: The entire compound becomes indeclinable
-4. **Function**: Generally adverbial, expressing spatial, temporal, or manner relationships
+## Implementation
 
-### Common First Members (Avyaya Elements)
-- **Spatial**: अधि (adhi), उप (upa), आ (ā), परि (pari), वि (vi), सम् (sam)
-- **Temporal**: प्रति (prati), सदा (sadā)
-- **Directional**: अनु (anu), अप (apa), अभि (abhi), अव (ava)
-- **Negation**: अ (a), अन् (an)
-
-### Function Implementation
-
-#### Core Function: `applySutra1_1_41(word, context)`
+### Function Signature
 ```javascript
-// Analyzes if a compound qualifies as avyayībhāva
-const result = applySutra1_1_41('pratidinam', { 
-    compound_type: 'avyayībhāva',
-    members: ['prati', 'dina']
-});
-// Returns: { applies: true, avyaya_status: true, compound_type: 'avyayībhāva', ... }
+function applySutra1_1_41(word, context) {
+    // Implementation details
+}
 ```
 
-#### Compound Analysis: `analyzeAvyayībhāva(word, context)`
-- Detects avyayībhāva characteristics from context or patterns
-- Analyzes first member for avyaya status
-- Returns detailed compound structure information
+### Key Features
+- **`Avyayībhāva` Compound Identification**: The `analyzeAvyayībhāva` function identifies `avyayībhāva` compounds based on explicit contextual information, analysis of compound members (ensuring the first member is an `avyaya`), and pattern matching against known `avyayībhāva` structures.
+- **`Avyaya` Classification**: The `applySutra1_1_41` function classifies the entire compound as `avyaya` (indeclinable).
+- **Pattern Analysis**: The `analyzeAvyayībhāvaPatterns` function provides insights into the structure and common types of `avyayībhāva` compounds (e.g., spatial, temporal, manner).
+- **First Member Extraction**: The `extractFirstMember` helper function attempts to identify the initial `avyaya` component of the compound.
+- **Validation and Usage Notes**: The `validateAvyayībhāva1_1_41` function confirms the `avyaya` status and provides specific usage notes and examples.
 
-#### Pattern Recognition: `analyzeAvyayībhāvaPatterns(word)`
-- Identifies common avyaya prefixes
-- Matches against known compound examples
-- Provides confidence levels for pattern-based detection
+### Dependencies
+- **Sanskrit Utils**:
+  - `SanskritWordLists` from `sanskrit-utils/constants.js` (for known `avyayībhāva` compounds, `avyaya` prefixes, and common `avyaya` elements)
 
-## Examples
+### Usage Examples
 
-### Spatial Compounds
+### Basic Usage
 ```javascript
-applySutra1_1_41('adhigaṅgam');   // near/along the Ganges - avyaya
-applySutra1_1_41('upanagaraṃ');   // near the city - avyaya
-applySutra1_1_41('āsamudram');    // up to the ocean - avyaya
-applySutra1_1_41('parigṛham');    // around the house - avyaya
+import { applySutra1_1_41, analyzeAvyayībhāva, analyzeAvyayībhāvaPatterns, isAvyayaElement, extractFirstMember, validateAvyayībhāva1_1_41, getCompoundExamples } from './index.js';
+
+// Example 1: Apply Sutra 1.1.41 to an avyayībhāva compound
+const result1 = applySutra1_1_41('pratidinam', { compound_type: 'avyayībhāva' });
+console.log(result1.applies); // true
+console.log(result1.avyaya_status); // true
+console.log(result1.compound_type); // 'avyayībhāva'
+console.log(result1.first_member); // 'prati'
+
+// Example 2: Analyze avyayībhāva compound
+const compoundAnalysis = analyzeAvyayībhāva('adhigaṅgam');
+console.log(compoundAnalysis.is_avyayībhāva); // true
+console.log(compoundAnalysis.first_member); // 'adhi'
+
+// Example 3: Analyze avyayībhāva patterns
+const patternAnalysis = analyzeAvyayībhāvaPatterns('upanagaraṃ');
+console.log(patternAnalysis.is_likely_avyayībhāva); // true
+console.log(patternAnalysis.first_member); // 'upa'
+
+// Example 4: Check if an element is avyaya
+console.log(isAvyayaElement('prati')); // true
+console.log(isAvyayaElement('nagara')); // false
+
+// Example 5: Validate avyayībhāva status
+const validation = validateAvyayībhāva1_1_41('anukūlam');
+console.log(validation.is_avyaya); // true
+console.log(validation.usage_note); // 'Indicates following...'
 ```
 
-### Temporal Compounds
-```javascript
-applySutra1_1_41('pratidinam');   // daily/every day - avyaya
-applySutra1_1_41('prativarṣam');  // yearly/every year - avyaya
-applySutra1_1_41('sadākālam');    // always/at all times - avyaya
+## Test Coverage
+
+**Test File**: `index.test.js`
+**Test Cases**: The test suite provides comprehensive coverage, including:
+- **`applySutra1_1_41`**: Verifies the core logic for classifying `avyayībhāva` compounds as `avyaya`.
+- **`analyzeAvyayībhāva`**: Tests the identification of `avyayībhāva` compounds through explicit context, member analysis, and pattern matching.
+- **`analyzeAvyayībhāvaPatterns`**: Tests the detection of various `avyayībhāva` patterns and known compounds.
+- **`isAvyayaElement`**: Tests the identification of common `avyaya` elements that form the first member of these compounds.
+- **`extractFirstMember`**: Tests the extraction of the first member from compound words.
+- **`validateAvyayībhāva1_1_41`**: Validates the assertion of invariance for `avyayībhāva` compounds, including usage notes and structural information.
+- **Real Sanskrit Examples**: Includes tests with classical spatial, temporal, and manner `avyayībhāva` compounds.
+- **Edge Cases**: Handles `null`, `undefined`, empty strings, and non-compound inputs gracefully.
+
+### Running Tests
+```bash
+# Run this sutra's tests
+npm test sutras/1.1.41
+
+# Run with coverage
+npm test sutras/1.1.41 -- --coverage
 ```
 
-### Manner Compounds
-```javascript
-applySutra1_1_41('anukūlam');     // favorably - avyaya
-applySutra1_1_41('pratikūlam');   // unfavorably - avyaya
-applySutra1_1_41('abhimukham');   // facing towards - avyaya
-```
+## Technical Details
 
-### Context-Based Analysis
-```javascript
-const context = {
-    compound_type: 'avyayībhāva',
-    members: ['prati', 'dina'],
-    meaning: 'daily',
-    avyaya_elements: ['prati']
-};
+### Algorithm
+1.  **`applySutra1_1_41`**: This function calls `analyzeAvyayībhāva` to determine if the input `word` is an `avyayībhāva` compound. If it is, the compound is classified as `avyaya`.
+2.  **`analyzeAvyayībhāva`**: This function first checks for explicit `avyayībhāva` classification in the `context`. If not present, it checks if the `context` provides `members` and if the first member is an `avyaya` (using `isAvyayaElement`). Finally, it attempts to match the `word` against predefined `avyayībhāva` patterns (`analyzeAvyayībhāvaPatterns`).
+3.  **`analyzeAvyayībhāvaPatterns`**: This function checks if the `word` is a known `avyayībhāva` compound. If not, it attempts to match the `word` against common `avyaya` prefixes (`SanskritWordLists.avyayaPrefixes`) followed by a nominal stem.
+4.  **`isAvyayaElement`**: This helper function checks if an `element` is in a predefined list of common `avyaya` elements or if it's explicitly marked as `avyaya` in the `context`.
+5.  **`extractFirstMember`**: This function attempts to extract the first member of a compound by checking for known compound prefixes or by a simple length-based heuristic.
 
-applySutra1_1_41('pratidinam', context);
-// Enhanced analysis with compound structure information
-```
+### Performance
+- **Time Complexity**: O(1) - Operations involve string comparisons and array/regex lookups against fixed-size lists and patterns, resulting in constant time complexity.
+- **Space Complexity**: O(1) - Memory usage is minimal and constant, as the lists and patterns are predefined constants.
 
-## Linguistic Significance
+### Edge Cases
+- **Compound Parsing**: Accurate identification of `avyayībhāva` compounds can be complex without a full Sanskrit parser. The current implementation relies on explicit context and pattern matching, which covers common cases.
+- **Ambiguity**: Some compounds might be ambiguous without semantic context. The `confidence` score in `analyzeAvyayībhāvaPatterns` helps indicate the certainty of the pattern match.
 
-### Compound Formation
-- **Structure**: [Avyaya] + [Noun] → [Indeclinable Compound]
-- **Function**: Adverbial modification of actions or states
-- **Scope**: Entire sentence or clause modification
+## Integration
 
-### Semantic Relationship
-- **Spatial**: Location, direction, proximity
-- **Temporal**: Frequency, duration, timing
-- **Manner**: Method, attitude, approach
+### Related Sutras
+- **Sutra 1.1.37 (स्वरादिनिपातमव्ययम्)**, **Sutra 1.1.38 (तद्धितश्चासर्वविभक्तिः)**, **Sutra 1.1.39 (कृन्मेजन्तः)**, and **Sutra 1.1.40 (क्त्वातोसुन्कसुनः)**: This sutra adds `avyayībhāva` compounds as another significant category to the `avyaya` class.
+- This rule is crucial for understanding the invariant nature of many adverbial compounds in Sanskrit.
 
-### Grammatical Behavior
-- **Invariant**: No case, number, or gender inflection
-- **Position**: Generally placed before the element it modifies
-- **Function**: Adverbial qualification of verbal actions
+### Used By
+- Any module in the Panini engine that performs morphological analysis, declension, or sentence parsing will need to consult this sutra to correctly identify `avyayībhāva` compounds and ensure they are not subjected to inflectional changes.
 
-## Usage Patterns
+## References
 
-### Spatial Expressions
-```sanskrit
-अधिगङ्गं गृहं स्थितम्
-adhigaṅgaṃ gṛhaṃ sthitam
-"The house situated near the Ganges"
-```
+- **Panini's Ashtadhyayi**: Sutra 1.1.41
+- **Implementation Notes**: The implementation adheres to the `COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md` and leverages shared `sanskrit-utils` for robust compound analysis.
+- **Test References**: Test cases are designed to validate the precise identification of `avyayībhāva` compounds and their classification as `avyaya`, covering various structural and semantic types.
 
-### Temporal Expressions
-```sanskrit
-प्रतिदिनं पठति
-pratidinaṃ paṭhati
-"(He) studies daily"
-```
+---
 
-### Manner Expressions
-```sanskrit
-अनुकूलं वर्तते
-anukūlaṃ vartate
-"(It) proceeds favorably"
-```
-
-## Implementation Features
-
-### Context Priority
-- Explicit compound type recognition
-- Member-based analysis when provided
-- Fallback to pattern matching
-
-### Pattern Recognition
-- Multiple prefix detection algorithms
-- Known compound database
-- Confidence scoring for uncertain cases
-
-### Validation System
-- Structure verification
-- Usage note generation
-- Integration with other avyaya rules
-
-## Testing Coverage
-
-### Test Categories
-1. **Core Functionality**: Basic compound detection and classification
-2. **Pattern Analysis**: Prefix recognition and compound structure
-3. **Context Integration**: Using provided compound information
-4. **Real Examples**: Classical Sanskrit compound analysis
-5. **Edge Cases**: Error handling and boundary conditions
-6. **Integration**: Compatibility with other sutra implementations
-
-### Test Statistics
-- **Total Tests**: 43 comprehensive test cases
-- **Coverage**: All pattern types, context scenarios, validation
-- **Examples**: Spatial, temporal, and manner compounds
-
-## Relationship to Other Sutras
-
-### Avyaya Classification System (1.1.37-1.1.41)
-- **1.1.37**: स्वरादिनिपातमव्ययम् - Basic avyaya classification
-- **1.1.38**: तद्धितश्चासर्वविभक्तिः - Taddhita affixes as avyaya
-- **1.1.39**: कृन्मेजन्तः - Krit affixes ending in specific sounds
-- **1.1.40**: क्त्वातोसुन्कसुनः - Ktvā, tosun, kasun endings
-- **1.1.41**: अव्ययीभावश्च - Avyayībhāva compounds (current)
-
-### Integration Benefits
-- Completes comprehensive avyaya identification system
-- Provides compound-specific analysis capabilities
-- Enables complex grammatical structure recognition
-
-This implementation provides robust identification and analysis of avyayībhāva compounds, completing the fundamental avyaya classification system in Panini's grammar and enabling sophisticated Sanskrit grammatical analysis.
+*Generated from template: SUTRA_README_TEMPLATE.md*
