@@ -148,21 +148,31 @@ export const VowelGradations = {
 /**
  * It-marked Affix Sets (from Sutra 1.1.5)
  * These affixes have indicatory letters that block guṇa/vṛddhi operations
+ * Includes both IAST and normalized forms for comprehensive matching
  */
 export const ItMarkedAffixes = {
   // क् (k) it-marker affixes
   KIT_MARKED: [
+    // Traditional IAST forms
     'kta', 'ktvā', 'ktva', 'kvip', 'kvan', 'ktavat', 'ktin', 'ktu',
-    'kmat', 'kvi', 'kvarap', 'kvasuc', 'kt'
+    'kmat', 'kvi', 'kvarap', 'kvasuc', 'kt',
+    // Normalized Devanagari forms
+    'kup', 'kuan', 'katavat', 'katin', 'ktvt'
   ],
   
   // ग् (g) it-marker affixes  
   GIT_MARKED: [
-    'gha', 'ghañ', 'ghan', 'ghaṇ', 'ghasi', 'ghāsi', 'ga'
+    // Traditional IAST forms
+    'gha', 'ghañ', 'ghan', 'ghaṇ', 'ghasi', 'ghāsi', 'ga',
+    // Normalized Devanagari forms
+    'gh', 'ghañ', 'ghan', 'g', 'ghñ', 'ghn'
   ],
   
   // ङ् (ṅ) it-marker affixes
   NGIT_MARKED: [
-    'ṅa', 'ṅīp', 'ṅīn', 'ṅīṣ', 'ṅau', 'aṅ', 'iṅ', 'uṅ'
+    // Traditional IAST forms
+    'ṅa', 'ṅīp', 'ṅīn', 'ṅīṣ', 'ṅau', 'aṅ', 'iṅ', 'uṅ',
+    // Normalized Devanagari forms
+    'ṅ', 'ṅīp', 'ṅīn', 'aṅ'
   ]
 };

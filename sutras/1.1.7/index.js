@@ -14,23 +14,13 @@
  * how they behave in various grammatical operations.
  */
 
-// Import shared constants to avoid duplication
+// Import shared utilities
 import { SanskritConsonants } from '../shared/constants.js';
+import { isConsonant } from '../shared/classification.js';
 
-// Use shared consonant arrays instead of local definitions
+// Use shared consonant arrays for specific needs
 const consonants = SanskritConsonants.all.iast;
 const consonantsDevanagari = SanskritConsonants.all.devanagari;
-
-/**
- * Checks if a given character is a consonant (हल्).
- *
- * @param {string} char The character to check.
- * @returns {boolean} True if the character is a consonant.
- */
-function isConsonant(char) {
-  if (!char) return false;
-  return consonants.includes(char) || consonantsDevanagari.includes(char);
-}
 
 /**
  * Check if a word ends with a consonant (हलन्त्यम्)
