@@ -56,6 +56,9 @@ function applySutra1_1_38(word, context = {}) {
  * @returns {Object} Taddhita analysis
  */
 function analyzeTaddhita(word, context) {
+    if (!word || typeof word !== 'string') {
+        return { has_taddhita: false, affix_type: null, source: 'analysis' };
+    }
     // Check context for explicit taddhita information
     if (context.affixes && context.affixes.some(affix => context.taddhita_affixes?.includes(affix))) {
         return {
@@ -68,31 +71,31 @@ function analyzeTaddhita(word, context) {
     // Common taddhita affixes and their patterns (ordered by specificity/length)
     const taddhita_patterns = [
         // Longer patterns first to avoid shorter matches
-        { pattern: /.*ayana$/, type: 'ayana', meaning: 'descendant of' },
-        { pattern: /.*maya$/, type: 'maya', meaning: 'made of' },
-        { pattern: /.*kalpa$/, type: 'kalpa', meaning: 'like/almost' },
-        { pattern: /.*prakara$/, type: 'prakāra', meaning: 'manner/type' },
-        { pattern: /.*tana$/, type: 'tana', meaning: 'extending to' },
+        { pattern: /.*ayana$/i, type: 'ayana', meaning: 'descendant of' },
+        { pattern: /.*maya$/i, type: 'maya', meaning: 'made of' },
+        { pattern: /.*kalpa$/i, type: 'kalpa', meaning: 'like/almost' },
+        { pattern: /.*prakara$/i, type: 'prakāra', meaning: 'manner/type' },
+        { pattern: /.*tana$/i, type: 'tana', meaning: 'extending to' },
         
         // Medium length patterns
-        { pattern: /.*eya$/, type: 'eya', meaning: 'descendant of' },
-        { pattern: /.*ika$/, type: 'ika', meaning: 'relating to' },
-        { pattern: /.*iya$/, type: 'iya', meaning: 'belonging to' },
-        { pattern: /.*tva$/, type: 'tva', meaning: 'abstract quality' },
-        { pattern: /.*tas$/, type: 'tas', meaning: 'from/in direction of' },
-        { pattern: /.*tra$/, type: 'tra', meaning: 'in the direction of' },
-        { pattern: /.*dhā$/, type: 'dhā', meaning: 'fold/manner' },
-        { pattern: /.*dha$/, type: 'dha', meaning: 'fold/manner' },
-        { pattern: /.*sat$/, type: 'śat', meaning: 'hundred-fold' },
-        { pattern: /.*vat$/, type: 'vat', meaning: 'like/having' },
+        { pattern: /.*eya$/i, type: 'eya', meaning: 'descendant of' },
+        { pattern: /.*ika$/i, type: 'ika', meaning: 'relating to' },
+        { pattern: /.*iya$/i, type: 'iya', meaning: 'belonging to' },
+        { pattern: /.*tva$/i, type: 'tva', meaning: 'abstract quality' },
+        { pattern: /.*tas$/i, type: 'tas', meaning: 'from/in direction of' },
+        { pattern: /.*tra$/i, type: 'tra', meaning: 'in the direction of' },
+        { pattern: /.*dhā$/i, type: 'dhā', meaning: 'fold/manner' },
+        { pattern: /.*dha$/i, type: 'dha', meaning: 'fold/manner' },
+        { pattern: /.*sat$/i, type: 'śat', meaning: 'hundred-fold' },
+        { pattern: /.*vat$/i, type: 'vat', meaning: 'like/having' },
         
         // Shorter patterns last
-        { pattern: /.*ya$/, type: 'ya', meaning: 'descendant of' },
-        { pattern: /.*ta$/, type: 'ta', meaning: 'abstract quality' }
+        { pattern: /.*ya$/i, type: 'ya', meaning: 'descendant of' },
+        { pattern: /.*ta$/i, type: 'ta', meaning: 'abstract quality' }
     ];
 
     for (const pattern_info of taddhita_patterns) {
-        if (pattern_info.pattern.test(word.toLowerCase())) {
+        if (pattern_info.pattern.test(word)) {
             return {
                 has_taddhita: true,
                 affix_type: pattern_info.type,
