@@ -106,12 +106,17 @@ console.log({ isWordPragrhya, shouldPreventSandhi, script, isVrddhiVowel });
 
 ## Contributing
 
+### **For New Contributors - Essential Reading**
+📚 **[Comprehensive Sutra Conversion Strategy Guide](docs/COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md)** - Complete methodology for implementing sutras efficiently and accurately
+
+### **Development Process**
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/new-sutra`)
-3. Implement the sutra function and comprehensive tests
-4. Commit your changes (`git commit -am 'Add sutra X.X.X implementation'`)
-5. Push to the branch (`git push origin feature/new-sutra`)
-6. Create a Pull Request
+2. **Read the strategy guide** for proven implementation patterns
+3. Create a feature branch (`git checkout -b feature/new-sutra`)
+4. Implement the sutra function and comprehensive tests
+5. Commit your changes (`git commit -am 'Add sutra X.X.X implementation'`)
+6. Push to the branch (`git push origin feature/new-sutra`)
+7. Create a Pull Request
 
 ## Development Workflow
 

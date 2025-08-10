@@ -12,6 +12,9 @@
 - **[FINAL_REFACTORING_SUMMARY.md](../FINAL_REFACTORING_SUMMARY.md)** - Comprehensive technical implementation details
 - **[SANSKRIT_UTILS_DOCUMENTATION.md](../SANSKRIT_UTILS_DOCUMENTATION.md)** - API reference for shared utilities
 
+### **Development Strategy & Implementation**
+- **[COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md](COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md)** - 📚 **ESSENTIAL** Complete methodology for converting thousands of sutras to JavaScript
+
 ### **Analysis & Audit**
 - **[COMPREHENSIVE_REDUNDANCY_AUDIT.md](../COMPREHENSIVE_REDUNDANCY_AUDIT.md)** - Detailed redundancy analysis results
 - **[DOCUMENTATION_ANALYSIS_REPORT.md](../DOCUMENTATION_ANALYSIS_REPORT.md)** - Documentation cleanup analysis
@@ -147,9 +150,10 @@ panini-sutra-javascript-engine/
 
 ### **For Contributors**
 1. **Getting Started**: See [README.md](../README.md)
-2. **Adding New Sutras**: Use [SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)
-3. **Testing Changes**: Run `npm test` before committing
-4. **Architecture**: Review [SANSKRIT_UTILS_DOCUMENTATION.md](../SANSKRIT_UTILS_DOCUMENTATION.md)
+2. **Sutra Implementation Strategy**: 📚 **READ FIRST** [COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md](COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md)
+3. **Adding New Sutras**: Use [SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)
+4. **Testing Changes**: Run `npm test` before committing
+5. **Architecture**: Review [SANSKRIT_UTILS_DOCUMENTATION.md](../SANSKRIT_UTILS_DOCUMENTATION.md)
 
 ### **For Researchers**
 1. **Implementation Details**: [FINAL_REFACTORING_SUMMARY.md](../FINAL_REFACTORING_SUMMARY.md)
