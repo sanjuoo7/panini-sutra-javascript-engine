@@ -30,7 +30,7 @@
 ### **Template**
 - **[SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)** - Standardized template for sutra documentation
 
-### **Individual Sutras** (59 files)
+### **Individual Sutras** (64 files)
 Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.1: Fundamental Rules**
@@ -58,6 +58,13 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.1.20-1.1.50: Advanced Grammar Rules**
 - **1.1.20-1.1.50** - Various specialized grammar rules
+
+#### **Volume 1.1.61-1.1.65: Elision and Technical Terms**
+- **1.1.61** - प्रत्ययस्य लुक्‌श्लुलुपः (Defines elision terms `luk`, `ślu`, `lup`)
+- **1.1.62** - प्रत्ययलोपे प्रत्ययलक्षणम् (Affix effects remain after elision)
+- **1.1.63** - न लुमताऽङ्गस्य (Exception to 1.1.62 for `luk`, `ślu`, `lup`)
+- **1.1.64** - अचोऽन्त्यादि टि (Defines the technical term `ṭi`)
+- **1.1.65** - अलोऽन्त्यात् पूर्व उपधा (Defines the technical term `upadhā`)
   
 *For complete list and details, see individual sutra README files*
 
