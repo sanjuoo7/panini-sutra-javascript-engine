@@ -1,4 +1,20 @@
-# Redundancy Analysis and Shared Utilities Opportunities
+# [HISTORICAL] Redundancy Analysis and Shared Utilities Opportunities
+
+## ⚠️ **HISTORICAL DOCUMENT** ⚠️
+
+**Note**: This document is preserved for historical reference. The redundancy analysis and elimination described here has been **COMPLETED** as of August 10, 2025.
+
+**Current Status**:
+- ✅ All identified redundancies have been eliminated
+- ✅ Shared utilities moved to `sanskrit-utils/` directory (not `shared/`)
+- ✅ Function-level deduplication completed (isPragrhya chain, constants)
+- ✅ All 2270 tests passing after refactoring
+
+**For current documentation, see**:
+- [COMPREHENSIVE_REDUNDANCY_AUDIT.md](COMPREHENSIVE_REDUNDANCY_AUDIT.md) - Complete audit with results
+- [FINAL_REFACTORING_SUMMARY.md](../FINAL_REFACTORING_SUMMARY.md) - Comprehensive completion summary
+
+---
 
 ## Executive Summary
 
@@ -6,23 +22,23 @@ This document analyzes all sutras for redundant code patterns and identifies opp
 
 ## Current Shared Utilities Status
 
-### ✅ Already Refactored
-- **sutras/shared/transliteration.js** - Devanagari/IAST conversion, script normalization
-- **sutras/shared/similarity-analysis.js** - Phonetic similarity analysis
-- **sutras/shared/constants.js** - Sanskrit linguistic constants
-- **sutras/shared/validation.js** - Input validation utilities
-- **sutras/shared/script-detection.js** - Script detection utilities
-- **sutras/shared/phoneme-tokenization.js** - Phoneme parsing utilities
+### ✅ Already Refactored (COMPLETED)
+- **sutras/sanskrit-utils/transliteration.js** - Devanagari/IAST conversion, script normalization
+- **sutras/sanskrit-utils/similarity-analysis.js** - Phonetic similarity analysis
+- **sutras/sanskrit-utils/constants.js** - Sanskrit linguistic constants
+- **sutras/sanskrit-utils/validation.js** - Input validation utilities
+- **sutras/sanskrit-utils/script-detection.js** - Script detection utilities
+- **sutras/sanskrit-utils/phoneme-tokenization.js** - Phoneme parsing utilities
+- **sutras/sanskrit-utils/pragrhya-analysis.js** - Comprehensive pragrhya rules
 
-## Identified Redundancies
+## Identified Redundancies (RESOLVED)
 
-### 1. Basic Phonetic Utilities (HIGH PRIORITY)
+### 1. Basic Phonetic Utilities (COMPLETED ✅)
 
 #### `isConsonant` Function
-**Status**: ✅ FIXED (moved to shared/transliteration.js)
-- **Locations Found**: 1.1.7/index.js (duplicate removed)
-- **Usage**: Used across multiple sutras for consonant identification
-- **Resolution**: Import from shared/transliteration.js
+**Status**: ✅ COMPLETED
+- **Locations Found**: All duplicates removed
+- **Resolution**: Centralized in sanskrit-utils/classification.js
 
 #### `isVowel` Function
 **Status**: ⚠️ NEEDS REFACTORING

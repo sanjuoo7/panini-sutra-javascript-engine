@@ -1,4 +1,21 @@
-# Sutra Refactoring Guide: Adopting Shared Utilities
+# [HISTORICAL] Sutra Refactoring Guide: Adopting Shared Utilities
+
+## ⚠️ **HISTORICAL DOCUMENT** ⚠️
+
+**Note**: This document is preserved for historical reference. The refactoring described here has been **COMPLETED** as of August 10, 2025. 
+
+**Current Status**: 
+- ✅ All planned refactoring completed
+- ✅ Directory restructured to `sanskrit-utils/` (not `shared-utils.js`)
+- ✅ Function consolidation implemented (pragrhya chain, constants)
+- ✅ All 2270 tests passing
+
+**For current documentation, see**:
+- [FINAL_REFACTORING_SUMMARY.md](../FINAL_REFACTORING_SUMMARY.md)
+- [COMPREHENSIVE_REDUNDANCY_AUDIT.md](../COMPREHENSIVE_REDUNDANCY_AUDIT.md)
+- [SANSKRIT_UTILS_DOCUMENTATION.md](../SANSKRIT_UTILS_DOCUMENTATION.md)
+
+---
 
 ## Date: August 8, 2025
 
