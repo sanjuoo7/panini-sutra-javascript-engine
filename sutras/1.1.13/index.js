@@ -9,6 +9,11 @@
 
 import { detectScript } from '../sanskrit-utils/index.js';
 import { isPragrhya as isPragrhyaExtended } from '../1.1.12/index.js';
+import { 
+  isPragrhya as isPragrhyaShared,
+  isPragrhyaSheAffix as isPragrhyaSheAffixShared,
+  preventsSandhi as preventsSandhiShared
+} from '../sanskrit-utils/pragrhya-analysis.js';
 
 /**
  * Checks if a word ends with the Vedic affix शे which is प्रगृह्य
@@ -21,18 +26,8 @@ export function isPragrhyaSheAffix(word) {
     return false;
   }
 
-  try {
-    const script = detectScript(word);
-    
-    if (script === 'Devanagari') {
-      return word.endsWith('शे');
-    } else {
-      // IAST
-      return word.endsWith('śe');
-    }
-  } catch (error) {
-    return false;
-  }
+  // Use shared implementation
+  return isPragrhyaSheAffixShared(word);
 }
 
 /**
@@ -47,13 +42,8 @@ export function isPragrhya(word, context = {}) {
     return false;
   }
 
-  // Check previous प्रगृह्य definitions (1.1.11-1.1.12)
-  if (isPragrhyaExtended(word, context)) {
-    return true;
-  }
-
-  // Check शे affix (1.1.13)
-  return isPragrhyaSheAffix(word);
+  // Use shared pragrhya analysis, but limit to sutras up to 1.1.13
+  return isPragrhyaShared(word, context, ['1.1.11', '1.1.12', '1.1.13']);
 }
 
 /**
@@ -69,5 +59,5 @@ export function preventsSandhi(firstWord, secondWord, context = {}) {
     return false;
   }
 
-  return isPragrhya(firstWord, context);
+  return preventsSandhiShared(firstWord, secondWord, context);
 }

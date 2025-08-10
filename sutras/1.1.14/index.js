@@ -7,8 +7,13 @@
  * @fileoverview Implementation of Panini's Sutra 1.1.14
  */
 
-import { detectScript, isVowel } from '../sanskrit-utils/index.js';
+import { detectScript } from '../sanskrit-utils/index.js';
 import { isPragrhya as isPragrhyaExtended } from '../1.1.13/index.js';
+import { 
+  isPragrhya as isPragrhyaShared,
+  isPragrhyaSingleVowelParticle as isPragrhyaSingleVowelParticleShared,
+  preventsSandhi as preventsSandhiShared
+} from '../sanskrit-utils/pragrhya-analysis.js';
 
 /**
  * Checks if a word is a single-vowel particle (निपात) that is प्रगृह्य
@@ -22,34 +27,9 @@ export function isPragrhyaSingleVowelParticle(word, isParticle = true) {
     return false;
   }
 
-  try {
-    const script = detectScript(word);
-    
-    // Exception: आङ् is not प्रगृह्य
-    if (script === 'Devanagari' && word === 'आङ्') {
-      return false;
-    }
-    if (script === 'IAST' && word === 'āṅ') {
-      return false;
-    }
-
-    // Check if it's a single vowel
-    if (word.length === 1 && isVowel(word)) {
-      return true;
-    }
-
-    // Handle vowels with anusvāra or visarga in Devanagari
-    if (script === 'Devanagari') {
-      const vowelPart = word.replace(/[ंः]$/, '');
-      return vowelPart.length === 1 && isVowel(vowelPart);
-    }
-
-    // Handle vowels with anusvāra or visarga in IAST
-    const vowelPart = word.replace(/[ṃḥ]$/, '');
-    return vowelPart.length === 1 && isVowel(vowelPart);
-  } catch (error) {
-    return false;
-  }
+  // Use shared implementation with proper context
+  const context = { isParticle: isParticle };
+  return isPragrhyaSingleVowelParticleShared(word, context);
 }
 
 /**
@@ -64,18 +44,8 @@ export function isPragrhya(word, context = {}) {
     return false;
   }
 
-  // Check previous प्रगृह्य definitions (1.1.11-1.1.13)
-  if (isPragrhyaExtended(word, context)) {
-    return true;
-  }
-
-  // Check single-vowel particles (1.1.14)
-  // Only if explicitly marked as particle
-  if (context.isParticle === true) {
-    return isPragrhyaSingleVowelParticle(word, context.isParticle);
-  }
-
-  return false;
+  // Use shared pragrhya analysis, but limit to sutras up to 1.1.14
+  return isPragrhyaShared(word, context, ['1.1.11', '1.1.12', '1.1.13', '1.1.14']);
 }
 
 /**
@@ -91,5 +61,5 @@ export function preventsSandhi(firstWord, secondWord, context = {}) {
     return false;
   }
 
-  return isPragrhya(firstWord, context);
+  return preventsSandhiShared(firstWord, secondWord, context);
 }

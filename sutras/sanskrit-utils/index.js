@@ -39,6 +39,9 @@ export * from './similarity-analysis.js';
 // Transliteration
 export * from './transliteration.js';
 
+// Pragrhya Analysis
+export * from './pragrhya-analysis.js';
+
 // ==================== CONVENIENCE EXPORTS ====================
 
 // Re-export commonly used functions with descriptive names

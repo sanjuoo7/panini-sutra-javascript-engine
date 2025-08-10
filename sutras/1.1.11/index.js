@@ -10,6 +10,29 @@
  */
 
 import { detectScript, isVowel } from '../sanskrit-utils/index.js';
+import { 
+  isPragrhya as isPragrhyaShared,
+  isPragrhyaDualEnding as isPragrhyaDualEndingShared,
+  analyzePragrhya,
+  preventsSandhi as preventsSandhiShared,
+  getPragrhyaExamples as getPragrhyaExamplesShared
+} from '../sanskrit-utils/pragrhya-analysis.js';
+
+/**
+ * Checks if a word is प्रगृह्य according to Sutra 1.1.11 and previous rules
+ * 
+ * @param {string} word - The word or sound to check
+ * @param {Object} context - Grammatical context (number, case, etc.)
+ * @returns {boolean} - True if the sound is प्रगृह्य
+ */
+export function isPragrhya(word, context = {}) {
+  if (!word) {
+    return false;
+  }
+
+  // Use shared pragrhya analysis, but limit to sutras up to 1.1.11
+  return isPragrhyaShared(word, context, ['1.1.11']);
+}
 
 /**
  * Checks if a word ending qualifies as प्रगृह्य according to Sutra 1.1.11
@@ -33,7 +56,7 @@ export function isPragrhyaDualEnding(word, isDual = false) {
       // Check for dual endings in Devanagari: ी (ī), ू (ū), े (e) - diacritic forms
       return ['ी', 'ू', 'े'].includes(ending);
     } else {
-      // IAST script
+      // IAST script or mixed script - check last character
       ending = word.slice(-1);
       // Check for dual endings in IAST: ī, ū, e
       return ['ī', 'ū', 'e'].includes(ending);
@@ -41,27 +64,6 @@ export function isPragrhyaDualEnding(word, isDual = false) {
   } catch (error) {
     return false;
   }
-}
-
-/**
- * General function to check if a sound is प्रगृह्य
- * This function will be extended by other sutras (1.1.12-1.1.19)
- * 
- * @param {string} word - The word or sound to check
- * @param {Object} context - Grammatical context (number, case, etc.)
- * @returns {boolean} - True if the sound is प्रगृह्य
- */
-export function isPragrhya(word, context = {}) {
-  if (!word) {
-    return false;
-  }
-
-  // Sutra 1.1.11: dual case endings in ī, ū, e
-  if (context.number === 'dual') {
-    return isPragrhyaDualEnding(word, true);
-  }
-
-  return false;
 }
 
 /**
@@ -77,7 +79,7 @@ export function preventsSandhi(firstWord, secondWord, context = {}) {
     return false;
   }
 
-  return isPragrhya(firstWord, context);
+  return preventsSandhiShared(firstWord, secondWord, context);
 }
 
 /**

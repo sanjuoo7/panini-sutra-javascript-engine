@@ -234,6 +234,34 @@ export const SanskritWordLists = {
     description: 'Interrogative numerals used with डति suffix'
   },
   
+  // Common Sanskrit affixes for morphological analysis
+  commonAffixes: {
+    pastParticiple: {
+      iast: ['kta', 'ktavatu'],
+      devanagari: ['क्त', 'क्तवतु'],
+      examples: {
+        kta: ['kṛta', 'gata', 'bhukta', 'dṛṣṭa'],
+        ktavatu: ['kṛtavat', 'gatavat', 'bhuktavat']
+      }
+    },
+    absolutive: {
+      iast: ['ktva', 'ya'],
+      devanagari: ['क्त्वा', 'य'],
+      examples: {
+        ktva: ['kṛtvā', 'gatvā', 'bhuktvā'],
+        ya: ['gamy', 'bhujy']
+      }
+    },
+    actionNoun: {
+      iast: ['ghañ', 'ap'],
+      devanagari: ['घञ्', 'अप्'],
+      examples: {
+        ghañ: ['yāga', 'pāka', 'gama'],
+        ap: ['kriyā', 'gati']
+      }
+    }
+  },
+  
   // Default analysis contexts
   defaultContexts: ['educational', 'linguistic_analysis'],
   

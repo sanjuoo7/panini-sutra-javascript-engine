@@ -9,6 +9,11 @@
 
 import { detectScript } from '../sanskrit-utils/script-detection.js';
 import { isPragrhya as isPragrhyaExtended } from '../1.1.14/index.js';
+import { 
+  isPragrhya as isPragrhyaShared,
+  isPragrhyaParticleEndingInO as isPragrhyaParticleEndingInOShared,
+  preventsSandhi as preventsSandhiShared
+} from '../sanskrit-utils/pragrhya-analysis.js';
 
 /**
  * Checks if a particle ending in ओ is प्रगृह्य according to Sutra 1.1.15

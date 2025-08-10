@@ -9,6 +9,12 @@
 
 import { detectScript } from '../sanskrit-utils/index.js';
 import { isPragrhya as isPragrhyaBase } from '../1.1.11/index.js';
+import { 
+  isPragrhya as isPragrhyaShared,
+  isPragrhyaAdasForm as isPragrhyaAdasFormShared,
+  analyzePragrhya,
+  preventsSandhi as preventsSandhiShared
+} from '../sanskrit-utils/pragrhya-analysis.js';
 
 /**
  * Checks if a form of अदस् ending after म् is प्रगृह्य according to Sutra 1.1.12
@@ -21,19 +27,8 @@ export function isPragrhyaAdasForm(word) {
     return false;
   }
 
-  try {
-    const script = detectScript(word);
-    
-    if (script === 'Devanagari') {
-      // Check for forms like अमी, अमू, अमे (exactly "अम" + vowel)
-      return /^अम[ीूे]$/.test(word);
-    } else {
-      // IAST forms like amī, amū, ame (exactly "am" + vowel)
-      return /^am[īūe]$/.test(word);
-    }
-  } catch (error) {
-    return false;
-  }
+  // Use shared implementation
+  return isPragrhyaAdasFormShared(word);
 }
 
 /**
@@ -48,13 +43,8 @@ export function isPragrhya(word, context = {}) {
     return false;
   }
 
-  // Check base प्रगृह्य definition (1.1.11)
-  if (isPragrhyaBase(word, context)) {
-    return true;
-  }
-
-  // Check अदस् forms (1.1.12)
-  return isPragrhyaAdasForm(word);
+  // Use shared pragrhya analysis, but limit to sutras up to 1.1.12
+  return isPragrhyaShared(word, context, ['1.1.11', '1.1.12']);
 }
 
 /**
@@ -70,5 +60,5 @@ export function preventsSandhi(firstWord, secondWord, context = {}) {
     return false;
   }
 
-  return isPragrhya(firstWord, context);
+  return preventsSandhiShared(firstWord, secondWord, context);
 }
