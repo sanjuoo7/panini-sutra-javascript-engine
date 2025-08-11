@@ -29,7 +29,7 @@
 ### **Template**
 - **[SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)** - Standardized template for sutra documentation
 
-### **Individual Sutras** (79 files)
+### **Individual Sutras** (82 files)
 Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.1: Fundamental Rules**
@@ -102,6 +102,9 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.2.22** - पूङः क्त्वा च (अतिदेश: Exception for पुङ् root with सेट् निष्ठा/क्त्वा - prevents कित्)
 - **1.2.23** - नोपधात्थफान्ताद्वा (अतिदेश: Optional exception for न्-उपधा + थ्/फ्-अन्त roots with सेट् क्त्वा)
 - **1.2.24** - वञ्चिलुञ्च्यृतश्च (अतिदेश: Optional exception for वञ्च्/लुञ्च्/यृत् roots with सेट् क्त्वा)
+- **1.2.25** - तृषिमृषिकृशेः काश्यपस्य (अतिदेश: Exception for तृष्/मृष्/कृश् roots with सेट् क्त्वा according to Kashyapa's opinion)
+- **1.2.26** - रलो व्युपधाद्धलादेः संश्च (Complex morphophonological rule for रल्-ending roots with व्युपधा and हल्-initial elements)
+- **1.2.27** - ऊकालोऽज्झ्रस्वदीर्घप्लुतः (संज्ञा: Fundamental vowel duration classification - ह्रस्व/दीर्घ/प्लुत based on ऊकाल measurement)
   
 *For complete list and details, see individual sutra README files*
 
@@ -141,7 +144,7 @@ npm test:coverage
 ```
 
 ### **Test Status**
-- **Total Tests**: 3947 tests
+- **Total Tests**: 4093 tests
 - **Status**: ✅ All passing
 - **Coverage**: Comprehensive coverage across all sutras
 - **Regression Testing**: Validated through all refactoring phases
