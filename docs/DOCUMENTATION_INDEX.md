@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Last Updated**: August 10, 2025  
+**Last Updated**: August 11, 2025  
 **Project**: Panini Sutra JavaScript Engine
 
 ---
@@ -66,12 +66,17 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.1.64** - अचोऽन्त्यादि टि (Defines the technical term `ṭi`)
 - **1.1.65** - अलोऽन्त्यात् पूर्व उपधा (Defines the technical term `upadhā`)
 
-#### **Volume 1.1.66-1.1.70: Meta-Rules and Interpretation**
+#### **Volume 1.1.66-1.1.75: Meta-Rules and Interpretation**
 - **1.1.66** - तस्मिन्निति निर्दिष्टे पूर्वस्य (Locative case defines preceding context)
 - **1.1.67** - तस्मादित्युत्तरस्य (Ablative case defines following context)
 - **1.1.68** - स्वं रूपं शब्दस्याशब्दसंज्ञा (A term denotes its own form)
 - **1.1.69** - अणुदित् सवर्णस्य चाप्रत्ययः (A phoneme can denote its homogeneous variations)
 - **1.1.70** - तपरस्तत्कालस्य (Length restriction for `tapara` vowels)
+- **1.1.71** - आदिरन्त्येन सहेता (First sound with final sound forms a unit)
+- **1.1.72** - येन विधिस्तदन्तस्य (Rule scope determined by specified ending)
+- **1.1.73** - आदिर्वा (Optionally the first sound)
+- **1.1.74** - त्यदादीनामः (Visarga for ty-class initial words)
+- **1.1.75** - एकाच उपदेशेऽनुदात्तत् (Single vowel in instruction is anudātta)
   
 *For complete list and details, see individual sutra README files*
 
