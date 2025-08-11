@@ -221,15 +221,15 @@ The system now provides 554+ utility tests alongside 2777 sutra-specific tests, 
 - **Status**: Successfully refactored to use shared temporal analysis utilities
 - **Improvement**: Cleaner code, better testing, shared functionality
 
-#### Sutra 1.1.71 (आदिरन्त्येन सहेता) 🔄  
-- **Status**: Refactored to use shared pratyāhāra utilities
-- **Issue**: 2/28 tests failing due to इत् marker handling
-- **Next**: Refine pratyāhāra construction algorithm
+#### Sutra 1.1.71 (आदिरन्त्येन सहेता) ✅
+- **Status**: Successfully refactored to use shared pratyāhāra utilities
+- **Tests**: 28/28 tests passing (100%)
+- **Improvement**: Resolved इत् marker handling issues, cleaner code integration
 
-#### Sutra 1.1.72 (येन विधिस्तदन्तस्य) ⏭️
-- **Status**: Ready for refactoring
-- **Utilities**: Rule scope analysis utilities extracted and tested
-- **Next**: Refactor original sutra to use shared utilities
+#### Sutra 1.1.72 (येन विधिस्तदन्तस्य) ✅
+- **Status**: Successfully refactored to use shared rule scope analysis utilities
+- **Tests**: 45/45 tests passing (100%)
+- **Improvement**: Complete integration with shared utilities, enhanced functionality
 
 ### Test Coverage Statistics
 - **Total Utility Tests**: 121 tests (47 + 33 + 41)
