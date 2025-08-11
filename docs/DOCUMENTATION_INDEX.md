@@ -91,6 +91,7 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.2.11** - लिङ्सिचावात्मनेपदेषु (Kit designation for लिङ्/सिच् affixes in Ātmanepada contexts)
 - **1.2.12** - उश्च (Extends kit designation to ऋ-ending roots with लिङ्/सिच् + आत्मनेपद)
 - **1.2.13** - वा गमः (Optional kit designation for गम् root with लिङ्/सिच् + आत्मनेपद)
+- **1.2.14** - हनः सिच् (Kit designation for सिच् affix after हन् root in आत्मनेपद)
   
 *For complete list and details, see individual sutra README files*
 
