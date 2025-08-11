@@ -108,10 +108,10 @@ export function isGhuClassRoot(root) {
   const cleanRoot = root.trim();
   const script = detectScript(cleanRoot);
   
-  // Common घु class roots
+  // Complete घु class roots (all 12 traditional roots)
   const ghuRoots = {
-    'Devanagari': ['हु', 'हू', 'दा', 'धा', 'मा', 'हा', 'गा', 'पा'],
-    'IAST': ['hu', 'hū', 'dā', 'dhā', 'mā', 'hā', 'gā', 'pā']
+    'Devanagari': ['हु', 'हू', 'दा', 'धा', 'दो', 'पा', 'मा', 'चि', 'जि', 'मी', 'नी', 'चे'],
+    'IAST': ['hu', 'hū', 'dā', 'dhā', 'do', 'pā', 'mā', 'ci', 'ji', 'mī', 'nī', 'ce']
   };
   
   const scriptKey = script === 'Devanagari' ? 'Devanagari' : 'IAST';
