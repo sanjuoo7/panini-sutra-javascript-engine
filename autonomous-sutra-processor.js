@@ -22,7 +22,7 @@ const __dirname = path.dirname(__filename);
 
 // Configuration
 const CONFIG = {
-  BATCH_SIZE: 10,                    // Number of sutras per commit
+  BATCH_SIZE: 5,                    // Number of sutras per commit
   MAX_DAILY_SUTRAS: 50,             // Daily limit to prevent overload
   SUTRA_JSON_PATH: path.join(__dirname, "sutras", "enhanced-panini-sutras.json"),
   WORKFLOW_PATH: path.join(__dirname, "workflow.yaml"),
