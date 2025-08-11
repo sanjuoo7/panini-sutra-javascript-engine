@@ -29,7 +29,7 @@
 ### **Template**
 - **[SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)** - Standardized template for sutra documentation
 
-### **Individual Sutras** (76 files)
+### **Individual Sutras** (79 files)
 Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.1: Fundamental Rules**
@@ -99,6 +99,9 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.2.19** - सितवानधिकरणयोः (अतिदेश: Exception for सित्, वान् affixes - prevents कित् for सेट् निष्ठा)
 - **1.2.20** - सुप्यजातौ (अतिदेश: Exception for ऋ-ending words in non-caste formations - prevents कित् for सेट् निष्ठा)  
 - **1.2.21** - वा पदान्तस्य (अतिदेश: Optional exception at word boundaries - prevents कित् for सेट् निष्ठा)
+- **1.2.22** - पूङः क्त्वा च (अतिदेश: Exception for पुङ् root with सेट् निष्ठा/क्त्वा - prevents कित्)
+- **1.2.23** - नोपधात्थफान्ताद्वा (अतिदेश: Optional exception for न्-उपधा + थ्/फ्-अन्त roots with सेट् क्त्वा)
+- **1.2.24** - वञ्चिलुञ्च्यृतश्च (अतिदेश: Optional exception for वञ्च्/लुञ्च्/यृत् roots with सेट् क्त्वा)
   
 *For complete list and details, see individual sutra README files*
 
@@ -127,7 +130,7 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 ### **Test Validation**
 ```bash
-# Run all tests (3152 total)
+# Run all tests (3947 total)
 npm test
 
 # Run specific sutra tests
@@ -138,7 +141,7 @@ npm test:coverage
 ```
 
 ### **Test Status**
-- **Total Tests**: 3152 tests
+- **Total Tests**: 3947 tests
 - **Status**: ✅ All passing
 - **Coverage**: Comprehensive coverage across all sutras
 - **Regression Testing**: Validated through all refactoring phases
