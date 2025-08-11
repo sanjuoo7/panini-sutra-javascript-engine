@@ -430,3 +430,78 @@ describe('Phoneme Tokenization: Comprehensive Integration Tests', () => {
     });
   });
 });
+
+describe('Phoneme Tokenization: Accurate Devanagari Mode', () => {
+  
+  describe('Accurate Mode - Inherent Vowel Handling', () => {
+    
+    test('should add inherent vowels to standalone consonants', () => {
+      expect(tokenizeDevanagariPhonemes('क', { accurate: true })).toEqual(['क', 'अ']);
+      expect(tokenizeDevanagariPhonemes('म', { accurate: true })).toEqual(['म', 'अ']);
+      expect(tokenizeDevanagariPhonemes('न', { accurate: true })).toEqual(['न', 'अ']);
+    });
+
+    test('should add inherent vowels to consonant sequences', () => {
+      expect(tokenizeDevanagariPhonemes('गम', { accurate: true })).toEqual(['ग', 'अ', 'म', 'अ']);
+      expect(tokenizeDevanagariPhonemes('रामायण', { accurate: true })).toEqual(['र', 'ा', 'म', 'ा', 'य', 'अ', 'ण', 'अ']);
+    });
+
+    test('should not add inherent vowels after explicit vowel diacritics', () => {
+      expect(tokenizeDevanagariPhonemes('भू', { accurate: true })).toEqual(['भ', 'ू']);
+      expect(tokenizeDevanagariPhonemes('गीता', { accurate: true })).toEqual(['ग', 'ी', 'त', 'ा']);
+    });
+
+    test('should not add inherent vowels after halanta', () => {
+      expect(tokenizeDevanagariPhonemes('राम्', { accurate: true })).toEqual(['र', 'ा', 'म', '्']);
+      expect(tokenizeDevanagariPhonemes('क्ष', { accurate: true })).toEqual(['क', '्', 'ष', 'अ']);
+    });
+
+    test('should handle consonant clusters correctly', () => {
+      expect(tokenizeDevanagariPhonemes('स्था', { accurate: true })).toEqual(['स', '्', 'थ', 'ा']);
+      expect(tokenizeDevanagariPhonemes('ज्ञ', { accurate: true })).toEqual(['ज', '्', 'ञ', 'अ']);
+    });
+
+    test('should handle anusvara and visarga correctly', () => {
+      expect(tokenizeDevanagariPhonemes('रामं', { accurate: true })).toEqual(['र', 'ा', 'म', 'अ', 'ं']);
+      expect(tokenizeDevanagariPhonemes('रामः', { accurate: true })).toEqual(['र', 'ा', 'म', 'अ', 'ः']);
+      expect(tokenizeDevanagariPhonemes('नमः', { accurate: true })).toEqual(['न', 'अ', 'म', 'अ', 'ः']);
+    });
+
+    test('should preserve independent vowels unchanged', () => {
+      expect(tokenizeDevanagariPhonemes('अ', { accurate: true })).toEqual(['अ']);
+      expect(tokenizeDevanagariPhonemes('आइउ', { accurate: true })).toEqual(['आ', 'इ', 'उ']);
+    });
+  });
+
+  describe('Backward Compatibility Tests', () => {
+    
+    test('should default to legacy behavior when accurate=false', () => {
+      expect(tokenizeDevanagariPhonemes('गम', { accurate: false })).toEqual(['ग', 'म']);
+      expect(tokenizeDevanagariPhonemes('गम')).toEqual(['ग', 'म']); // Default behavior
+    });
+
+    test('should maintain legacy behavior for existing test expectations', () => {
+      expect(tokenizeDevanagariPhonemes('क्ष')).toEqual(['क', '्', 'ष']);
+      expect(tokenizeDevanagariPhonemes('कृष्ण')).toEqual(['क', 'ृ', 'ष', '्', 'ण']);
+    });
+  });
+
+  describe('Integration with tokenizePhonemes wrapper', () => {
+    
+    test('should work with tokenizePhonemes in accurate mode', () => {
+      const result = tokenizePhonemes('गम', { accurate: true });
+      expect(result.phonemes).toEqual(['ग', 'अ', 'म', 'अ']);
+      expect(result.script).toBe('Devanagari');
+      expect(result.count).toBe(4);
+      expect(result.method).toContain('(accurate)');
+    });
+
+    test('should maintain legacy behavior in tokenizePhonemes by default', () => {
+      const result = tokenizePhonemes('गम');
+      expect(result.phonemes).toEqual(['ग', 'म']);
+      expect(result.script).toBe('Devanagari');
+      expect(result.count).toBe(2);
+      expect(result.method).not.toContain('(accurate)');
+    });
+  });
+});

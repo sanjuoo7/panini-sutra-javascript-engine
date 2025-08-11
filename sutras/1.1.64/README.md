@@ -27,13 +27,14 @@ export function getTi(word)
 
 ### Key Features
 - Correctly identifies the `ṭi` portion of a word.
-- Supports both IAST and Devanagari scripts by using the `tokenizePhonemes` utility.
+- Supports both IAST and Devanagari scripts using phonetically accurate tokenization.
 - Handles words with and without final consonants.
 - Gracefully handles edge cases like words with no vowels or invalid inputs.
+- **NEW**: Uses accurate phonetic analysis for Devanagari that properly handles inherent vowels.
 
 ### Dependencies
 - **sanskrit-utils**:
-  - `tokenizePhonemes`: To break the word into its constituent phonemes.
+  - `tokenizePhonemes`: To break the word into its constituent phonemes with accurate mode.
   - `isVowel`: To identify the vowels in the tokenized array.
 
 ## Usage Examples
@@ -47,9 +48,10 @@ console.log(getTi('manas')); // "as"
 console.log(getTi('śak'));  // "ak"
 console.log(getTi('kavi'));  // "i"
 
-// Devanagari examples
-console.log(getTi('मनस्')); // "" (due to tokenizer limitations)
-console.log(getTi('राजन्')); // "ाजन्" (due to tokenizer limitations)
+// Devanagari examples (now phonetically accurate)
+console.log(getTi('मनस्')); // "अस्" (phonetically correct)
+console.log(getTi('शक्'));  // "अक्" (phonetically correct)
+console.log(getTi('राजन्')); // "अन्" (phonetically correct)
 ```
 
 ## Test Coverage
@@ -57,9 +59,14 @@ console.log(getTi('राजन्')); // "ाजन्" (due to tokenizer limit
 **Test File**: `index.test.js`
 **Test Cases**: 17 tests covering:
 - Various IAST words (`śak`, `manas`, `vidvas`, `kavi`, `nadī`, `rājan`).
-- Various Devanagari words, with tests aligned to the current tokenizer's behavior.
+- **Various Devanagari words with phonetically accurate results**.
 - Edge cases such as words with no vowels, empty strings, and non-string inputs.
 - Words with a single vowel and words ending in a vowel.
+
+### Recent Improvements
+- **Fixed Devanagari Tokenizer Issue**: The implementation now uses phonetically accurate tokenization for Devanagari that properly handles inherent vowels ('अ').
+- **Backward Compatibility**: IAST functionality remains unchanged.
+- **Accurate Results**: Devanagari words now return phonetically correct ṭi segments.
 
 ### Running Tests
 ```bash

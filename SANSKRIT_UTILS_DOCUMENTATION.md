@@ -46,12 +46,17 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 **Purpose**: Breaks Sanskrit text into individual phonemes for analysis
 
 **Key Functions**:
-- `tokenizePhonemes(text)` - Auto-detects script and tokenizes
+- `tokenizePhonemes(text, options = {})` - Auto-detects script and tokenizes
 - `tokenizeIastPhonemes(text)` - IAST-specific tokenization
-- `tokenizeDevanagariPhonemes(text)` - Devanagari-specific tokenization
+- `tokenizeDevanagariPhonemes(text, options = {})` - Devanagari-specific tokenization with accuracy modes
 - `analyzePhonemeStructure(text)` - Detailed phonemic analysis
 
-**Use Cases**: Phonological analysis, metre analysis, morpheme segmentation
+**New Features**:
+- **Accurate Mode**: Use `{ accurate: true }` for phonetically correct Devanagari tokenization
+- **Inherent Vowel Handling**: Properly handles inherent 'अ' vowels in Devanagari
+- **Backward Compatibility**: Default mode preserves existing behavior
+
+**Use Cases**: Phonological analysis, metre analysis, morpheme segmentation, grammatical rule application
 
 ### 4. **Vowel Analysis** (`vowel-analysis.js`)
 **Purpose**: Specialized analysis and operations on Sanskrit vowels
@@ -225,15 +230,38 @@ detectScript('राम'); // 'Devanagari'
 detectScript('rāma'); // 'IAST'
 ```
 
-#### `tokenizePhonemes(text: string): string[]`
-**Purpose**: Breaks text into individual phonemes
+#### `tokenizePhonemes(text: string, options?: object): object`
+**Purpose**: Breaks text into individual phonemes with script detection
 **Parameters**:
 - `text` - Text to tokenize
+- `options` - Optional configuration object
+  - `accurate` - Boolean, enables phonetically accurate Devanagari tokenization (default: false)
+**Returns**: Object with phonemes array, script, count, and metadata
+**Example**:
+```javascript
+// Legacy mode (default)
+tokenizePhonemes('राम'); // { phonemes: ['र', 'ा', 'म'], script: 'Devanagari', ... }
+tokenizePhonemes('rāma'); // { phonemes: ['r', 'ā', 'm', 'a'], script: 'IAST', ... }
+
+// Accurate mode (phonetically correct for Devanagari)
+tokenizePhonemes('राम', { accurate: true }); // { phonemes: ['र', 'ा', 'म', 'अ'], script: 'Devanagari', ... }
+```
+
+#### `tokenizeDevanagariPhonemes(text: string, options?: object): string[]`
+**Purpose**: Devanagari-specific phoneme tokenization
+**Parameters**:
+- `text` - Devanagari text to tokenize
+- `options` - Optional configuration object
+  - `accurate` - Boolean, enables phonetically accurate tokenization (default: false)
 **Returns**: Array of phoneme strings
 **Example**:
 ```javascript
-tokenizePhonemes('राम'); // ['र', 'आ', 'म']
-tokenizePhonemes('rāma'); // ['r', 'ā', 'm', 'a']
+// Legacy mode (character-based)
+tokenizeDevanagariPhonemes('मन'); // ['म', 'न']
+
+// Accurate mode (with inherent vowels)
+tokenizeDevanagariPhonemes('मन', { accurate: true }); // ['म', 'अ', 'न', 'अ']
+tokenizeDevanagariPhonemes('राम्', { accurate: true }); // ['र', 'ा', 'म', '्']
 ```
 
 #### `isVrddhi(vowel: string): boolean`

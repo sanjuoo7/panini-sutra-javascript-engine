@@ -28,12 +28,12 @@ describe('Sutra 1.1.64: aco\'ntyādi ṭi', () => {
   });
 
   describe('Devanagari Script', () => {
-    it("should return '' for 'शक्'", () => {
-      expect(getTi('शक्')).toBe('');
+    it("should return 'अक्' for 'शक्'", () => {
+      expect(getTi('शक्')).toBe('अक्');
     });
 
-    it("should return '' for 'मनस्'", () => {
-      expect(getTi('मनस्')).toBe('');
+    it("should return 'अस्' for 'मनस्'", () => {
+      expect(getTi('मनस्')).toBe('अस्');
     });
 
     it("should return 'ि' for 'कवि'", () => {
@@ -44,8 +44,8 @@ describe('Sutra 1.1.64: aco\'ntyādi ṭi', () => {
       expect(getTi('नदी')).toBe('ी');
     });
 
-    it("should return 'ाजन्' for 'राजन्'", () => {
-      expect(getTi('राजन्')).toBe('ाजन्');
+    it("should return 'अन्' for 'राजन्'", () => {
+      expect(getTi('राजन्')).toBe('अन्');
     });
   });
 
@@ -76,7 +76,7 @@ describe('Sutra 1.1.64: aco\'ntyādi ṭi', () => {
 
     it('should handle words ending in a vowel', () => {
       expect(getTi('deva')).toBe('a');
-      expect(getTi('देव')).toBe('ेव');
+      expect(getTi('देव')).toBe('अ'); // Last vowel onwards - the inherent 'a' is the last vowel
     });
   });
 });

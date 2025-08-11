@@ -19,7 +19,7 @@ export function getUpadha(word) {
     return '';
   }
 
-  const tokenizationResult = tokenizePhonemes(word);
+  const tokenizationResult = tokenizePhonemes(word, { accurate: true });
   const phonemes = tokenizationResult ? tokenizationResult.phonemes : [];
 
   if (phonemes.length < 2) {

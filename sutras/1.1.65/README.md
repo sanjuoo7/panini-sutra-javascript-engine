@@ -27,12 +27,13 @@ export function getUpadha(word)
 
 ### Key Features
 - Correctly identifies the penultimate phoneme of a word.
-- Supports both IAST and Devanagari scripts.
+- Supports both IAST and Devanagari scripts using phonetically accurate tokenization.
 - Handles words of different lengths and gracefully fails for words with fewer than two phonemes.
+- **NEW**: Uses accurate phonetic analysis for Devanagari that properly handles inherent vowels.
 
 ### Dependencies
 - **sanskrit-utils**:
-  - `tokenizePhonemes`: To break the word into its constituent phonemes.
+  - `tokenizePhonemes`: To break the word into its constituent phonemes with accurate mode.
 
 ## Usage Examples
 
@@ -45,8 +46,10 @@ console.log(getUpadha('rāj')); // "ā"
 console.log(getUpadha('path')); // "a"
 console.log(getUpadha('bhid')); // "i"
 
-// Devanagari example
-console.log(getUpadha('राज्')); // "ज" (due to tokenizer limitations)
+// Devanagari examples (now phonetically accurate)
+console.log(getUpadha('राज्')); // "ज" (phonetically correct - penultimate phoneme)
+console.log(getUpadha('देव')); // "व" (phonetically correct - penultimate phoneme)
+console.log(getUpadha('भिद्')); // "द" (phonetically correct - penultimate phoneme)
 ```
 
 ## Test Coverage
@@ -54,8 +57,13 @@ console.log(getUpadha('राज्')); // "ज" (due to tokenizer limitations)
 **Test File**: `index.test.js`
 **Test Cases**: 12 tests covering:
 - Various IAST words (`rāj`, `path`, `bhid`, `manas`, `deva`).
-- Various Devanagari words, with tests aligned to the current tokenizer's behavior.
+- **Various Devanagari words with phonetically accurate results**.
 - Edge cases such as words with fewer than two phonemes, and invalid inputs.
+
+### Recent Improvements
+- **Fixed Devanagari Tokenizer Issue**: The implementation now uses phonetically accurate tokenization for Devanagari that properly handles inherent vowels ('अ').
+- **Backward Compatibility**: IAST functionality remains unchanged.
+- **Accurate Results**: Devanagari words now return phonetically correct penultimate phonemes.
 
 ### Running Tests
 ```bash
