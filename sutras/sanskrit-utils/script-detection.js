@@ -15,6 +15,7 @@
 const SCRIPT_PATTERNS = {
   devanagari: /[\u0900-\u097F]/,
   iastDiacritics: /[āīūṛṝḷḹṅñṭḍṇśṣḥṃ]/,
+  iastAccents: /[àáâèéêìíîòóôùúûāàāáāâīìīíīîūùūúūûṛ̀ṛ́ṛ̂ṝ̀ṝ́ṝ̂]|[aeiouāīūṛṝ][́̀̂]/,  // Accented vowels
   basicLatin: /^[a-zA-Z\s]+$/
 };
 
@@ -28,10 +29,11 @@ export function detectScript(text) {
   
   const hasDevanagari = SCRIPT_PATTERNS.devanagari.test(text);
   const hasIAST = SCRIPT_PATTERNS.iastDiacritics.test(text);
+  const hasAccentedVowels = SCRIPT_PATTERNS.iastAccents.test(text);
   
-  if (hasDevanagari && hasIAST) return 'Mixed';
+  if (hasDevanagari && (hasIAST || hasAccentedVowels)) return 'Mixed';
   if (hasDevanagari) return 'Devanagari';
-  if (hasIAST) return 'IAST';
+  if (hasIAST || hasAccentedVowels) return 'IAST';
   
   // If no special characters, assume IAST for basic Latin characters
   return SCRIPT_PATTERNS.basicLatin.test(text) ? 'IAST' : 'Unknown';
