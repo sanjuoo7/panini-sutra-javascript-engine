@@ -29,7 +29,7 @@
 ### **Template**
 - **[SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)** - Standardized template for sutra documentation
 
-### **Individual Sutras** (82 files)
+### **Individual Sutras** (83 files)
 Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.1: Fundamental Rules**
@@ -105,6 +105,7 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.2.25** - तृषिमृषिकृशेः काश्यपस्य (अतिदेश: Exception for तृष्/मृष्/कृश् roots with सेट् क्त्वा according to Kashyapa's opinion)
 - **1.2.26** - रलो व्युपधाद्धलादेः संश्च (Complex morphophonological rule for रल्-ending roots with व्युपधा and हल्-initial elements)
 - **1.2.27** - ऊकालोऽज्झ्रस्वदीर्घप्लुतः (संज्ञा: Fundamental vowel duration classification - ह्रस्व/दीर्घ/प्लुत based on ऊकाल measurement)
+- **1.2.28** - अचश्च (Extension of duration properties: confirms that vowels can have the properties defined in 1.2.27)
   
 *For complete list and details, see individual sutra README files*
 
