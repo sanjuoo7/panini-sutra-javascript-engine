@@ -1,4 +1,13 @@
-import { tokenizePhonemes } from '../sanskrit-utils/index.js';
+import { 
+  tokenizePhonemes,
+  constructPratyahara,
+  getCommonPratyahara,
+  validatePratyahara,
+  getPratyaharaExamples,
+  SHIVA_SUTRAS,
+  SHIVA_SUTRAS_WITH_IT,
+  COMMON_PRATYAHARAS
+} from '../sanskrit-utils/index.js';
 
 /**
  * Sutra 1.1.71: आदिरन्त्येन सहेता
@@ -8,121 +17,52 @@ import { tokenizePhonemes } from '../sanskrit-utils/index.js';
  */
 
 /**
- * Constructs a pratyāhāra (group of letters) based on start and end markers.
- * According to the sutra, a pratyāhāra consists of all letters from the initial letter
- * up to and including the letter before the इत् marker.
- *
+ * Main function implementing Sutra 1.1.71 using shared utilities
  * @param {string} startLetter - The initial letter of the pratyāhāra
  * @param {string} itMarker - The इत् marker letter
- * @param {string[]} alphabet - Array of phonemes to search within
- * @returns {string[]} Array of letters included in the pratyāhāra
+ * @param {Object} context - Additional context
+ * @returns {Object} Complete pratyāhāra analysis
  */
-export function getPratyahara(startLetter, itMarker, alphabet = null) {
-  if (typeof startLetter !== 'string' || typeof itMarker !== 'string') {
-    return [];
+export function sutra1_1_71(startLetter, itMarker, context = {}) {
+  // Input validation
+  if (!startLetter || !itMarker || 
+      typeof startLetter !== 'string' || typeof itMarker !== 'string') {
+    throw new Error('Both start letter and इत् marker must be valid strings');
   }
 
-  if (startLetter.length === 0 || itMarker.length === 0) {
-    return [];
-  }
+  const { customAlphabet = null } = context;
 
-  // Use Śivasūtras with इत् markers as default alphabet
-  const phonemes = alphabet || SHIVA_SUTRAS_WITH_IT;
+  // Use shared pratyāhāra construction utility
+  const result = constructPratyahara(startLetter, itMarker, customAlphabet);
 
-  const startIndex = phonemes.indexOf(startLetter);
-  const itIndex = phonemes.indexOf(itMarker);
-
-  if (startIndex === -1 || itIndex === -1 || startIndex >= itIndex) {
-    return [];
-  }
-
-  // Include all phonemes from start up to (but not including) the इत् marker
-  return phonemes.slice(startIndex, itIndex);
+  return {
+    startLetter,
+    itMarker,
+    pratyahara: result.pratyahara,
+    valid: result.valid,
+    length: result.length,
+    type: result.type,
+    traditional: result.traditional,
+    error: result.error || null,
+    sutraReference: '1.1.71',
+    principle: 'आदिरन्त्येन सहेता - Initial with final इत् denotes the group'
+  };
 }
 
 /**
- * Standard Sanskrit alphabet for pratyāhāra construction (Śivasūtras)
- * These are the 14 Śivasūtras that form the basis of Panini's grammar
- * Each sūtra ends with an इत् letter that is used as a marker
+ * Constructs a pratyāhāra using the shared utility
+ * @param {string} startLetter - The initial letter
+ * @param {string} itMarker - The इत् marker
+ * @param {string[]} alphabet - Custom alphabet (optional)
+ * @returns {string[]} Array of letters in the pratyāhāra
  */
-export const SHIVA_SUTRAS = [
-  // Sūtra 1: अइउण् (a i u ṇ)
-  'a', 'i', 'u',
-  // Sūtra 2: ऋऌक् (ṛ ḷ k)  
-  'ṛ', 'ḷ',
-  // Sūtra 3: एओङ् (e o ṅ)
-  'e', 'o',
-  // Sūtra 4: ऐऔच् (ai au c)
-  'ai', 'au',
-  // Sūtra 5: हयवरट् (h y v r ṭ)
-  'h', 'y', 'v', 'r',
-  // Sūtra 6: लण् (l ṇ) - Note: second ṇ is the इत्
-  'l',
-  // Sūtra 7: ञमङणनम् (ñ m ṅ ṇ n m) - m is the इत्
-  'ñ', 'm', 'ṅ', 'ṇ', 'n',
-  // Sūtra 8: झभञ् (jh bh ñ) - ñ is the इत्
-  'jh', 'bh',
-  // Sūtra 9: घढधष् (gh ḍh dh ṣ) - ṣ is the इत्
-  'gh', 'ḍh', 'dh',
-  // Sūtra 10: जबगडदश् (j b g ḍ d ś) - ś is the इत्
-  'j', 'b', 'g', 'ḍ', 'd',
-  // Sūtra 11: खफछठथचटतव् (kh ph ch ṭh th c ṭ t v) - v is the इत्
-  'kh', 'ph', 'ch', 'ṭh', 'th', 'c', 'ṭ', 't',
-  // Sūtra 12: कपय् (k p y) - y is the इत्
-  'k', 'p',
-  // Sūtra 13: शषसर् (ś ṣ s r) - r is the इत्
-  'ś', 'ṣ', 's',
-  // Sūtra 14: हल् (h l) - l is the इत्
-  'h'
-];
+export function getPratyahara(startLetter, itMarker, alphabet = null) {
+  const result = constructPratyahara(startLetter, itMarker, alphabet);
+  return result.valid ? result.pratyahara : [];
+}
 
 /**
- * Include the इत् markers for pratyāhāra construction
- */
-export const SHIVA_SUTRAS_WITH_IT = [
-  // Sūtra 1: अइउण्
-  'a', 'i', 'u', 'ṇ',
-  // Sūtra 2: ऋऌक्  
-  'ṛ', 'ḷ', 'k',
-  // Sūtra 3: एओङ्
-  'e', 'o', 'ṅ',
-  // Sūtra 4: ऐऔच्
-  'ai', 'au', 'c',
-  // Sūtra 5: हयवरट्
-  'h', 'y', 'v', 'r', 'ṭ',
-  // Sūtra 6: लण्
-  'l', 'ṇ',
-  // Sūtra 7: ञमङणनम्
-  'ñ', 'm', 'ṅ', 'ṇ', 'n', 'm',
-  // Sūtra 8: झभञ्
-  'jh', 'bh', 'ñ',
-  // Sūtra 9: घढधष्
-  'gh', 'ḍh', 'dh', 'ṣ',
-  // Sūtra 10: जबगडदश्
-  'j', 'b', 'g', 'ḍ', 'd', 'ś',
-  // Sūtra 11: खफछठथचटतव्
-  'kh', 'ph', 'ch', 'ṭh', 'th', 'c', 'ṭ', 't', 'v',
-  // Sūtra 12: कपय्
-  'k', 'p', 'y',
-  // Sūtra 13: शषसर्
-  'ś', 'ṣ', 's', 'r',
-  // Sūtra 14: हल्
-  'h', 'l'
-];
-
-/**
- * Common pratyāhāras used in Paninian grammar
- */
-export const COMMON_PRATYAHARAS = {
-  'ac': ['a', 'i', 'u', 'ṛ', 'ḷ', 'e', 'o', 'ai', 'au'], // All vowels (अच्)
-  'hal': ['h', 'y', 'v', 'r', 'l', 'ñ', 'm', 'ṅ', 'ṇ', 'n', 'jh', 'bh', 'gh', 'ḍh', 'dh', 'j', 'b', 'g', 'ḍ', 'd', 'kh', 'ph', 'ch', 'ṭh', 'th', 'c', 'ṭ', 't', 'k', 'p', 'ś', 'ṣ', 's', 'h'], // All consonants (हल्)
-  'ik': ['i', 'u', 'ṛ', 'ḷ'], // इक् vowels
-  'aṇ': ['a', 'i', 'u', 'ṛ', 'ḷ', 'e', 'o', 'ai', 'au', 'h', 'y', 'v', 'r'], // अण् (vowels + semivowels)
-};
-
-/**
- * Gets a pratyāhāra from the standard Śivasūtras
- *
+ * Gets a pratyāhāra from the standard Śivasūtras using shared utility
  * @param {string} startLetter - The initial letter
  * @param {string} itMarker - The इत् marker
  * @returns {string[]} The pratyāhāra letters
@@ -132,24 +72,40 @@ export function getShivaSutraPratyahara(startLetter, itMarker) {
 }
 
 /**
- * Gets a well-known pratyāhāra by name
- *
- * @param {string} name - The name of the pratyāhāra (e.g., 'ac', 'hal', 'ik', 'aṇ')
- * @returns {string[]} The letters in the pratyāhāra, or empty array if not found
+ * Gets a well-known pratyāhāra by name using shared utility
+ * @param {string} name - The name of the pratyāhāra
+ * @returns {string[]} The letters in the pratyāhāra
  */
-export function getCommonPratyahara(name) {
-  return COMMON_PRATYAHARAS[name] || [];
+export function getCommonPratyaharaLegacy(name) {
+  const result = getCommonPratyahara(name);
+  return result.valid ? result.pratyahara : [];
 }
 
 /**
- * Validates if a given letter sequence forms a valid pratyāhāra
- *
+ * Validates if a given letter sequence forms a valid pratyāhāra using shared utility
  * @param {string} startLetter - The proposed start letter
  * @param {string} itMarker - The proposed इत् marker
- * @param {string[]} alphabet - The alphabet to validate against (defaults to Śivasūtras)
+ * @param {string[]} alphabet - The alphabet to validate against (optional)
  * @returns {boolean} True if it forms a valid pratyāhāra
  */
 export function isValidPratyahara(startLetter, itMarker, alphabet = null) {
-  const pratyahara = getPratyahara(startLetter, itMarker, alphabet);
-  return pratyahara.length > 0;
+  const result = validatePratyahara(startLetter, itMarker, alphabet);
+  return result.valid;
 }
+
+/**
+ * Get examples demonstrating this sutra using shared utility
+ * @returns {Object} Traditional examples
+ */
+export function getExamples() {
+  return getPratyaharaExamples();
+}
+
+// Re-export shared constants for backward compatibility
+export { 
+  SHIVA_SUTRAS,
+  SHIVA_SUTRAS_WITH_IT,
+  COMMON_PRATYAHARAS
+};
+
+export default sutra1_1_71;

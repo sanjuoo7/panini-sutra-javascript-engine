@@ -1,12 +1,15 @@
 import { 
-  areSavarna,
   isAnLetter,
   isUditLetter,
   isApratyayaBySavarna,
   analyzeSavarnaRelationship,
-  getSavarnaGroup,
-  getSavarnaApratyayaExamples
+  getSavarnaGroupForPhoneme,
+  getSavarnaApratyayaExamples,
+  testSavarnaApratyayaRule
 } from './index.js';
+
+// Import shared utilities directly for testing
+import { areSavarna, getSavarnaGroup } from '../sanskrit-utils/index.js';
 
 describe('Sutra 1.1.69: अणुदित् सवर्णस्य चाप्रत्ययः', () => {
   describe('areSavarna function', () => {
@@ -258,7 +261,7 @@ describe('Sutra 1.1.69: अणुदित् सवर्णस्य चाप
         expect(result.isApratyaya).toBe(true);
         expect(result.savarnaWithAn).toContain('अ');
         expect(result.savarnaWithAn).toContain('आ');
-        expect(result.articulationPlace).toContain('कण्ठ्य');
+        expect(result.articulationPlace).toContain('guttural');
         expect(result.reasoning).toContain('सवर्ण with अण् letters: अ, आ');
         expect(result.sutraReference).toBe('1.1.69');
       });
@@ -281,7 +284,7 @@ describe('Sutra 1.1.69: अणुदित् सवर्णस्य चाप
         expect(result.savarnaWithAn).toContain('ई');
         expect(result.savarnaWithAn).toContain('ए');
         expect(result.savarnaWithAn).toContain('ऐ');
-        expect(result.articulationPlace).toContain('तालव्य');
+        expect(result.articulationPlace).toContain('palatal');
       });
     });
 
@@ -291,7 +294,7 @@ describe('Sutra 1.1.69: अणुदित् सवर्णस्य चाप
         expect(result.isApratyaya).toBe(true);
         expect(result.savarnaWithAn).toContain('ऋ');
         expect(result.savarnaWithAn).toContain('ॠ');
-        expect(result.articulationPlace).toContain('मूर्धन्य');
+        expect(result.articulationPlace).toContain('retroflex');
       });
     });
 
@@ -301,7 +304,7 @@ describe('Sutra 1.1.69: अणुदित् सवर्णस्य चाप
         expect(result.isApratyaya).toBe(true);
         // Dentals don't have direct अण् सवर्ण but have उदित् relationships
         expect(result.savarnaWithUdit.length > 0 || result.savarnaWithAn.length > 0).toBe(true);
-        expect(result.articulationPlace).toContain('दन्त्य');
+        expect(result.articulationPlace).toContain('dental');
       });
     });
 
@@ -313,7 +316,7 @@ describe('Sutra 1.1.69: अणुदित् सवर्णस्य चाप
         expect(result.savarnaWithAn).toContain('ऊ');
         expect(result.savarnaWithAn).toContain('ओ');
         expect(result.savarnaWithAn).toContain('औ');
-        expect(result.articulationPlace).toContain('ओष्ठ्य');
+        expect(result.articulationPlace).toContain('labial');
       });
     });
 
@@ -334,10 +337,10 @@ describe('Sutra 1.1.69: अणुदित् सवर्णस्य चाप
     });
   });
 
-  describe('getSavarnaGroup function', () => {
+  describe('getSavarnaGroupForPhoneme function', () => {
     describe('Devanagari सवर्ण groups', () => {
       it('should return complete guttural group', () => {
-        const group = getSavarnaGroup('क');
+        const group = getSavarnaGroupForPhoneme('क');
         expect(group).toContain('क');
         expect(group).toContain('ख');
         expect(group).toContain('ग');
@@ -348,7 +351,7 @@ describe('Sutra 1.1.69: अणुदित् सवर्णस्य चाप
       });
 
       it('should return complete palatal group', () => {
-        const group = getSavarnaGroup('च');
+        const group = getSavarnaGroupForPhoneme('च');
         expect(group).toContain('च');
         expect(group).toContain('छ');
         expect(group).toContain('ज');
@@ -361,7 +364,7 @@ describe('Sutra 1.1.69: अणुदित् सवर्णस्य चाप
       });
 
       it('should return complete labial group', () => {
-        const group = getSavarnaGroup('प');
+        const group = getSavarnaGroupForPhoneme('प');
         expect(group).toContain('प');
         expect(group).toContain('फ');
         expect(group).toContain('ब');
@@ -376,7 +379,7 @@ describe('Sutra 1.1.69: अणुदित् सवर्णस्य चाप
 
     describe('IAST सवर्ण groups', () => {
       it('should return IAST guttural group', () => {
-        const group = getSavarnaGroup('k');
+        const group = getSavarnaGroupForPhoneme('k');
         expect(group).toContain('k');
         expect(group).toContain('kh');
         expect(group).toContain('g');
@@ -389,14 +392,14 @@ describe('Sutra 1.1.69: अणुदित् सवर्णस्य चाप
 
     describe('Error handling', () => {
       it('should return empty array for invalid inputs', () => {
-        expect(getSavarnaGroup('')).toEqual([]);
-        expect(getSavarnaGroup(null)).toEqual([]);
-        expect(getSavarnaGroup(undefined)).toEqual([]);
-        expect(getSavarnaGroup(123)).toEqual([]);
+        expect(getSavarnaGroupForPhoneme('')).toBe(null);
+        expect(getSavarnaGroupForPhoneme(null)).toBe(null);
+        expect(getSavarnaGroupForPhoneme(undefined)).toBe(null);
+        expect(getSavarnaGroupForPhoneme(123)).toBe(null);
       });
 
       it('should return empty array for unknown phonemes', () => {
-        expect(getSavarnaGroup('xyz')).toEqual([]);
+        expect(getSavarnaGroupForPhoneme('xyz')).toBe(null);
       });
     });
   });
@@ -452,7 +455,7 @@ describe('Sutra 1.1.69: अणुदित् सवर्णस्य चाप
       testPhonemes.forEach(phoneme => {
         const isApratyaya = isApratyayaBySavarna(phoneme);
         const analysis = analyzeSavarnaRelationship(phoneme);
-        const savarnaGroup = getSavarnaGroup(phoneme);
+        const savarnaGroup = getSavarnaGroupForPhoneme(phoneme);
         
         expect(analysis.isApratyaya).toBe(isApratyaya);
         expect(savarnaGroup.length > 0).toBe(true);

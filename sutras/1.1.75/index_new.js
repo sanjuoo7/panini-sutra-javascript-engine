@@ -15,10 +15,9 @@
 
 import { 
   isVrddhamEastern, 
-  isEngVowel as utilityIsEngVowel, 
+  isEngVowel, 
   analyzeVrddham, 
-  getAllEngVowels as utilityGetAllEngVowels,
-  analyzeFirstVowel as utilityAnalyzeFirstVowel
+  getAllEngVowels 
 } from '../sanskrit-utils/vrddham-analysis.js';
 
 /**
@@ -28,17 +27,7 @@ import {
  * @returns {boolean} True if phoneme is e or o, false otherwise
  */
 export function isEngVowel(phoneme) {
-  return utilityIsEngVowel(phoneme);
-}
-
-/**
- * Finds the first vowel in a word and checks if it's an एङ् vowel.
- * 
- * @param {string} word - The word to analyze
- * @returns {Object} Analysis result with first vowel information
- */
-export function analyzeFirstVowel(word) {
-  return utilityAnalyzeFirstVowel(word);
+  return isEngVowel(phoneme);
 }
 
 /**
@@ -73,13 +62,8 @@ export function analyzeEasternVrddham(word, context = {}) {
     linguisticNotes: [],
     traditionalNote: "This sutra applies only in the Eastern grammatical tradition",
     relatedRules: ["1.1.73", "1.1.74"], // Other वृद्धम् rules
-    engVowels: utilityGetAllEngVowels(),
-    sutraReference: '1.1.75',
-    // Additional fields expected by tests
-    firstVowel: null,
-    isEngVowel: false,
-    tradition: null,
-    alternativeClassification: null
+    engVowels: getAllEngVowels(),
+    sutraReference: '1.1.75'
   };
 
   // Handle invalid inputs
@@ -89,40 +73,29 @@ export function analyzeEasternVrddham(word, context = {}) {
   }
 
   const analysis = analyzeVrddham(word, context);
-  const vowelAnalysis = utilityAnalyzeFirstVowel(word);
   
   result.script = analysis.script;
   result.isVrddhamByEasternRule = analysis.classifications.eastern;
   result.sutraApplies = analysis.classifications.eastern;
   result.category = analysis.classifications.eastern ? 'eastern-regional-vrddham' : null;
   result.confidence = analysis.classifications.eastern ? 0.8 : 0.0;
-  result.firstVowel = vowelAnalysis.firstVowel;
-  result.isEngVowel = vowelAnalysis.isEngVowel;
-  
-  // Determine tradition
-  const isEasternEnabled = context.tradition === 'eastern' || 
-                          context.region === 'prācya' || 
-                          context.allowEasternRules || 
-                          context.includeOptionalRules;
-  result.tradition = isEasternEnabled ? 'eastern' : 'standard';
 
   if (analysis.classifications.eastern) {
-    result.reasoning.push(`First vowel '${vowelAnalysis.firstVowel}' is एङ् (e/o)`);
-    result.reasoning.push('Eastern grammatical tradition allows this classification');
-    result.linguisticNotes.push('According to Eastern grammarians (प्राच्याः)');
-    result.linguisticNotes.push('This is a regional/dialectal extension to वृद्धम् definition');
+    result.reasoning.push('Word qualifies as वृद्धम् under Eastern tradition - first vowel is एङ्');
+    result.linguisticNotes.push('Regional/dialectal classification as वृद्धम्');
+    result.linguisticNotes.push('Recognized only in Eastern grammatical tradition');
   } else {
-    if (vowelAnalysis.isEngVowel && !isEasternEnabled) {
-      result.reasoning.push(`First vowel '${vowelAnalysis.firstVowel}' is एङ् (e/o)`);
-      result.reasoning.push('But Eastern grammatical tradition not specified in context');
-      result.linguisticNotes.push('Would qualify as वृद्धम् under Eastern tradition');
-      result.alternativeClassification = 'vrddham-if-eastern-tradition';
-    } else if (vowelAnalysis.firstVowel && !vowelAnalysis.isEngVowel) {
-      result.reasoning.push(`First vowel '${vowelAnalysis.firstVowel}' is not एङ् (e/o)`);
+    const isEasternEnabled = context.tradition === 'eastern' || 
+                            context.region === 'prācya' || 
+                            context.allowEasternRules || 
+                            context.includeOptionalRules;
+    
+    if (!isEasternEnabled) {
+      result.reasoning.push('Eastern tradition not enabled - rule does not apply');
     } else {
       result.reasoning.push('Word does not have एङ् vowel as first vowel');
     }
-    result.linguisticNotes.push('Does not qualify for वृद्धम् under Sutra 1.1.75');
+    result.linguisticNotes.push('Does not qualify for वृद्धम् under Eastern rule');
   }
 
   return result;
@@ -134,7 +107,7 @@ export function analyzeEasternVrddham(word, context = {}) {
  * @returns {Object} Object containing all एङ् vowels
  */
 export function getAllEngVowels() {
-  return utilityGetAllEngVowels();
+  return getAllEngVowels();
 }
 
 /**

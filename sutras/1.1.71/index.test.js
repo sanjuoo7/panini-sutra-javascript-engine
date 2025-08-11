@@ -1,8 +1,10 @@
 import { 
+  sutra1_1_71,
   getPratyahara, 
   getShivaSutraPratyahara, 
-  getCommonPratyahara, 
+  getCommonPratyaharaLegacy as getCommonPratyahara, 
   isValidPratyahara,
+  getExamples,
   SHIVA_SUTRAS,
   SHIVA_SUTRAS_WITH_IT,
   COMMON_PRATYAHARAS 
@@ -205,6 +207,44 @@ describe('Sutra 1.1.71: आदिरन्त्येन सहेता', () =
       expect(result).toContain('i');
       expect(result).toContain('u');
       expect(result).not.toContain('ṇ'); // इत् marker should be excluded
+    });
+  });
+
+  describe('Main sutra function - sutra1_1_71', () => {
+    it('should return complete analysis using shared utilities', () => {
+      const result = sutra1_1_71('a', 'c');
+      
+      expect(result).toHaveProperty('startLetter', 'a');
+      expect(result).toHaveProperty('itMarker', 'c');
+      expect(result).toHaveProperty('pratyahara');
+      expect(result).toHaveProperty('valid');
+      expect(result).toHaveProperty('sutraReference', '1.1.71');
+      expect(result).toHaveProperty('principle');
+      
+      expect(result.valid).toBe(true);
+      expect(result.pratyahara).toContain('a');
+      expect(result.pratyahara).toContain('i');
+      expect(result.pratyahara).toContain('u');
+    });
+
+    it('should handle invalid inputs gracefully', () => {
+      expect(() => sutra1_1_71(null, 'c')).toThrow();
+      expect(() => sutra1_1_71('a', null)).toThrow();
+      expect(() => sutra1_1_71('', 'c')).toThrow();
+    });
+
+    it('should include type information for traditional pratyāhāras', () => {
+      const result = sutra1_1_71('a', 'c');
+      expect(result).toHaveProperty('type');
+      expect(result).toHaveProperty('traditional');
+    });
+  });
+
+  describe('Examples', () => {
+    it('should provide traditional examples', () => {
+      const examples = getExamples();
+      expect(examples).toBeDefined();
+      expect(typeof examples).toBe('object');
     });
   });
 });

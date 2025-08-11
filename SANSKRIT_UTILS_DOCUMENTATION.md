@@ -99,6 +99,57 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 ### 7. **Transliteration** (`transliteration.js`)
 **Purpose**: Converts between IAST and Devanagari scripts
 
+### 8. **Conjunct Analysis** (`conjunct-analysis.js`)
+**Purpose**: Comprehensive analysis of Sanskrit conjunct consonants (saṃyoga)
+
+**Key Functions**:
+- `hasConjunct(consonantSequence)` - Detects presence of conjunct patterns
+- `findConjuncts(text)` - Finds all conjunct patterns with positions
+- `isConjunctPattern(pattern, script)` - Validates specific conjunct patterns
+- `analyzeConjunctUsage(text)` - Provides detailed conjunct statistics
+- `getConjunctPatterns(script)` - Returns conjunct pattern database
+- `validateConjunctPattern(pattern, script)` - Validates conjunct format
+
+**Pattern Database**: 150+ conjunct patterns for both Devanagari and IAST scripts
+
+**Use Cases**: Phonological analysis, morphological operations, grammatical rule application (especially sutras 1.2.5)
+
+### 9. **Verb Analysis** (`verb-analysis.js`)
+**Purpose**: Analysis of Sanskrit verbal affixes and forms
+
+**Key Functions**:
+- `isLitAffix(affix)` - Identifies perfect tense (liṭ) affixes
+- `isSarvadhatuka(affix)` - Identifies primary verbal (sārvādhātuka) affixes
+- `isPitAffix(affix)` - Identifies pit-designated affixes
+- `analyzeAffix(affix)` - Comprehensive affix analysis
+- `getAffixesByType(type, script)` - Returns affix sets by classification
+- `validateAffix(affix)` - Validates affix format and recognition
+- `findVerbalAffixes(text)` - Finds verbal affixes in text
+
+**Affix Databases**: Complete sets of liṭ, sārvādhātuka, and pit affixes for both scripts
+
+**Use Cases**: Verbal morphology, tense identification, grammatical analysis (sutras 1.2.4, 1.2.5, 1.2.6)
+
+### 10. **Root Analysis** (`root-analysis.js`)
+**Purpose**: Analysis of Sanskrit verbal roots (dhātu) with variant recognition
+
+**Key Functions**:
+- `isVijRoot(root)`, `isUrnaRoot(root)`, `isIndhiRoot(root)`, `isBhuRoot(root)` - Specific root identification
+- `isIndhiBhavatiRoot(root)` - Combined identification for sutras 1.2.6
+- `getRootVariants(root)` - Returns all variants of a root
+- `normalizeRoot(root)` - Normalizes variants to base form
+- `analyzeRoot(root)` - Comprehensive root analysis with metadata
+- `hasItAugment(root)` - Detects iṭ-augment patterns
+- `findSpecificRoots(text)` - Finds specific roots in text
+- `validateRoot(root)` - Validates root format and recognition
+
+**Root Database**: Specific roots (विज्, ऊर्ण, इन्धि, भू) with variants, meanings, and sutra references
+
+**Use Cases**: Root identification, morphological analysis, grammatical rule application (sutras 1.2.2, 1.2.3, 1.2.6)
+
+### 11. **Transliteration** (`transliteration.js`)
+**Purpose**: Converts between IAST and Devanagari scripts
+
 **Key Functions**:
 - `iastToDevanagari(text)` - IAST → Devanagari conversion
 - `devanagariToIast(text)` - Devanagari → IAST conversion
@@ -214,6 +265,45 @@ const vowelAnalysis = analyzeVowel('आ');
 ```
 
 ---
+
+## Recent Refactoring (December 2024)
+
+**Major Utility Extraction Completed**: Successfully extracted shared patterns from sutras 1.1.67-1.2.6 into comprehensive utility modules:
+
+### Newly Added Modules (December 2024)
+
+#### conjunct-analysis.js
+- **Purpose**: Comprehensive analysis of Sanskrit conjunct consonants (saṃyoga)
+- **Functions**: `hasConjunct()`, `findConjuncts()`, `isConjunctPattern()`, `analyzeConjunctUsage()`
+- **Data**: 150+ conjunct patterns for both Devanagari and IAST scripts
+- **Used by**: Sutras 1.2.5 and other rules dealing with consonant clusters
+- **Test Coverage**: 30 comprehensive test cases
+
+#### verb-analysis.js  
+- **Purpose**: Analysis of Sanskrit verbal affixes and forms
+- **Functions**: `isLitAffix()`, `isSarvadhatuka()`, `isPitAffix()`, `analyzeAffix()`
+- **Data**: Complete affix databases (liṭ, sārvādhātuka, pit affixes)
+- **Used by**: Sutras 1.2.4, 1.2.5 and other verbal morphology rules
+- **Test Coverage**: 39 comprehensive test cases
+
+#### root-analysis.js
+- **Purpose**: Analysis of Sanskrit verbal roots with variant recognition  
+- **Functions**: `isVijRoot()`, `isUrnaRoot()`, `isIndhiRoot()`, `isBhuRoot()`, `analyzeRoot()`
+- **Data**: Specific root databases with variants and meanings for sutras 1.2.2, 1.2.3, 1.2.6
+- **Used by**: Sutras 1.2.2 (विज्), 1.2.3 (ऊर्ण), 1.2.6 (इन्धि/भू)
+- **Test Coverage**: 47 comprehensive test cases
+
+### Refactored Sutras
+
+The following sutras have been successfully refactored to use shared utilities:
+
+- **Sutra 1.2.2**: Now uses `isVijRoot()` from root-analysis utility
+- **Sutra 1.2.3**: Now uses `isUrnaRoot()` from root-analysis utility  
+- **Sutra 1.2.4**: Now uses `isSarvadhatuka()` and `isPitAffix()` from verb-analysis utility
+- **Sutra 1.2.5**: Now uses `hasConjunct()` and `isLitAffix()` from conjunct-analysis and verb-analysis utilities
+- **Sutra 1.2.6**: Now uses `isIndhiRoot()`, `isBhuRoot()` from root-analysis utility
+
+All refactored sutras maintain backward compatibility through re-exports and function aliases.
 
 ## API Reference
 

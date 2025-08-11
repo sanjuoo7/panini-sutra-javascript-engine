@@ -13,60 +13,22 @@
  * This is a lexical (word-list based) extension to the phonetic वृद्धम् definition.
  */
 
-import { detectScript } from '../sanskrit-utils/script-detection.js';
-import { validateSanskritWord } from '../sanskrit-utils/validation.js';
-
-// Traditional त्यदादि words based on Sanskrit commentaries
-// These are words that get वृद्धम् designation lexically, not phonetically
-const TYAD_ADI_WORDS = {
-  iast: [
-    'tyad',      // त्यद् - archaic/dialectal form related to तद्
-    'tyat',      // त्यत् - variant of त्यद्
-    'tyena',     // त्येन - instrumental of त्यद्
-    'tyed',      // त्येद् - archaic variant
-    'tysya',     // त्यस्य - genitive form
-    'tye',       // त्ये - dual/locative forms
-    // Additional traditional forms from commentaries
-    'tyam',      // त्यम् - accusative neuter
-    'tyā',       // त्या - instrumental feminine
-    'tyāni',     // त्यानि - plural neuter nominative
-  ],
-  devanagari: [
-    'त्यद्',      // त्यद्
-    'त्यत्',      // त्यत्
-    'त्येन',      // त्येन
-    'त्येद्',      // त्येद्
-    'त्यस्य',     // त्यस्य
-    'त्ये',       // त्ये
-    'त्यम्',      // त्यम्
-    'त्या',       // त्या
-    'त्यानि',     // त्यानि
-  ]
-};
+import { 
+  isVrddhamLexical, 
+  isTyadAdi as utilityIsTyadAdi, 
+  analyzeVrddham, 
+  getAllTyadAdiWords as utilityGetAllTyadAdiWords
+} from '../sanskrit-utils/vrddham-analysis.js';
 
 /**
  * Checks if a word is in the त्यदादि list and should be classified as वृद्धम्
  * according to Sutra 1.1.74.
  * 
  * @param {string} word - The word to check (IAST or Devanagari)
- * @returns {boolean} True if the word is in त्यदादि list, false otherwise
+ * @returns {boolean} True if the word is in त्यदादि list
  */
-function isTyadAdi(word) {
-  if (!word || typeof word !== 'string') {
-    return false;
-  }
-
-  // Basic validation
-  const validation = validateSanskritWord(word);
-  if (!validation.isValid) {
-    return false;
-  }
-
-  const trimmedWord = word.trim();
-  
-  // Check both scripts
-  return TYAD_ADI_WORDS.iast.includes(trimmedWord) || 
-         TYAD_ADI_WORDS.devanagari.includes(trimmedWord);
+export function isTyadAdi(word) {
+  return utilityIsTyadAdi(word);
 }
 
 /**
@@ -77,12 +39,8 @@ function isTyadAdi(word) {
  * @param {Object} [context={}] - Optional analysis context
  * @returns {boolean} True if word is वृद्धम् by Sutra 1.1.74, false otherwise
  */
-function isVrddhamByTyadAdi(word, context = {}) {
-  if (!word || typeof word !== 'string') {
-    return false;
-  }
-
-  return isTyadAdi(word);
+export function isVrddhamByTyadAdi(word, context = {}) {
+  return isVrddhamLexical(word);
 }
 
 /**
@@ -93,36 +51,37 @@ function isVrddhamByTyadAdi(word, context = {}) {
  * @param {Object} [context={}] - Optional analysis context
  * @returns {Object} Analysis result with detailed information
  */
-function analyzeTyadAdiVrddham(word, context = {}) {
+export function analyzeTyadAdiVrddham(word, context = {}) {
   const result = {
     word: word,
-    script: detectScript(word),
+    script: null,
     isVrddhamByTyadAdi: false,
+    sutraApplies: false,
     category: null,
-    confidence: 0,
+    confidence: 0.0,
     reasoning: [],
     linguisticNotes: [],
+    traditionalNote: "This sutra extends वृद्धम् classification to specific pronominal forms based on lexical criteria",
+    relatedRules: ["1.1.73", "1.1.75"], // Other वृद्धम् rules
+    tyadAdiWords: utilityGetAllTyadAdiWords(),
     sutraReference: '1.1.74'
   };
 
-  if (!word || typeof word !== 'string') {
+  // Handle invalid inputs
+  if (!word || typeof word !== 'string' || word.trim() === '') {
     result.reasoning.push('Invalid input: word must be a non-empty string');
     return result;
   }
 
-  const validation = validateSanskritWord(word);
-  if (!validation.isValid) {
-    result.reasoning.push(`Invalid Sanskrit word: ${validation.message}`);
-    return result;
-  }
+  const analysis = analyzeVrddham(word, context);
+  
+  result.script = analysis.script;
+  result.isVrddhamByTyadAdi = analysis.classifications.lexical;
+  result.sutraApplies = analysis.classifications.lexical;
+  result.category = analysis.classifications.lexical ? 'tyad-adi-pronoun' : null;
+  result.confidence = analysis.classifications.lexical ? 1.0 : 0.0;
 
-  const trimmedWord = word.trim();
-
-  // Check if word is in त्यदादि list
-  if (isTyadAdi(trimmedWord)) {
-    result.isVrddhamByTyadAdi = true;
-    result.category = 'tyad-adi-pronoun';
-    result.confidence = 1.0;
+  if (analysis.classifications.lexical) {
     result.reasoning.push('Word found in traditional त्यदादि list');
     result.linguisticNotes.push('Classified as वृद्धम् lexically, not phonetically');
     result.linguisticNotes.push('Traditional pronominal form with वृद्धम् designation');
@@ -139,18 +98,6 @@ function analyzeTyadAdiVrddham(word, context = {}) {
  * 
  * @returns {Object} Object containing all त्यदादि words in both scripts
  */
-function getAllTyadAdiWords() {
-  return {
-    iast: [...TYAD_ADI_WORDS.iast],
-    devanagari: [...TYAD_ADI_WORDS.devanagari],
-    combined: [...TYAD_ADI_WORDS.iast, ...TYAD_ADI_WORDS.devanagari]
-  };
+export function getAllTyadAdiWords() {
+  return utilityGetAllTyadAdiWords();
 }
-
-// Export all functions
-export {
-  isTyadAdi,
-  isVrddhamByTyadAdi,
-  analyzeTyadAdiVrddham,
-  getAllTyadAdiWords
-};

@@ -42,6 +42,36 @@ export * from './transliteration.js';
 // Pragrhya Analysis
 export * from './pragrhya-analysis.js';
 
+// Conjunct Analysis
+export * from './conjunct-analysis.js';
+
+// Verb Analysis
+export * from './verb-analysis.js';
+
+// Rule Scope Analysis
+export * from './rule-scope-analysis.js';
+
+// Vṛddham Analysis
+export * from './vrddham-analysis.js';
+
+// Phonetic Classification
+export * from './phonetic-classification.js';
+
+// Metalinguistic Analysis
+export * from './metalinguistic-analysis.js';
+
+// Temporal Analysis
+export * from './temporal-analysis.js';
+
+// Pratyāhāra Construction
+export * from './pratyahara-construction.js';
+
+// Rule Scope Analysis
+export * from './rule-scope-analysis.js';
+
+// Root Analysis
+export * from './root-analysis.js';
+
 // ==================== CONVENIENCE EXPORTS ====================
 
 // Re-export commonly used functions with descriptive names

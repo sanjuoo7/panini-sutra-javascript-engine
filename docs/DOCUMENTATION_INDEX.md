@@ -30,7 +30,7 @@
 ### **Template**
 - **[SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)** - Standardized template for sutra documentation
 
-### **Individual Sutras** (69 files)
+### **Individual Sutras** (76 files)
 Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.1: Fundamental Rules**
@@ -77,6 +77,15 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.1.73** - आदिर्वा (Optionally the first sound)
 - **1.1.74** - त्यदादीनामः (Visarga for ty-class initial words)
 - **1.1.75** - एकाच उपदेशेऽनुदात्तत् (Single vowel in instruction is anudātta)
+
+#### **Volume 1.2: Special Affix Designations**
+- **1.2.1** - गाङ्कुटादिभ्यो धातुभ्यो गोत्रादिषु (Gaṅ-kuṭ-class roots for gotra-words)
+- **1.2.2** - विधिषु च (Special ṅit designation in injunctions)
+- **1.2.3** - वह्निदरादिषु च (Special iṭ augment for vahni-dar class)
+- **1.2.4** - सार्वधातुकमपित् (Sārvādhātuka is non-pit)
+- **1.2.5** - असंयोगल्लिट् कित् (Liṭ becomes kit after non-conjunct)
+- **1.2.6** - व्यत्ययो बहुलम् (Mutual exchange is common)
+- **1.2.7** - मृडमृदगुधकुषक्लिशवदवसः क्त्वा (Ktvā becomes kit after specific roots)
   
 *For complete list and details, see individual sutra README files*
 
@@ -105,7 +114,7 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 ### **Test Validation**
 ```bash
-# Run all tests (2270 total)
+# Run all tests (3152 total)
 npm test
 
 # Run specific sutra tests
@@ -116,7 +125,7 @@ npm test:coverage
 ```
 
 ### **Test Status**
-- **Total Tests**: 2270 tests
+- **Total Tests**: 3152 tests
 - **Status**: ✅ All passing
 - **Coverage**: Comprehensive coverage across all sutras
 - **Regression Testing**: Validated through all refactoring phases

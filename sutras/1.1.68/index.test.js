@@ -95,7 +95,7 @@ describe('Sutra 1.1.68: स्वं रूपं शब्दस्याशब
         expect(result.interpretationType).toBe('metalinguistic');
         expect(result.confidence).toBe(0.95);
         expect(result.reasoning).toContain('Context: Grammatical treatise (व्याकरणशास्त्र)');
-        expect(result.reasoning).toContain('In grammatical context, likely metalinguistic usage');
+        expect(result.reasoning).toContain('Word used in metalinguistic context');
       });
     });
 
