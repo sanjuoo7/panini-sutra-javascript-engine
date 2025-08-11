@@ -48,6 +48,9 @@ export * from './conjunct-analysis.js';
 // Verb Analysis
 export * from './verb-analysis.js';
 
+// Kit Designation
+export * from './kit-designation.js';
+
 // Rule Scope Analysis
 export * from './rule-scope-analysis.js';
 
@@ -59,6 +62,9 @@ export * from './phonetic-classification.js';
 
 // Metalinguistic Analysis
 export * from './metalinguistic-analysis.js';
+
+// Pada Analysis
+export * from './pada-analysis.js';
 
 // Temporal Analysis
 export * from './temporal-analysis.js';

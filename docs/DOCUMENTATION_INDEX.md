@@ -10,7 +10,7 @@
 
 ### **Primary References**
 - **[README.md](../README.md)** - Project overview, installation, and usage
-- **[SANSKRIT_UTILS_DOCUMENTATION.md](../SANSKRIT_UTILS_DOCUMENTATION.md)** - API reference for shared utilities (6 modules)
+- **[SANSKRIT_UTILS_DOCUMENTATION.md](../SANSKRIT_UTILS_DOCUMENTATION.md)** - API reference for shared utilities (13 modules)
 
 ### **Development Strategy & Implementation**
 - **[COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md](COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md)** - 📚 **ESSENTIAL** Complete methodology for converting thousands of sutras to JavaScript
@@ -85,6 +85,11 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.2.5** - असंयोगल्लिट् कित् (Liṭ becomes kit after non-conjunct)
 - **1.2.6** - व्यत्ययो बहुलम् (Mutual exchange is common)
 - **1.2.7** - मृडमृदगुधकुषक्लिशवदवसः क्त्वा (Ktvā becomes kit after specific roots)
+- **1.2.8** - रुदविदमुषग्रहिस्वपिप्रच्छः सँश्च (Kit designation for specific roots with ktvā/san)
+- **1.2.9** - इको झल् (Kit designation for san affixes after ik-ending roots)
+- **1.2.10** - हलन्ताच्च (Kit designation for san affixes after consonant-ending roots)
+- **1.2.11** - लिङ्सिचावात्मनेपदेषु (Kit designation for लिङ्/सिच् affixes in Ātmanepada contexts)
+- **1.2.12** - उश्च (Extends kit designation to ऋ-ending roots with लिङ्/सिच् + आत्मनेपद)
   
 *For complete list and details, see individual sutra README files*
 
@@ -154,17 +159,24 @@ panini-sutra-javascript-engine/
 - **classification.js** - Vowel/consonant classification
 - **vowel-analysis.js** - Advanced vowel transformations
 - **validation.js** - Input validation & error handling
-- **pragrhya-analysis.js** - Pragṛhya rule logic (consolidated in Phase 1)
+- **kit-designation.js** - कित् (kit) designation analysis for sutras 1.2.8-1.2.15 with phonological rules
+- **pratyahara-construction.js** - Pāṇinian pratyāhāra construction utilities
+- **verb-analysis.js** - Comprehensive verb form analysis
+- **root-analysis.js** - Sanskrit root identification and classification
+- **conjunct-analysis.js** - Consonant cluster analysis
+- **transliteration.js** - IAST ⟷ Devanagari conversion
+- **morphology.js** - Morphological operations and stem analysis
 
 ---
 
 ## 📊 **Project Metrics**
 
 ### **Codebase Statistics**
-- **Total Sutras Implemented**: 50 sutras (1.1.1 through 1.1.50)
+- **Total Sutras Implemented**: 78 sutras (1.1.1-1.1.75, 1.2.1-1.2.10)
 - **Code Reduction Achieved**: 270+ lines of duplicate code eliminated
-- **Test Coverage**: 2270 comprehensive tests
-- **Module Organization**: 8 core shared utility modules
+- **Test Coverage**: 3410+ comprehensive tests
+- **Module Organization**: 13 core shared utility modules
+- **Recent Additions**: Kit designation analysis system for sutras 1.2.8-1.2.15
 
 ### **Refactoring Achievements**
 - **Phase 1**: ✅ Complete - isPragṛhya function chain consolidation

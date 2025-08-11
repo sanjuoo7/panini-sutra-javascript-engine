@@ -147,7 +147,70 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 
 **Use Cases**: Root identification, morphological analysis, grammatical rule application (sutras 1.2.2, 1.2.3, 1.2.6)
 
-### 11. **Transliteration** (`transliteration.js`)
+### 11. **Kit Designation** (`kit-designation.js`)
+**Purpose**: Analysis and determination of कित् (kit) designation for Sanskrit affixes according to Pāṇinian rules
+
+**Key Functions**:
+- `analyzeKitDesignation(root, affix, context)` - Comprehensive कित् analysis with sutra application
+- `isSutra128Root(root)` - Checks if root is in Sutra 1.2.8 enumeration (रुद्, विद्, मुष्, etc.)
+- `isKitBySutra128(root, affix)` - Determines कित् by Sutra 1.2.8 (specific root-affix combinations)
+- `isKitBySutra129(root, affix)` - Determines कित् by Sutra 1.2.9 (इक्-ending roots + सन्)
+- `isKitBySutra1210(root, affix)` - Determines कित् by Sutra 1.2.10 (हल्-ending roots + सन्)
+- `isKitBySutra1214(root, affix)` - Determines कित् by Sutra 1.2.14 (हन् root with सिच्)
+- `isKitBySutra1215(root, affix, meaning)` - Determines कित् by Sutra 1.2.15 (यम् root with सिच्)
+- `isKtvaOrSanAffix(affix)` - Identifies क्त्वा and सन् affixes
+- `isSanAffix(affix)` - Identifies सन् (desiderative) affixes specifically
+- `isSicAffix(affix)` - Identifies सिच् affix
+- `isLingAffix(affix)` - Identifies लिङ् affix
+- `isHanRoot(root)`, `isYamRoot(root)`, `isGamRoot(root)` - Specific root identification
+- `endsWithIka(root)` - Checks if root ends with इक् vowels (i, u, ṛ, ḷ)
+- `endsWithHal(root)` - Checks if root ends with हल् consonants
+- `beginsWithJhal(affix)` - Checks if affix begins with झल् consonants
+
+**Root Database**: Comprehensive collection of roots for sutras 1.2.8-1.2.15 with variants and morphological patterns
+
+**Constants**: 
+- `KIT_DESIGNATION_ROOTS` - Categorized roots by sutra
+- `KIT_ROOT_VARIANTS` - Root variants and alternative forms
+- `KIT_AFFIXES` - Affix patterns and classifications
+
+**Supported Sutras**: 1.2.8, 1.2.9, 1.2.10, 1.2.14, 1.2.15 with proper precedence handling
+
+**Use Cases**: कित् designation analysis, morphological rule application, accent determination, desiderative formations
+
+### 12. **Pada Analysis** (`pada-analysis.js`) 🆕
+**Purpose**: Voice classification for Sanskrit verbal affixes (Ātmanepada and Parasmaipada)
+
+**Key Functions**:
+- `isAtmanepadaAffix(affix, tense)` - Identifies Ātmanepada (middle voice) endings
+- `isParasmaipadaAffix(affix, tense)` - Identifies Parasmaipada (active voice) endings  
+- `getAffixPada(affix, tense)` - Determines pada classification with tense details
+- `getAffixesByPada(pada, tense, script)` - Returns affix sets by voice and tense
+- `validatePadaAnalysis(affix, expectedPada)` - Validates pada classification
+
+**Affix Databases**: Comprehensive voice-classified endings for all tense systems (laṭ, liṭ, loṭ, liṅ, luṅ, lṛṭ, lṛṅ)
+
+**Use Cases**: Voice identification, morphological analysis, Ātmanepada-specific rules (sutra 1.2.11)
+
+**Created For**: Sutra 1.2.11 implementation - extends कित् designation to voice-specific contexts
+- `findPadaAffixes(text)` - Finds and classifies all pada affixes in text
+
+**Affix Database**: 
+- `ATMANEPADA_AFFIXES` - Complete आत्मनेपद affix inventory by tense (present, perfect, imperative, potential, aorist)
+- `PARASMAIPADA_AFFIXES` - Complete परस्मैपद affix inventory by tense
+
+**Tense Support**: लट् (present), लिट् (perfect), लोट् (imperative), लिङ् (potential), लुङ् (aorist), and more
+
+**Features**:
+- Multi-script support (Devanagari and IAST)
+- Tense-specific classification
+- Person and number analysis
+- Comprehensive validation with suggestions
+- Integration with morphological analysis
+
+**Use Cases**: Voice determination, morphological analysis, grammatical rule application (sutras involving आत्मनेपद/परस्मैपद distinctions like 1.2.11)
+
+### 13. **Transliteration** (`transliteration.js`)
 **Purpose**: Converts between IAST and Devanagari scripts
 
 **Key Functions**:
@@ -158,7 +221,7 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 
 **Use Cases**: Script conversion, input normalization, output formatting
 
-### 8. **Morphological Analysis** (`morphology.js`)
+### 13. **Morphological Analysis** (`morphology.js`)
 **Purpose**: Morphological operations and stem analysis
 
 **Key Functions**:
@@ -503,6 +566,59 @@ function processSanskritInput(rawInput) {
     recommendations: validation.suggestions || []
   };
 }
+```
+
+### Example 4: Kit Designation Analysis
+```javascript
+import { analyzeKitDesignation, isSutra128Root, isKtvaOrSanAffix } from '../sanskrit-utils/index.js';
+
+function analyzeVerbMorphology(root, affix, context = {}) {
+  // Comprehensive kit designation analysis
+  const kitAnalysis = analyzeKitDesignation(root, affix, {
+    ...context,
+    debug: true  // Enable detailed analysis
+  });
+  
+  // Check specific sutra applications
+  const isSutra128Applicable = isSutra128Root(root) && isKtvaOrSanAffix(affix);
+  
+  // Determine morphological effects
+  const morphologicalEffects = {
+    accentPreservation: kitAnalysis.isKit,
+    preventGuna: kitAnalysis.isKit && hasGunaContext(root, affix),
+    sandhiRules: determineSandhiRules(root, affix, kitAnalysis.isKit)
+  };
+  
+  return {
+    kitDesignation: kitAnalysis,
+    sutraApplication: {
+      '1.2.8': isSutra128Applicable,
+      applicable: kitAnalysis.applicableSutras || []
+    },
+    morphologicalImpact: morphologicalEffects,
+    linguisticAnalysis: {
+      rootType: classifyRoot(root),
+      affixType: classifyAffix(affix),
+      combination: `${root} + ${affix}`,
+      explanation: kitAnalysis.explanation
+    }
+  };
+}
+
+// Helper function for guṇa context analysis
+function hasGunaContext(root, affix) {
+  const rootFinalVowel = getLastVowel(root);
+  return isIkVowel(rootFinalVowel) && requiresGuna(affix);
+}
+
+// Usage example
+const morphAnalysis = analyzeVerbMorphology('रुद्', 'क्त्वा', {
+  meaning: 'having wept',
+  tense: 'absolutive'
+});
+
+console.log(morphAnalysis.kitDesignation.isKit);        // true (by Sutra 1.2.8)
+console.log(morphAnalysis.morphologicalImpact.accentPreservation); // true
 ```
 
 ---
