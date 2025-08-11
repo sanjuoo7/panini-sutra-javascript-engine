@@ -189,6 +189,106 @@ export function checkException(word, affix, context = {}) {
 }
 ```
 
+**Pattern E: Accent Classification Functions (संज्ञा Trilogy Sutras)** 🆕
+```javascript
+/**
+ * Comprehensive accent analysis for Vedic accent classification trilogy
+ * Specifically for sutras 1.2.29 (udātta), 1.2.30 (anudātta), 1.2.31 (svarita)
+ * 
+ * @param {string} vowel - Vowel to analyze for accent classification
+ * @param {Object} context - Accent analysis context (script, phonetic environment)
+ * @returns {Object} Complete accent classification with designation
+ */
+export function sutraAccentClassification(vowel, context = {}) {
+  // Required preprocessing
+  const script = context.script || detectScript(vowel);
+  const strictMode = context.strictAccentMarking || false;
+  const phoneticContext = context.phoneticContext || '';
+  
+  // Core accent analysis using shared utilities
+  const accentAnalysis = analyzeVowelAccent(vowel, { script, strict: strictMode });
+  
+  return {
+    applies: boolean,                    // Does this sutra apply to this vowel?
+    designation: 'उदात्त|अनुदात्त|स्वरित|null',  // Sanskrit grammatical designation
+    reason: string,                      // Grammatical justification
+    input: vowel,                        // Original input
+    baseVowel: string,                   // Vowel without accent marks
+    script: 'IAST|Devanagari',          // Detected/specified script
+    accentMarks: Array,                  // Extracted accent marks
+    analysis: {                          // Detailed accent analysis
+      accentType: 'udātta|anudātta|svarita|null',
+      toneHeight: 'high|low|circumflex|neutral',
+      confidence: number,                // Classification confidence
+      method: 'explicit_marking|phonetic_context|default'
+    },
+    examples: Object|null               // Usage examples (if applies)
+  };
+}
+
+/**
+ * Trilogy Classification Helper for analyzing across all three accent sutras
+ */
+export async function analyzeAccentTrilogyClassification(vowel, context = {}) {
+  // Dynamic imports for trilogy sutras
+  const { sutra1229 } = await import('../1.2.29/index.js');
+  const { sutra1230 } = await import('../1.2.30/index.js');
+  const { sutra1231 } = await import('../1.2.31/index.js');
+  
+  return {
+    vowel: vowel,
+    primaryClassification: 'udātta|anudātta|svarita|unclassified',
+    confidence: number,
+    sutraResults: {
+      '1.2.29': udattaResult,
+      '1.2.30': anudattaResult, 
+      '1.2.31': svaritaResult
+    },
+    accentSystemComplete: {
+      udatta: boolean,
+      anudatta: boolean,
+      svarita: boolean
+    }
+  };
+}
+```
+
+**Key Accent Trilogy Strategies:**
+1. **Unified Utility Approach**: Create comprehensive `accent-analysis.js` utility for all three sutras
+2. **Unicode Normalization**: Handle both precomposed (â) and decomposed (a + ̂) accent characters
+3. **Multi-Script Support**: Full IAST and Devanagari accent notation support
+4. **Context-Aware Analysis**: Support phonetic context and strict/lenient accent marking modes
+5. **Trilogy Integration**: Cross-sutra classification functions for complete accent system analysis
+
+**Pattern F: Prosodic Context Rules (Svarita Decomposition & Ekashruti)** 🆕
+```javascript
+/**
+ * Prosodic refinement rule (e.g., 1.2.32) providing internal segmentation
+ */
+export function prosodicDecomposition(vowel, context = {}) {
+  // 1. Validate accent category (must be svarita)
+  // 2. Determine duration units
+  // 3. Return segment objects with roles & proportional timing
+}
+
+/**
+ * Contextual prosody override (e.g., 1.2.33) flattening accent distinctions
+ */
+export function contextualMonotone(text, context = {}, options = {}) {
+  // 1. Check grammatical case (vocative)
+  // 2. Evaluate distance semantics
+  // 3. Optionally strip accent markers (flatten)
+  // 4. Provide reversible transformation metadata
+}
+```
+**Key Strategies:**
+1. **Separation of Concerns**: Keep raw accent parsing (Pattern E) distinct from context overrides (Pattern F)
+2. **Absolute vs Proportional Timing**: Use fixed half-unit for initial udātta (not proportional) enabling faithful chanting metrics
+3. **Context Abstraction**: Model distance as either categorical or numeric with threshold injection
+4. **Reversible Transformations**: Preserve original text so future exceptions (1.2.34+) can restore accents if needed
+5. **Unicode Robustness**: Normalize (NFD) before stripping; recompose (NFC) for output stability
+6. **Forward Compatibility**: Design context to accept sacrificial domain flags (e.g., { ritual: true, excludeEkashruti: true })
+
 ---
 
 ## 🧪 **PART 3: TESTING STRATEGY FRAMEWORK**

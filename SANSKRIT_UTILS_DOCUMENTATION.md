@@ -204,7 +204,63 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 
 **Use Cases**: Exception rule application (sutras 1.2.19-1.2.21), advanced कित् analysis, morphological classification, augment detection
 
-### 13. **Pada Analysis** (`pada-analysis.js`) 🆕
+### 13. **Accent Analysis** (`accent-analysis.js`) 🆕
+**Purpose**: Comprehensive Vedic accent analysis and classification according to Pāṇinian principles (Sutras 1.2.29-1.2.31)
+
+**Key Functions**:
+- `analyzeVowelAccent(vowel, options)` - Complete vowel accent analysis with script detection
+- `extractAccentMarks(vowel, script)` - Extracts accent marks from vowels
+- `determineAccentType(accentMarks, script, strict)` - Classifies accent type (udātta, anudātta, svarita)
+- `isUdattaMark(mark, script)` - Identifies udātta (high tone/acute) marks
+- `isAnudattaMark(mark, script)` - Identifies anudātta (low tone/grave) marks  
+- `isSvaritaMark(mark, script)` - Identifies svarita (combined tone/circumflex) marks
+- `isUdatta(vowel, options)` - Boolean check for udātta vowels
+- `isAnudatta(vowel, options)` - Boolean check for anudātta vowels
+- `isSvarita(vowel, options)` - Boolean check for svarita vowels
+- `applyUdatta(vowel)` - Adds udātta accent to vowel
+- `applyAnudatta(vowel)` - Adds anudātta accent to vowel
+- `applySvarita(vowel)` - Adds svarita accent to vowel
+- `getAccentVariants(vowel)` - Returns all accent variants of a vowel
+
+**Accent Constants**:
+- `ACCENT_TYPES` - Standard accent classifications (udātta, anudātta, svarita)
+- `ACCENT_MARKERS` - Script-specific accent mark mappings for IAST and Devanagari
+
+**Advanced Features**:
+- **Unicode Normalization**: Handles both precomposed (â) and decomposed (a + ̂) accent characters
+- **Multi-script Support**: Works with both IAST and Devanagari accent notation
+- **Context Analysis**: Supports phonetic context analysis for accent determination
+- **Strict/Lenient Modes**: Configurable strict mode for explicit marking requirements
+- **Integration Ready**: Designed for sutras 1.2.29 (udātta), 1.2.30 (anudātta), 1.2.31 (svarita)
+
+**Linguistic Foundation**: Based on traditional Vedic accent system where:
+- **उदात्त (Udātta)**: High tone, marked with acute accent (á) in IAST
+- **अनुदात्त (Anudātta)**: Low tone, marked with grave accent (à) in IAST  
+- **स्वरित (Svarita)**: Combined/circumflex tone, marked with circumflex (â) in IAST
+
+**Use Cases**: Vedic accent classification, tone analysis, accent-sensitive grammatical rules, prosodic analysis
+
+**Created For**: Three-sutra accent classification trilogy (1.2.29-1.2.31) implementing complete Vedic accent terminology
+
+### 14. **Accent Prosody Analysis** (`accent-prosody-analysis.js`) 🆕
+**Purpose**: Higher-level prosodic interpretation built on accent analysis – svarita internal segmentation (1.2.32) and ekashruti monotone rule (1.2.33).
+
+**Key Functions**:
+- `decomposeSvarita(vowel, options)` - Returns temporal/pitch segments for svarita vowel (udātta-initial + anudātta-fall)
+- `classifyEkashruti(text, context)` - Boolean classification for distant vocative monotone condition
+- `applyEkashruti(text, context, options)` - Applies monotone override, optionally flattening accent marks
+
+**Features**:
+- Fixed half-unit udātta onset per 1.2.32
+- Duration unit inference (hrasva/dirgha) with extensible mapping
+- Distance threshold & semantic context support
+- Unicode-safe accent stripping
+
+**Use Cases**: Prosody-aware chanting tools, pitch contour modeling, integration with future sacrificial context exceptions (1.2.34 ff.)
+
+**Created For**: Sutras 1.2.32–1.2.33 (prosodic refinement & contextual override)
+
+### 15. **Pada Analysis** (`pada-analysis.js`) 🆕
 **Purpose**: Voice classification for Sanskrit verbal affixes (Ātmanepada and Parasmaipada)
 
 **Key Functions**:
@@ -236,7 +292,7 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 
 **Use Cases**: Voice determination, morphological analysis, grammatical rule application (sutras involving आत्मनेपद/परस्मैपद distinctions like 1.2.11)
 
-### 14. **Transliteration** (`transliteration.js`)
+### 16. **Transliteration** (`transliteration.js`)
 **Purpose**: Converts between IAST and Devanagari scripts
 
 **Key Functions**:
@@ -247,7 +303,7 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 
 **Use Cases**: Script conversion, input normalization, output formatting
 
-### 15. **Morphological Analysis** (`morphology.js`)
+### 17. **Morphological Analysis** (`morphology.js`)
 **Purpose**: Morphological operations and stem analysis
 
 **Key Functions**:

@@ -81,6 +81,11 @@ export * from './rule-scope-analysis.js';
 // Root Analysis
 export * from './root-analysis.js';
 
+// Accent Analysis
+export * from './accent-analysis.js';
+// Accent Prosody Analysis (Svarita decomposition & Ekashruti)
+export * from './accent-prosody-analysis.js';
+
 // ==================== CONVENIENCE EXPORTS ====================
 
 // Re-export commonly used functions with descriptive names

@@ -29,7 +29,7 @@
 ### **Template**
 - **[SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)** - Standardized template for sutra documentation
 
-### **Individual Sutras** (83 files)
+### **Individual Sutras** (88 files)
 Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.1: Fundamental Rules**
@@ -106,6 +106,11 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.2.26** - रलो व्युपधाद्धलादेः संश्च (Complex morphophonological rule for रल्-ending roots with व्युपधा and हल्-initial elements)
 - **1.2.27** - ऊकालोऽज्झ्रस्वदीर्घप्लुतः (संज्ञा: Fundamental vowel duration classification - ह्रस्व/दीर्घ/प्लुत based on ऊकाल measurement)
 - **1.2.28** - अचश्च (Extension of duration properties: confirms that vowels can have the properties defined in 1.2.27)
+- **1.2.29** - उच्चैरुदात्तः (संज्ञा: High tone vowels are designated as उदात्त - Vedic accent classification)
+- **1.2.30** - नीचैरनुदात्तः (संज्ञा: Low tone vowels are designated as अनुदात्त - Vedic accent classification)
+- **1.2.31** - समाहारः स्वरितः (संज्ञा: Combined tone vowels are designated as स्वरित - Vedic accent classification)
+- **1.2.32** - तस्यादित उदात्तमर्धह्रस्वम् (Prosodic decomposition: first half-unit of svarita is udātta)
+- **1.2.33** - एकश्रुति दूरात् सम्बुद्धौ (Contextual monotone accent for distant vocative address)
   
 *For complete list and details, see individual sutra README files*
 
