@@ -29,7 +29,7 @@
 ### **Template**
 - **[SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)** - Standardized template for sutra documentation
 
-### **Individual Sutras** (88 files)
+### **Individual Sutras** (91 files)
 Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.1: Fundamental Rules**
@@ -111,6 +111,9 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.2.31** - समाहारः स्वरितः (संज्ञा: Combined tone vowels are designated as स्वरित - Vedic accent classification)
 - **1.2.32** - तस्यादित उदात्तमर्धह्रस्वम् (Prosodic decomposition: first half-unit of svarita is udātta)
 - **1.2.33** - एकश्रुति दूरात् सम्बुद्धौ (Contextual monotone accent for distant vocative address)
+- **1.2.34** - (Ritual monotone default with exceptions: japa, Oṃ, sāma)
+- **1.2.35** - (Vaṣaṭ optional raised udātta)
+- **1.2.36** - छन्दसि वा एकश्रुतिः (Optional monotone in chandas)
   
 *For complete list and details, see individual sutra README files*
 
@@ -188,17 +191,19 @@ panini-sutra-javascript-engine/
 - **conjunct-analysis.js** - Consonant cluster analysis
 - **transliteration.js** - IAST ⟷ Devanagari conversion
 - **morphology.js** - Morphological operations and stem analysis
+ - **accent-analysis.js** - Vedic accent classification (udātta/anudātta/svarita)
+ - **accent-prosody-analysis.js** - Prosodic layering (svarita decomposition, ekashruti, ritual/chandas contexts, vaṣaṭ)
 
 ---
 
 ## 📊 **Project Metrics**
 
 ### **Codebase Statistics**
-- **Total Sutras Implemented**: 81 sutras (1.1.1-1.1.75, 1.2.1-1.2.18)
+- **Total Sutras Implemented**: 84 sutras (1.1.1-1.1.75, 1.2.1-1.2.36 subset)
 - **Code Reduction Achieved**: 270+ lines of duplicate code eliminated
 - **Test Coverage**: 3678+ comprehensive tests
-- **Module Organization**: 13 core shared utility modules
-- **Recent Additions**: Kit designation analysis system for sutras 1.2.8-1.2.18 with new utility functions
+- **Module Organization**: 15 core shared utility modules
+- **Recent Additions**: Accent classification & prosody layering (1.2.29–1.2.36), expanded kit designation system
 
 ### **Refactoring Achievements**
 - **Phase 1**: ✅ Complete - isPragṛhya function chain consolidation

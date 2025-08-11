@@ -243,22 +243,41 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 **Created For**: Three-sutra accent classification trilogy (1.2.29-1.2.31) implementing complete Vedic accent terminology
 
 ### 14. **Accent Prosody Analysis** (`accent-prosody-analysis.js`) 🆕
-**Purpose**: Higher-level prosodic interpretation built on accent analysis – svarita internal segmentation (1.2.32) and ekashruti monotone rule (1.2.33).
+**Purpose**: Higher-level prosodic interpretation built on accent analysis – svarita internal segmentation (1.2.32), ekashruti monotone rule (1.2.33), ritual monotone with exceptions (1.2.34), vaṣaṭ raised option (1.2.35), and chandas optional monotone (1.2.36).
 
 **Key Functions**:
 - `decomposeSvarita(vowel, options)` - Returns temporal/pitch segments for svarita vowel (udātta-initial + anudātta-fall)
 - `classifyEkashruti(text, context)` - Boolean classification for distant vocative monotone condition
 - `applyEkashruti(text, context, options)` - Applies monotone override, optionally flattening accent marks
+- `aggregateProsodyOptions(text, context, options)` - Aggregates layered prosodic possibilities (accented, monotone-forced, monotone, raised) evaluating sutras 1.2.32–1.2.36.
 
 **Features**:
 - Fixed half-unit udātta onset per 1.2.32
 - Duration unit inference (hrasva/dirgha) with extensible mapping
 - Distance threshold & semantic context support
 - Unicode-safe accent stripping
+- Context layering & precedence (Pattern F extension): ritual forcing > lexical raise > chandas optional > distance vocative optional
+- Exception gating (japa, Oṃ variants, sāma) prevents ritual forcing per 1.2.34
+- Option de-duplication via stable map keying (form+mode)
 
-**Use Cases**: Prosody-aware chanting tools, pitch contour modeling, integration with future sacrificial context exceptions (1.2.34 ff.)
+**Use Cases**: Prosody-aware chanting tools, pitch contour modeling, sacrificial recitation planners, metrical recitation simulators.
 
-**Created For**: Sutras 1.2.32–1.2.33 (prosodic refinement & contextual override)
+**Created For**: Sutras 1.2.32–1.2.36 (prosodic refinement, contextual override & optionalization)
+
+**Example**:
+```js
+aggregateProsodyOptions('vaṣaṭ', { ritual: true });
+// {
+//  options: [
+//    { form: 'vaṣaṭ', mode: 'accented', sources:['base'] },
+//    { form: 'vaṣaṭ', mode: 'monotone-forced', sources:['1.2.34-ritual-default'] },
+//    { form: 'vaṣaṭ́', mode: 'raised', sources:['1.2.35'] }
+//  ],
+//  primaryDecision: 'options',
+//  appliedSutras: ['1.2.34','1.2.35','1.2.33?'],
+//  reasoning: [...]
+// }
+```
 
 ### 15. **Pada Analysis** (`pada-analysis.js`) 🆕
 **Purpose**: Voice classification for Sanskrit verbal affixes (Ātmanepada and Parasmaipada)
