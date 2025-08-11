@@ -158,6 +158,10 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 - `isKitBySutra1210(root, affix)` - Determines कित् by Sutra 1.2.10 (हल्-ending roots + सन्)
 - `isKitBySutra1214(root, affix)` - Determines कित् by Sutra 1.2.14 (हन् root with सिच्)
 - `isKitBySutra1215(root, affix, meaning)` - Determines कित् by Sutra 1.2.15 (यम् root with सिच्)
+- `isSthaRoot(root)` - Identifies स्था (sthā) root and variants for Sutra 1.2.17
+- `isGhuClassRoot(root)` - Identifies घु class roots (हु, दा, धा, etc.) for Sutra 1.2.17
+- `isKtvAffix(affix)` - Identifies क्त्वा affix including augmented forms (इक्त्वा, iktvā)
+- `hasSetAugment(affix, context)` - Detects सेट् (iṭ) augment in affixes for Sutra 1.2.18
 - `isKtvaOrSanAffix(affix)` - Identifies क्त्वा and सन् affixes
 - `isSanAffix(affix)` - Identifies सन् (desiderative) affixes specifically
 - `isSicAffix(affix)` - Identifies सिच् affix
@@ -174,11 +178,33 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 - `KIT_ROOT_VARIANTS` - Root variants and alternative forms
 - `KIT_AFFIXES` - Affix patterns and classifications
 
-**Supported Sutras**: 1.2.8, 1.2.9, 1.2.10, 1.2.14, 1.2.15 with proper precedence handling
+**Supported Sutras**: 1.2.8, 1.2.9, 1.2.10, 1.2.14, 1.2.15, 1.2.16, 1.2.17, 1.2.18 with proper precedence handling
 
 **Use Cases**: कित् designation analysis, morphological rule application, accent determination, desiderative formations
 
-### 12. **Pada Analysis** (`pada-analysis.js`) 🆕
+### 12. **Kit Analysis** (`kit-analysis.js`) 🆕
+**Purpose**: Advanced analysis functions for कित् (kit) designation and अतिदेश (exception) rules, specifically for sutras 1.2.19-1.2.21
+
+**Key Functions**:
+- `hasSetAugment(affix, context)` - Detects सेट् (iṭ) augment in affixes across multiple scripts
+- `isKtvAffix(affix)` - Identifies क्त्वा affixes including augmented forms (इक्त्वा, iktvā) 
+- `isGhuClassRoot(root)` - Identifies घु class roots (हु, दा, धा, etc.) for morphological analysis
+- `isSthaRoot(root)` - Identifies स्था (sthā) root and variants including दीर्घस्था
+
+**Advanced Pattern Matching**:
+- Multi-script support (IAST and Devanagari)
+- Morphological variant detection
+- Context-dependent analysis for complex grammatical environments
+
+**Supported Analysis**:
+- सेट् augment detection in निष्ठा affixes
+- Exception handling for कित् designation prevention (अतिदेश rules)
+- Root classification for specific grammatical contexts
+- Pattern matching for complex morphological forms
+
+**Use Cases**: Exception rule application (sutras 1.2.19-1.2.21), advanced कित् analysis, morphological classification, augment detection
+
+### 13. **Pada Analysis** (`pada-analysis.js`) 🆕
 **Purpose**: Voice classification for Sanskrit verbal affixes (Ātmanepada and Parasmaipada)
 
 **Key Functions**:
@@ -210,7 +236,7 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 
 **Use Cases**: Voice determination, morphological analysis, grammatical rule application (sutras involving आत्मनेपद/परस्मैपद distinctions like 1.2.11)
 
-### 13. **Transliteration** (`transliteration.js`)
+### 14. **Transliteration** (`transliteration.js`)
 **Purpose**: Converts between IAST and Devanagari scripts
 
 **Key Functions**:
@@ -221,7 +247,7 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 
 **Use Cases**: Script conversion, input normalization, output formatting
 
-### 13. **Morphological Analysis** (`morphology.js`)
+### 15. **Morphological Analysis** (`morphology.js`)
 **Purpose**: Morphological operations and stem analysis
 
 **Key Functions**:

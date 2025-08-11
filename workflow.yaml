@@ -1,0 +1,102 @@
+sutra_workflow:
+  - phase: Initial Setup
+    description: "Read and understand all foundational project documents."
+    steps:
+      - id: read_readme
+        action: "Read README.md"
+        verify: "Summarize key points from README.md"
+      - id: read_utils_doc
+        action: "Read SANSKRIT_UTILS_DOCUMENTATION.md"
+        verify: "List utility functions and their purpose"
+      - id: read_conversion_strategy
+        action: "Read COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md"
+        verify: "Summarize methodology for converting sutras to JS"
+      - id: read_sutra_readme_template
+        action: "Read SUTRA_README_TEMPLATE.md"
+        verify: "List all fields that must be documented"
+      - id: read_doc_index
+        action: "Read DOCUMENTATION_INDEX.md"
+        verify: "List how sutras and utilities are indexed"
+
+  - phase: Analysis & Design
+    description: "Interpret sutra, plan dependencies, design function, and plan tests."
+    steps:
+      - id: interpret_sutra
+        action: "Identify sutra type, grammatical scope, application conditions, transformations"
+        verify: "Output structured summary of sutra interpretation"
+      - id: check_existing_utilities
+        action: "Search sanskrit-utils for reusable functions"
+        verify: "List found utilities with file and function name"
+      - id: plan_new_utilities
+        action: "Identify if new reusable utility functions are required"
+        verify: "Provide planned function names and descriptions"
+      - id: find_related_sutras
+        action: "Identify any previous sutras that are dependencies"
+        verify: "List sutra numbers and short descriptions"
+      - id: design_function_signature
+        action: "Plan the new function's signature, parameters, and return type"
+        verify: "Show the planned JS function signature"
+      - id: plan_test_cases
+        action: "Gather positive, negative, and edge test cases"
+        verify: "List test cases in structured format"
+
+  - phase: Implementation
+    description: "Write code, utilities, and tests for the new sutra."
+    steps:
+      - id: create_sutra_dir
+        action: "Create sutra directory under sutras/X.X.X/"
+        verify: "Confirm directory path and created files"
+      - id: implement_new_utilities
+        action: "Create any planned new utilities in sanskrit-utils/"
+        verify: "Show new utility code snippet and tests"
+      - id: implement_sutra_function
+        action: "Write sutra function in index.js using shared utilities"
+        verify: "Show final function code"
+      - id: ensure_multiscript_support
+        action: "Add support for both IAST and Devanagari scripts"
+        verify: "Demonstrate input/output in both scripts"
+      - id: add_input_validation
+        action: "Implement input validation and sanitization"
+        verify: "List validation checks"
+      - id: write_test_suite
+        action: "Write index.test.js with all planned tests"
+        verify: "Show list of test names"
+
+  - phase: Validation
+    description: "Verify functionality and test coverage."
+    steps:
+      - id: run_all_tests
+        action: "Run npm test and ensure all pass"
+        verify: "Output test results summary"
+      - id: check_coverage
+        action: "Run npm test:coverage and ensure >95% coverage"
+        verify: "Output coverage percentage for sutra module"
+
+  - phase: Documentation
+    description: "Document the new sutra and update related references."
+    steps:
+      - id: write_sutra_readme
+        action: "Fill out README.md in sutra directory using template"
+        verify: "Output rendered README content"
+      - id: update_utils_doc
+        action: "Add new utilities to SANSKRIT_UTILS_DOCUMENTATION.md"
+        verify: "Show updated documentation entry"
+      - id: update_doc_index
+        action: "Add sutra to DOCUMENTATION_INDEX.md"
+        verify: "Show updated index entry"
+      - id: document_new_strategies
+        action: "Update COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md with new patterns"
+        verify: "Show new section added"
+
+  - phase: Final Review
+    description: "Perform a final check for completeness."
+    steps:
+      - id: review_accuracy
+        action: "Verify linguistic accuracy of function"
+        verify: "Output short linguistic verification statement"
+      - id: review_tests
+        action: "Ensure tests cover all cases"
+        verify: "List coverage gaps (if any)"
+      - id: review_docs
+        action: "Ensure all documentation is accurate and complete"
+        verify: "List any missing doc sections"

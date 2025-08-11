@@ -92,6 +92,13 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.2.12** - उश्च (Extends kit designation to ऋ-ending roots with लिङ्/सिच् + आत्मनेपद)
 - **1.2.13** - वा गमः (Optional kit designation for गम् root with लिङ्/सिच् + आत्मनेपद)
 - **1.2.14** - हनः सिच् (Kit designation for सिच् affix after हन् root in आत्मनेपद)
+- **1.2.15** - यमो गन्धने (Kit designation for सिच् after यम् root with गन्धने meaning in आत्मनेपद)
+- **1.2.16** - विभाषोपयमने (Optional kit designation for यम् in upayamane sense)
+- **1.2.17** - स्था घ्वोरिच्च (Kit designation for स्था and घु class roots with सिच्)
+- **1.2.18** - न क्त्वा सेट् (Exception: क्त्वा with सेट् augment does not get kit designation)
+- **1.2.19** - सितवानधिकरणयोः (अतिदेश: Exception for सित्, वान् affixes - prevents कित् for सेट् निष्ठा)
+- **1.2.20** - सुप्यजातौ (अतिदेश: Exception for ऋ-ending words in non-caste formations - prevents कित् for सेट् निष्ठा)  
+- **1.2.21** - वा पदान्तस्य (अतिदेश: Optional exception at word boundaries - prevents कित् for सेट् निष्ठा)
   
 *For complete list and details, see individual sutra README files*
 
@@ -162,6 +169,7 @@ panini-sutra-javascript-engine/
 - **vowel-analysis.js** - Advanced vowel transformations
 - **validation.js** - Input validation & error handling
 - **kit-designation.js** - कित् (kit) designation analysis for sutras 1.2.8-1.2.15 with phonological rules
+- **kit-analysis.js** - Advanced कित् analysis and अतिदेश exception handling for sutras 1.2.19-1.2.21
 - **pratyahara-construction.js** - Pāṇinian pratyāhāra construction utilities
 - **verb-analysis.js** - Comprehensive verb form analysis
 - **root-analysis.js** - Sanskrit root identification and classification
@@ -174,11 +182,11 @@ panini-sutra-javascript-engine/
 ## 📊 **Project Metrics**
 
 ### **Codebase Statistics**
-- **Total Sutras Implemented**: 78 sutras (1.1.1-1.1.75, 1.2.1-1.2.10)
+- **Total Sutras Implemented**: 81 sutras (1.1.1-1.1.75, 1.2.1-1.2.18)
 - **Code Reduction Achieved**: 270+ lines of duplicate code eliminated
-- **Test Coverage**: 3410+ comprehensive tests
+- **Test Coverage**: 3678+ comprehensive tests
 - **Module Organization**: 13 core shared utility modules
-- **Recent Additions**: Kit designation analysis system for sutras 1.2.8-1.2.15
+- **Recent Additions**: Kit designation analysis system for sutras 1.2.8-1.2.18 with new utility functions
 
 ### **Refactoring Achievements**
 - **Phase 1**: ✅ Complete - isPragṛhya function chain consolidation

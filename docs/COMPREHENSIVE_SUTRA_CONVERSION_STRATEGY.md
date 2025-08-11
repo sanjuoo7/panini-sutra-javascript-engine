@@ -167,6 +167,28 @@ export function shouldApplyRule(word, environment = {}) {
 }
 ```
 
+**Pattern D: Exception Functions (अतिदेश Sutras)** 🆕
+```javascript
+/**
+ * Determines exceptions to general rules (अतिदेश pattern)
+ * Specifically for preventing कित् designation in सेट् contexts
+ * 
+ * @param {string} word - Word or root being analyzed
+ * @param {string} affix - Affix in question (typically निष्ठा forms)
+ * @param {Object} context - Morphological and semantic context
+ * @returns {Object} Exception analysis with prevention decision
+ */
+export function checkException(word, affix, context = {}) {
+  return {
+    preventKitDesignation: boolean,
+    exceptionApplies: boolean,
+    sutraReference: "1.2.19|1.2.20|1.2.21",
+    reason: "specific exception justification",
+    confidence: numericScore
+  };
+}
+```
+
 ---
 
 ## 🧪 **PART 3: TESTING STRATEGY FRAMEWORK**

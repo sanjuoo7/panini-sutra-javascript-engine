@@ -38,6 +38,7 @@ import { detectScript } from './script-detection.js';
 import { validateSanskritWord } from './validation.js';
 import { COMMON_PRATYAHARAS } from './pratyahara-construction.js';
 import { isAtmanepadaAffix } from './pada-analysis.js';
+import { hasSetAugment } from './kit-analysis.js';
 
 /**
  * Database of roots that take कित् affixes according to specific sutras
@@ -576,3 +577,9 @@ export function endsWithR(root) {
   
   return false;
 }
+
+// Re-export hasSetAugment from kit-analysis for backward compatibility
+export { hasSetAugment };
+
+// Re-export additional functions from kit-analysis
+export { isGhuClassRoot, isSthaRoot, isKtvAffix } from './kit-analysis.js';

@@ -48,6 +48,9 @@ export * from './conjunct-analysis.js';
 // Verb Analysis
 export * from './verb-analysis.js';
 
+// Kit Analysis
+export * from './kit-analysis.js';
+
 // Kit Designation
 export * from './kit-designation.js';
 

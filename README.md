@@ -1,6 +1,14 @@
 # Panini Sutra JavaScript Engine
 
-A JavaScript implementation of Panini's Ashtadhyayi (Sanskrit grammar rules) for computational linguistics and natural language processing.
+   │   ├── test-cases.js
+   │   ├── comprehensive-test-cases.js
+   │   ├── README.md
+   │   └── IMPLEMENTATION_SUMMARY.md
+   ├── 1.2.15/                           # Latest implementation ✨
+   │   ├── index.js                      # यमो गन्धने (Kit designation)
+   │   ├── index.test.js                 # 20 comprehensive tests
+   │   └── README.md                     # Complete documentation
+   └── ... (89 total implemented sutras)aScript implementation of Panini's Ashtadhyayi (Sanskrit grammar rules) for computational linguistics and natural language processing.
 
 ## Project Overview
 
@@ -48,6 +56,8 @@ This project aims to convert the ancient grammatical rules of Sanskrit, as laid 
 - **Sanskrit Utilities Library**: Centralized linguistic utilities for script detection, phoneme analysis, and grammatical operations
 - **Rule Engine Foundation**: Building blocks for a complete Panini Rule Engine
 - **Multi-script Support**: Full support for both IAST and Devanagari scripts
+- **Semantic Constraint Handling**: Advanced support for meaning-dependent grammatical rules (e.g., Sutra 1.2.15)
+- **Kit Designation Rules**: Comprehensive implementation of कित् designation patterns for verbal morphology
 
 ## Getting Started
 
@@ -89,19 +99,33 @@ npm test:coverage
 ## Usage
 
 ```javascript
-// Example usage of a Panini Sutra function
+// Example usage of Panini Sutra functions
 import { isPragrhya, preventsSandhi } from './sutras/1.1.11/index.js';
+import { sutra_1_2_15 } from './sutras/1.2.15/index.js';
 import { detectScript, isVrddhi } from './sutras/sanskrit-utils/index.js';
 
 // Apply sutra-specific rules
 const isWordPragrhya = isPragrhya('devau', { number: 'dual' });
 const shouldPreventSandhi = preventsSandhi('devau', 'āgatau');
 
+// Kit designation for यम् root with गन्धने meaning (Sutra 1.2.15)
+const kitDesignation = sutra_1_2_15('यम्', { 
+  affix: 'सिच्', 
+  followingAffix: 'ते',
+  meaning: 'गन्धने' 
+});
+
 // Use shared utilities
 const script = detectScript('देवौ');
 const isVrddhiVowel = isVrddhi('ai');
 
-console.log({ isWordPragrhya, shouldPreventSandhi, script, isVrddhiVowel });
+console.log({ 
+  isWordPragrhya, 
+  shouldPreventSandhi, 
+  kitDesignation: kitDesignation.applies,
+  script, 
+  isVrddhiVowel 
+});
 ```
 
 ## Contributing
@@ -134,24 +158,35 @@ For each Sutra implementation:
 - Build a foundation for advanced Sanskrit NLP applications
 - Provide a reliable JavaScript library for Sanskrit computational linguistics
 - Maintain high code quality through comprehensive refactoring and shared utilities
+- Create accurate implementations of complex grammatical rules including semantic constraints
+
+## Implementation Coverage
+
+**Current Range**: Sutras 1.1.1 - 1.2.15 (89 sutras implemented)
+- **Volume 1.1**: Fundamental rules (1.1.1 - 1.1.75) - ✅ Complete
+- **Volume 1.2**: Special affix designations (1.2.1 - 1.2.15) - ✅ In Progress
+- **Next Target**: Continuing with Volume 1.2 kit designation rules
 
 ## Current Status
 
 ✅ **Active Development** - This project has achieved significant milestones:
 
-- **50+ Sutras Implemented** with comprehensive test coverage
-- **2270+ Tests Passing** across all implemented sutras
+- **89 Sutras Implemented** with comprehensive test coverage
+- **3587+ Tests Passing** across all implemented sutras
 - **Sanskrit Utilities Library** providing shared linguistic functions
 - **Multi-script Support** for both IAST and Devanagari
 - **Zero Code Duplication** through systematic refactoring
 - **Comprehensive Documentation** with API references and usage guides
 
-### Recent Achievements (Phase 1 Complete)
+### Recent Achievements (Latest: Sutra 1.2.15 ✅)
+- ✅ **Sutra 1.2.15**: यमो गन्धने (Kit designation for सिच् after यम् with गन्धने meaning)
+- ✅ Semantic constraint implementation with multi-meaning support
+- ✅ Enhanced kit designation rules for specific root-meaning combinations
 - ✅ Directory restructuring (`shared/` → `sanskrit-utils/`)
 - ✅ Constants consolidation (SARVA_WORDS, special endings, interrogatives) 
 - ✅ Function-level deduplication (isPragrhya chain across sutras 1.1.11-1.1.19)
 - ✅ Comprehensive documentation and API references
-- ✅ All 2270 tests passing with zero regressions
+- ✅ All 3587 tests passing with zero regressions
 
 ## Architecture
 

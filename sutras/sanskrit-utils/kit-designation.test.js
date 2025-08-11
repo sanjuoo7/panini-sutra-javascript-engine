@@ -18,7 +18,11 @@ import {
   isKitBySutra1215,
   analyzeKitDesignation,
   KIT_DESIGNATION_ROOTS,
-  KIT_ROOT_VARIANTS
+  KIT_ROOT_VARIANTS,
+  isSthaRoot,
+  isGhuClassRoot,
+  isKtvAffix,
+  hasSetAugment
 } from './kit-designation.js';
 
 describe('Kit Designation Utility Tests', () => {
@@ -379,6 +383,144 @@ describe('Kit Designation Utility Tests', () => {
       expect(isSutra128Root(123)).toBe(false);
       expect(isKtvaOrSanAffix({})).toBe(false);
       expect(isKitBySutra128([], null)).toBe(false);
+    });
+  });
+
+  describe('isSthaRoot function', () => {
+    test('should identify स्था root in Devanagari', () => {
+      expect(isSthaRoot('स्था')).toBe(true);
+      expect(isSthaRoot('स्थ')).toBe(true);
+      expect(isSthaRoot('तिष्ठ्')).toBe(true);
+      expect(isSthaRoot('स्थि')).toBe(true);
+    });
+
+    test('should identify sthā root in IAST', () => {
+      expect(isSthaRoot('sthā')).toBe(true);
+      expect(isSthaRoot('stha')).toBe(true);
+      expect(isSthaRoot('tiṣṭh')).toBe(true);
+      expect(isSthaRoot('sthi')).toBe(true);
+    });
+
+    test('should reject non-sthā roots', () => {
+      expect(isSthaRoot('गम्')).toBe(false);
+      expect(isSthaRoot('गा')).toBe(false);
+      expect(isSthaRoot('gam')).toBe(false);
+      expect(isSthaRoot('gā')).toBe(false);
+    });
+
+    test('should handle invalid inputs', () => {
+      expect(isSthaRoot('')).toBe(false);
+      expect(isSthaRoot(null)).toBe(false);
+      expect(isSthaRoot(undefined)).toBe(false);
+      expect(isSthaRoot(123)).toBe(false);
+    });
+  });
+
+  describe('isGhuClassRoot function', () => {
+    test('should identify घु class roots in Devanagari', () => {
+      expect(isGhuClassRoot('हु')).toBe(true);
+      expect(isGhuClassRoot('हू')).toBe(true);
+      expect(isGhuClassRoot('दा')).toBe(true);
+      expect(isGhuClassRoot('धा')).toBe(true);
+      expect(isGhuClassRoot('पा')).toBe(true);
+      expect(isGhuClassRoot('मा')).toBe(true);
+    });
+
+    test('should identify ghu class roots in IAST', () => {
+      expect(isGhuClassRoot('hu')).toBe(true);
+      expect(isGhuClassRoot('hū')).toBe(true);
+      expect(isGhuClassRoot('dā')).toBe(true);
+      expect(isGhuClassRoot('dhā')).toBe(true);
+      expect(isGhuClassRoot('pā')).toBe(true);
+      expect(isGhuClassRoot('mā')).toBe(true);
+    });
+
+    test('should reject non-ghu class roots', () => {
+      expect(isGhuClassRoot('गम्')).toBe(false);
+      expect(isGhuClassRoot('स्था')).toBe(false);
+      expect(isGhuClassRoot('gam')).toBe(false);
+      expect(isGhuClassRoot('sthā')).toBe(false);
+    });
+
+    test('should handle invalid inputs', () => {
+      expect(isGhuClassRoot('')).toBe(false);
+      expect(isGhuClassRoot(null)).toBe(false);
+      expect(isGhuClassRoot(undefined)).toBe(false);
+      expect(isGhuClassRoot(123)).toBe(false);
+    });
+  });
+
+  describe('isKtvAffix function', () => {
+    test('should identify क्त्वा affix in Devanagari', () => {
+      expect(isKtvAffix('क्त्वा')).toBe(true);
+      expect(isKtvAffix('क्त्व')).toBe(true);
+      expect(isKtvAffix('त्वा')).toBe(true);
+      expect(isKtvAffix('त्व')).toBe(true);
+    });
+
+    test('should identify augmented क्त्वा forms in Devanagari', () => {
+      expect(isKtvAffix('इक्त्वा')).toBe(true);
+      expect(isKtvAffix('इत्वा')).toBe(true);
+    });
+
+    test('should identify ktvā affix in IAST', () => {
+      expect(isKtvAffix('ktvā')).toBe(true);
+      expect(isKtvAffix('ktva')).toBe(true);
+      expect(isKtvAffix('tvā')).toBe(true);
+      expect(isKtvAffix('tva')).toBe(true);
+    });
+
+    test('should identify augmented ktvā forms in IAST', () => {
+      expect(isKtvAffix('iktvā')).toBe(true);
+      expect(isKtvAffix('itvā')).toBe(true);
+    });
+
+    test('should reject non-ktvā affixes', () => {
+      expect(isKtvAffix('सिच्')).toBe(false);
+      expect(isKtvAffix('लिङ्')).toBe(false);
+      expect(isKtvAffix('sic')).toBe(false);
+      expect(isKtvAffix('liṅ')).toBe(false);
+    });
+
+    test('should handle invalid inputs', () => {
+      expect(isKtvAffix('')).toBe(false);
+      expect(isKtvAffix(null)).toBe(false);
+      expect(isKtvAffix(undefined)).toBe(false);
+      expect(isKtvAffix(123)).toBe(false);
+    });
+  });
+
+  describe('hasSetAugment function', () => {
+    test('should detect सेट् augment from context', () => {
+      expect(hasSetAugment('क्त्वा', { hasSetAugment: true })).toBe(true);
+      expect(hasSetAugment('ktvā', { hasItAugment: true })).toBe(true);
+      expect(hasSetAugment('क्त्वा', { augment: 'सेट्' })).toBe(true);
+      expect(hasSetAugment('ktvā', { augment: 'seṭ' })).toBe(true);
+      expect(hasSetAugment('ktvā', { augment: 'iṭ' })).toBe(true);
+    });
+
+    test('should detect सेट् augment from affix form in Devanagari', () => {
+      expect(hasSetAugment('इक्त्वा')).toBe(true);
+      expect(hasSetAugment('इत्वा')).toBe(true);
+    });
+
+    test('should detect iṭ augment from affix form in IAST', () => {
+      expect(hasSetAugment('iktvā')).toBe(true);
+      expect(hasSetAugment('itvā')).toBe(true);
+    });
+
+    test('should reject affixes without सेट् augment', () => {
+      expect(hasSetAugment('क्त्वा')).toBe(false);
+      expect(hasSetAugment('ktvā')).toBe(false);
+      expect(hasSetAugment('त्वा')).toBe(false);
+      expect(hasSetAugment('tvā')).toBe(false);
+    });
+
+    test('should handle invalid inputs', () => {
+      expect(hasSetAugment('')).toBe(false);
+      expect(hasSetAugment(null)).toBe(false);
+      expect(hasSetAugment(undefined)).toBe(false);
+      expect(hasSetAugment(123)).toBe(false);
     });
   });
 });
