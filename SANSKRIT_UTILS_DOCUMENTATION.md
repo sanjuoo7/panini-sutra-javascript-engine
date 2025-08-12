@@ -279,6 +279,28 @@ aggregateProsodyOptions('vaṣaṭ', { ritual: true });
 // }
 ```
 
+### 14b. **Accent Domain Rules** (`accent-domain-rules.js`) 🆕
+**Purpose**: Domain & assimilation layer (1.2.37–1.2.39) extending aggregate prosody decisions.
+
+**Key Functions**:
+- `integrateDomainProsody(aggregateResult, context)` – Applies:
+  - 1.2.37 subrahmaṇyā: blocks monotone, svarita→udātta (adds `udaatta-replaced` mode)
+  - 1.2.38 lexical overrides (deva, brāhmaṇa) → `lexical-anudatta`
+  - 1.2.39 local svarita→anudātta run assimilation → `local-monotone` option
+
+**Modes Added**: `udaatta-replaced`, `lexical-anudatta`, `local-monotone`.
+**Reason Tags**: `1.2.37-svarita-to-udaatta`, `1.2.37-block-monotone`, `1.2.38-lexical-anudatta`, `1.2.39-local-monotone-span`.
+
+**Precedence Extension**:
+Domain prohibitions > lexical overrides > local assimilation > earlier global/context options (ritual/chandas/distance, etc.).
+
+**Example**:
+```js
+const agg = aggregateProsodyOptions('âàà', {});
+// options include local-monotone variant from 1.2.39 if run detected
+```
+
+
 ### 15. **Pada Analysis** (`pada-analysis.js`) 🆕
 **Purpose**: Voice classification for Sanskrit verbal affixes (Ātmanepada and Parasmaipada)
 

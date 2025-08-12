@@ -114,6 +114,9 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.2.34** - (Ritual monotone default with exceptions: japa, Oṃ, sāma)
 - **1.2.35** - (Vaṣaṭ optional raised udātta)
 - **1.2.36** - छन्दसि वा एकश्रुतिः (Optional monotone in chandas)
+- **1.2.37** - न सुब्रह्मण्यायां स्वरितस्य तूदात्तः (Subrahmaṇyā: block monotone, svarita→udātta)
+- **1.2.38** - देवब्रह्मणोरनुदात्तः (Lexical anudātta: deva, brāhmaṇa)
+- **1.2.39** - स्वरितात् संहितायामनुदात्तानाम् (Local assimilation: svarita + anudātta run → local monotone)
   
 *For complete list and details, see individual sutra README files*
 
@@ -199,7 +202,7 @@ panini-sutra-javascript-engine/
 ## 📊 **Project Metrics**
 
 ### **Codebase Statistics**
-- **Total Sutras Implemented**: 84 sutras (1.1.1-1.1.75, 1.2.1-1.2.36 subset)
+ - **Total Sutras Implemented**: 87 sutras (1.1.1-1.1.75, 1.2.1-1.2.39 subset)
 - **Code Reduction Achieved**: 270+ lines of duplicate code eliminated
 - **Test Coverage**: 3678+ comprehensive tests
 - **Module Organization**: 15 core shared utility modules

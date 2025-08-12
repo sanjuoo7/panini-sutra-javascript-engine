@@ -6,6 +6,7 @@
  */
 import { detectScript, isVowel } from './index.js';
 import { analyzeVowelAccent, ACCENT_TYPES, ACCENT_MARKERS } from './accent-analysis.js';
+import { integrateDomainProsody } from './accent-domain-rules.js';
 
 /** Duration units mapping (based on 1.2.27 hrasva=1, dirgha=2, pluta=3) */
 const VOWEL_DURATION_UNITS = {
@@ -211,7 +212,7 @@ export function aggregateProsodyOptions(text, context = {}, options = {}) {
   else if (isVasat(base)) primaryDecision = 'options';
   else if (optional && optionsList.length > 1) primaryDecision = 'options';
 
-  return {
+  const baseAggregate = {
     input: text,
     script,
     options: optionsList,
@@ -219,5 +220,7 @@ export function aggregateProsodyOptions(text, context = {}, options = {}) {
     appliedSutras: reasons.filter(r=>r.match(/^1\.2\./)).map(r=>r.split('-')[0]),
     reasoning: reasons
   };
+  // Domain & assimilation enhancements (1.2.37–1.2.39)
+  return integrateDomainProsody(baseAggregate, context);
 }
 
