@@ -21,7 +21,10 @@ import { isVowel, detectScript } from './index.js';
 export const ACCENT_TYPES = {
   UDATTA: 'udātta',           // उदात्त - high/acute accent
   ANUDATTA: 'anudātta',       // अनुदात्त - low/grave accent  
-  SVARITA: 'svarita'          // स्वरित - circumflex accent
+  SVARITA: 'svarita',         // स्वरित - circumflex accent
+  // 1.2.40: सन्नतर – an anudātta lowered/close contour before udātta/svarita
+  // Represented internally; by default no distinct marker rendered.
+  SANNATARA: 'sannatara'
 };
 
 /**

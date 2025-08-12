@@ -6,6 +6,7 @@
  */
 import { detectScript, isVowel } from './index.js';
 import { analyzeVowelAccent, ACCENT_TYPES, ACCENT_MARKERS } from './accent-analysis.js';
+import { findSannataraTargets } from './accent-sannatara-rules.js';
 import { integrateDomainProsody } from './accent-domain-rules.js';
 
 /** Duration units mapping (based on 1.2.27 hrasva=1, dirgha=2, pluta=3) */
@@ -221,6 +222,14 @@ export function aggregateProsodyOptions(text, context = {}, options = {}) {
     reasoning: reasons
   };
   // Domain & assimilation enhancements (1.2.37–1.2.39)
-  return integrateDomainProsody(baseAggregate, context);
+  const integrated = integrateDomainProsody(baseAggregate, context);
+  // Sannatara metadata integration (1.2.40) - non-mutating accent substitution info
+  try {
+    const san = findSannataraTargets(text, { script });
+    integrated.sannatara = san;
+  } catch (e) {
+    integrated.sannatara = { error: e.message };
+  }
+  return integrated;
 }
 

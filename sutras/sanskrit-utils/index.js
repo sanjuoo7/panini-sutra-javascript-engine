@@ -85,6 +85,14 @@ export * from './root-analysis.js';
 export * from './accent-analysis.js';
 // Accent Prosody Analysis (Svarita decomposition & Ekashruti)
 export * from './accent-prosody-analysis.js';
+// Sannatara Accent Rules (1.2.40)
+export * from './accent-sannatara-rules.js';
+// Affix Shape Analysis (1.2.41)
+export * from './affix-shape-analysis.js';
+// Compound Analysis (1.2.42-1.2.44)
+export * from './compound-analysis.js';
+// Pratipadika Classification (1.2.45-1.2.46)
+export * from './pratipadika-classification.js';
 
 // ==================== CONVENIENCE EXPORTS ====================
 

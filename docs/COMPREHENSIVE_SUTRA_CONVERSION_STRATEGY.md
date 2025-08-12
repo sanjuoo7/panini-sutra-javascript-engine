@@ -261,6 +261,52 @@ export async function analyzeAccentTrilogyClassification(vowel, context = {}) {
 5. **Trilogy Integration**: Cross-sutra classification functions for complete accent system analysis
 
 **Pattern F: Prosodic Context Rules (Svarita Decomposition & Ekashruti)** 🆕
+**Pattern G: Accent Substitution Metadata (Sannatara 1.2.40)** 🆕
+```javascript
+/**
+ * Non-destructive accent substitution pattern.
+ * Detects candidate positions and returns metadata without mutating original text.
+ */
+export function accentSubstitutionMetadata(text, options = {}) {
+  const detection = findSannataraTargets(text, options);
+  return {
+    applies: detection.applies,
+    indices: detection.indices,
+    substitution: 'anudātta→sannatara',
+    count: detection.count,
+    original: text,
+    render: (mode='identity') => mode === 'identity' ? text : text // placeholder for future visual rendering
+  };
+}
+```
+**Key Strategies:**
+1. Metadata-first to avoid irreversible transformations.
+2. Optional renderer injection for future orthographic distinctions.
+3. Integration via aggregation layer (prosody pipeline) not individual transformation chain.
+
+**Pattern H: Compound Role Annotation (Upasarjana 1.2.42–1.2.44)** 🆕
+```javascript
+/**
+ * Annotates compound members with semantic / syntactic roles.
+ */
+export function annotateCompoundRoles(compound, context = {}) {
+  const subtype = classifyTatpurushaSubtype(compound);
+  const upa = identifyUpasarjana(compound, context);
+  return {
+    input: compound,
+    subtype: subtype.subtype,
+    upasarjana: upa.upasarjanaIndices,
+    members: upa.membersAnnotated,
+    reasons: { subtype: subtype.reason, upasarjana: upa.reasons },
+    confidence: 1.0
+  };
+}
+```
+**Key Strategies:**
+1. Merge multiple sutras (nominative precedence, single-case agreement) into unified role resolver.
+2. Provide structured indices for downstream morphological synthesis.
+3. Preserve explainability with parallel reason fields per determination axis.
+
 ```javascript
 /**
  * Prosodic refinement rule (e.g., 1.2.32) providing internal segmentation
@@ -288,6 +334,10 @@ export function contextualMonotone(text, context = {}, options = {}) {
 4. **Reversible Transformations**: Preserve original text so future exceptions (1.2.34+) can restore accents if needed
 5. **Unicode Robustness**: Normalize (NFD) before stripping; recompose (NFC) for output stability
 6. **Forward Compatibility**: Design context to accept sacrificial domain flags (e.g., { ritual: true, excludeEkashruti: true })
+
+**New Extensions (Patterns G & H Added 2025-12):**
+- Accent substitution metadata layer (sannatara) integrated without destructive mutation.
+- Unified compound role annotation consolidating multiple sutra conditions into a single explainable structure.
 
 ---
 
