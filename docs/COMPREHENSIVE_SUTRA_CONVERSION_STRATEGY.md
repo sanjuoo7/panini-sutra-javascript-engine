@@ -308,6 +308,49 @@ export function annotateCompoundRoles(compound, context = {}) {
 3. Preserve explainability with parallel reason fields per determination axis.
 
 ```javascript
+**Pattern I: Final Vowel Shortening (Preview → Commit) (Sutras 1.2.47–1.2.48)** 🆕
+```javascript
+import { shortenFinalVowel } from '../sanskrit-utils/vowel-length-transformation.js';
+
+/**
+ * Applies Strategy Pattern I: preview first, commit on explicit opt-in.
+ */
+export function applyFinalVowelShortening(word, context = {}, options = {}) {
+  const preview = shortenFinalVowel(word, { transform:false, script:options.script });
+  if(!preview.applies) return { ...preview, gated:false, committed:false };
+
+  const neuter = context.gender === 'neuter';
+  const upasarjanaContext = context.isUpasarjana && (context.isGoStem || context.gender === 'feminine');
+  if(!(neuter || upasarjanaContext)){
+    return { ...preview, gated:false, committed:false, reason:'context-not-met' };
+  }
+  if(options.commit === false){
+    return { ...preview, gated:true, committed:false, reason:'preview-only' };
+  }
+  const committed = shortenFinalVowel(word, { transform:true, script:preview.script });
+  return { ...committed, gated:true, committed:true, reason:'final-vowel-shortened' };
+}
+```
+Key Strategies:
+1. Two-Phase Flow: Detect potential change prior to mutating text (reduces race with other terminal vowel processes / sandhi modules).
+2. Script Abstraction: Single utility handles IAST + Devanagari (independent vowels vs matras) avoiding duplicated regex.
+3. Rich Metadata: Return fields (`finalVowelOriginal`, `finalVowelNew`, `gated`, `committed`) enable auditing and conditional rollback.
+4. Idempotence: Reapplying after commit produces no further change—safe in iterative pipelines.
+5. Extensibility: Future additions (pluta normalization, guna ↔ vrddhi reversible mapping) can extend same utility without altering calling sutras.
+Failure Modes:
+- Invalid / empty input → explanatory no-op (`valid:false or applies:false`).
+- No vowel / already short → early exit maintains performance.
+Primary Sutra Mapping:
+- 1.2.47 Neuter shortening
+- 1.2.48 Upasarjana-go / feminine shortening
+Cascade Interaction (1.2.49): Uses preview metadata to order LUK elision propagation before/after shortening consistently.
+Testing Pattern:
+- Unit tests for utility (mapping tables, matra removal, script detection fallback)
+- Sutra tests for gating (positive neuter, positive upasarjana-feminine, negatives: masculine, internal long only)
+When To Reuse:
+- Any rule that modifies final vowel quantity conditioned by morphological gender, compound role, or accent prerequisites.
+
+```javascript
 /**
  * Prosodic refinement rule (e.g., 1.2.32) providing internal segmentation
  */

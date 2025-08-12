@@ -509,6 +509,20 @@ Pattern G (Accent Substitution Metadata) and Pattern H (Compound Role Annotation
 
 > Tip: When adding a new sutra, scan this section to avoid re-implementing existing feature detectors. If logic touches (1) span inheritance, (2) role annotation, or (3) probabilistic weighting, first consider extending temporal / scope / confidence modules respectively.
 
+#### z. Vowel Length Transformation (`vowel-length-transformation.js`) 🆕
+Purpose: Centralized final long→short vowel shortening employed by Sutras **1.2.47–1.2.48** with preview capability (non-destructive) and reusable script abstraction (IAST + Devanagari independent vowels + matras). Supports cascade logic contexts (1.2.49) without duplicating vowel parsing.
+Key Functions:
+- `shortenFinalVowel(word, { script?, transform? })` → Returns structured object `{ valid, applies, changed, transformed, finalVowelOriginal, finalVowelNew, script, explanation }`. When `transform:false` (default preview mode), no mutation—follows Strategy Pattern I (Final Vowel Shortening Metadata + Optional Commit).
+- `mapLongToShortVowel(vowel, script)` → Primitive mapper; distinguishes `type: 'independent' | 'matra' | 'iast' | null` for diagnostics.
+Design Highlights:
+1. Idempotent: Safe to call multiple times; unchanged if final vowel already short.
+2. Script-Aware: Removes long ā matra (`ा`) yielding inherent `अ` vs simple substitution for independent vowels; IAST long forms map directly (ā→a, ī→i, ū→u, ṝ→ṛ).
+3. Preview-Then-Commit: Upstream sutra logic can inspect `applies` before deciding to transform (prevents premature mutation when multiple terminal rules compete).
+4. Metadata Rich: Captures original vs new vowel enabling audit and potential rollback chaining.
+5. Error Resilience: Invalid or vowel-less inputs produce explanatory no-op with `valid:true, applies:false` for graceful pipeline integration.
+Primary Use Cases: Gender-conditioned shortening (neuter forms 1.2.47), semantic/upasarjana-conditioned shortening (go-/feminine compounds 1.2.48), prospective extension to declensional normalization or accent-length interaction rules.
+Integration Notes: Exported via `sanskrit-utils/index.js`; consumed by sutra implementations with contextual gating (neuter detection, upasarjana membership). Encourages future consolidation of additional vowel alternations (e.g., vrddhi ⇄ guna fallback) under a unified transformation interface.
+
 ---
 
 ## Constants & Data

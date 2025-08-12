@@ -29,7 +29,7 @@
 ### **Template**
 - **[SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)** - Standardized template for sutra documentation
 
-### **Individual Sutras** (98 files)
+### **Individual Sutras** (101 files)
 Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.1: Fundamental Rules**
@@ -124,6 +124,9 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
  - **1.2.44** - एकविभक्तौ समास उपसर्जनम् (Single-case agreement establishing upasarjana)
  - **1.2.45** - कृत्तद्धितसमासाश्च (Base prātipadika sources)
  - **1.2.46** - प्रातिपदिकं च (Extended prātipadika including kṛt, taddhita, compound)
+ - **1.2.47** - नपुंसकस्य दीर्घस्यान्त्यस्य ह्रस्वः (Neuter final long vowel shortening)
+ - **1.2.48** - उपसर्जनगोस्त्रियां ह्रस्वः (Final long→short in upasarjana compounds when member is go- or feminine)
+ - **1.2.49** - स्त्रीलिङि लुकि समानाधिकरणस्य (Feminine affix LUK elision propagation in co-referential members)
   
 *For complete list and details, see individual sutra README files*
 
