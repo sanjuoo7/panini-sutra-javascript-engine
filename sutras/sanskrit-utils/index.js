@@ -93,6 +93,8 @@ export * from './affix-shape-analysis.js';
 export * from './compound-analysis.js';
 // Pratipadika Classification (1.2.45-1.2.46)
 export * from './pratipadika-classification.js';
+// Vowel Length Transformation (1.2.47-1.2.48)
+export * from './vowel-length-transformation.js';
 
 // ==================== CONVENIENCE EXPORTS ====================
 
