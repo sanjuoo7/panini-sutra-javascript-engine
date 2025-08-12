@@ -10,7 +10,7 @@
 
 ### **Primary References**
 - **[README.md](../README.md)** - Project overview, installation, and usage
-- **[SANSKRIT_UTILS_DOCUMENTATION.md](../SANSKRIT_UTILS_DOCUMENTATION.md)** - API reference for shared utilities (13 modules)
+- **[SANSKRIT_UTILS_DOCUMENTATION.md](../SANSKRIT_UTILS_DOCUMENTATION.md)** - API reference for shared utilities (expanded full module set)
 
 ### **Development Strategy & Implementation**
 - **[COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md](COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md)** - 📚 **ESSENTIAL** Complete methodology for converting thousands of sutras to JavaScript
@@ -29,7 +29,7 @@
 ### **Template**
 - **[SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)** - Standardized template for sutra documentation
 
-### **Individual Sutras** (91 files)
+### **Individual Sutras** (98 files)
 Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.1: Fundamental Rules**
@@ -117,6 +117,13 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.2.37** - न सुब्रह्मण्यायां स्वरितस्य तूदात्तः (Subrahmaṇyā: block monotone, svarita→udātta)
 - **1.2.38** - देवब्रह्मणोरनुदात्तः (Lexical anudātta: deva, brāhmaṇa)
 - **1.2.39** - स्वरितात् संहितायामनुदात्तानाम् (Local assimilation: svarita + anudātta run → local monotone)
+ - **1.2.40** - उदात्तस्वरितपरस्य सन्नतरः (Sannatara accent substitution metadata)
+ - **1.2.41** - अपृक्त एकाच् प्रत्ययः (Single-letter affix apṛkta classification)
+ - **1.2.42** - तत्पुरुषस्य (Karmadhāraya subtype within tatpuruṣa)
+ - **1.2.43** - उपसर्जनं पूर्वम् (Nominative precedence for upasarjana)
+ - **1.2.44** - एकविभक्तौ समास उपसर्जनम् (Single-case agreement establishing upasarjana)
+ - **1.2.45** - कृत्तद्धितसमासाश्च (Base prātipadika sources)
+ - **1.2.46** - प्रातिपदिकं च (Extended prātipadika including kṛt, taddhita, compound)
   
 *For complete list and details, see individual sutra README files*
 
@@ -196,17 +203,21 @@ panini-sutra-javascript-engine/
 - **morphology.js** - Morphological operations and stem analysis
  - **accent-analysis.js** - Vedic accent classification (udātta/anudātta/svarita)
  - **accent-prosody-analysis.js** - Prosodic layering (svarita decomposition, ekashruti, ritual/chandas contexts, vaṣaṭ)
+ - **accent-sannatara-rules.js** - Sannatara accent target detection (1.2.40)
+ - **affix-shape-analysis.js** - Affix grapheme shape + apṛkta detection (1.2.41)
+ - **compound-analysis.js** - Tatpuruṣa subtype + upasarjana detection (1.2.42–1.2.44)
+ - **pratipadika-classification.js** - Prātipadika base & extended classification (1.2.45–1.2.46)
 
 ---
 
 ## 📊 **Project Metrics**
 
 ### **Codebase Statistics**
- - **Total Sutras Implemented**: 87 sutras (1.1.1-1.1.75, 1.2.1-1.2.39 subset)
+ - **Total Sutras Implemented**: 94 sutras (1.1.1–1.1.75 subset, 1.2.1–1.2.46)
 - **Code Reduction Achieved**: 270+ lines of duplicate code eliminated
 - **Test Coverage**: 3678+ comprehensive tests
-- **Module Organization**: 15 core shared utility modules
-- **Recent Additions**: Accent classification & prosody layering (1.2.29–1.2.36), expanded kit designation system
+- **Module Organization**: 30+ shared utility modules (core + extended)
+- **Recent Additions**: Sannatara accent integration (1.2.40) + affix shape, compound, prātipadika classification (1.2.41–1.2.46)
 
 ### **Refactoring Achievements**
 - **Phase 1**: ✅ Complete - isPragṛhya function chain consolidation

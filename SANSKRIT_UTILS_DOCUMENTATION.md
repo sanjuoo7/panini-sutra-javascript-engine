@@ -13,6 +13,11 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 5. [Usage Examples](#usage-examples)
 6. [Migration Guide](#migration-guide)
 7. [Testing & Validation](#testing--validation)
+8. [Accent Extension: Sannatara](#accent-extension-sannatara)
+9. [Affix Shape Analysis](#affix-shape-analysis)
+10. [Compound Analysis Utilities](#compound-analysis-utilities)
+11. [Prātipadika Classification](#prātipadika-classification)
+12. [Additional Utility Modules](#additional-utility-modules)
 
 ---
 
@@ -115,6 +120,39 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 **Use Cases**: Phonological analysis, morphological operations, grammatical rule application (especially sutras 1.2.5)
 
 ### 9. **Verb Analysis** (`verb-analysis.js`)
+### Accent Extension: Sannatara
+**Module**: `accent-sannatara-rules.js`  
+**Purpose**: Implements Sutra 1.2.40 detecting sannatara substitution contexts (anudātta preceding udātta/svarita).  
+**Key Functions**:
+- `findSannataraTargets(text, options)` → `{ indices, applies, count }`
+- `applySannataraSubstitution(text, options)` → adds metadata (non-destructive)
+**Notes**: No distinct rendering by default; metadata consumed by prosody aggregator.
+
+### Affix Shape Analysis
+**Module**: `affix-shape-analysis.js`  
+**Purpose**: Supports Sutra 1.2.41 (apṛkta single-letter affix) via grapheme counting with optional IT-marker stripping.  
+**Key Functions**:
+- `classifyAffixShape(affix, { stripItMarkers })` → shape object
+- `isAprktaAffix(affix)` → boolean
+**Edge Handling**: Invalid input returns `isValid:false`.
+
+### Compound Analysis Utilities
+**Module**: `compound-analysis.js`  
+**Purpose**: Supports Sutras 1.2.42–1.2.44 (karmadhāraya subtype and upasarjana marking).  
+**Key Functions**:
+- `classifyTatpurushaSubtype(compound)` → `{ subtype, reason }`
+- `identifyUpasarjana(compound, opts)` → `{ membersAnnotated, upasarjanaIndices, reasons }`
+**Notes**: Upasarjana detection merges nominative (1.2.43) and ekavibhakti (1.2.44) logic.
+
+### Prātipadika Classification
+**Module**: `pratipadika-classification.js`  
+**Purpose**: Implements base and extended prātipadika determination (Sutras 1.2.45–1.2.46).  
+**Key Functions**:
+- `isPratipadikaBase(form, context)`
+- `isPratipadika(form, context)`
+- `getPratipadikaAnalysis(form, context)` → `{ isPratipadika, source, reasons }`
+**Sources Reported**: `base`, `krt`, `taddhita`, `compound`.
+
 **Purpose**: Analysis of Sanskrit verbal affixes and forms
 
 **Key Functions**:
@@ -354,6 +392,122 @@ const agg = aggregateProsodyOptions('âàà', {});
 - `classifyMorpheme(morpheme)` - Morpheme classification
 
 **Use Cases**: Word analysis, grammatical parsing, morphological generation
+
+### 18. **Additional Utility Modules** (Extended Coverage)
+
+The following modules exist in `sanskrit-utils/` but were previously undocumented in this consolidated guide. Each is summarized with purpose and principal exported functions (see source for exhaustive signatures). Many implement reusable patterns referenced as Strategy Patterns (see `COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md`).
+
+#### a. Case Operations (`case-operations.js`)
+Purpose: Helper predicates for detecting case/ending patterns and specific affixal environments (e.g., प्रत्यय `-तय`).
+Key Functions: `getWordBase`, `hasAffixPattern`, `hasTayaAffix`, `validatePrathmaadi`, `isFollowedByJas`.
+Use: Nominal environment gating, especially for prātipadika and upasarjana related rules.
+
+#### b. Confidence Scoring (`confidence-scoring.js`)
+Purpose: Generic probabilistic scoring utilities to combine evidential signals when multiple heuristic checks feed a sutra decision.
+Key Functions: `logisticConfidence`, `linearConfidence`, `weightedConfidence`, `bayesianUpdate`, `combineConfidences`.
+Use: Experimental meta-evaluation / diagnostics; not sutra-bound yet but supports future disambiguation modules.
+
+#### c. Config Utilities (`config-utils.js`)
+Purpose: Runtime configuration object helpers (setter/reset, metrics, validation, summarization) for analytical pipelines.
+Key Functions: `createConfigSetter`, `createConfigReset`, `createDiagnostics`, `createMetrics`, `createConfigSummary`, `validateConfig`, `mergeConfigs`.
+Use: Infrastructure support; aids consistent option handling across accent & morphology aggregators.
+
+#### d. Data Config (`data-config.js`)
+Purpose: Centralizes structured data or lazy loaders (if any) for larger datasets. (Currently lightweight placeholder.)
+Use: Facilitates future expansion without scattering dataset wiring logic.
+
+#### e. Distributional Analysis (`distributional-analysis.js`)
+Purpose: Affix productivity & historical/distributional context heuristics.
+Key Functions: `determineDistributionalClass`, `assessProductivity`, `analyzeHistoricalPattern`, `analyzeGrammaticalContext`, `comprehensiveDistributionalAnalysis`, `batchDistributionalAnalysis`.
+Use: Planned support for later chapters where productivity influences optionality (not yet sutra-linked).
+
+#### f. Guṇa Utilities (`guna-utilities.js`)
+Purpose: Focused guṇa operations separated from general vowel analysis to avoid cyc dependency with gradation logic.
+Key Functions: `getGunaForm`, `applyGuna`, `isGunaVowel`, `isValidGunaTransformation`.
+Use: Verb/nominal derivation transformations; supports earlier 1.1.x vowel gradation reuse.
+
+#### g. Metalinguistic Analysis (`metalinguistic-analysis.js`)
+Purpose: Detects meta-language (śabdānusāsana) vs object-language usage such as स्व रूप (sva-rūpa) contexts.
+Key Functions: `isSvaRupaUsage`, `getInterpretationType`, `analyzeWordUsage`, `requiresSvaRupaInterpretation`, `getMetalinguisticExamples`, `analyzeMetalinguisticFeatures`.
+Use: Foundation for paribhāṣā-based disambiguations appearing later (patterns of self-reference).
+
+#### h. Phonetic Classification (`phonetic-classification.js`)
+Purpose: Articulatory & savarṇa grouping beyond basic vowel/consonant tests.
+Key Functions: `areSavarna`, `getSavarnaGroup`, `getArticulationPlace`, `analyzePhoneticFeatures`, `validatePhoneticClassification`.
+Use: Sound substitution and assimilation rules (future sandhi chapters) and accent domain assimilation (1.2.39 helper potential).
+
+#### i. Phonological Analysis (`phonological-analysis.js`)
+Purpose: Higher-level phonological feature extraction (nucleus vowel, consonant pattern, feature bundles).
+Key Functions: `extractNucleusVowel`, `extractConsonantPattern`, `getPhonologicalFeatures`.
+Use: Dhātu structure validation, morphological pattern detection.
+
+#### j. Prāgrhya Analysis (`pragrhya-analysis.js`)
+Purpose: Determines prāgrhya status of word forms (blocking sandhi) across enumerated environments.
+Key Functions: `isPragrhya`, `analyzePragrhya`, several `isPragrhya*` predicates, `preventsSandhi`, `getPragrhyaExamples`.
+Use: Sandhi rule gating; ensures correct optionality boundaries.
+
+#### k. Pratyāhāra Construction (`pratyahara-construction.js`)
+Purpose: Generates and validates pratyāhāras from Māheśvara-sūtra sequences.
+Key Functions: `constructPratyahara`, `getCommonPratyahara`, `validatePratyahara`, `isPhonemeInPratyahara`, `findPratyaharasContaining`, `getPratyaharaExamples`.
+Use: Phoneme set specification in later rules (savarṇa & substitution classes).
+
+#### l. Rule Scope Analysis (`rule-scope-analysis.js`)
+Purpose: Determines applicability span / window for multi-token sutra effects (temporal + structural interplay).
+Key Functions: `analyzeRuleScope` (and related helpers—see tests) enabling Pattern H style span tagging.
+Use: Compound role annotation & accent local assimilation scoping.
+
+#### m. Single Letter Operations (`single-letter-operations.js`)
+Purpose: Handles operations that target a solitary phoneme (adyantavat, paribhāṣā gating).
+Key Functions: `isSingleLetterOperation`, `applyAdyantavat`, `shouldApplyToSinglePhoneme`, `getSingleLetterExamples`, `isParibhashaApplicable`.
+Use: Ensures minimal-span operations don't over-extend (edge-case prevention in transformation pipeline).
+
+#### n. Structural Analysis (`structural-analysis.js`)
+Purpose: Abstract structural pattern & hierarchy extraction (compound segmentation scaffolding, phrase-like grouping).
+Key Functions: (See source) Provide structural feature objects consumed by compound/upasarjana analyzers.
+Use: Input to compound role annotation (Pattern H) and future syntactic constraints.
+
+#### o. Syllable Analysis (`syllable-analysis.js`)
+Purpose: Syllabification & cluster diagnostics.
+Key Functions: `countSyllables`, `advancedCountSyllables`, `syllabify`, `hasConsonantCluster`, `isMonosyllabic`, `hasCanonicalCVCStructure`.
+Use: Dhātu classification heuristics; accent prosody duration inference.
+
+#### p. Temporal Analysis (`temporal-analysis.js`)
+Purpose: Determines inheritance and sequencing relationships of operations (Pattern G temporal layering support).
+Key Functions: `inheritsTemporalContext`, `checkOperationSequence`, `hasExplicitTemporalMarkers`, `checkContextualRelationship`, `analyzeTemporalInheritance`, `getTemporalScope`, `getTemporalInheritanceExamples`.
+Use: Establishes ordering constraints for accent & morphological application chains.
+
+#### q. Vr̥ddham Analysis (`vrddham-analysis.js`)
+Purpose: Determination of vr̥ddham status via phonetic, lexical, regional pathways.
+Key Functions: `isVrddhamPhonetic`, `analyzeFirstVowel`, `isTyadAdi`, `isVrddhamLexical`, `isVrddhamEastern`, `analyzeVrddham`, `isVrddham`, `getVrddhamExamples`.
+Use: Vowel gradation gating and pragrhya interplay.
+
+#### r. Verb Classifications (`verb-classifications.js`)
+Purpose: Higher-level verb categorization & mapping (e.g., kriṇv-ādi, āvikaraṇa distinctions, transitivity heuristics).
+Key Functions: `isKrinvadiVerb`, `isAvikaranaVerb`, `getVerbTransitivity`, `mapInflectedToRoot`.
+Use: Future derivational morphology chapters; semantic-influenced affix selection heuristics.
+
+#### s. Accent Domain Rules (`accent-domain-rules.js`)
+Purpose: (Already summarized in section 14b) Domain layering & assimilation integration for prosody options (sutras 1.2.37–1.2.39) feeding into Pattern F precedence chain.
+
+#### t. Accent Sannatara Rules (`accent-sannatara-rules.js`)
+Purpose: (Section 8) Adds Sannatara metadata (1.2.40) for downstream substitution; implements grapheme-aware accent adjacency detection.
+
+#### u. Affix Shape Analysis (`affix-shape-analysis.js`)
+Purpose: (Section 9) Shape classification & apṛkta detection (1.2.41) using combining-mark grapheme grouping.
+
+#### v. Compound Analysis (`compound-analysis.js`)
+Purpose: (Section 10) Karmadhāraya subtype & upasarjana identification (1.2.42–1.2.44) employing Pattern H role tagging.
+
+#### w. Prātipadika Classification (`pratipadika-classification.js`)
+Purpose: (Section 11) Unified prātipadika source analysis (1.2.45–1.2.46) composing earlier affix & compound utilities.
+
+#### x. Pada Analysis (`pada-analysis.js`)
+Purpose: (Section 15) Voice (pada) classification for verbal endings (1.2.11) interacting with kit designation precedence.
+
+#### y. Temporal + Domain Interaction Note
+Pattern G (Accent Substitution Metadata) and Pattern H (Compound Role Annotation) rely on synergy between `temporal-analysis`, `rule-scope-analysis`, and `compound-analysis` for conflict-free layering. This documentation section formalizes their reusable roles.
+
+> Tip: When adding a new sutra, scan this section to avoid re-implementing existing feature detectors. If logic touches (1) span inheritance, (2) role annotation, or (3) probabilistic weighting, first consider extending temporal / scope / confidence modules respectively.
 
 ---
 
