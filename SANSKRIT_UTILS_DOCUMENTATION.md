@@ -523,6 +523,25 @@ Design Highlights:
 Primary Use Cases: Gender-conditioned shortening (neuter forms 1.2.47), semantic/upasarjana-conditioned shortening (go-/feminine compounds 1.2.48), prospective extension to declensional normalization or accent-length interaction rules.
 Integration Notes: Exported via `sanskrit-utils/index.js`; consumed by sutra implementations with contextual gating (neuter detection, upasarjana membership). Encourages future consolidation of additional vowel alternations (e.g., vrddhi ⇄ guna fallback) under a unified transformation interface.
 
+#### aa. Number Determination & Astral Semantics (`number-determination.js`) 🆕
+Purpose: Unified semantic number flexibility & enforcement for Sutras **1.2.58–1.2.63** (class noun optional plural, pronoun extension, astral dual→plural sense, optional singular in chandas, enforced dual in specific dvandva).
+Key Functions:
+- `determineOptionalNumber(term, context)` – (1.2.58) Class (jāti) nouns allow semantic plural for singular sense.
+- `extendOptionalNumberWithAsmad(term, priorResult, context)` – (1.2.59) Adds plural option for pronoun अस्मद्.
+- `applySutra1_2_60(term, context)` – (1.2.60) Phalgunī / Proṣ्ठपदā dual semantically plural (nakṣatra domain).
+- `applySutra1_2_61(term, context)` – (1.2.61) Optional singular for Punarvasū in chandas.
+- `applySutra1_2_62(term, context)` – (1.2.62) Optional singular for Viśākhā (inherits chandas condition).
+- `applySutra1_2_63(compoundOrString, context)` – (1.2.63) Enforced dual; replaces plural for Tiṣya+Punarvasū dvandva.
+Design Highlights:
+1. Central STAR_SETS with dual-script lexical entries.
+2. Lightweight normalization (trim+lowercase) – avoids heavy transliteration cost.
+3. Non-destructive metadata fields: `semanticPlural`, `optionalSingular`, `numberOptions`, `enforcedNumber`, `replaced`.
+4. Context gating via `domain/semanticCategory === 'nakshatra'` and `chandas` flag inheritance (anuvṛtti modeling).
+5. Order-insensitive compound parsing for dvandva detection (string or structured object input).
+6. Extensible: future astral or calendaric number rules can append sets without altering callers.
+Use: Consumed directly by sutra wrapper modules `sutras/1.2.58–63/index.js` to maintain thin sutra layers.
+Testing: 24 dedicated tests for 1.2.60–1.2.63 (plus existing tests for 1.2.58–59) – all green.
+
 ---
 
 ## Constants & Data
@@ -544,7 +563,7 @@ guna: {
 
 // इक् vowels (1.1.3)
 ik: {
-  iast: ['i', 'ī', 'u', 'ū', 'ṛ', 'ṝ', 'ḷ', 'ḹ'],
+  iast: ['i', 'ī', 'u', 'ū', 'ṛ', 'ॠ', 'ऌ', 'ॡ'],
   devanagari: ['इ', 'ई', 'उ', 'ऊ', 'ऋ', 'ॠ', 'ऌ', 'ॡ']
 }
 ```

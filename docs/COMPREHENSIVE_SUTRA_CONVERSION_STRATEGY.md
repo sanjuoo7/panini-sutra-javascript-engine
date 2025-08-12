@@ -382,7 +382,30 @@ export function contextualMonotone(text, context = {}, options = {}) {
 - Accent substitution metadata layer (sannatara) integrated without destructive mutation.
 - Unified compound role annotation consolidating multiple sutra conditions into a single explainable structure.
 
----
+**Pattern J: Astral Semantic Number Overrides (Sutras 1.2.58–1.2.63)** 🆕
+```javascript
+// Centralized number semantics pipeline
+import { determineOptionalNumber, extendOptionalNumberWithAsmad,
+  applySutra1_2_60, applySutra1_2_61, applySutra1_2_62, applySutra1_2_63 }
+  from '../sanskrit-utils/number-determination.js';
+
+// Example chaining
+const base = determineOptionalNumber(term, ctx);
+const pronounExtended = extendOptionalNumberWithAsmad(term, base, ctx);
+const astral = applySutra1_2_60(term, ctx); // or 61/62/63 based on lexical + context
+```
+Key Strategies:
+1. Single Utility Module to aggregate optionality and enforcement semantics.
+2. STAR_SETS lexical abstraction for multi-script star names.
+3. Non-mutating metadata results (semanticPlural, optionalSingular, enforcedNumber, replaced).
+4. Context gating & anuvṛtti capture (chandas inheritance, nakṣatra domain).
+5. Order-insensitive compound parsing for dvandva enforcement (1.2.63).
+6. Precedence: Enforcement > Optional Singular > Semantic Plural > Base Optional Plural.
+7. Extensibility for future calendric / ritual number behaviors.
+Error Handling: Graceful non-applied objects with explanations (no throws) to preserve pipeline robustness.
+Testing Pattern: Positive lexical matches, domain gating negatives, anuvṛtti validation, enforcement overrides, malformed compound safety.
+When To Reuse: Any future sutra introducing domain-specific number flexibility—extend this module instead of new scattered helpers.
+````markdown
 
 ## 🧪 **PART 3: TESTING STRATEGY FRAMEWORK**
 
@@ -862,184 +885,6 @@ export function batchProcess(words, context = {}) {
 
 ---
 
-## 🎯 **PART 9: QUALITY ASSURANCE FRAMEWORK**
-
-### **9.1 Validation Checkpoints**
-
-**Pre-Implementation Checklist:**
-- [ ] **Sutra Analysis Complete**: Rule type, scope, dependencies identified
-- [ ] **Shared Utilities Checked**: No duplicate functionality being created
-- [ ] **Test Cases Planned**: Traditional examples, edge cases, error conditions
-- [ ] **Performance Considered**: Optimization strategy for frequent operations
-- [ ] **Documentation Outlined**: Function purpose, parameters, examples
-
-**Implementation Checkpoints:**
-- [ ] **Input Validation**: Handles null, undefined, invalid types
-- [ ] **Script Support**: Both IAST and Devanagari supported
-- [ ] **Error Handling**: Graceful degradation with meaningful messages
-- [ ] **Edge Cases**: Boundary conditions properly handled
-- [ ] **Integration**: Compatible with existing sutra functions
-
-**Post-Implementation Validation:**
-- [ ] **All Tests Pass**: Comprehensive test suite validation
-- [ ] **Performance Acceptable**: No significant regression
-- [ ] **Documentation Complete**: JSDoc, README, usage examples
-- [ ] **Integration Verified**: Works with related sutras
-- [ ] **Code Review**: Peer review for accuracy and style
-
-### **9.2 Continuous Validation**
-
-**Regression Prevention Strategy:**
-```javascript
-// Always run full test suite
-npm test
-
-// Performance regression detection
-npm run benchmark
-
-// Documentation validation
-npm run docs:validate
-
-// Integration testing with related sutras
-npm run test:integration
-```
-
-**Quality Metrics to Track:**
-- **Test Coverage**: Aim for >95% code coverage
-- **Performance**: Response time <10ms for simple operations
-- **Accuracy**: >99% accuracy on traditional examples
-- **Maintainability**: Cyclomatic complexity <10
-
----
-
-## 🚀 **PART 10: IMPLEMENTATION WORKFLOW**
-
-### **10.1 Step-by-Step Implementation Process**
-
-**Phase 1: Analysis (30-45 minutes)**
-1. **Read and understand the Sanskrit sutra**
-2. **Identify rule type** (saṃjñā, vidhāna, niyama, pratiṣedha)
-3. **Map dependencies** on previous sutras
-4. **Collect traditional examples** from commentaries
-5. **Check existing utilities** in `sanskrit-utils/`
-
-**Phase 2: Design (15-30 minutes)**
-1. **Choose implementation pattern** based on rule type
-2. **Design function signature** with proper parameters
-3. **Plan test cases** covering all scenarios
-4. **Identify utility functions** needed or to be created
-5. **Outline documentation** structure
-
-**Phase 3: Implementation (45-90 minutes)**
-1. **Create directory structure** (`sutras/X.X.X/`)
-2. **Implement core function** with proper imports
-3. **Add comprehensive tests** with systematic coverage
-4. **Write documentation** (JSDoc + README)
-5. **Validate integration** with related sutras
-
-**Phase 4: Validation (15-30 minutes)**
-1. **Run test suite** and ensure all pass
-2. **Check performance** with realistic inputs
-3. **Verify documentation** accuracy and completeness
-4. **Test integration** with existing codebase
-5. **Conduct code review** if working in team
-
-### **10.2 Time Estimation Guidelines**
-
-**Simple Classification Sutras** (1-2 hours total):
-- Saṃjñā sutras with word lists
-- Basic pattern recognition
-- Limited context dependencies
-
-**Moderate Transformation Sutras** (2-4 hours total):
-- Vidhāna sutras with morphological operations
-- Multiple input parameters
-- Moderate algorithmic complexity
-
-**Complex Rule Sutras** (4-8 hours total):
-- Multi-condition niyama sutras
-- Feature-based analysis requirements
-- Significant inter-sutra dependencies
-
-**Advanced Algorithmic Sutras** (8+ hours total):
-- Complex phonological operations
-- Statistical/ML-based approaches
-- Extensive validation requirements
-
----
-
-## 📋 **PART 11: TROUBLESHOOTING GUIDE**
-
-### **11.1 Common Implementation Issues**
-
-**Issue: Test Failures After Implementation**
-```javascript
-// Solution: Debug with focused test cases
-describe.only('Debug specific case', () => {
-  it('should handle specific example', () => {
-    console.log('Input:', input);
-    console.log('Expected:', expected);
-    const result = sutraFunction(input);
-    console.log('Actual:', result);
-    expect(result).toBe(expected);
-  });
-});
-```
-
-**Issue: Performance Problems**
-```javascript
-// Solution: Profile and optimize hot paths
-console.time('sutra-performance');
-const result = sutraFunction(largeInput);
-console.timeEnd('sutra-performance');
-
-// Optimize with caching or algorithmic improvements
-```
-
-**Issue: Integration Conflicts**
-```javascript
-// Solution: Use dependency injection pattern
-export function createSutraFunction(dependencies = {}) {
-  const { 
-    previousSutra = defaultPreviousSutra,
-    utilities = defaultUtilities 
-  } = dependencies;
-  
-  return function(word, context) {
-    // Implementation using injected dependencies
-  };
-}
-```
-
-### **11.2 Debugging Strategies**
-
-**Systematic Debugging Approach:**
-1. **Isolate the problem**: Single test case failure vs. systemic issue
-2. **Check dependencies**: Verify imported utilities work correctly
-3. **Validate inputs**: Ensure test data matches expected format
-4. **Step through logic**: Use console.log for intermediate values
-5. **Compare with specification**: Verify against Sanskrit grammar sources
-
-**Debug Helper Functions:**
-```javascript
-// Debugging utility for complex sutras
-function debugAnalysis(word, context = {}) {
-  const analysis = {
-    input: word,
-    context: context,
-    script: detectScript(word),
-    phonemes: tokenizePhonemes(word),
-    classification: classifyWord(word),
-    features: extractFeatures(word)
-  };
-  
-  console.table(analysis);
-  return analysis;
-}
-```
-
----
-
 ## 🎓 **PART 12: ADVANCED TECHNIQUES**
 
 ### **12.1 Feature-Based Implementation**
@@ -1208,8 +1053,9 @@ const standardContext = {
 **Project Health:**
 - **Test Suite**: All tests passing continuously
 - **Performance**: No regression in benchmark tests
-- **Dependencies**: Clean, minimal external dependencies
-- **Team Velocity**: Consistent implementation speed
+- **Documentation**: Complete and accurate
+- **Integration**: Works with existing codebase
+- **Code Review**: Peer review for accuracy and style
 
 ### **Success Validation Checklist**
 
