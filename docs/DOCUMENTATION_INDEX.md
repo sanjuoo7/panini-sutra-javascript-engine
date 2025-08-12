@@ -29,7 +29,7 @@
 ### **Template**
 - **[SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)** - Standardized template for sutra documentation
 
-### **Individual Sutras** (101 files)
+### **Individual Sutras** (111 files)
 Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.1: Fundamental Rules**
@@ -127,6 +127,16 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
  - **1.2.47** - नपुंसकस्य दीर्घस्यान्त्यस्य ह्रस्वः (Neuter final long vowel shortening)
  - **1.2.48** - उपसर्जनगोस्त्रियां ह्रस्वः (Final long→short in upasarjana compounds when member is go- or feminine)
  - **1.2.49** - स्त्रीलिङि लुकि समानाधिकरणस्य (Feminine affix LUK elision propagation in co-referential members)
+ - **1.2.50** - इद्गोण्याः (Shortening of final long ī in गोणी under तद्धित लुक्)
+ - **1.2.51** - लुपि युक्तवद्व्यक्तिवचने (Retention of gender/number after तद्धित लुप्)
+ - **1.2.52** - विशेषणानां चाजातेः (Propagation of retained features to qualifying adjectives)
+ - **1.2.53** - तदशिष्यं संज्ञाप्रमाणत्वात् (Concord conventional—अशिष्य classification reason: संज्ञा authority)
+ - **1.2.54** - लुब्योगाप्रख्यानात् (अशिष्य reason: योग अप्रख्यान)
+ - **1.2.55** - योगप्रमाणे च तदभावेऽदर्शनं स्यात् (अशिष्य reason: disappearance when meaning absent)
+ - **1.2.56** - प्रधानप्रत्ययार्थवचनमर्थस्यान्यप्रमाणत्वात् (अशिष्य reason: meaning authority external)
+ - **1.2.57** - कालोपसर्जने च तुल्यम् (अशिष्य reason: tense/sequence conventional)
+ - **1.2.58** - जात्याख्यायामेकस्मिन् बहुवचनमन्यतरस्याम् (Optional plural for singular class-denoting nouns)
+ - **1.2.59** - अस्मदो द्वायोश्च (Extends optional plural to pronoun अस्मद् in singular/dual sense)
   
 *For complete list and details, see individual sutra README files*
 
@@ -166,7 +176,7 @@ npm test:coverage
 ```
 
 ### **Test Status**
-- **Total Tests**: 4093 tests
+- **Total Tests**: 4369 tests
 - **Status**: ✅ All passing
 - **Coverage**: Comprehensive coverage across all sutras
 - **Regression Testing**: Validated through all refactoring phases
@@ -216,11 +226,11 @@ panini-sutra-javascript-engine/
 ## 📊 **Project Metrics**
 
 ### **Codebase Statistics**
- - **Total Sutras Implemented**: 94 sutras (1.1.1–1.1.75 subset, 1.2.1–1.2.46)
+ - **Total Sutras Implemented**: 104 sutras (1.1.1–1.1.75 subset, 1.2.1–1.2.59)
 - **Code Reduction Achieved**: 270+ lines of duplicate code eliminated
 - **Test Coverage**: 3678+ comprehensive tests
 - **Module Organization**: 30+ shared utility modules (core + extended)
-- **Recent Additions**: Sannatara accent integration (1.2.40) + affix shape, compound, prātipadika classification (1.2.41–1.2.46)
+- **Recent Additions**: 1.2.50–1.2.59 (taddhita elision vowel shortening, retention propagation, aśiṣya classification aggregation, optional number determination) plus prior Sannatara accent & classification modules
 
 ### **Refactoring Achievements**
 - **Phase 1**: ✅ Complete - isPragṛhya function chain consolidation

@@ -95,6 +95,12 @@ export * from './compound-analysis.js';
 export * from './pratipadika-classification.js';
 // Vowel Length Transformation (1.2.47-1.2.48)
 export * from './vowel-length-transformation.js';
+// Elision Retention (1.2.51–1.2.52)
+export * from './elision-retention.js';
+// Non-Elision Classification (Aśiṣyam aggregator 1.2.53–1.2.57)
+export * from './non-elision-classification.js';
+// Number Determination (1.2.58–1.2.59)
+export * from './number-determination.js';
 
 // ==================== CONVENIENCE EXPORTS ====================
 
