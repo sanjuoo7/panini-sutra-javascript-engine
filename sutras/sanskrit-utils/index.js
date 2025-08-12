@@ -101,6 +101,8 @@ export * from './elision-retention.js';
 export * from './non-elision-classification.js';
 // Number Determination (1.2.58–1.2.59)
 export * from './number-determination.js';
+// Ekaśeṣa Determination (1.2.64–1.2.73 base rule implemented)
+export * from './eka-shesha-determination.js';
 
 // ==================== CONVENIENCE EXPORTS ====================
 

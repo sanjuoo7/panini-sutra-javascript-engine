@@ -137,6 +137,20 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
  - **1.2.57** - कालोपसर्जने च तुल्यम् (अशिष्य reason: tense/sequence conventional)
  - **1.2.58** - जात्याख्यायामेकस्मिन् बहुवचनमन्यतरस्याम् (Optional plural for singular class-denoting nouns)
  - **1.2.59** - अस्मदो द्वायोश्च (Extends optional plural to pronoun अस्मद् in singular/dual sense)
+ - **1.2.60** - फल्गुनीप्रोष्ठपदानां च नक्षत्रे (Dual Phalgunī/Proṣṭhapadā optionally conveys plural sense)
+ - **1.2.61** - छन्दसि पुनर्वस्वोरेकवचनम् (In Vedic usage singular optionally for dual Punarvasū)
+ - **1.2.62** - विशाखयोश्च (In Vedic usage singular optionally for dual Viśākhā)
+ - **1.2.63** - तिष्यपुनर्वस्वोर्नक्षत्रद्वंद्वे बहुवचनस्य (Plural in Tiṣya+Punarvasū dvandva mandatorily replaced by dual)
+ - **1.2.64** - सरूपाणामेकशेष एकविभक्तौ (Identical forms in one case: last retained - base ekaśeṣa)
+ - **1.2.65** - वृद्धो यूना तल्लक्षणश्चेदेव विशेषः (Vṛddha/gotra retained over Yuvan counterpart)
+ - **1.2.66** - स्त्री पुंवच्च (Feminine vṛddha retained; treated like masculine)
+ - **1.2.67** - पुमान् स्त्रिया (Masculine retained over feminine counterpart)
+ - **1.2.68** - भ्रातृपुत्रौ स्वसृदुहितृभ्याम् (Bhrātṛ/Putra retained over Svasṛ/Duhitṛ)
+ - **1.2.69** - नपुंसकमनपुंसकेनैकवच्चास्यान्यतरस्याम् (Optional neuter retention; singular sense)
+ - **1.2.70** - पिता मात्रा (Pitṛ optionally retained over Mātṛ)
+ - **1.2.71** - श्वशुरः श्वश्र्वा (Śvaśura optionally retained over Śvaśrū)
+ - **1.2.72** - त्यदादीनि सर्वैर्नित्यम् (Tyad-series pronoun(s) mandatorily retained)
+ - **1.2.73** - ग्राम्यपशुसंघेषु अतरुणेषु स्त्री (Feminine retained in non-young domestic animal collection)
   
 *For complete list and details, see individual sutra README files*
 
@@ -176,7 +190,7 @@ npm test:coverage
 ```
 
 ### **Test Status**
-- **Total Tests**: 4369 tests
+- **Total Tests**: 4393 tests
 - **Status**: ✅ All passing
 - **Coverage**: Comprehensive coverage across all sutras
 - **Regression Testing**: Validated through all refactoring phases
@@ -230,7 +244,7 @@ panini-sutra-javascript-engine/
 - **Code Reduction Achieved**: 270+ lines of duplicate code eliminated
 - **Test Coverage**: 3678+ comprehensive tests
 - **Module Organization**: 30+ shared utility modules (core + extended)
-- **Recent Additions**: 1.2.50–1.2.59 (taddhita elision vowel shortening, retention propagation, aśiṣya classification aggregation, optional number determination) plus prior Sannatara accent & classification modules
+ - **Recent Additions**: 1.2.60–1.2.63 (nakshatra number semantics: optional plural sense, optional singular for dual stars, enforced dual in dvandva) plus earlier 1.2.50–1.2.59 extensions
 
 ### **Refactoring Achievements**
 - **Phase 1**: ✅ Complete - isPragṛhya function chain consolidation

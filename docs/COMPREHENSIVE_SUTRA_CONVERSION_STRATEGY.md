@@ -407,6 +407,33 @@ Testing Pattern: Positive lexical matches, domain gating negatives, anuvṛtti v
 When To Reuse: Any future sutra introducing domain-specific number flexibility—extend this module instead of new scattered helpers.
 ````markdown
 
+**Pattern K: Ekaśeṣa Retention & Precedence (Sutras 1.2.64–1.2.73)** 🆕
+```javascript
+import {
+  applySutra1_2_64,
+  applySutra1_2_65,
+  applySutra1_2_66,
+  applySutra1_2_67,
+  applySutra1_2_68,
+  applySutra1_2_69,
+  applySutra1_2_70,
+  applySutra1_2_71,
+  applySutra1_2_72,
+  applySutra1_2_73
+} from '../sanskrit-utils/eka-shesha-determination.js';
+```
+Key Strategies:
+1. Layered specialization: identity base → lexical category → gender/kinship → pronoun mandate → contextual collection.
+2. Uniform return shape with retained/dropped indices allows eventual orchestrator to merge decisions deterministically.
+3. Precedence emergent via reason codes & flags (mandatory, optional) rather than hard-coded global ordering (future resolver can rank).
+4. Minimal normalization prevents false positives; explicit lexical sets for kinship & pronouns hold multi-script entries.
+5. Non-destructive metadata encourages reversible pipelines (debug views can still show suppressed forms).
+6. Context gating (domain, collection, young) isolates ecological semantics (1.2.73) from generic retention.
+7. Extensibility: Additional ekaśeṣa variants can append new applySutra functions without modifying existing logic (open for extension, closed for modification).
+8. Testing emphasizes pair permutations, absence cases, conflicting gender flags, and context negative controls.
+When To Reuse: Any selection/elision rule choosing one representative among parallel forms (future pronoun/gotra expansions).
+
+
 ## 🧪 **PART 3: TESTING STRATEGY FRAMEWORK**
 
 ### **3.1 Comprehensive Test Structure**

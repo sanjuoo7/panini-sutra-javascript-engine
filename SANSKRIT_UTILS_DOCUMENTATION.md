@@ -242,6 +242,49 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 
 **Use Cases**: Exception rule application (sutras 1.2.19-1.2.21), advanced कित् analysis, morphological classification, augment detection
 
+### 13. **Ekaśeṣa Determination** (`eka-shesha-determination.js`) 🆕
+**Purpose**: Implements base and specialized ekaśeṣa (single retention) rules (Sutras 1.2.64–1.2.73) selecting a representative form among identical or semantically paired forms.
+
+**Key Functions**:
+- `applySutra1_2_64(words, ctx)` – Base identical-form retention (same case optional check).
+- `applySutra1_2_65(words, ctx)` – Retain vṛddha/gotra over yuvan (same base).
+- `applySutra1_2_66(words, ctx)` – Retain feminine vṛddha (treated masculine).
+- `applySutra1_2_67(words, ctx)` – Retain masculine over feminine counterpart.
+- `applySutra1_2_68(words, ctx)` – Retain bhrātṛ / putra over svasṛ / duhitṛ.
+- `applySutra1_2_69(words, ctx)` – Optionally retain neuter over non-neuter (singular sense).
+- `applySutra1_2_70(words, ctx)` – Optionally retain pitṛ over mātṛ.
+- `applySutra1_2_71(words, ctx)` – Optionally retain śvaśura over śvaśrū.
+- `applySutra1_2_72(words, ctx)` – Mandatorily retain tyad-series pronoun(s) over others.
+- `applySutra1_2_73(words, ctx)` – Retain feminine in non-young domestic animal collection context.
+ - `resolveEkaShesha(words, ctx)` – Orchestrator: evaluates all rules and returns the highest-precedence applicable retention with a `precedenceTrace`.
+
+**Return Metadata (Representative Example)**:
+```json
+{
+  "sutra": "1.2.66",
+  "applied": true,
+  "retainedIndices": [1],
+  "droppedIndices": [0],
+  "genderOverride": "masculine",
+  "optional": false,
+  "mandatory": false,
+  "reason": "feminine-vrddha-retained"
+}
+```
+
+**Strategies**:
+- Minimal normalization (trim+lowercase) + explicit multi-script lexical sets.
+ - Precedence layering (mandatory > kinship/gender > contextual collection > neuter/parental/in-law optional > base identical) realized in `resolveEkaShesha`.
+- Separate applicators enabling future orchestrator (`resolveEkaShesha`) to compose precedence.
+- Reason codes for transparent debugging and documentation.
+
+**Edge Handling**:
+- Insufficient forms → `applied:false` with explanation.
+- Mismatched categories/gender → safe no-op.
+- Context gating for domain-specific rule (1.2.73).
+
+**Use Cases**: Compound simplification, canonical form selection, preparatory stage before morphological generation.
+
 ### 13. **Accent Analysis** (`accent-analysis.js`) 🆕
 **Purpose**: Comprehensive Vedic accent analysis and classification according to Pāṇinian principles (Sutras 1.2.29-1.2.31)
 
