@@ -1,27 +1,38 @@
-# 1.2.36
+## Sutra 1.2.36: छन्दसि वा एकश्रुतिः
 
-Sanskrit: छन्दसि वा एकश्रुतिः — Optional monotone (ekashruti) in metrical (chandas) recitation.
+## Overview
+**Sanskrit Text**: `छन्दसि वा एकश्रुतिः`  
+**Transliteration**: chandasi vā ekaśrutiḥ  
+**Translation**: “In metrical (chandas) recitation a monotone (ekaśruti) delivery is optional.”
 
-## Translation
-Within metrical recitation (chandas) a monotone delivery is optional.
+## Purpose
+Adds an optional monotone prosody alternative under metrical recitation contexts so downstream consumers can select either canonical accenting or flattened monotone without losing earlier accent metadata.
 
-## Function Purpose
-Supplies optional monotone mode alongside base accent for any word when `chandas` context is active.
+## Implementation
 
-## Dependencies
-- accent-prosody-analysis.aggregateProsodyOptions
+### Function Signature
+```javascript
+import { sutra1236 } from './index.js';
+const result = sutra1236(text, context = {}, options = {});
+```
 
-## Behavior Summary
-- Marks chandas context as optional monotone source.
-- Returns options list; primaryDecision becomes `options`.
+### Key Features
+- Context‑triggered (no lexeme restriction).
+- Produces option set (`primaryDecision: 'options'`).
+- Coexists with other accent transformations (does not overwrite existing modes).
 
-## Examples
-| Input | Context | Modes |
-|-------|---------|-------|
-| agnim | {chandas:true} | accented, monotone |
+### Dependencies
+- **Sanskrit Utils**: `accent-prosody-analysis.aggregateProsodyOptions`, `script-detection.detectScript`
 
-## Return Shape
-Same schema as 1.2.34.
+## Usage Examples
+```javascript
+const r = sutra1236('agnim', { chandas: true });
+console.log(r.options.map(o => o.mode)); // contains 'monotone'
+```
 
-## Tests
-index.test.js ensures option creation and applied sutra tagging.
+## Test Coverage
+**Test File**: `index.test.js`  
+**Test Cases**: 1 test (positive chandas monotone option creation)
+
+## Notes
+Acts before domain‑blocking rules like 1.2.37 which may remove monotone in specialized hymn contexts.
