@@ -1,4 +1,23 @@
 /**
+ * Checks if a character/string is a nasalized vowel (e.g., aṃ, अं, ã)
+ * @param {string} vowel - Vowel to check
+ * @returns {boolean} - True if nasalized vowel
+ */
+export function isNasalizedVowel(vowel) {
+  if (!vowel || typeof vowel !== 'string') return false;
+  // IAST nasalized: aṃ, iṃ, uṃ, ṛṃ, ḷṃ, eṃ, oṃ, aiṃ, auṃ, ã, etc.
+  if (/^[aāiīuūṛṝḷḹeēoōaiau]\u0303?$/.test(vowel.normalize('NFC'))) return false; // plain vowels
+  if (/^[aāiīuūṛṝḷḹeēoōaiau][ṃ̃]$/.test(vowel.normalize('NFC'))) return true;
+  // Devanagari nasalized: अं, आं, etc.
+  if (/^[अआइईउऊऋॠऌॡएऐओऔ][ंँ]$/.test(vowel)) return true;
+  // Visarga is not nasalization
+  if (/^[aāiīuūṛṝḷḹeēoōaiau][ḥ]$/.test(vowel)) return false;
+  if (/^[अआइईउऊऋॠऌॡएऐओऔ][ः]$/.test(vowel)) return false;
+  // Standalone nasalized vowel (ã)
+  if (/^[aāiīuūṛṝḷḹeēoōaiau]$/u.test(vowel) && /\u0303/.test(vowel.normalize('NFD'))) return true;
+  return false;
+}
+/**
  * Vowel and Consonant Classification Utilities
  * 
  * This module provides classification functions for Sanskrit phonemes:
