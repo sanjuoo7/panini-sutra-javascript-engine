@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Panini Sutras Dataset",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["number", "devanagari", "iast"],
+    "properties": {
+      "number": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+      "devanagari": {"type": "string"},
+      "iast": {"type": "string"},
+      "english": {"type": "string"},
+      "category": {"type": "string"},
+      "status": {"type": "string", "enum": ["pending", "implemented", "skipped", "deprecated"]},
+      "dependencies": {"type": "array", "items": {"type": "string"}},
+      "followUps": {"type": "array", "items": {"type": "string"}},
+      "priority": {"type": "integer", "minimum": 0, "maximum": 10},
+      "notes": {"type": "string"},
+      "tags": {"type": "array", "items": {"type": "string"}},
+      "implementedAt": {"type": ["string", "null"]},
+      "filePath": {"type": "string"},
+      "testCount": {"type": "integer"},
+      "coverage": {"type": ["number", "null"]}
+    },
+    "additionalProperties": true
+  }
+}

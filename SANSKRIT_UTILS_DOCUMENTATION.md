@@ -258,6 +258,26 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 - `applySutra1_2_73(words, ctx)` – Retain feminine in non-young domestic animal collection context.
  - `resolveEkaShesha(words, ctx)` – Orchestrator: evaluates all rules and returns the highest-precedence applicable retention with a `precedenceTrace`.
 
+### 14. **Dhātu Classification** (`dhatu-classification.js`) 🆕
+**Purpose**: Implements Sutra 1.3.1 (भूवादयो धातवः) providing recognition of verbal roots (dhātus) from a canonical (seed) list.
+
+**Key Functions**:
+- `isKnownDhatu(form, options)` – Boolean root membership test (multi‑script)
+- `analyzeDhatu(form, options)` – Returns `{ sutra, input, script, normalized, isDhatu, root, reason }`
+- `normalizeDhatuInput(form)` – Normalizes input (sanitization + script normalization + NFC)
+- `registerAdditionalDhatus(list)` – Extends the internal root set (idempotent)
+
+**Heuristics**:
+- Rejects obviously derived / inflected forms via suffix pattern (ti, nti, vat, tva, aka etc.)
+- Inherent ‘a’ restoration for short Devanagari citation forms (गम् → gam) when direct transliteration loses the vowel.
+
+**Return Reasons**:
+- `listed-root` – Confirmed member of root set
+- `not-in-root-set` – Valid form but absent from current set
+- `invalid-input` – Empty or unsanitizable input
+
+**Extensibility**: Designed for later integration with gana classification, pada options, and semantic tagging without altering current API.
+
 **Return Metadata (Representative Example)**:
 ```json
 {

@@ -103,6 +103,8 @@ export * from './non-elision-classification.js';
 export * from './number-determination.js';
 // Ekaśeṣa Determination (1.2.64–1.2.73 base rule implemented)
 export * from './eka-shesha-determination.js';
+// Dhātu Classification (1.3.1)
+export * from './dhatu-classification.js';
 
 // ==================== CONVENIENCE EXPORTS ====================
 

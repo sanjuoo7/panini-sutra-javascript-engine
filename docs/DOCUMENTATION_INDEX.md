@@ -154,6 +154,9 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
   
 *For complete list and details, see individual sutra README files*
 
+#### **Volume 1.3: Dhātu Definitions (Initiated)**
+- **1.3.1** - भूवादयो धातवः (Defines dhātu class: roots beginning with bhū)
+
 ---
 
 ## 🏛️ **Historical Documentation**
@@ -252,6 +255,45 @@ panini-sutra-javascript-engine/
 - **Quality Assurance**: ✅ Complete - Zero regressions, all tests passing
 
 ---
+
+
+---
+
+## Data Normalization & Quality Assurance
+
+### Transliteration Normalization Workflow (2025-08-15)
+
+**Purpose:**
+Automate the correction of corrupted IAST transliterations in the sutra datasets (e.g., Latin base letters with Devanagari matras) to ensure clean, canonical text for all downstream processing and rule logic.
+
+**Workflow Steps:**
+1. **Script Location:** `scripts/normalize-transliteration.cjs`
+2. **How it Works:**
+  - Scans all `sutra_text_iast` fields in `sutras/enhanced-panini-sutras.json`.
+  - Applies regex-based mapping to convert Devanagari matras and signs to proper IAST vowels and diacritics.
+  - Applies a manual corrections map for known edge cases (e.g., `laśakavatadadhite` → `laśakvataddhite`).
+  - Removes all residual Devanagari combining marks and normalizes whitespace.
+3. **Usage:**
+  - To generate a new normalized file (non-destructive):
+    ```bash
+    node scripts/normalize-transliteration.cjs
+    # Output: sutras/enhanced-panini-sutras.normalized.json
+    ```
+  - To overwrite the main dataset in-place (with automatic backup):
+    ```bash
+    node scripts/normalize-transliteration.cjs --in-place
+    # Backup created in sutras/enhanced-panini-sutras.backup-<timestamp>.json
+    ```
+4. **Validation:**
+  - Test: `test/sutras/transliteration-validation.test.js` ensures no Devanagari matras remain and key corrections are present.
+5. **Integration:**
+  - All downstream code and tests should use the normalized dataset to avoid regression.
+
+**Last Run:** 2025-08-15 (all 3982 entries scanned, 3852 changed, all tests passing)
+
+**See also:**
+- [scripts/normalize-transliteration.cjs](../scripts/normalize-transliteration.cjs)
+- [test/sutras/transliteration-validation.test.js](../test/sutras/transliteration-validation.test.js)
 
 ## 🔍 **Quick Reference**
 
