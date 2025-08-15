@@ -156,6 +156,7 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.3: Dhātu Definitions (Initiated)**
 - **1.3.1** - भूवादयो धातवः (Defines dhātu class: roots beginning with bhū)
+- **1.3.2** - उपदेशेऽजनुनासिक इत् (Non-nasalized vowels as it-markers in grammatical instruction)
 
 ---
 
