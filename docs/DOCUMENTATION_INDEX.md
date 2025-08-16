@@ -174,6 +174,11 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.3.27** - उद्विभ्यां तपः (उद्/वि + तप् ātmanepada in intransitive usage)
 - **1.3.28** - आङो यमहनः (आ + यम्/हन् ātmanepada in intransitive usage)
 - **1.3.29** - समो गम्यृच्छिप्रच्छिस्वरत्यर्तिश्रुविदिभ्यः (सम् + specified roots ātmanepada)
+- **1.3.30** - निसमुपविभ्यो ह्वः (ह्वे root with नि/सम्/उप/वि prefixes ātmanepada)
+- **1.3.31** - स्पर्द्धायामाङः (ह्वे root with आङ् prefix in challenging context ātmanepada)
+- **1.3.32** - गन्धनावक्षेपणसेवनसाहसिक्यप्रतियत्नप्रकथनोपयोगेषु कृञः (कृ root in seven semantic contexts ātmanepada)
+- **1.3.33** - अधेः प्रसहने (अधि + कृ in overpowering context ātmanepada)
+- **1.3.34** - वेः शब्दकर्म्मणः (वि + कृ in sound-making context ātmanepada)
 - **1.3.35** - अकर्मकाच्च (वि + कृ ātmanepada in intransitive usage)
 - **1.3.36** - सम्माननोत्सञ्जनाचार्यकरणज्ञानभृतिविगणनव्ययेषु नियः (नी in specific semantic contexts ātmanepada)
 
