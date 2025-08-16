@@ -213,6 +213,11 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
  - **1.3.66** - भुजोऽनवने (bhuj except in protection sense → Ātmanepada)
  - **1.3.67** - णेरणौ यत् कर्म णौ चेत् स कर्ताऽनाध्याने (causative with object→agent; not regret-remembering → Ātmanepada)
  - **1.3.68** - भीस्म्योर्हेतुभये (causatives of bhī/smi with directly caused fear → Ātmanepada)
+ - **1.3.69** - गृधिवञ्च्योः प्रलम्भने (causatives of गृध्/वञ्च् in deception sense → Ātmanepada)
+ - **1.3.70** - लियः सम्माननशालिनीकरणयोश्च (causative of लि in respect/subduing/deception senses → Ātmanepada)
+ - **1.3.71** - मिथ्योपपदात् कृञोऽभ्यासे (कृ with मिथ्या उपपद in repetition/falsehood → Ātmanepada)
+ - **1.3.72** - स्वरितञितः कर्त्रभिप्राये क्रियाफले (स्वरित/ञित् verbs with agent benefit → Ātmanepada)
+ - **1.3.73** - अपाद्वदः (अप + वद् with agent benefit → Ātmanepada)
 
 ---
 
