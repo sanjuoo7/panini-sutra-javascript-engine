@@ -15,6 +15,11 @@ function sutra1391(word, context = {}) { /* ... */ }
 - Checks root membership (dyut-class; minimal here) and lakāra = luṅ
 - Optional designation
 
+## Examples
+
+- `adyutat` with lakāra=luṅ → applies optionally
+- `adyutat` with lakāra=laṭ → does not apply
+
 ## Tests
 
 Three tests: dyut + luṅ positive; other lakāra negative; other root negative.

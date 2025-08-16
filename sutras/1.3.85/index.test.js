@@ -11,4 +11,13 @@ describe('Sutra 1.3.85 विभाषाऽकर्मकात्', () => {
     const res = sutra1385('उपरमति', { root: 'ram', prefix: 'upa', transitivity: 'transitive' });
     expect(res.applies).toBe(false);
   });
+  test('IAST: upa + ram intransitive → optional Parasmaipada', () => {
+    const res = sutra1385('uparamati', { root: 'ram', prefix: 'upa', transitivity: 'intransitive' });
+    expect(res.applies).toBe(true);
+    expect(res.isOptional).toBe(true);
+  });
+  test('guards invalid input', () => {
+    const res = sutra1385('', {});
+    expect(res.applies).toBe(false);
+  });
 });

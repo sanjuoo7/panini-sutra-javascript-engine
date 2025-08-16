@@ -32,11 +32,14 @@ import sutra1389 from './index.js';
 
 sutra1389('pāyayati', { root: 'pā', hasCausative: true });
 // → { applies: true, blocksParasmaipada: true }
+
+// non-listed root: no block
+sutra1389('bodhayati', { root: 'budh', hasCausative: true });
 ```
 
 ## Test Coverage
 
-4 tests: positive for pā/vad, negative for others, non-causative block.
+4 tests: positive for pā/vad, negative for others, non-causative rejection.
 
 ---
 

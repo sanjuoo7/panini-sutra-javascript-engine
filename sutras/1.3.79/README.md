@@ -47,10 +47,10 @@ sutra1379('अनुकरोति', { root: 'कृ', prefix: 'अनु', mea
 ## Test Coverage
 
 **Test File**: `index.test.js`  
-**Test Cases**: 4 tests covering:
-- Positive cases with अनु/पर
-- Negative case without prefix
-- Input validation
+Coverage highlights:
+- Positive: अनु/पर + कृ (both scripts)
+- Negative: missing prefix; unrelated roots
+- Guards: invalid input
 
 ### Running Tests
 ```bash
@@ -71,6 +71,10 @@ npm test sutras/1.3.79
 ### Edge Cases
 - Mixed-script inputs
 - Root detection via word surface when context not provided
+
+## Additional Examples
+
+- अनुकरोति, परकरोति, anu-karoti, para-karoti (with root कृ/kṛ in context)
 
 ## Integration
 

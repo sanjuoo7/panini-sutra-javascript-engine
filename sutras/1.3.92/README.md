@@ -20,6 +20,11 @@ function sutra1392(word, context = {}) { /* ... */ }
 
 Three tests covering sy, san, and a negative root.
 
+## Examples
+
+- `वर्त्स्यति` with affix=sy → applies optionally
+- desiderative of वृत्त with affix=सन् → applies optionally
+
 ---
 
 *Generated from template: SUTRA_README_TEMPLATE.md*

@@ -14,4 +14,8 @@ describe('Sutra 1.3.83 व्याङ्परिभ्यो रमः', () =>
     const res = sutra1383('रमते', { root: 'रम्' });
     expect(res.applies).toBe(false);
   });
+  test('IAST vi + ram via context → Parasmaipada', () => {
+    const res = sutra1383('viramati', { root: 'ram', prefix: 'vi' });
+    expect(res.applies).toBe(true);
+  });
 });

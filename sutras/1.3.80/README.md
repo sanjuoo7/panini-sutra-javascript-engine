@@ -2,40 +2,45 @@
 
 ## Overview
 
-**Sanskrit Text**: `अभिप्रत्यतिभ्यः क्षिपः`  
-**Transliteration**: abhipratyatibhyaḥ kṣipaḥ  
-**Translation**: After the root क्षिप् (to throw) when preceded by अभि/प्रति/अति, Parasmaipada is used even if the action benefits the agent.
+• Sanskrit: `अभिप्रत्यतिभ्यः क्षिपः`  
+• IAST: abhipratyatibhyaḥ kṣipaḥ  
+• Sense: After the root क्षिप् “to throw/cast” when preceded by the preverbs अभि (abhi), प्रति (prati), or अति (ati), Parasmaipada is used even when the fruit accrues to the agent.
 
-## Purpose
+## Rule type and scope
 
-Specifies Parasmaipada for kṣip with these prefixes, overriding general Ātmanepada tendencies.
+- Type: Parasmaipada designation overriding agent-benefit.
+- Scope: Root क्षिप् (kṣip) with upasargas अभि/प्रति/अति.
+- Condition: Any one of the three prefixes present.
 
-## Implementation
+## Function contract
 
-### Function Signature
+- Name: sutra1380(word, context?)
+- Inputs: word (string, IAST/Devanagari); context { root?, prefix?/upasarga? }
+- Output: { applies, isParasmaipada, sutra: '1.3.80', confidence, reason? }
+
+## Examples
+
+- `अभिक्षिपति` → applies, Parasmaipada
+- `प्रतिक्षिपति` → applies
+- `अतिक्षिपति` → applies
+- `क्षिपति` (no qualifying prefix) → does not apply
+
+## Edge cases
+
+- Surface detection: prefixes may come via context or be detected in the surface word.
+- Mixed script: invalid; validator rejects.
+
+## Implementation note
+
 ```javascript
-function sutra1380(word, context = {}) { /* ... */ }
+function sutra1380(word, context = {}) { /* implemented in index.js */ }
 ```
 
-### Key Features
-- Detects root क्षिप् (kṣip)
-- Checks prefixes: अभि, प्रति, अति
-- Returns Parasmaipada designation
+## Tests covered
 
-### Dependencies
-- **Sanskrit Utils**: detectScript, validateSanskritWord
+- Positive: abhi/prati/ati + kṣip (surface and context)
+- Negative: missing prefix; invalid input
 
-## Usage Examples
-```javascript
-import sutra1380 from './index.js';
+## Reference
 
-sutra1380('अभिक्षिपति', { root: 'क्षिप्', prefix: 'अभि' });
-```
-
-## Test Coverage
-
-- Positive: abhi/prati/ati + kṣip
-- Negative: no prefix
-
-## References
-- 1.3.80 अभिप्रत्यतिभ्यः क्षिपः
+- Aṣṭādhyāyī 1.3.80 अभिप्रत्यतिभ्यः क्षिपः

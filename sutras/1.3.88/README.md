@@ -33,6 +33,9 @@ import sutra1388 from './index.js';
 
 sutra1388('bodhayati', { hasCausative: true, baseTransitivity: 'intransitive', agentType: 'sentient' });
 // → applies: true
+
+// does not apply if baseTransitivity is 'transitive'
+sutra1388('karayati', { hasCausative: true, baseTransitivity: 'transitive', agentType: 'sentient' });
 ```
 
 ## Test Coverage

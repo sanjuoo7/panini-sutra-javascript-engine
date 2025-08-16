@@ -16,4 +16,13 @@ describe('Sutra 1.3.80 अभिप्रत्यतिभ्यः क्ष�
     const res = sutra1380('क्षिपति', { root: 'kṣip' });
     expect(res.applies).toBe(false);
   });
+  test('IAST: prati + kṣip (context) → Parasmaipada', () => {
+    const res = sutra1380('pratikṣipati', { root: 'kṣip', prefix: 'prati' });
+    expect(res.applies).toBe(true);
+    expect(res.isParasmaipada).toBe(true);
+  });
+  test('guards invalid input', () => {
+    const res = sutra1380(undefined, {});
+    expect(res.applies).toBe(false);
+  });
 });

@@ -31,6 +31,9 @@ import sutra1390 from './index.js';
 
 sutra1390('śaṅkayate', { isDenominative: true, affix: 'kyaṣ' });
 // → applies: true, isOptional: true
+
+// not kyaṣ denominative: not applied
+sutra1390('śaṅkate', { isDenominative: true, affix: 'ṇic' });
 ```
 
 ---

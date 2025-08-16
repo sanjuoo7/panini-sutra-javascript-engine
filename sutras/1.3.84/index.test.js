@@ -10,4 +10,8 @@ describe('Sutra 1.3.84 उपाच्च', () => {
     const res = sutra1384('रमति', { root: 'ram' });
     expect(res.applies).toBe(false);
   });
+  test('guards invalid input', () => {
+    const res = sutra1384(42, {});
+    expect(res.applies).toBe(false);
+  });
 });

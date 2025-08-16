@@ -40,6 +40,9 @@ sutra1387('glāpayati', { hasCausative: true, meaning: 'to swallow' });
 ```javascript
 // चलन sense
 sutra1387('calāpayati', { hasCausative: true, meaning: 'to shake' });
+
+// non-causative does not apply
+sutra1387('calati', { meaning: 'to move' });
 ```
 
 ## Test Coverage
