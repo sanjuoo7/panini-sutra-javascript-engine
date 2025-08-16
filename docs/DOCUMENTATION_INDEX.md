@@ -29,7 +29,7 @@
 ### **Template**
 - **[SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)** - Standardized template for sutra documentation
 
-### **Individual Sutras** (118 files)
+### **Individual Sutras** (240 files)
 Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 ### **Recent README / Test updates (2025-08-17)**
@@ -38,6 +38,7 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
   - READMEs expanded to include: overview, function contract, examples (IAST + Devanagari), edge cases, and test coverage notes.
   - Tests augmented with multi-script cases (Devanagari & IAST), positive/negative/edge cases, optionality checks, and invalid-input guards.
   - Purpose: improve documentation accuracy and make unit tests robust against transliteration/multi-script and semantic edge cases.
+  - Note: The "Individual Sutras" count above was determined by enumerating sutra directories under `sutras/` (includes implemented sutra folders and utility subfolders). This current count includes the recently updated sutras 1.3.79–1.3.92.
   - Location: `sutras/1.3.79/` … `sutras/1.3.92/` (each folder contains `README.md` and `index.test.js`)
 
 
