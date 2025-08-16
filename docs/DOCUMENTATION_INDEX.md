@@ -191,6 +191,11 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
  - **1.3.44** - अपह्नवे ज्ञः (ज्ञ in denial sense → Ātmanepada)
  - **1.3.45** - अकर्मकाच्च (ज्ञ intransitive with non-agent fruit → Ātmanepada)
  - **1.3.46** - सम्प्रतिभ्यामनाध्याने (सम्+प्रति + ज्ञ, not in regret sense → Ātmanepada)
+ - **1.3.47** - भासनोपसम्भाषाज्ञानयत्नविमत्युपमन्त्रणेषु वदः (वद् in six specified senses → Ātmanepada)
+ - **1.3.48** - व्यक्तवाचां समुच्चारणे (वद् in articulate/unison utterance → Ātmanepada)
+ - **1.3.49** - अनोरकर्मकात् (अनु + वद्, intransitive, samuccāraṇa sense → Ātmanepada)
+ - **1.3.50** - विभाषा विप्रलापे (वद् in mutual contradiction → optional Ātmanepada)
+ - **1.3.51** - अवाद्ग्रः (अव + गॄ “to swallow” → Ātmanepada)
 
 ---
 
