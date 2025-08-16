@@ -208,6 +208,11 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
  - **1.3.61** - म्रियतेर् लुङ्लिङोश्च (mṛ with śit, or luṅ/liṅ → Ātmanepada)
  - **1.3.62** - पूर्ववत् सन् (Desiderative inherits base Ātmanepada)
  - **1.3.63** - आम्प्रत्ययवत् कृञोऽनुप्रयोगस्य (Auxiliary kṛ with ām‑class main verb → Ātmanepada)
+ - **1.3.64** - प्रोपाभ्यां युजेरयज्ञपात्रेषु (pra/upa + yuj; exclude sacrificial vessels → Ātmanepada)
+ - **1.3.65** - समः क्ष्णुवः (sam + kṣṇu/kṣaṇu ‘to sharpen’ → Ātmanepada)
+ - **1.3.66** - भुजोऽनवने (bhuj except in protection sense → Ātmanepada)
+ - **1.3.67** - णेरणौ यत् कर्म णौ चेत् स कर्ताऽनाध्याने (causative with object→agent; not regret-remembering → Ātmanepada)
+ - **1.3.68** - भीस्म्योर्हेतुभये (causatives of bhī/smi with directly caused fear → Ātmanepada)
 
 ---
 
