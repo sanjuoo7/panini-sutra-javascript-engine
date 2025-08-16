@@ -29,7 +29,7 @@
 ### **Template**
 - **[SUTRA_README_TEMPLATE.md](SUTRA_README_TEMPLATE.md)** - Standardized template for sutra documentation
 
-### **Individual Sutras** (112 files)
+### **Individual Sutras** (118 files)
 Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.1: Fundamental Rules**
@@ -104,6 +104,12 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
 #### **Volume 1.3: Voice Designation (Parasmaipada/Ātmanepada)**
 - **1.3.86** - बुधयुधनशजनेङ्प्रुद्रुस्रुभ्यो णेः — Parasmaipada for specified roots in causative, overriding agent-benefit
+- **1.3.87** - निगरणचलनार्थेभ्यः — Parasmaipada after causatives in swallowing/moving senses
+- **1.3.88** - अणावकर्मकाच्चित्तवत्कर्तृकात् — Parasmaipada after causatives of base intransitives with sentient agent
+- **1.3.89** - न पादम्याङ्यमाङ्यसपरिमुहरुचिनृतिवदवसः — Exception: no Parasmaipada for the listed roots in causative
+- **1.3.90** - वा क्यषः — Optional Parasmaipada after kyaṣ denominatives
+- **1.3.91** - द्युद्भ्यो लुङि — Optional Parasmaipada for dyut-class when Aorist (लुङ्) follows
+- **1.3.92** - वृद्भ्यः स्यसनोः — Optional Parasmaipada for vṛt-class with स्य/सन्
 - **1.2.24** - वञ्चिलुञ्च्यृतश्च (अतिदेश: Optional exception for वञ्च्/लुञ्च्/यृत् roots with सेट् क्त्वा)
 - **1.2.25** - तृषिमृषिकृशेः काश्यपस्य (अतिदेश: Exception for तृष्/मृष्/कृश् roots with सेट् क्त्वा according to Kashyapa's opinion)
 - **1.2.26** - रलो व्युपधाद्धलादेः संश्च (Complex morphophonological rule for रल्-ending roots with व्युपधा and हल्-initial elements)
