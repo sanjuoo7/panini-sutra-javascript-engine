@@ -181,6 +181,11 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.3.34** - वेः शब्दकर्म्मणः (वि + कृ in sound-making context ātmanepada)
 - **1.3.35** - अकर्मकाच्च (वि + कृ ātmanepada in intransitive usage)
 - **1.3.36** - सम्माननोत्सञ्जनाचार्यकरणज्ञानभृतिविगणनव्ययेषु नियः (नी in specific semantic contexts ātmanepada)
+ - **1.3.37** - कर्तृस्थे चाशरीरे कर्मणि (नी with incorporeal object located in agent ātmanepada)
+ - **1.3.38** - वृत्तिसर्गतायनेषु क्रमः (क्रम् in continuity/creation/development senses ātmanepada)
+ - **1.3.39** - उपपराभ्याम् (उप/पर + क्रम् in 1.3.38 senses ātmanepada)
+ - **1.3.40** - आङ उद्गमने (आङ् + क्रम् in rising-of-luminary sense ātmanepada)
+ - **1.3.41** - वेः पादविहरणे (वि + क्रम् in footstep/walking sense ātmanepada)
 
 ---
 
