@@ -38,7 +38,7 @@ export function determineAangDoAtmanepada(word, context = {}) {
     return {
       isAangDoAtmanepada: false,
       confidence: 0,
-      analysis: 'Empty input',
+      analysis: 'Invalid input',
       sutraApplied: '1.3.20'
     };
   }
@@ -154,16 +154,22 @@ function checkAangDaCombination(word, context, script) {
     iast: ['ā', 'āṅ', 'ān']
   };
 
-  const patterns = script === 'devanagari' ? 
+  const patterns = script === 'Devanagari' ? 
     { da: daPatterns.devanagari, prefixes: aangPrefixPatterns.devanagari } :
     { da: daPatterns.iast, prefixes: aangPrefixPatterns.iast };
 
-  // Check for explicit context information
+  // Check for explicit context information - handle both scripts
   if (context.root && context.prefix) {
-    const rootMatches = checkRootMatch(context.root, patterns.da);
-    const prefixMatches = checkAangPrefixMatch(context.prefix, patterns.prefixes);
+    // Check both Devanagari and IAST patterns for context
+    const devanagariPatterns = { da: daPatterns.devanagari, prefixes: aangPrefixPatterns.devanagari };
+    const iastPatterns = { da: daPatterns.iast, prefixes: aangPrefixPatterns.iast };
     
-    if (rootMatches && prefixMatches) {
+    const rootMatchesDevanagari = checkRootMatch(context.root, devanagariPatterns.da);
+    const prefixMatchesDevanagari = checkAangPrefixMatch(context.prefix, devanagariPatterns.prefixes);
+    const rootMatchesIAST = checkRootMatch(context.root, iastPatterns.da);
+    const prefixMatchesIAST = checkAangPrefixMatch(context.prefix, iastPatterns.prefixes);
+    
+    if ((rootMatchesDevanagari || rootMatchesIAST) && (prefixMatchesDevanagari || prefixMatchesIAST)) {
       return {
         found: true,
         confidence: 0.9,

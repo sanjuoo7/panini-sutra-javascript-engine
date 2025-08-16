@@ -37,7 +37,7 @@ export function determineSthaPrefixAtmanepada(word, context = {}) {
     return {
       isSthaPrefixAtmanepada: false,
       confidence: 0,
-      analysis: 'Empty input',
+      analysis: 'Invalid input',
       sutraApplied: '1.3.22'
     };
   }
@@ -122,20 +122,27 @@ function checkSthaValidPrefixCombination(word, context, script) {
     }
   };
 
-  const patterns = script === 'devanagari' ? 
+  const patterns = script === 'Devanagari' ? 
     { stha: sthaPatterns.devanagari, prefixes: validPrefixPatterns.devanagari } :
     { stha: sthaPatterns.iast, prefixes: validPrefixPatterns.iast };
 
-  // Check for explicit context information
+  // Check for explicit context information - handle both scripts
   if (context.root && context.prefix) {
-    const rootMatches = checkSthaRootMatch(context.root, patterns.stha);
-    const prefixMatches = checkSthaValidPrefixMatch(context.prefix, patterns.prefixes);
+    // Check both Devanagari and IAST patterns for context
+    const devanagariPatterns = { stha: sthaPatterns.devanagari, prefixes: validPrefixPatterns.devanagari };
+    const iastPatterns = { stha: sthaPatterns.iast, prefixes: validPrefixPatterns.iast };
     
-    if (rootMatches && prefixMatches.found) {
+    const rootMatchesDevanagari = checkSthaRootMatch(context.root, devanagariPatterns.stha);
+    const prefixMatchesDevanagari = checkSthaValidPrefixMatch(context.prefix, devanagariPatterns.prefixes);
+    const rootMatchesIAST = checkSthaRootMatch(context.root, iastPatterns.stha);
+    const prefixMatchesIAST = checkSthaValidPrefixMatch(context.prefix, iastPatterns.prefixes);
+    
+    if ((rootMatchesDevanagari || rootMatchesIAST) && (prefixMatchesDevanagari.found || prefixMatchesIAST.found)) {
+      const matchedPrefix = prefixMatchesDevanagari.found ? prefixMatchesDevanagari.matched : prefixMatchesIAST.matched;
       return {
         found: true,
         confidence: 0.9,
-        prefix: prefixMatches.matched,
+        prefix: matchedPrefix,
         details: `Explicit context: ${context.prefix} + ${context.root}`,
         morphologyClarity: true,
         reason: 'Context-specified prefix + स्था combination'

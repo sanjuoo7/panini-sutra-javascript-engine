@@ -1,6 +1,28 @@
 /**
  * Sutra 1.3.19: विपराभ्यां जेः (viparābhyāṃ jeḥ)
- * "After the verb जि 'to conquer', preceded by वि or परा, the आत्मनेपद affix is employed."
+ * "After the verb जि 'to conquer', preceded by वि or परा, the आ  // Check for explicit context information
+  if (context.root && context.prefix) {
+    // Check for both script formats
+    const allJiPatterns = [...jiPatterns.devanagari, ...jiPatterns.iast];
+    const allPrefixPatterns = {
+      ...prefixPatterns.devanagari,
+      ...prefixPatterns.iast
+    };
+    
+    const rootMatches = checkRootMatch(context.root, allJiPatterns);
+    const prefixMatches = checkPrefixMatch(context.prefix, allPrefixPatterns);
+    
+    if (rootMatches && prefixMatches.found) {
+      return {
+        found: true,
+        confidence: 0.9,
+        prefix: context.prefix,
+        details: `Explicit context: ${context.prefix} + ${context.root}`,
+        morphologyClarity: true,
+        reason: `वि/परा + जि combination via context`
+      };
+    }
+  } employed."
  * 
  * This sutra prescribes ātmanepada endings for the root जि (to conquer/to win)
  * when preceded by the prefixes वि (vi) or परा (parā).
@@ -36,7 +58,7 @@ export function determineViParaJiAtmanepada(word, context = {}) {
     return {
       isViParaJiAtmanepada: false,
       confidence: 0,
-      analysis: 'Empty input',
+      analysis: 'Invalid input',
       sutraApplied: '1.3.19'
     };
   }
@@ -116,16 +138,23 @@ function checkViParaJiCombination(word, context, script) {
     { ji: jiPatterns.devanagari, prefixes: prefixPatterns.devanagari } :
     { ji: jiPatterns.iast, prefixes: prefixPatterns.iast };
 
-  // Check for explicit context information
+  // Check for explicit context information - handle both scripts
   if (context.root && context.prefix) {
-    const rootMatches = checkRootMatch(context.root, patterns.ji);
-    const prefixMatches = checkPrefixMatch(context.prefix, patterns.prefixes);
+    // Check both Devanagari and IAST patterns for context
+    const devanagariPatterns = { ji: jiPatterns.devanagari, prefixes: prefixPatterns.devanagari };
+    const iastPatterns = { ji: jiPatterns.iast, prefixes: prefixPatterns.iast };
     
-    if (rootMatches && prefixMatches.found) {
+    const rootMatchesDevanagari = checkRootMatch(context.root, devanagariPatterns.ji);
+    const prefixMatchesDevanagari = checkPrefixMatch(context.prefix, devanagariPatterns.prefixes);
+    const rootMatchesIAST = checkRootMatch(context.root, iastPatterns.ji);
+    const prefixMatchesIAST = checkPrefixMatch(context.prefix, iastPatterns.prefixes);
+    
+    if ((rootMatchesDevanagari || rootMatchesIAST) && (prefixMatchesDevanagari.found || prefixMatchesIAST.found)) {
+      const matchedPrefix = prefixMatchesDevanagari.found ? prefixMatchesDevanagari.matched : prefixMatchesIAST.matched;
       return {
         found: true,
         confidence: 0.9,
-        prefix: prefixMatches.matched,
+        prefix: matchedPrefix,
         details: `Explicit context: ${context.prefix} + ${context.root}`,
         morphologyClarity: true,
         reason: 'Context-specified वि/परा + जि combination'

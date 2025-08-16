@@ -37,7 +37,7 @@ export function determineKriDaPrefixAtmanepada(word, context = {}) {
     return {
       isKriDaPrefixAtmanepada: false,
       confidence: 0,
-      analysis: 'Empty input',
+      analysis: 'Invalid input',
       sutraApplied: '1.3.21'
     };
   }
@@ -122,20 +122,27 @@ function checkKriDaPrefixCombination(word, context, script) {
     }
   };
 
-  const patterns = script === 'devanagari' ? 
-    { kriDa: kriDaPatterns.devanagari, prefixes: validPrefixPatterns.devanagari } :
-    { kriDa: kriDaPatterns.iast, prefixes: validPrefixPatterns.iast };
+  const patterns = script === 'Devanagari' ? 
+    { krida: kriDaPatterns.devanagari, prefixes: validPrefixPatterns.devanagari } :
+    { krida: kriDaPatterns.iast, prefixes: validPrefixPatterns.iast };
 
-  // Check for explicit context information
+  // Check for explicit context information - handle both scripts
   if (context.root && context.prefix) {
-    const rootMatches = checkKriDaRootMatch(context.root, patterns.kriDa);
-    const prefixMatches = checkValidPrefixMatch(context.prefix, patterns.prefixes);
+    // Check both Devanagari and IAST patterns for context
+    const devanagariPatterns = { krida: kriDaPatterns.devanagari, prefixes: validPrefixPatterns.devanagari };
+    const iastPatterns = { krida: kriDaPatterns.iast, prefixes: validPrefixPatterns.iast };
     
-    if (rootMatches && prefixMatches.found) {
+    const rootMatchesDevanagari = checkKriDaRootMatch(context.root, devanagariPatterns.krida);
+    const prefixMatchesDevanagari = checkValidPrefixMatch(context.prefix, devanagariPatterns.prefixes);
+    const rootMatchesIAST = checkKriDaRootMatch(context.root, iastPatterns.krida);
+    const prefixMatchesIAST = checkValidPrefixMatch(context.prefix, iastPatterns.prefixes);
+    
+    if ((rootMatchesDevanagari || rootMatchesIAST) && (prefixMatchesDevanagari.found || prefixMatchesIAST.found)) {
+      const matchedPrefix = prefixMatchesDevanagari.found ? prefixMatchesDevanagari.matched : prefixMatchesIAST.matched;
       return {
         found: true,
         confidence: 0.9,
-        prefix: prefixMatches.matched,
+        prefix: matchedPrefix,
         details: `Explicit context: ${context.prefix} + ${context.root}`,
         morphologyClarity: true,
         reason: 'Context-specified prefix + क्रीड combination'
@@ -176,7 +183,7 @@ function analyzeWordForKriDaPrefix(word, patterns) {
         const remainder = lowerWord.substring(prefixForm.length);
         
         // Check if remainder contains क्रीड root patterns
-        for (const kriDaPattern of patterns.kriDa) {
+        for (const kriDaPattern of patterns.krida) {
           const kriDaLower = kriDaPattern.toLowerCase();
           
           if (remainder.includes(kriDaLower)) {

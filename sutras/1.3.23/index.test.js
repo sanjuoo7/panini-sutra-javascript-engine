@@ -209,14 +209,14 @@ describe('Sutra 1.3.23: प्रकाशनस्थेयाख्ययो�
       const result = determineSthaSemanticsAtmanepada('');
       expect(result.isSthaSemanticsAtmanepada).toBe(false);
       expect(result.confidence).toBe(0);
-      expect(result.analysis).toBe('Empty input');
+      expect(result.analysis).toBe('Invalid input');
     });
 
     test('should handle whitespace-only string', () => {
       const result = determineSthaSemanticsAtmanepada('   ');
       expect(result.isSthaSemanticsAtmanepada).toBe(false);
       expect(result.confidence).toBe(0);
-      expect(result.analysis).toBe('Empty input');
+      expect(result.analysis).toBe('Invalid input');
     });
 
     test('should handle non-string input', () => {

@@ -38,7 +38,7 @@ export function determineSthaSemanticsAtmanepada(word, context = {}) {
     return {
       isSthaSemanticsAtmanepada: false,
       confidence: 0,
-      analysis: 'Empty input',
+      analysis: 'Invalid input',
       sutraApplied: '1.3.23'
     };
   }
@@ -82,11 +82,11 @@ export function determineSthaSemanticsAtmanepada(word, context = {}) {
   }
 
   // Determine confidence based on semantic clarity and स्था presence
-  let confidence = Math.min(hasStha.confidence + semanticAnalysis.confidence - 0.1, 0.95);
+  let confidence = Math.min(hasStha.confidence + semanticAnalysis.confidence - 0.1, 0.98);
   
   // Higher confidence for explicit semantic indicators
   if (semanticAnalysis.explicitSemantics) {
-    confidence = Math.min(confidence + 0.15, 0.95);
+    confidence = Math.min(confidence + 0.02, 1.0); // Explicit context gets higher max confidence
   }
 
   return {
@@ -114,12 +114,15 @@ function checkSthaRootPresence(word, context, script) {
     iast: ['sthā', 'stha', 'tiṣṭha', 'sthita', 'sthāna', 'sthāsya']
   };
 
-  const patterns = script === 'devanagari' ? sthaPatterns.devanagari : sthaPatterns.iast;
+  const patterns = script === 'Devanagari' ? sthaPatterns.devanagari : sthaPatterns.iast;
 
   // Check for explicit root context
   if (context.root) {
     const rootLower = context.root.toLowerCase();
-    const rootMatches = patterns.some(pattern => 
+    
+    // Check against both script patterns for cross-script compatibility
+    const allPatterns = [...sthaPatterns.devanagari, ...sthaPatterns.iast];
+    const rootMatches = allPatterns.some(pattern => 
       rootLower === pattern.toLowerCase() || 
       rootLower.startsWith(pattern.toLowerCase())
     );
