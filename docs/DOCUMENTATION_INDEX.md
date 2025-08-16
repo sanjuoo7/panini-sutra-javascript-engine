@@ -157,6 +157,17 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 #### **Volume 1.3: Dhātu Definitions (Initiated)**
 - **1.3.1** - भूवादयो धातवः (Defines dhātu class: roots beginning with bhū)
 - **1.3.2** - उपदेशेऽजनुनासिक इत् (Non-nasalized vowels as it-markers in grammatical instruction)
+- **1.3.3** - हलन्त्यम् (Final consonants as it-markers in grammatical instruction)
+- **1.3.4** - न विभक्तौ तुस्माः (TUSMĀḤ consonants are not it-markers in vibhakti affixes)
+- **1.3.5** - आदिर्ञिटुडवः (Initial ञि, टु, डु sequences are it-markers)
+- **1.3.6** - षः प्रत्ययस्य (Initial ष् of affixes is an it-marker)
+- **1.3.7** - चुटू (Initial palatal and lingual consonants as it-markers)
+- **1.3.8** - लशक्वतद्धिते (Initial la, śa, and gutturals as it-markers except in taddhita)
+- **1.3.14** - कर्त्तरि कर्म्मव्यतिहारे (Reciprocal action ātmanepada determination)
+- **1.3.15** - न गतिहिंसार्थेभ्यः (Motion and injury verb exception to reciprocal rule)
+- **1.3.16** - इतरेतरान्योन्योपपदाच्च (Itaretara/anyonya compound exception)
+- **1.3.17** - नेर्विशः (Ni+viś specific ātmanepada rule)
+- **1.3.18** - परिव्यवेभ्यः क्रियः (क्री root with परि/वि/अव prefix ātmanepada rule)
 
 ---
 

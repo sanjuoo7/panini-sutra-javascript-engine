@@ -584,7 +584,52 @@ const WORD_LISTS = {
 };
 ```
 
-### **4.3 Performance Optimization Patterns**
+### **4.3 Final Character Analysis Pattern (New)**
+
+**Pattern for It-Marker and Ending Analysis (Sutra 1.3.3 type):**
+```javascript
+function analyzeFinalCharacter(form) {
+  const script = detectScript(form);
+  const trimmed = form.trim();
+  
+  // Step 1: Handle explicit markers first (halanta, visarga, anusvara)
+  let finalChar = trimmed.slice(-1);
+  let actualChar = finalChar;
+  
+  // Step 2: Script-specific processing
+  if (script === 'Devanagari') {
+    if (finalChar === '्') {
+      // Explicit halanta - extract the consonant before it
+      actualChar = trimmed.slice(-2, -1);
+      return { isExplicitConsonant: true, char: actualChar };
+    }
+    if (['ः', 'ं'].includes(finalChar)) {
+      // Special consonants
+      return { isSpecialConsonant: true, char: finalChar };
+    }
+    if (isConsonant(finalChar)) {
+      // Inherent vowel ending
+      return { hasInherentVowel: true, char: finalChar };
+    }
+  }
+  
+  // Step 3: General consonant/vowel classification
+  if (isConsonant(actualChar)) {
+    return { isConsonant: true, char: actualChar };
+  }
+  
+  return { isVowel: true, char: actualChar };
+}
+```
+
+**Key Insights from Implementation:**
+1. **Halanta Priority**: Always check for explicit halanta (्) first in Devanagari
+2. **Special Consonants**: Visarga and anusvara are consonant endings regardless of script
+3. **Inherent Vowel Logic**: Devanagari consonant letters without halanta end in inherent 'a'
+4. **Return Structure**: Consistent reason codes for transparent debugging
+5. **Classification Integration**: Leverage existing `isConsonant()` and `getConsonantArticulation()` utilities
+
+### **4.4 Performance Optimization Patterns**
 
 **Proven Optimization Strategies:**
 

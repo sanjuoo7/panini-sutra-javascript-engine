@@ -278,7 +278,65 @@ The `sanskrit-utils` library is a comprehensive collection of utilities for Sans
 
 **Extensibility**: Designed for later integration with gana classification, pada options, and semantic tagging without altering current API.
 
-**Return Metadata (Representative Example)**:
+### 15. **Final Consonant It-Marker Analysis** (`sutras/1.3.3/index.js`) 🆕
+**Purpose**: Implements Sutra 1.3.3 (हलन्त्यम्) for identifying final consonants as इत् markers in grammatical instructions (upadeśa).
+
+**Key Functions**:
+- `isFinalConsonantItMarker(form, options)` – Analyzes whether the final character is a consonant it-marker
+
+**Return Structure**:
+```javascript
+{
+  isIt: boolean,           // Whether final character is an it-marker
+  consonant: string|null,  // The final consonant (or character analyzed)
+  script: string,          // Detected script ('IAST', 'Devanagari', etc.)
+  reason: string,          // Reason for classification
+  consonantType: string|null // Phonological type of consonant
+}
+```
+
+**Supported Features**:
+- **Multi-script Analysis**: Handles both IAST and Devanagari inputs seamlessly
+- **Halanta Processing**: Correctly handles explicit halanta (्) in Devanagari words
+- **Special Consonants**: Recognizes visarga (ḥ/ः) and anusvara (ṃ/ं) as consonant endings
+- **Vowel Distinction**: Distinguishes between consonant endings and vowel endings (including inherent 'a' in Devanagari)
+- **Consonant Classification**: Provides phonological classification using existing classification utilities
+
+**Reason Codes**:
+- `final-consonant-it-marker` – Final consonant identified as it-marker per Sutra 1.3.3
+- `not-consonant-ending` – Final character is not a consonant
+- `vowel-ending-with-inherent-a` – Devanagari word ending with inherent vowel
+- `invalid-input` – Input validation failed
+- `empty-input` – Empty or whitespace-only input
+
+**Dependencies**:
+- `script-detection.js` for input script identification
+- `classification.js` for consonant detection and phonological classification  
+- `transliteration.js` for script normalization
+- `validation.js` for input sanitization
+
+**Usage Example**:
+```javascript
+import { isFinalConsonantItMarker } from './sutras/1.3.3/index.js';
+
+// Consonant ending - marked as it
+const result1 = isFinalConsonantItMarker('gam');
+// { isIt: true, consonant: 'm', script: 'IAST', reason: 'final-consonant-it-marker', consonantType: 'nasal' }
+
+// Vowel ending - not it-marker  
+const result2 = isFinalConsonantItMarker('bhū');
+// { isIt: false, consonant: 'ū', script: 'IAST', reason: 'not-consonant-ending', consonantType: null }
+
+// Explicit halanta in Devanagari
+const result3 = isFinalConsonantItMarker('गम्');
+// { isIt: true, consonant: 'म', script: 'Devanagari', reason: 'final-consonant-it-marker', consonantType: 'nasal' }
+```
+
+**Use Cases**: Grammatical analysis, morphological parsing, it-marker identification in upadeśa context, integration with other Panini sutras.
+
+---
+
+## Accent Extension: Sannatara
 ```json
 {
   "sutra": "1.2.66",
