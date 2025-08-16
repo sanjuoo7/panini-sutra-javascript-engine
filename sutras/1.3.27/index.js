@@ -53,7 +53,8 @@ export function determineUdViTapAtmanepada(word, context = {}) {
     const script = detectScript(cleanWord);
     
     // Check explicit context first
-    if (context.root === 'तप्' && (context.prefix === 'उद्' || context.prefix === 'वि')) {
+    if ((context.root === 'तप्' || context.root === 'tap') && 
+        (context.prefix === 'उद्' || context.prefix === 'ud' || context.prefix === 'वि' || context.prefix === 'vi')) {
         // Must be intransitive
         if (context.transitivity !== 'intransitive' && !context.isIntransitive) {
             return {
@@ -70,7 +71,7 @@ export function determineUdViTapAtmanepada(word, context = {}) {
             confidence: 0.95,
             analysis: 'उद्/वि + तप् combination found with intransitive usage',
             prefix: context.prefix,
-            root: 'तप्',
+            root: context.root,
             transitivity: 'intransitive',
             sutraApplied: '1.3.27'
         };

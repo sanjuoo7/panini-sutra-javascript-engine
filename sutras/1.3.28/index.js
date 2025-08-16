@@ -394,15 +394,8 @@ function analyzeIntransitiveUsage(word, context) {
 function normalizePrefix(prefix, script) {
   if (!prefix) return '';
   
-  const normalized = prefix.toLowerCase().trim();
-  
-  if (script === 'Devanagari') {
-    if (['ā', 'āṅ', 'a'].includes(normalized)) return 'आ';
-    return prefix;
-  } else {
-    if (['आ', 'आङ्'].includes(normalized)) return 'ā';
-    return prefix;
-  }
+  // Return the prefix as provided in context
+  return prefix;
 }
 
 /**
@@ -411,17 +404,8 @@ function normalizePrefix(prefix, script) {
 function normalizeRoot(root, script) {
   if (!root) return '';
   
-  const normalized = root.toLowerCase().trim();
-  
-  if (script === 'Devanagari') {
-    if (['yam'].includes(normalized)) return 'यम्';
-    if (['han'].includes(normalized)) return 'हन्';
-    return root;
-  } else {
-    if (['यम्'].includes(normalized)) return 'yam';
-    if (['हन्'].includes(normalized)) return 'han';
-    return root;
-  }
+  // Return the root as provided in context
+  return root;
 }
 
 /**

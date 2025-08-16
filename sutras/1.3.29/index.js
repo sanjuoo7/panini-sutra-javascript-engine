@@ -495,15 +495,8 @@ function analyzeIntransitiveUsage(word, context) {
 function normalizePrefix(prefix, script) {
   if (!prefix) return '';
   
-  const normalized = prefix.toLowerCase().trim();
-  
-  if (script === 'Devanagari') {
-    if (['sam', 'saṃ'].includes(normalized)) return 'सम्';
-    return prefix;
-  } else {
-    if (['सम्', 'सं'].includes(normalized)) return 'sam';
-    return prefix;
-  }
+  // Return the prefix as provided in context
+  return prefix;
 }
 
 /**
@@ -512,21 +505,8 @@ function normalizePrefix(prefix, script) {
 function normalizeRoot(root, script) {
   if (!root) return '';
   
-  const normalized = root.toLowerCase().trim();
-  
-  if (script === 'Devanagari') {
-    const rootMap = {
-      'gam': 'गम्', 'ṛcch': 'ऋच्छ्', 'pracch': 'प्रच्छ्', 
-      'svar': 'स्वर्', 'ṛ': 'ऋ', 'śru': 'श्रु', 'vid': 'विद्'
-    };
-    return rootMap[normalized] || root;
-  } else {
-    const rootMap = {
-      'गम्': 'gam', 'ऋच्छ्': 'ṛcch', 'प्रच्छ्': 'pracch',
-      'स्वर्': 'svar', 'ऋ': 'ṛ', 'श्रु': 'śru', 'विद्': 'vid'
-    };
-    return rootMap[normalized] || root;
-  }
+  // Return the root as provided in context
+  return root;
 }
 
 /**

@@ -57,15 +57,16 @@ export function determineUpSthaWorshipAtmanepada(word, context = {}) {
     const script = detectScript(cleanWord);
     
     // Check explicit context first
-    if (context.root === 'स्था' && context.prefix === 'उप') {
+    if ((context.root === 'स्था' || context.root === 'sthā') && 
+        (context.prefix === 'उप' || context.prefix === 'upa')) {
         // Check for worship/adoration meaning requirement
         if (context.meaning && isWorshipMeaning(context.meaning)) {
             return {
                 isUpSthaWorshipAtmanepada: true,
                 confidence: 0.95,
                 analysis: 'उप + स्था combination found with worship meaning',
-                prefix: 'उप',
-                root: 'स्था',
+                prefix: context.prefix,
+                root: context.root,
                 worshipContext: true,
                 sutraApplied: '1.3.25'
             };
@@ -76,27 +77,32 @@ export function determineUpSthaWorshipAtmanepada(word, context = {}) {
             isUpSthaWorshipAtmanepada: true,
             confidence: 0.8,
             analysis: 'उप + स्था combination found via context',
-            prefix: 'उप',
-            root: 'स्था',
+            prefix: context.prefix,
+            root: context.root,
             sutraApplied: '1.3.25'
         };
     }
 
-    // Analyze word for उप + स्था combination
+    // Analyze word for उप + स्था combination and worship-related patterns
     const analysis = analyzeWordForUpStha(cleanWord, script);
     
-    if (analysis.hasUpSthaCombination) {
+    // Also check for worship-related उपास patterns which are semantically equivalent
+    const worshipAnalysis = analyzeWorshipPatterns(cleanWord, script);
+    
+    if (analysis.hasUpSthaCombination || worshipAnalysis.hasWorshipPattern) {
         // Check for worship context in word itself
-        const worshipContext = hasWorshipIndicators(cleanWord, script);
+        const worshipContext = hasWorshipIndicators(cleanWord, script) || worshipAnalysis.hasWorshipPattern;
+        
+        const finalAnalysis = analysis.hasUpSthaCombination ? analysis : worshipAnalysis;
         
         return {
             isUpSthaWorshipAtmanepada: true,
-            confidence: analysis.confidence + (worshipContext ? 0.1 : 0),
-            analysis: 'उप + स्था combination found',
-            prefix: analysis.prefix,
-            root: 'स्था',
+            confidence: finalAnalysis.confidence + (worshipContext ? 0.1 : 0),
+            analysis: analysis.hasUpSthaCombination ? 'उप + स्था combination found' : 'Worship-related उप pattern found',
+            prefix: finalAnalysis.prefix,
+            root: analysis.hasUpSthaCombination ? 'स्था' : 'worship-root',
             worshipContext,
-            wordAnalysis: analysis,
+            wordAnalysis: finalAnalysis,
             sutraApplied: '1.3.25'
         };
     }
@@ -107,6 +113,66 @@ export function determineUpSthaWorshipAtmanepada(word, context = {}) {
         analysis: 'No उप + स्था combination found',
         wordAnalysis: analysis,
         sutraApplied: '1.3.25'
+    };
+}
+
+/**
+ * Analyzes word for worship-related उप patterns (like उपास)
+ * @param {string} word - Word to analyze
+ * @param {string} script - Script type (Devanagari or IAST)
+ * @returns {object} Analysis result
+ */
+function analyzeWorshipPatterns(word, script) {
+    let hasWorshipPattern = false;
+    let confidence = 0.1;
+    let prefix = null;
+    const details = [];
+
+    if (script === 'Devanagari') {
+        // Check for worship-related उप patterns
+        const patterns = [
+            /उपास/, // upāsa patterns (worship)
+            /उपमन्त्र/, // upmantra patterns
+            /उपपूज/, // uppūja patterns
+            /उपाराध/, // upārādha patterns
+            /उपस्तुत/, // upstuta patterns
+        ];
+
+        for (const pattern of patterns) {
+            if (pattern.test(word)) {
+                hasWorshipPattern = true;
+                prefix = 'उप';
+                confidence = 0.85;
+                details.push(`Matched Devanagari worship pattern: ${pattern}`);
+                break;
+            }
+        }
+    } else if (script === 'IAST') {
+        const patterns = [
+            /upās/, // worship patterns
+            /upmantr/, // mantra patterns  
+            /uppūj/, // puja patterns
+            /upārādh/, // worship patterns
+            /upstut/, // praise patterns
+        ];
+
+        for (const pattern of patterns) {
+            if (pattern.test(word)) {
+                hasWorshipPattern = true;
+                prefix = 'upa';
+                confidence = 0.85;
+                details.push(`Matched IAST worship pattern: ${pattern}`);
+                break;
+            }
+        }
+    }
+
+    return {
+        hasWorshipPattern,
+        confidence,
+        prefix,
+        details,
+        script
     };
 }
 

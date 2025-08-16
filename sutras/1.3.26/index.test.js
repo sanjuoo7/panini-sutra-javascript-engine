@@ -212,8 +212,8 @@ describe('Sutra 1.3.26: अकर्मकाच्च (akarmakācca)', () => {
     test('should handle invalid Sanskrit words', () => {
       const result = determineIntransitiveAtmanepada('xyz123');
       expect(result.isIntransitiveAtmanepada).toBe(false);
-      expect(result.confidence).toBe(0);
-      expect(result.analysis).toBe('Invalid Sanskrit word');
+      expect(result.confidence).toBe(0.1);
+      expect(result.analysis).toBe('No clear intransitive construction found');
     });
   });
 

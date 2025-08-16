@@ -57,7 +57,8 @@ export function determineUdSthaAtmanepada(word, context = {}) {
     const script = detectScript(cleanWord);
     
     // Check explicit context first
-    if (context.root === 'स्था' && context.prefix === 'उद्') {
+    if ((context.root === 'स्था' || context.root === 'sthā') && 
+        (context.prefix === 'उद्' || context.prefix === 'ud')) {
         // Check for exclusion - rising/getting up meaning
         if (context.meaning && isRisingMeaning(context.meaning)) {
             return {
@@ -73,8 +74,8 @@ export function determineUdSthaAtmanepada(word, context = {}) {
             isUdSthaAtmanepada: true,
             confidence: 0.9,
             analysis: 'उद् + स्था combination found via context',
-            prefix: 'उद्',
-            root: 'स्था',
+            prefix: context.prefix,
+            root: context.root,
             sutraApplied: '1.3.24'
         };
     }
