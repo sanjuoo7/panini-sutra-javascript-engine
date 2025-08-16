@@ -201,6 +201,13 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
  - **1.3.54** - समस्तृतीयायुक्तात् (सम् + चर् with instrumental linkage → Ātmanepada)
  - **1.3.55** - दाणश्च सा चेच्चतुर्थ्यर्थे (सम् + दा with instrumental having dative sense → Ātmanepada)
  - **1.3.56** - उपाद्यमः स्वकरणे (उप + यम् in espousing sense → Ātmanepada)
+ - **1.3.57** - (Implemented) — see sutra README
+ - **1.3.58** - (Implemented) — see sutra README
+ - **1.3.59** - प्रत्याङ्भ्यां श्रुवः (Desiderative of śru with prati/āṅ → prohibits Ātmanepada)
+ - **1.3.60** - शदेः शितः (śad with śit affix → Ātmanepada)
+ - **1.3.61** - म्रियतेर् लुङ्लिङोश्च (mṛ with śit, or luṅ/liṅ → Ātmanepada)
+ - **1.3.62** - पूर्ववत् सन् (Desiderative inherits base Ātmanepada)
+ - **1.3.63** - आम्प्रत्ययवत् कृञोऽनुप्रयोगस्य (Auxiliary kṛ with ām‑class main verb → Ātmanepada)
 
 ---
 
