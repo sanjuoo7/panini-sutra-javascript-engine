@@ -168,6 +168,12 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.3.16** - इतरेतरान्योन्योपपदाच्च (Itaretara/anyonya compound exception)
 - **1.3.17** - नेर्विशः (Ni+viś specific ātmanepada rule)
 - **1.3.18** - परिव्यवेभ्यः क्रियः (क्री root with परि/वि/अव prefix ātmanepada rule)
+- **1.3.24** - उदोऽनूर्द्ध्वकर्मणि (उद् + स्था ātmanepada excluding upward motion)
+- **1.3.25** - उपान्मन्त्रकरणे (उप + स्था ātmanepada in worship contexts)
+- **1.3.26** - अकर्मकाच्च (Extension to intransitive constructions)
+- **1.3.27** - उद्विभ्यां तपः (उद्/वि + तप् ātmanepada in intransitive usage)
+- **1.3.28** - आङो यमहनः (आ + यम्/हन् ātmanepada in intransitive usage)
+- **1.3.29** - समो गम्यृच्छिप्रच्छिस्वरत्यर्तिश्रुविदिभ्यः (सम् + specified roots ātmanepada)
 
 ---
 
