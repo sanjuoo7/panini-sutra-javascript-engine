@@ -174,6 +174,8 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.3.27** - उद्विभ्यां तपः (उद्/वि + तप् ātmanepada in intransitive usage)
 - **1.3.28** - आङो यमहनः (आ + यम्/हन् ātmanepada in intransitive usage)
 - **1.3.29** - समो गम्यृच्छिप्रच्छिस्वरत्यर्तिश्रुविदिभ्यः (सम् + specified roots ātmanepada)
+- **1.3.35** - अकर्मकाच्च (वि + कृ ātmanepada in intransitive usage)
+- **1.3.36** - सम्माननोत्सञ्जनाचार्यकरणज्ञानभृतिविगणनव्ययेषु नियः (नी in specific semantic contexts ātmanepada)
 
 ---
 
