@@ -186,6 +186,11 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
  - **1.3.39** - उपपराभ्याम् (उप/पर + क्रम् in 1.3.38 senses ātmanepada)
  - **1.3.40** - आङ उद्गमने (आङ् + क्रम् in rising-of-luminary sense ātmanepada)
  - **1.3.41** - वेः पादविहरणे (वि + क्रम् in footstep/walking sense ātmanepada)
+ - **1.3.42** - प्रोपाभ्यां समर्थाभ्याम् (वि + क्रम् with pra/upa in beginning sense → Ātmanepada)
+ - **1.3.43** - अनुपसर्गाद्वा (क्रम् without prefix → optional Ātmanepada)
+ - **1.3.44** - अपह्नवे ज्ञः (ज्ञ in denial sense → Ātmanepada)
+ - **1.3.45** - अकर्मकाच्च (ज्ञ intransitive with non-agent fruit → Ātmanepada)
+ - **1.3.46** - सम्प्रतिभ्यामनाध्याने (सम्+प्रति + ज्ञ, not in regret sense → Ātmanepada)
 
 ---
 
