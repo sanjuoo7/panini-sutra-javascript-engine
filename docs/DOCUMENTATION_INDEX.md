@@ -32,6 +32,15 @@
 ### **Individual Sutras** (118 files)
 Located in `sutras/[SUTRA_NUMBER]/README.md`:
 
+### **Recent README / Test updates (2025-08-17)**
+
+- Updated README and test suites for sutras **1.3.79** through **1.3.92** to improve clarity and coverage:
+  - READMEs expanded to include: overview, function contract, examples (IAST + Devanagari), edge cases, and test coverage notes.
+  - Tests augmented with multi-script cases (Devanagari & IAST), positive/negative/edge cases, optionality checks, and invalid-input guards.
+  - Purpose: improve documentation accuracy and make unit tests robust against transliteration/multi-script and semantic edge cases.
+  - Location: `sutras/1.3.79/` … `sutras/1.3.92/` (each folder contains `README.md` and `index.test.js`)
+
+
 #### **Volume 1.1: Fundamental Rules**
 - **1.1.1** - वृद्धि (Vṛddhi vowels: ā, ai, au)
 - **1.1.2** - अदेङ् गुणः (Guṇa vowels: a, e, o) 
