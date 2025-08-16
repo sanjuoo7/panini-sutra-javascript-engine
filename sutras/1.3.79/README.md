@@ -4,118 +4,86 @@
 
 **Sanskrit Text**: `अनुपराभ्यां कृञः`  
 **Transliteration**: anuparābhyāṁ kṛñaḥ  
-**Translation**: After the verb kṛ (to do/make) when preceded by both anu- and para-, Parasmaipada is used in active voice, even when the fruit accrues to the agent (especially in senses like divulging).
+**Translation**: For the root कृ (to do/make) when preceded by अनु or पर, Parasmaipada is used, even when the action’s fruit accrues to the agent (esp. in divulging/revealing senses).
 
 ## Purpose
 
-This sutra sets a Parasmaipada override for the root कृ (kṛ) when both अनु and पर prefixes are present in an active (कर्तरि) construction. It blocks the otherwise applicable Ātmanepada rules driven by agent-benefit or other preceding conditions.
+Overrides the agent-benefit Ātmanepada tendency for कृ when prefixed with अनु/पर, prescribing Parasmaipada.
 
 ## Implementation
 
 ### Function Signature
 ```javascript
-function sutra1379(word, context = {}) {
-    // Determines Parasmaipada for kṛ with anu+para in active voice
-}
+function sutra1379(word, context = {}) { /* ... */ }
 ```
 
 ### Key Features
-- Detects कृ (kṛ) root via context/surface patterns
-- Requires both अनु and पर upasargas (canonicalized across variants)
-- Active voice (कर्तरि) enforcement
-- Explicitly blocks Ātmanepada rules when it applies
-- Multi-script support (Devanagari and IAST)
+- Detects root कृ (kṛ) with अनु/पर prefixes
+- Overrides Ātmanepada due to agent-benefit; forces Parasmaipada
+- Optional semantic boost for divulging/revealing senses
 
 ### Dependencies
 - **Sanskrit Utils**: detectScript, validateSanskritWord
-- **Shared Functions**: root and upasarga pattern handling (inline normalization here)
 
 ## Usage Examples
 
 ### Basic Usage
 ```javascript
-import { sutra1379 } from './index.js';
+import sutra1379 from './index.js';
 
-// Devanagari example
-const r1 = sutra1379('अनुपरकरोति', {
-  root: 'कृ',
-  upasarga: ['अनु', 'पर'],
-  isActiveVoice: true,
-  benefitsAgent: true
-});
-// → { applies: true, isParasmaipada: true, blocksAtmanepada: true }
+sutra1379('अनुकरोति', { root: 'कृ', prefix: 'अनु' });
+// { applies: true, isParasmaipada: true, ... }
 
-// IAST example
-const r2 = sutra1379('anuparakaroti', {
-  root: 'kṛ',
-  upasarga: ['anu', 'para'],
-  isActiveVoice: true
-});
-// → applies true
+sutra1379('परकरोति', { root: 'kṛ', upasarga: 'para', benefitsAgent: true });
+// { applies: true, isParasmaipada: true, ... }
 ```
 
 ### Advanced Usage
 ```javascript
-// Surface-detected upasargas (no explicit context)
-const r3 = sutra1379('अनुपरकृतम्', { isActiveVoice: true });
-
-// Semantic cue helpful but optional
-const r4 = sutra1379('anuparakaroti', { meaning: 'to divulge' });
+// Sense-based confidence boost
+sutra1379('अनुकरोति', { root: 'कृ', prefix: 'अनु', meaning: 'to reveal' });
 ```
 
 ## Test Coverage
 
 **Test File**: `index.test.js`  
-**Test Cases**: 5 tests covering:
-- Applicability with both अनु and पर
-- IAST and Devanagari script handling
-- Missing one upasarga (negative)
-- Passive voice exclusion
+**Test Cases**: 4 tests covering:
+- Positive cases with अनु/पर
+- Negative case without prefix
 - Input validation
 
 ### Running Tests
 ```bash
-# Run this sutra's tests
 npm test sutras/1.3.79
-
-# Run with coverage
-npm test sutras/1.3.79 --coverage
 ```
 
 ## Technical Details
 
 ### Algorithm
-1. Validate input and detect script
-2. Detect root कृ (kṛ) via context or surface patterns
-3. Canonicalize upasargas; ensure both अनु and पर are present
-4. Verify active voice
-5. Apply Parasmaipada and block Ātmanepada
+- Validate input and script
+- Detect root कृ and prefixes अनु/पर
+- Return Parasmaipada designation with confidence
 
 ### Performance
-- **Time Complexity**: O(n) for surface/prefix scans
-- **Space Complexity**: O(1)
-- **Optimization Notes**: Early returns on failed conditions
+- Time Complexity: O(n) for pattern checks
+- Space Complexity: O(1)
 
 ### Edge Cases
-- Upasarga variants (परि/पार) normalized to para when relevant
-- Works with/without explicit context if surface prefixes present
-- Passive voice or missing prefixes → non-application
+- Mixed-script inputs
+- Root detection via word surface when context not provided
 
 ## Integration
 
 ### Related Sutras
-- **1.3.72**: स्वरितञितः कर्त्रभिप्राये क्रियाफले (agent-benefit → Ātmanepada)
-- **1.3.74–1.3.77**: Various Ātmanepada rules (this sutra overrides when applicable)
-- **1.3.78**: शेषात् कर्तरि परस्मैपदम् (default Parasmaipada; 1.3.79 is specific)
+- 1.3.78: Default Parasmaipada
+- 1.3.72–1.3.77: Ātmanepada rules overridden by this exception
 
 ### Used By
-- Voice assignment pipeline for prefixed kṛ forms
-- Disambiguation where agent-benefit rules might otherwise apply
+- Voice assignment engine
 
 ## References
 
 - **Panini's Ashtadhyayi**: 1.3.79 अनुपराभ्यां कृञः
-- **Commentarial Note**: Applies prominently in senses like ‘divulging’ (prakaṭa/udghoṣa)
 
 ---
 
