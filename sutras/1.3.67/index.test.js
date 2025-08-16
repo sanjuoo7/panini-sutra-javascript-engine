@@ -5,13 +5,36 @@ describe('Sutra 1.3.67 (ṇeraṇau yatra karma ...)', () => {
     const res = sutra1367('कारयते', { isCausative: true, objectBecomesAgent: true, semantic: 'to cause to do' });
     expect(res.applies).toBe(true);
     expect(res.isAtmanepada).toBe(true);
+    expect(res.confidence).toBeGreaterThan(0.7);
   });
+
   test('does not apply if not causative', () => {
     const res = sutra1367('करोति', { isCausative: false, objectBecomesAgent: true });
     expect(res.applies).toBe(false);
+    expect(res.reason).toContain('causative');
   });
+
   test('does not apply in regret-remembering sense', () => {
     const res = sutra1367('अनुस्मारयते', { isCausative: true, objectBecomesAgent: true, isRegretfulRemembering: true });
     expect(res.applies).toBe(false);
+    expect(res.reason).toContain('regret');
+  });
+
+  test('does not apply without object→agent condition', () => {
+    const res = sutra1367('गमयति', { isCausative: true, objectBecomesAgent: false });
+    expect(res.applies).toBe(false);
+    expect(res.reason).toContain('object→agent');
+  });
+
+  test('handles IAST input correctly', () => {
+    const res = sutra1367('kārayate', { isCausative: true, objectBecomesAgent: true });
+    expect(res.applies).toBe(true);
+    expect(res.isAtmanepada).toBe(true);
+  });
+
+  test('validates input correctly', () => {
+    const res = sutra1367('', { isCausative: true, objectBecomesAgent: true });
+    expect(res.applies).toBe(false);
+    expect(res.reason).toContain('Invalid');
   });
 });
