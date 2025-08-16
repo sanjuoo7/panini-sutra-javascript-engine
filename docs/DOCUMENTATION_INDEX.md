@@ -196,6 +196,11 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
  - **1.3.49** - अनोरकर्मकात् (अनु + वद्, intransitive, samuccāraṇa sense → Ātmanepada)
  - **1.3.50** - विभाषा विप्रलापे (वद् in mutual contradiction → optional Ātmanepada)
  - **1.3.51** - अवाद्ग्रः (अव + गॄ “to swallow” → Ātmanepada)
+ - **1.3.52** - समः प्रतिज्ञाने (सम् + गॄ in promising sense → Ātmanepada)
+ - **1.3.53** - उदश्चरः सकर्मकात् (उद् + चर् intransitive → Ātmanepada)
+ - **1.3.54** - समस्तृतीयायुक्तात् (सम् + चर् with instrumental linkage → Ātmanepada)
+ - **1.3.55** - दाणश्च सा चेच्चतुर्थ्यर्थे (सम् + दा with instrumental having dative sense → Ātmanepada)
+ - **1.3.56** - उपाद्यमः स्वकरणे (उप + यम् in espousing sense → Ātmanepada)
 
 ---
 
