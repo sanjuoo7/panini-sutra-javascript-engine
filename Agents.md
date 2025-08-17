@@ -36,24 +36,47 @@ The agent has a focused scope: **documentation, test case generation, and direct
 
 3. **Test Case Design**
    - Define **positive**, **negative**, and **edge** cases.  
-   - Document them inside the README under **Test Coverage**.  
+   - Cover **script variations**:
+     - IAST input  
+     - Devanagari input  
+   - Cover **context variations**:
+     - With and without optional context parameters  
+     - Valid vs. invalid morphological contexts  
+   - Include **error cases**:
+     - Invalid inputs (empty strings, non-Sanskrit characters, undefined context)  
+   - Document all cases clearly inside the README under **Test Coverage**.  
 
 4. **Test Suite (`index.test.js`)**
    - Implement tests covering all documented cases.  
    - Each test must be descriptive and deterministic.  
+   - Must ensure **multi-script support**:
+     - Every positive case should be tested in both IAST and Devanagari.  
+   - Must ensure **integration safety**:
+     - Verify the sutra does not break related sutras when chained in sequence.  
+   - Include **regression tests** if bugs were found earlier.  
    - Structure:
      ```js
      import sutraXXXX from './index.js';
 
      describe('Sutra X.X.XX', () => {
-       test('applies to valid case', () => {
-         const result = sutraXXXX('example', { root: 'X' });
+       test('applies to valid case (IAST)', () => {
+         const result = sutraXXXX('bodhayati', { root: 'budh', hasCausative: true });
+         expect(result.applies).toBe(true);
+       });
+
+       test('applies to valid case (Devanagari)', () => {
+         const result = sutraXXXX('बोधयति', { root: 'budh', hasCausative: true });
          expect(result.applies).toBe(true);
        });
 
        test('rejects invalid case', () => {
          const result = sutraXXXX('invalidWord', {});
          expect(result.applies).toBe(false);
+       });
+
+       test('handles missing context gracefully', () => {
+         const result = sutraXXXX('bodhayati');
+         expect(result.error).toBeDefined();
        });
      });
      ```
@@ -78,6 +101,7 @@ The agent has a focused scope: **documentation, test case generation, and direct
 2. **Test-first development.**  
    - The generated test suite is the contract that later implementation must satisfy.  
 
----
+3. **Comprehensive testing is mandatory.**  
+   - Tests must include positive, negative, edge, error-handling, and multi-script cases.  
+   - Each test must be designed to anticipate real-world usage of the sutra engine.  
 
-## Example Directory After Jules
