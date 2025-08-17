@@ -1,18 +1,19 @@
 {
-    "sutra_number": "1.4.51",
-    "sutra_text_iast": "akathitaṃ ca",
-    "sutra_text_devanagari": "अकथितं च",
+    "sutra_number": "1.4.61",
+    "sutra_text_iast": "ūrayādicaviḍācaśaca",
+    "sutra_text_devanagari": "ऊर्यादिच्विडाचश्च",
     "type": "sanja",
     "scope": {
       "anuvrutti": [
-        "अकथितं",
+        "ऊर्यादिच्विडाचः",
         "च",
         "आ",
         "कडारात्",
         "एका",
         "सञ्ज्ञा",
-        "कारके",
-        "कर्म"
+        "निपाताः",
+        "क्रियायोगे",
+        "गतिः"
       ],
       "adhyaya": 1,
       "pada": 4,
@@ -38,228 +39,43 @@
         "notes": ""
       }
     },
-    "notes": "And if that कारक which is not spoken of as coming under any of the special relations of Ablation etc., is also called कर्म।",
+    "notes": "The words उरी 'assent' etc. and those that end with च्वि 5.4.50 and those that end with डाच् 5.4.57 (when in composition with the verb भू , कृ or अस् ) are called गति।",
     "examples": "",
     "description": "",
     "krama_numbers": {
       "sutra_krama": 0,
-      "kaumudi_krama": 539,
-      "akaradi_krama": 7
+      "kaumudi_krama": 762,
+      "akaradi_krama": 844
     },
     "categories": {
-      "vishaya1": "कर्म कारकम्‌",
-      "vishaya2": "कारकम्",
-      "vishaya3": "",
+      "vishaya1": "गतिः",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
       "parinam": ""
     },
     "original_descriptions": {
-      "desc1": "कारक-कर्म",
+      "desc1": "गति-संज्ञा",
       "desc2": "",
-      "english": "And if that कारक which is not spoken of as coming under any of the special relations of Ablation etc., is also called कर्म।"
+      "english": "The words उरी 'assent' etc. and those that end with च्वि 5.4.50 and those that end with डाच् 5.4.57 (when in composition with the verb भू , कृ or अस् ) are called गति।"
     }
   },
   {
-    "sutra_number": "1.4.52",
-    "sutra_text_iast": "gatibudadhiparatayavasānārathaśabadakaramākaramakāṇāmaṇi karatā",
-    "sutra_text_devanagari": "गतिबुद्धिप्रत्यवसानार्थशब्दकर्माकर्मकाणामणि कर्ता",
+    "sutra_number": "1.4.62",
+    "sutra_text_iast": "anukaraṇaṃ cānitiparama",
+    "sutra_text_devanagari": "अनुकरणं चानितिपरम्",
     "type": "sanja",
     "scope": {
       "anuvrutti": [
-        "गतिबुद्धिप्रत्यवसानार्थशब्दकर्माकर्मकाणाम्",
-        "अणि",
-        "कर्ता",
-        "सः",
-        "णौ",
-        "आ",
-        "कडारात्",
-        "एका",
-        "सञ्ज्ञा",
-        "कारके",
-        "कर्म"
-      ],
-      "adhyaya": 1,
-      "pada": 4,
-      "topic": ""
-    },
-    "sthani": {
-      "phoneme": "",
-      "notes": ""
-    },
-    "adesha": {
-      "phoneme": "",
-      "notes": ""
-    },
-    "context": {
-      "left_context": {
-        "phoneme": "",
-        "properties": [],
-        "notes": ""
-      },
-      "right_context": {
-        "phoneme": "",
-        "properties": [],
-        "notes": ""
-      }
-    },
-    "notes": "Of the verbs having the sense of 'motion', 'knowledge or information' and 'eating' and of verbs that have some literary work for their object and of intransitive verbs, that which was the agent of the verb in its primitive (non-णि or non-causal state), is called the कर्म or object, in its causative state (when the verb takes the affix णि).",
-    "examples": "",
-    "description": "",
-    "krama_numbers": {
-      "sutra_krama": 0,
-      "kaumudi_krama": 540,
-      "akaradi_krama": 1260
-    },
-    "categories": {
-      "vishaya1": "कर्म कारकम्‌",
-      "vishaya2": "कारकम्",
-      "vishaya3": "",
-      "parinam": ""
-    },
-    "original_descriptions": {
-      "desc1": "कारक-कर्म-संज्ञा",
-      "desc2": "",
-      "english": "Of the verbs having the sense of 'motion', 'knowledge or information' and 'eating' and of verbs that have some literary work for their object and of intransitive verbs, that which was the agent of the verb in its primitive (non-णि or non-causal state), is called the कर्म or object, in its causative state (when the verb takes the affix णि)."
-    }
-  },
-  {
-    "sutra_number": "1.4.53",
-    "sutra_text_iast": "hṛkaroranayatarasayāma",
-    "sutra_text_devanagari": "हृक्रोरन्यतरस्याम्",
-    "type": "sanja",
-    "scope": {
-      "anuvrutti": [
-        "हृक्रोः",
-        "अन्यतरस्याम्",
-        "आ",
-        "कडारात्",
-        "एका",
-        "सञ्ज्ञा",
-        "कारके",
-        "कर्म",
-        "अणि",
-        "कर्ता",
-        "सः",
-        "णौ"
-      ],
-      "adhyaya": 1,
-      "pada": 4,
-      "topic": ""
-    },
-    "sthani": {
-      "phoneme": "",
-      "notes": ""
-    },
-    "adesha": {
-      "phoneme": "",
-      "notes": ""
-    },
-    "context": {
-      "left_context": {
-        "phoneme": "",
-        "properties": [],
-        "notes": ""
-      },
-      "right_context": {
-        "phoneme": "",
-        "properties": [],
-        "notes": ""
-      }
-    },
-    "notes": "The agent of the verb in its non-णि (primitive) form in the case of हृ 'to lose' and कृ 'to make', is optionally called कर्म or object when these verbs take the affix.",
-    "examples": "",
-    "description": "",
-    "krama_numbers": {
-      "sutra_krama": 0,
-      "kaumudi_krama": 541,
-      "akaradi_krama": 3947
-    },
-    "categories": {
-      "vishaya1": "कर्म कारकम्‌",
-      "vishaya2": "कारकम्",
-      "vishaya3": "",
-      "parinam": ""
-    },
-    "original_descriptions": {
-      "desc1": "कारक-कर्म",
-      "desc2": "",
-      "english": "The agent of the verb in its non-णि (primitive) form in the case of हृ 'to lose' and कृ 'to make', is optionally called कर्म or object when these verbs take the affix."
-    }
-  },
-  {
-    "sutra_number": "1.4.54",
-    "sutra_text_iast": "savatanataraḥ karatā",
-    "sutra_text_devanagari": "स्वतन्त्रः कर्ता",
-    "type": "sanja",
-    "scope": {
-      "anuvrutti": [
-        "स्वतन्त्रः",
-        "कर्ता",
-        "आ",
-        "कडारात्",
-        "एका",
-        "सञ्ज्ञा",
-        "कारके"
-      ],
-      "adhyaya": 1,
-      "pada": 4,
-      "topic": ""
-    },
-    "sthani": {
-      "phoneme": "",
-      "notes": ""
-    },
-    "adesha": {
-      "phoneme": "",
-      "notes": ""
-    },
-    "context": {
-      "left_context": {
-        "phoneme": "",
-        "properties": [],
-        "notes": ""
-      },
-      "right_context": {
-        "phoneme": "",
-        "properties": [],
-        "notes": ""
-      }
-    },
-    "notes": "Whatever the speaker chooses as the independent, principal and absolute source of action is called कर्ता or agent.",
-    "examples": "",
-    "description": "",
-    "krama_numbers": {
-      "sutra_krama": 0,
-      "kaumudi_krama": 559,
-      "akaradi_krama": 3864
-    },
-    "categories": {
-      "vishaya1": "कर्ता कारकम्‌",
-      "vishaya2": "कारकम्",
-      "vishaya3": "",
-      "parinam": ""
-    },
-    "original_descriptions": {
-      "desc1": "कारक-कर्म",
-      "desc2": "",
-      "english": "Whatever the speaker chooses as the independent, principal and absolute source of action is called कर्ता or agent."
-    }
-  },
-  {
-    "sutra_number": "1.4.55",
-    "sutra_text_iast": "tataparayojako hetuśaca",
-    "sutra_text_devanagari": "तत्प्रयोजको हेतुश्च",
-    "type": "sanja",
-    "scope": {
-      "anuvrutti": [
-        "तत्प्रयोजकः",
-        "हेतुः",
+        "अनुकरणं",
         "च",
+        "अनितिपरम्",
         "आ",
         "कडारात्",
         "एका",
         "सञ्ज्ञा",
-        "कारके",
-        "कर्ता"
+        "निपाताः",
+        "क्रियायोगे",
+        "गतिः"
       ],
       "adhyaya": 1,
       "pada": 4,
@@ -285,23 +101,203 @@
         "notes": ""
       }
     },
-    "notes": "That which is the mover thereof, i.e. of the independent source of action, is called हेतु or cause, as well as कर्ता or agent.",
+    "notes": "A word imitative of sounds is also called गति when it is not followed by the word इति।",
     "examples": "",
     "description": "",
     "krama_numbers": {
       "sutra_krama": 0,
-      "kaumudi_krama": 2575,
-      "akaradi_krama": 1610
+      "kaumudi_krama": 763,
+      "akaradi_krama": 186
     },
     "categories": {
-      "vishaya1": "कर्ता हेतुः कारकम्‌",
-      "vishaya2": "कारकम्",
-      "vishaya3": "",
+      "vishaya1": "गतिः",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
       "parinam": ""
     },
     "original_descriptions": {
-      "desc1": "कारक-कर्ता-संज्ञा",
+      "desc1": "गति-संज्ञा",
       "desc2": "",
-      "english": "That which is the mover thereof, i.e. of the independent source of action, is called हेतु or cause, as well as कर्ता or agent."
+      "english": "A word imitative of sounds is also called गति when it is not followed by the word इति।"
+    }
+  },
+  {
+    "sutra_number": "1.4.63",
+    "sutra_text_iast": "ādarānādarayoḥ sadasatī",
+    "sutra_text_devanagari": "आदरानादरयोः सदसती",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "आदरानादरयोः",
+        "सदसती",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "गतिः"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "The words सत् and असत् when in composition with a verb ae called गति , when used in the sense of 'respect or love' and 'disrespect or indifference'.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 764,
+      "akaradi_krama": 517
+    },
+    "categories": {
+      "vishaya1": "गतिः",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "गति-संज्ञा",
+      "desc2": "",
+      "english": "The words सत् and असत् when in composition with a verb ae called गति , when used in the sense of 'respect or love' and 'disrespect or indifference'."
+    }
+  },
+  {
+    "sutra_number": "1.4.64",
+    "sutra_text_iast": "bhūṣaṇe'lama",
+    "sutra_text_devanagari": "भूषणेऽलम्",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "भूषणे",
+        "अलम्",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "गतिः"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "The word अलम् when in composition with a verb is called गति , when used in the sense of 'ornament'.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 765,
+      "akaradi_krama": 2695
+    },
+    "categories": {
+      "vishaya1": "गतिः",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "गति-संज्ञा",
+      "desc2": "",
+      "english": "The word अलम् when in composition with a verb is called गति , when used in the sense of 'ornament'."
+    }
+  },
+  {
+    "sutra_number": "1.4.65",
+    "sutra_text_iast": "anataraparigarahe",
+    "sutra_text_devanagari": "अन्तरपरिग्रहे",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "अन्तः",
+        "अपरिग्रहे",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "गतिः"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "The word अन्तर् is called गति , when used in the sense of 'non-accepting', when in composition with a verb.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 766,
+      "akaradi_krama": 242
+    },
+    "categories": {
+      "vishaya1": "गतिः",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "गति-अलम्",
+      "desc2": "",
+      "english": "The word अन्तर् is called गति , when used in the sense of 'non-accepting', when in composition with a verb."
     }
   },
