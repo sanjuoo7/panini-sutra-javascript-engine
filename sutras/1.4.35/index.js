@@ -1,0 +1,24 @@
+/**
+ * Sutra 1.4.35: ऋणे — debt/owing dative
+ */
+import { detectScript, validateSanskritWord, normalizeScript } from '../sanskrit-utils/index.js';
+
+const verbsDeva = ['ऋणयति','धारयति','अधिकुर्वते'];
+const verbsIAST = ['ṛṇayati','dhārayati','adhikurvate'];
+
+function base(extra = {}) { return { applies: false, sutra: '1.4.35', karaka: 'सम्प्रदान', case_required: 'dative', ...extra }; }
+
+export function identifyDebtDative(word, context = {}) {
+  if (!word) return base({ error: 'empty_input' });
+  const script = context.script || detectScript(word);
+  const norm = normalizeScript(word);
+  if (validateSanskritWord && !validateSanskritWord(word)) return base({ error: 'invalid_word' });
+  const v = context.verb || '';
+  const ok = verbsDeva.includes(v) || verbsIAST.includes(v) || context.action_type === 'debt' || context.debt_context === 'owing';
+  if (ok) {
+    return base({ applies: true, script, word_iast: norm });
+  }
+  return base();
+}
+
+export default identifyDebtDative;

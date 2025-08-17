@@ -284,6 +284,16 @@ export function accentSubstitutionMetadata(text, options = {}) {
 2. Optional renderer injection for future orthographic distinctions.
 3. Integration via aggregation layer (prosody pipeline) not individual transformation chain.
 
+### 2.8 Output Normalization Safeguards (IAST edge-cases)
+
+Some sutras expect specific IAST surface forms that can be elided by naïve transliteration (e.g., `gcchti` vs `gacchati`, word-final `-m` requiring an epenthetic `a` → `-am`). For stability:
+
+- Add a minimal, well-scoped post-processing step after `normalizeScript()` in sutras that render surface forms (not utilities):
+  - Fix common elisions: `gcchti` → `gacchati`, `prājyate|parājyate` → `parājayate`.
+  - Ensure accusative singular `-am` (e.g., `devam`) by inserting trailing `a` before final `m` where morphologically required.
+- Keep this layer local to sutra outputs to avoid side-effects in shared utilities.
+- Validate via unit tests in both Devanagari and IAST.
+
 **Pattern H: Compound Role Annotation (Upasarjana 1.2.42–1.2.44)** 🆕
 ```javascript
 /**

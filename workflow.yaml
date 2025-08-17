@@ -1,102 +1,128 @@
+# A comprehensive, multi-agent workflow for implementing a Sanskrit sutra
+# following a Test-Driven and Documentation-Driven Development (TDD/DDD) approach.
+# This workflow is designed to be executed by an AI agent in a VS Code environment.
 sutra_workflow:
-  - phase: Initial Setup
-    description: "Read and understand all foundational project documents."
-    steps:
-      - id: read_readme
-        action: "Read README.md"
-        verify: "Summarize key points from README.md"
-      - id: read_utils_doc
-        action: "Read SANSKRIT_UTILS_DOCUMENTATION.md"
-        verify: "List utility functions and their purpose"
-      - id: read_conversion_strategy
-        action: "Read COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md"
-        verify: "Summarize methodology for converting sutras to JS"
-      - id: read_sutra_readme_template
-        action: "Read SUTRA_README_TEMPLATE.md"
-        verify: "List all fields that must be documented"
-      - id: read_doc_index
-        action: "Read DOCUMENTATION_INDEX.md"
-        verify: "List how sutras and utilities are indexed"
-
-  - phase: Analysis & Design
-    description: "Interpret sutra, plan dependencies, design function, and plan tests."
+  - phase: "Documentation & Tests (Claude)"
+    description: "The agent generates the 'blueprint' for the new sutra. This phase leverages Claude's
+                  strength in precision and documentation to define the problem and its
+                  expected behavior before any code is written."
     steps:
       - id: interpret_sutra
-        action: "Identify sutra type, grammatical scope, application conditions, transformations"
-        verify: "Output structured summary of sutra interpretation"
-      - id: check_existing_utilities
-        action: "Search sanskrit-utils for reusable functions"
-        verify: "List found utilities with file and function name"
-      - id: plan_new_utilities
-        action: "Identify if new reusable utility functions are required"
-        verify: "Provide planned function names and descriptions"
-      - id: find_related_sutras
-        action: "Identify any previous sutras that are dependencies"
-        verify: "List sutra numbers and short descriptions"
-      - id: design_function_signature
-        action: "Plan the new function's signature, parameters, and return type"
-        verify: "Show the planned JS function signature"
+        action: "Summarize sutra type, scope, meaning, and transformations from linguistic sources."
+        verify: "Output a structured interpretation, including all conditions for application."
+      
+      - id: write_sutra_readme
+        action: "Create a detailed README.md file in the new sutra directory based on the
+                  SUTRA_README_TEMPLATE.md. This file serves as the primary documentation
+                  for the new module."
+        verify: "Output the rendered content of the README.md, ensuring all fields are filled."
+      
       - id: plan_test_cases
-        action: "Gather positive, negative, and edge test cases"
-        verify: "List test cases in structured format"
+        action: "Analyze the sutra's logic to create a comprehensive list of positive,
+                  negative, and edge test cases."
+        verify: "Output a structured list of test cases, each with an input, expected output,
+                  and a brief description of the scenario."
 
-  - phase: Implementation
-    description: "Write code, utilities, and tests for the new sutra."
+      - id: write_test_suite
+        action: "Generate the index.test.js file with all the planned test cases. The tests
+                  should be written to fail initially since the function has not been implemented yet."
+        verify: "Show the content of the test file, confirming all test cases have been
+                  translated into executable test definitions."
+
+  - phase: "Analysis & Design (GPT-5)"
+    description: "The agent analyzes the tests and documentation to plan the implementation.
+                  GPT-5's large context window allows it to efficiently reason about the entire
+                  project's codebase and identify dependencies."
+    steps:
+      - id: analyze_sutra_logic
+        action: "Read the generated tests and README.md to define the precise logic for the
+                  sutra function's implementation."
+        verify: "Output a summary of the implementation strategy."
+
+      - id: check_existing_utilities
+        action: "Search the `sanskrit-utils` directory for reusable helper functions that can
+                  be used in the new sutra's implementation."
+        verify: "List all found utilities, including the file and function names."
+
+      - id: plan_new_utilities
+        action: "Identify if any new, reusable utility functions are needed to support the
+                  sutra, especially for complex or repeated logic."
+        verify: "Provide planned function names and a brief description of their purpose."
+
+      - id: design_function_signature
+        action: "Plan the new function's signature, including parameters (e.g., `word`,
+                  `context`) and the expected return type."
+        verify: "Show the final proposed JavaScript function signature."
+  
+  - phase: "Implementation (GPT-5)"
+    description: "The agent writes the code to make the tests pass. GPT-5 excels in this
+                  iterative, code-generation task, guided by the test cases."
     steps:
       - id: create_sutra_dir
-        action: "Create sutra directory under sutras/X.X.X/"
-        verify: "Confirm directory path and created files"
-      - id: implement_new_utilities
-        action: "Create any planned new utilities in sanskrit-utils/"
-        verify: "Show new utility code snippet and tests"
+        action: "Create the new sutra directory `sutras/X.X.X/` and an empty `index.js` file."
+        verify: "Confirm the directory and file path and their creation."
+      
       - id: implement_sutra_function
-        action: "Write sutra function in index.js using shared utilities"
-        verify: "Show final function code"
-      - id: ensure_multiscript_support
-        action: "Add support for both IAST and Devanagari scripts"
-        verify: "Demonstrate input/output in both scripts"
-      - id: add_input_validation
-        action: "Implement input validation and sanitization"
-        verify: "List validation checks"
-      - id: write_test_suite
-        action: "Write index.test.js with all planned tests"
-        verify: "Show list of test names"
+        action: "Write the core logic of the sutra function in `index.js`, using shared
+                  utilities to make the test suite pass."
+        verify: "Show the complete, commented final function code."
 
-  - phase: Validation
-    description: "Verify functionality and test coverage."
+      - id: implement_new_utilities
+        action: "Write any planned new reusable utility functions in the `sanskrit-utils/`
+                  directory to support the main sutra function."
+        verify: "Show the code snippets and their corresponding tests."
+
+      - id: ensure_multiscript_support
+        action: "Add script conversion logic (IAST to Devanagari and vice versa) to ensure
+                  multiscript support, then re-run tests."
+        verify: "Demonstrate successful input and output in both scripts."
+
+      - id: add_input_validation
+        action: "Implement a robust input validation pipeline to handle invalid inputs, as
+                  specified in the tests."
+        verify: "List the validation checks implemented."
+
+  - phase: "Validation (CI/CD)"
+    description: "Automated verification of the implemented code and its documentation.
+                  This phase is typically handled by a CI/CD system, but the agent
+                  monitors its output."
     steps:
       - id: run_all_tests
-        action: "Run npm test and ensure all pass"
-        verify: "Output test results summary"
+        action: "Execute `npm test` to run the entire project's test suite."
+        verify: "Output a summary report of the test results, confirming all tests pass."
+
       - id: check_coverage
-        action: "Run npm test:coverage and ensure >95% coverage"
-        verify: "Output coverage percentage for sutra module"
+        action: "Execute `npm test:coverage` for the new module."
+        verify: "Output the code coverage percentage, ensuring it is >95%."
 
-  - phase: Documentation
-    description: "Document the new sutra and update related references."
+  - phase: "Documentation Finalization (Claude)"
+    description: "The agent uses Claude's precision to update the project's foundational
+                  documents and ensure consistency."
     steps:
-      - id: write_sutra_readme
-        action: "Fill out README.md in sutra directory using template"
-        verify: "Output rendered README content"
       - id: update_utils_doc
-        action: "Add new utilities to SANSKRIT_UTILS_DOCUMENTATION.md"
-        verify: "Show updated documentation entry"
-      - id: update_doc_index
-        action: "Add sutra to DOCUMENTATION_INDEX.md"
-        verify: "Show updated index entry"
-      - id: document_new_strategies
-        action: "Update COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md with new patterns"
-        verify: "Show new section added"
+        action: "Add new utility functions to SANSKRIT_UTILS_DOCUMENTATION.md."
+        verify: "Show the updated documentation entry."
 
-  - phase: Final Review
-    description: "Perform a final check for completeness."
+      - id: update_doc_index
+        action: "Add the new sutra and any new utilities to DOCUMENTATION_INDEX.md."
+        verify: "Show the updated index entries."
+
+      - id: document_new_strategies
+        action: "Update COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md with any new
+                  implementation patterns or optimizations discovered."
+        verify: "Show the new section added to the strategy document."
+
+  - phase: "Final Review (Human/AI Agent)"
+    description: "A final check for linguistic accuracy and completeness before merging."
     steps:
       - id: review_accuracy
-        action: "Verify linguistic accuracy of function"
-        verify: "Output short linguistic verification statement"
+        action: "Linguistically verify the function's output against the original sutra."
+        verify: "Output a final verification statement."
+
       - id: review_tests
-        action: "Ensure tests cover all cases"
-        verify: "List coverage gaps (if any)"
+        action: "Check the test suite for any logical gaps or unhandled edge cases."
+        verify: "List any discovered coverage gaps (if any)."
+
       - id: review_docs
-        action: "Ensure all documentation is accurate and complete"
-        verify: "List any missing doc sections"
+        action: "Perform a final review of all documentation for accuracy and consistency."
+        verify: "List any missing or inconsistent documentation sections."

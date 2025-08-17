@@ -1,7 +1,7 @@
-This comprehensive guide is designed for an AI agent working in Visual Studio Code to implement a new Sanskrit sutra. The workflow is systematic and aligns with the project's established standards for accuracy, code reuse, and maintainability.
+This comprehensive guide is designed for an AI agent working in Visual Studio Code to implement a new Sanskrit sutra. The workflow is systematic and aligns with the project's established standards for accuracy, code reuse, and maintainability by adopting a modern, test-first approach.
 
 Initial Setup: Read Project Documentation
-Action: Before beginning any work, the AI agent must thoroughly read and understand all the project's foundational documents from the project directory. This includes:
+Before beginning any work, the AI agent must thoroughly read and understand all the project's foundational documents from the project directory. This includes:
 
 README.md: For a project overview, installation, and usage.
 
@@ -13,108 +13,146 @@ SUTRA_README_TEMPLATE.md: For the standardized documentation template.
 
 DOCUMENTATION_INDEX.md: For a full overview of all project documentation.
 
-Phase 1: Analysis & Design
-Sutra Interpretation: The AI agent must first analyze the sutra.
+Phase 1: Documentation & Tests (Claude)
+Description: The agent generates the "blueprint" for the new sutra. This phase leverages Claude's strength in precision and documentation to define the problem and its expected behavior before any code is written.
 
-Action: Identify the sutra's type, its grammatical scope, the conditions under which it applies, and the transformations it performs.
+Sutra Interpretation
 
-Dependency Mapping & Utility Discovery: Check for existing project resources and identify potential new utilities.
+Action: Summarize the sutra's type, grammatical scope, meaning, and transformations from linguistic sources.
 
-Objective: Avoid creating redundant code and identify opportunities to create new, reusable utility functions.
+Expected Output: A structured interpretation, including all conditions for the sutra's application.
 
-Action:
+Write Sutra README
 
-Check sanskrit-utils: The agent must check the sanskrit-utils library's core modules (e.g., constants.js, classification.js, vowel-analysis.js) to see if any existing functions can be reused.
+Action: Create a detailed README.md file in the new sutra directory based on the SUTRA_README_TEMPLATE.md. This file serves as the primary documentation for the new module.
 
-Identify New Utilities: Analyze the sutra's logic for any complex linguistic operations, performance-critical algorithms, or error-prone manual implementations that could be generalized and used by three or more sutras. If such logic is found, this should be planned as a new utility function.
+Expected Output: The rendered content of the README.md, ensuring all fields are filled.
 
-Check Related Sutras: Identify any previous sutras on which the new one depends.
+Plan Test Cases
 
-Expected Output: A list of reusable utility functions from sanskrit-utils and a plan for any new utilities that need to be created.
+Action: Analyze the sutra's logic to create a comprehensive list of positive, negative, and edge test cases.
 
-Function Design: Plan the new function's structure.
+Expected Output: A structured list of test cases, each with an input, expected output, and a brief description of the scenario.
 
-Action:
+Write Test Suite
 
-Design the function's signature, including parameters like word and an optional context object.
+Action: Generate the index.test.js file with all the planned test cases. The tests should be written to fail initially since the function has not been implemented yet.
 
-Determine the function's return type (e.g., a boolean for a classification function or an object for a transformation function).
+Expected Output: The content of the test file, confirming all test cases have been translated into executable test definitions.
 
-Test Case Planning: Collect and design comprehensive tests.
+Phase 2: Analysis & Design (GPT-5)
+Description: The agent analyzes the tests and documentation to plan the implementation. GPT-5's large context window allows it to efficiently reason about the entire project's codebase and identify dependencies.
 
-Action:
+Analyze Sutra Logic
 
-Gather "positive" test cases (where the rule applies) from traditional Sanskrit grammar texts.
+Action: Read the generated tests and README.md to define the precise logic for the sutra function's implementation.
 
-Create "negative" test cases where the rule should not apply.
+Expected Output: A summary of the implementation strategy.
 
-Identify "edge cases" to test boundary conditions.
+Check Existing Utilities
 
-Expected Output: A detailed plan for test cases covering all identified scenarios.
+Action: Search the sanskrit-utils directory for reusable helper functions that can be used in the new sutra's implementation.
 
-Phase 2: Implementation
-File Structure Setup: Create the new sutra's directory.
+Expected Output: A list of all found utilities, including the file and function names.
 
-Action: Create a new directory under sutras/ named X.X.X/. Inside, create index.js for the main function and index.test.js for the tests.
+Plan New Utilities
 
-Code Implementation: Write the JavaScript function.
+Action: Identify if any new, reusable utility functions are needed to support the sutra, especially for complex or repeated logic.
 
-Action:
+Expected Output: Planned function names and a brief description of their purpose.
 
-Implement New Utilities (if any): If new reusable utilities were planned in Phase 1, create a new module for them in the sanskrit-utils/ directory. Follow the guidelines:
+Design Function Signature
 
-Create the module in the appropriate category.
+Action: Plan the new function's signature, including parameters (e.g., word, context) and the expected return type.
 
-Export the new functions from the sanskrit-utils/index.js file.
+Expected Output: The final proposed JavaScript function signature.
 
-Add comprehensive tests for the new utility functions.
+Phase 3: Implementation (GPT-5)
+Description: The agent writes the code to make the tests pass. GPT-5 excels in this iterative, code-generation task, guided by the test cases.
 
-Use the Shared Utilities: Import and use the functions identified in the Analysis phase (e.g., detectScript, tokenizePhonemes, isVrddhi).
+Create Sutra Directory
 
-Multi-Script Support: Ensure the function can handle both IAST and Devanagari scripts.
+Action: Create the new sutra directory sutras/X.X.X/ and an empty index.js file.
 
-Input Validation: Implement the proven input processing pipeline, including type checking, sanitization, and validation to handle invalid inputs gracefully.
+Expected Output: Confirmation of the directory and file path and their creation.
 
-Test Implementation: Write the test suite.
+Implement Sutra Function
 
-Action:
+Action: Write the core logic of the sutra function in index.js, using shared utilities to make the test suite pass.
 
-Write a comprehensive test suite in index.test.js using the planned test cases.
+Expected Output: The complete, commented final function code.
 
-Include tests for positive, negative, and edge cases, as well as error handling.
+Implement New Utilities
 
-Add integration tests to verify the new sutra's interaction with related rules.
+Action: Write any planned new reusable utility functions in the sanskrit-utils/ directory to support the main sutra function.
 
-Phase 3: Validation
-Run All Tests: Confirm no regressions have been introduced.
+Expected Output: Code snippets and their corresponding tests.
 
-Action: Run the full test suite using npm test. The agent must ensure all 2270+ tests pass successfully.
+Ensure Multi-Script Support
 
-Check Test Coverage: Verify the new tests are sufficient.
+Action: Add script conversion logic (IAST to Devanagari and vice versa) to ensure multiscript support, then re-run tests.
 
-Action: Run npm test:coverage and analyze the results for the newly implemented sutra. The goal is to achieve >95% code coverage for the new module.
+Expected Output: A demonstration of successful input and output in both scripts.
 
-Phase 4: Documentation
-Update Sutra README: Document the new sutra.
+Add Input Validation
 
-Action: Fill out a new README.md file in the sutra's directory based on the SUTRA_README_TEMPLATE.md. This includes the Sanskrit text, transliteration, English translation, a brief description, dependencies, and usage examples.
+Action: Implement a robust input validation pipeline to handle invalid inputs, as specified in the tests.
 
-Update Sanskrit Utilities Documentation (if new utilities were created):
+Expected Output: A list of the validation checks implemented.
 
-Objective: Ensure the API reference for the shared library is always current and accurate.
+Phase 4: Validation (CI/CD)
+Description: This phase is typically handled by a CI/CD system, but the agent monitors its output to ensure everything is working correctly.
 
-Action: Update the SANSKRIT_UTILS_DOCUMENTATION.md file to include the new utility function(s). This involves adding a description of the function's purpose, parameters, returns, and usage examples.
+Run All Tests
 
-Update Documentation Index: Add the new sutra and utility functions to the main documentation index.
+Action: Execute npm test to run the entire project's test suite.
 
-Action: Update DOCUMENTATION_INDEX.md by adding the new sutra's number and a brief description under the appropriate volume. If new utilities were added, update the Shared Utilities Architecture section to reflect the changes.
+Expected Output: A summary report of the test results, confirming all tests pass.
 
-Document New Conversion Strategies:
+Check Coverage
 
-Objective: Capture and formalize any new implementation patterns or optimization techniques discovered during the process.
+Action: Execute npm test:coverage for the new module.
 
-Action: If the AI agent identifies a novel or highly efficient way to interpret and convert a sutra that is not currently in the COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md, it must document this finding. The new strategy should be added to COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md, including a description of the problem, the solution, and its benefits for future implementations.
+Expected Output: The code coverage percentage, ensuring it is >95%.
 
-Final Review: Perform a final check of all deliverables.
+Phase 5: Documentation Finalization (Claude)
+Description: The agent uses Claude's precision to update the project's foundational documents and ensure consistency.
 
-Action: Verify that the function is linguistically accurate, the tests are comprehensive, and all documentation is complete and accurate.
+Update Utilities Documentation
+
+Action: Add new utility functions to SANSKRIT_UTILS_DOCUMENTATION.md.
+
+Expected Output: The updated documentation entry.
+
+Update Documentation Index
+
+Action: Add the new sutra and any new utilities to DOCUMENTATION_INDEX.md.
+
+Expected Output: The updated index entries.
+
+Document New Strategies
+
+Action: Update COMPREHENSIVE_SUTRA_CONVERSION_STRATEGY.md with any new implementation patterns or optimizations discovered.
+
+Expected Output: The new section added to the strategy document.
+
+Phase 6: Final Review (Human/AI Agent)
+Description: A final check for linguistic accuracy and completeness before merging.
+
+Review Accuracy
+
+Action: Linguistically verify the function's output against the original sutra.
+
+Expected Output: A final verification statement.
+
+Review Tests
+
+Action: Check the test suite for any logical gaps or unhandled edge cases.
+
+Expected Output: A list of any discovered coverage gaps (if any).
+
+Review Docs
+
+Action: Perform a final review of all documentation for accuracy and consistency.
+
+Expected Output: A list of any missing or inconsistent documentation sections.

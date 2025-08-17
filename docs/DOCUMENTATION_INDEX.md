@@ -41,6 +41,12 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
   - Note: The "Individual Sutras" count above was determined by enumerating sutra directories under `sutras/` (includes implemented sutra folders and utility subfolders). This current count includes the recently updated sutras 1.3.79–1.3.92.
   - Location: `sutras/1.3.79/` … `sutras/1.3.92/` (each folder contains `README.md` and `index.test.js`)
 
+- Stabilized sutras **1.4.21–1.4.26** with refined error semantics and IAST normalization:
+  - 1.4.21: Missing context now returns `error: "context_required"`; plural case generation aligned across scripts.
+  - 1.4.22–1.4.26: Clarified karaka labels, error keys, and non-context reason ordering; expanded verb/context detection lists; added consistent flags and rationale fields.
+  - IAST normalization guardrails: ensure `gacchati` forms and word-final `-am` (e.g., `devam`) render as expected by tests.
+  - Result: All suites for 1.4.21–1.4.40 green.
+
 
 #### **Volume 1.1: Fundamental Rules**
 - **1.1.1** - वृद्धि (Vṛddhi vowels: ā, ai, au)
