@@ -1,0 +1,301 @@
+  {
+    "sutra_number": "1.4.66",
+    "sutra_text_iast": "kaṇemanasī śaradadhāparatīghāte",
+    "sutra_text_devanagari": "कणेमनसी श्रद्धाप्रतीघाते",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "कणेमनसी",
+        "श्रद्धाप्रतीघाते",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "गतिः"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "The words कणे and मनस् are गति when in composition with a verb and used in the sense of 'reaction by satiation'.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 767,
+      "akaradi_krama": 963
+    },
+    "categories": {
+      "vishaya1": "गतिः",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "गति-अन्तर्",
+      "desc2": "",
+      "english": "The words कणे and मनस् are गति when in composition with a verb and used in the sense of 'reaction by satiation'."
+    }
+  },
+  {
+    "sutra_number": "1.4.67",
+    "sutra_text_iast": "puro'vayayama",
+    "sutra_text_devanagari": "पुरोऽव्ययम्",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "पुरोः",
+        "अव्ययम्",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "गतिः"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "The word पुरः 'in front of', when indeclinable and in composition with a verb, is called गति।",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 768,
+      "akaradi_krama": 2398
+    },
+    "categories": {
+      "vishaya1": "गतिः",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "गति-मनस्-कणे",
+      "desc2": "",
+      "english": "The word पुरः 'in front of', when indeclinable and in composition with a verb, is called गति।"
+    }
+  },
+  {
+    "sutra_number": "1.4.68",
+    "sutra_text_iast": "asataṃ ca",
+    "sutra_text_devanagari": "अस्तं च",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "अस्तं",
+        "च",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "गतिः",
+        "अव्ययम्"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "And the indeclinable word अस्तम् 'at home' is called गति , when in composition with a verb.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 769,
+      "akaradi_krama": 434
+    },
+    "categories": {
+      "vishaya1": "गतिः",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "गति-पुरः",
+      "desc2": "",
+      "english": "And the indeclinable word अस्तम् 'at home' is called गति , when in composition with a verb."
+    }
+  },
+  {
+    "sutra_number": "1.4.69",
+    "sutra_text_iast": "acacha gatayarathavadeṣu",
+    "sutra_text_devanagari": "अच्छ गत्यर्थवदेषु",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "अच्छगत्यर्थवदेषु",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "गतिः",
+        "अव्ययम्"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "The indeclinable word अच्छ 'before in the presence of' is called गति , when used in the composition with verbs denoting 'motion' or with the verb वद् 'to speak'.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 770,
+      "akaradi_krama": 61
+    },
+    "categories": {
+      "vishaya1": "गतिः",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "गति-अस्तम्",
+      "desc2": "",
+      "english": "The indeclinable word अच्छ 'before in the presence of' is called गति , when used in the composition with verbs denoting 'motion' or with the verb वद् 'to speak'."
+    }
+  },
+  {
+    "sutra_number": "1.4.70",
+    "sutra_text_iast": "ado'nupadeśe",
+    "sutra_text_devanagari": "अदोऽनुपदेशे",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "अदः",
+        "अनुपदेशे",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "गतिः"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "The word अदस् 'that' is called गति when in composition with a verb and not implying a direction to another.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 771,
+      "akaradi_krama": 137
+    },
+    "categories": {
+      "vishaya1": "गतिः",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "गति-अच्छ",
+      "desc2": "",
+      "english": "The word अदस् 'that' is called गति when in composition with a verb and not implying a direction to another."
+    }
+  },
