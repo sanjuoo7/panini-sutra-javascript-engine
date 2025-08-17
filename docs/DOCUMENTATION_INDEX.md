@@ -238,6 +238,14 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
  - **1.3.72** - स्वरितञितः कर्त्रभिप्राये क्रियाफले (स्वरित/ञित् verbs with agent benefit → Ātmanepada)
  - **1.3.73** - अपाद्वदः (अप + वद् with agent benefit → Ātmanepada)
 
+#### **Volume 1.4: Technical Terms (saṃjñā)**
+- **1.4.15** - नः क्ये (न्-ending words called पद before क्य-class affixes)
+- **1.4.16** - षत्प्रत्ययस्य (षत्-class affixes called प्रत्यय)
+- **1.4.17** - स्वादिष्वसर्वनामस्थाने (सु-series affixes not being सर्वनामस्थान assign पद designation)
+- **1.4.18** - यचि भम् (Stems before य-initial or vowel-initial सु-series affixes called भम्)
+- **1.4.19** - तसौ मत्वर्थे (त्/स्-ending words with मत्व meaning called भम्)
+- **1.4.20** - तद्धितेष्वचामादेः (तद्धित affixes assign अच् designation from first vowel)
+
 ---
 
 ## 🏛️ **Historical Documentation**
@@ -324,7 +332,7 @@ panini-sutra-javascript-engine/
 ## 📊 **Project Metrics**
 
 ### **Codebase Statistics**
- - **Total Sutras Implemented**: 104 sutras (1.1.1–1.1.75 subset, 1.2.1–1.2.59)
+ - **Total Sutras Implemented**: 110 sutras (1.1.1–1.1.75 subset, 1.2.1–1.2.73, 1.3.1–1.3.92, 1.4.15–1.4.20)
 - **Code Reduction Achieved**: 270+ lines of duplicate code eliminated
 - **Test Coverage**: 3678+ comprehensive tests
 - **Module Organization**: 30+ shared utility modules (core + extended)
