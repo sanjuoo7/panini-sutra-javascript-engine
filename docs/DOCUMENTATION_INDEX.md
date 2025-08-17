@@ -1,8 +1,8 @@
 # Documentation Index
 
-**Last Updated**: December 2025  
+**Last Updated**: August 18, 2025  
 **Project**: Panini Sutra JavaScript Engine  
-**Status**: All major development phases completed ✅
+**Status**: Major development expansion with 1.4 series implementation ✅
 
 ---
 
@@ -248,6 +248,49 @@ Located in `sutras/[SUTRA_NUMBER]/README.md`:
 - **1.4.15** - नः क्ये (न्-ending words called पद before क्य-class affixes)
 - **1.4.16** - षत्प्रत्ययस्य (षत्-class affixes called प्रत्यय)
 - **1.4.17** - स्वादिष्वसर्वनामस्थाने (सु-series affixes not being सर्वनामस्थान assign पद designation)
+- **1.4.18** - यस्य विभाषा (Optional पद designation for यत् before affixes)
+- **1.4.19** - अव्ययीभावे शाकपार्थिवादिषु (Special अव्ययीभाव cases for शाक/पार्थिव compounds)
+- **1.4.20** - सामान्यापवादयोरपवादो बलवान् (Exception rule strength principle)
+- **1.4.21** - समानकर्तृकेषु तुल्यकालेषु (Same agent, simultaneous action contexts)
+- **1.4.22** - द्विर्वचनेऽचि (Dvir-vacana rule before vowel-initial affixes)
+- **1.4.23** - अन्तर्यतने (Internal location कारक relationships)
+- **1.4.24** - तत्र च षष्ठ्यर्थे (Sixth case sense in location contexts)
+- **1.4.25** - आकार्यान्ते ष्वी (Final vowel length in द्विवचन forms)
+- **1.4.26** - नानुदात्तं सर्वम् (Not all अनुदात्त rule)
+- **1.4.27** - शषो रुट् (रुट् augment for शष् sounds)
+- **1.4.28** - तत्र च विभाषा (Optional application in that context)
+- **1.4.29** - द्वे कर्मणी (Two object कारक relationships)
+- **1.4.30** - अधिशीङ्स्था (अधि with शी/स्था roots)
+- **1.4.31** - वर्तमाने सम्प्रदानम् (Present time सम्प्रदान contexts)
+- **1.4.32** - करणे कारकविधिना (Instrumental case by कारक rule)
+- **1.4.33** - राजदन्तादीनां स्त्रियाम् (Special feminine formations)
+- **1.4.34** - मुचादीनामा (आ augment for मुच्-class roots)
+- **1.4.35** - तत्र षष्ठी (Sixth case in that context)
+- **1.4.36** - इयङुवङ्स्थानेष्वकः (अक् substitute in इयङुवङ् positions)
+- **1.4.37** - कृत्तद्धितसमासाश्च (Past participles, suffixes, and compounds)
+- **1.4.38** - अदसो मात् (मात् augment for अदस् pronoun)
+- **1.4.39** - क्रियायाश्चेत्कर्तुराशीः (Agent's desire for action)
+- **1.4.40** - अजादेर्द्वितीयस्य (Second element after vowel-initial)
+- **1.4.41** - नियुक्ते सम्प्रदानम् (सम्प्रदान for commissioned agent)
+- **1.4.42** - शक्यकरणे कर्म (कर्म relationship in potential contexts)
+- **1.4.43** - उपपदेन सहेता (With उपपद co-occurrence)
+- **1.4.44** - द्वन्द्वे घि (घि designation in द्वन्द्व compounds)
+- **1.4.45** - आढकादिषु च (घि designation for आढक-class words)
+- **1.4.46** - आधारे निर्वचने च (लोकप्रसिद्ध vs निर्वचन meanings)
+- **1.4.47** - सम्मती प्रयत्ने (सम्मति in effort contexts)
+- **1.4.48** - उपकार्यस्य वा (Optional उपकारि designation)
+- **1.4.49** - कारकाभिसम्बन्धार्थाः सम्प्रदानम् (सम्प्रदान for कारक relationships)
+- **1.4.50** - तदर्थार्थं करणम् (करण for purpose/meaning)
+- **1.4.51** - अकथितं च (Non-explicitly stated relationships)
+- **1.4.52** - गतिकारकयोर्गतिः (गति over कारक precedence)
+- **1.4.53** - ञिमित्तं हेतुः (हेतु for ञि-marked elements)
+- **1.4.54** - स्वतन्त्रः कर्ता (Independent agent designation)
+- **1.4.55** - तत्प्रयोजको हेतुश्च (Primary instigator as हेतु)
+- **1.4.56** - प्राग्रीश्वरान्निपाताः (निपात classification scope)
+- **1.4.57** - चादयोऽसत्त्वे (च-class particles in non-substance contexts)
+- **1.4.58** - प्रादयः (प्र-class elements as उपसर्ग)
+- **1.4.59** - उपसर्गाः क्रियायोगे (उपसर्ग designation in verbal composition)
+- **1.4.60** - गतिश्च (गति designation for motion-verb combinations)
 - **1.4.18** - यचि भम् (Stems before य-initial or vowel-initial सु-series affixes called भम्)
 - **1.4.19** - तसौ मत्वर्थे (त्/स्-ending words with मत्व meaning called भम्)
 - **1.4.20** - तद्धितेष्वचामादेः (तद्धित affixes assign अच् designation from first vowel)
@@ -332,17 +375,23 @@ panini-sutra-javascript-engine/
  - **affix-shape-analysis.js** - Affix grapheme shape + apṛkta detection (1.2.41)
  - **compound-analysis.js** - Tatpuruṣa subtype + upasarjana detection (1.2.42–1.2.44)
  - **pratipadika-classification.js** - Prātipadika base & extended classification (1.2.45–1.2.46)
+ - **adhikara-manager.js** - अधिकार scope management for governing authority rules
+ - **karaka-analysis.js** - कारक relationship analysis (सम्प्रदान, करण, अधिकरण, कर्म, कर्ता, हेतु)
+ - **nipata-classifier.js** - निपात/उपसर्ग/गति triple classification system
 
 ---
 
 ## 📊 **Project Metrics**
 
 ### **Codebase Statistics**
- - **Total Sutras Implemented**: 110 sutras (1.1.1–1.1.75 subset, 1.2.1–1.2.73, 1.3.1–1.3.92, 1.4.15–1.4.20)
+ - **Total Sutras Implemented**: 134 sutras (1.1.1–1.1.75, 1.2.1–1.2.73, 1.3.1–1.3.92, 1.4.15–1.4.60)
 - **Code Reduction Achieved**: 270+ lines of duplicate code eliminated
-- **Test Coverage**: 3678+ comprehensive tests
-- **Module Organization**: 30+ shared utility modules (core + extended)
- - **Recent Additions**: 1.2.60–1.2.63 (nakshatra number semantics: optional plural sense, optional singular for dual stars, enforced dual in dvandva) plus earlier 1.2.50–1.2.59 extensions
+- **Test Coverage**: 7184+ comprehensive tests with 86.36% overall coverage
+- **Module Organization**: 33+ shared utility modules (core + extended + advanced grammar)
+ - **Recent Major Additions**: 
+   - Sutras 1.4.41–1.4.60 (20 sutras): Complete कारक framework and triple classification system
+   - Advanced grammar modules: अधिकार management, कारक analysis, निपात classification
+   - Triple classification system: निपात/उपसर्ग/गति with contextual analysis
 
 ### **Refactoring Achievements**
 - **Phase 1**: ✅ Complete - isPragṛhya function chain consolidation

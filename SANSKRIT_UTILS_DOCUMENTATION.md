@@ -1153,9 +1153,71 @@ console.log(validation);
 4. Update this documentation
 5. Add usage examples
 
+### Advanced Grammar Analysis Modules
+
+#### 1. **Adhikāra Management** (`adhikara-manager.js`)
+**Purpose**: Manages scope ranges and rule inheritance for sutras with governing authority
+
+**Key Classes & Functions**:
+- `AdhikaraManager` - Main class for scope management
+- `initializeKnownScopes()` - Initialize major अधिकार ranges
+- `isInScope(sutraNumber, scopeName)` - Check if sutra is within scope
+- `getScopeInfo(scopeName)` - Get scope details
+- `validateScope(start, end, type)` - Validate scope definitions
+
+**Known Scopes**:
+- निपात scope (1.4.56-1.4.97)
+- वृद्धि scope (1.1.1-1.1.3)
+- गुण scope (1.1.2-1.1.4)
+
+**Use Cases**: Rule inheritance, scope validation, sutras like 1.4.56 (प्राग्रीश्वरान्निपाताः)
+
+#### 2. **Kāraka Analysis** (`karaka-analysis.js`)
+**Purpose**: Centralizes grammatical relationship analysis for कारक relationships
+
+**Key Functions**:
+- `analyzeSampradana(word, context)` - सम्प्रदान (recipient/beneficiary) analysis
+- `analyzeKarana(word, context)` - करण (instrument) analysis
+- `analyzeAdhikarana(word, context)` - अधिकरण (locus) analysis
+- `analyzeKarma(word, context)` - कर्म (object) analysis
+- `analyzeKarta(word, context)` - कर्ता (agent) analysis
+- `analyzeHetu(word, context)` - हेतु (cause) analysis
+
+**Analysis Features**:
+- Semantic role identification
+- Confidence scoring
+- Contextual validation
+- Multi-script support
+
+**Use Cases**: Sutras 1.4.41-1.4.55, grammatical relationship analysis
+
+#### 3. **Nipāta Classification** (`nipata-classifier.js`)
+**Purpose**: Handles particle identification, semantic analysis, and classification
+
+**Key Functions**:
+- `analyzeAsattva(word, context)` - Particle vs substance analysis
+- `classifyNipata(word, context)` - Full निपात classification
+- `analyzeUpasargaFunction(word, context)` - उपसर्ग function analysis
+- `analyzeGatiFunction(word, context)` - गति function analysis
+- `getTripleClassification(word, context)` - Combined निपात/उपसर्ग/गति analysis
+
+**Classification Types**:
+- निपात (particles)
+- उपसर्ग (verbal prefixes)
+- गति (motion modifiers)
+
+**Use Cases**: Sutras 1.4.56-1.4.60, triple classification system
+
 ---
 
 ## Changelog
+
+### Version 2.1.0 (August 2025)
+- **ADDED**: Advanced grammar analysis modules (adhikara-manager, karaka-analysis, nipata-classifier)
+- **ADDED**: Triple classification system for निपात/उपसर्ग/गति
+- **ADDED**: Comprehensive कारक relationship analysis
+- **ADDED**: Scope management for अधिकार rules
+- **IMPROVED**: Support for sutras 1.4.41-1.4.60
 
 ### Version 2.0.0 (August 2025)
 - **BREAKING**: Restructured from single file to modular architecture
@@ -1180,4 +1242,4 @@ Developed for accurate implementation of Paninian grammar rules in JavaScript.
 
 **Authors**: Sanskrit Computational Linguistics Team
 **Created**: August 8, 2025
-**Last Updated**: August 10, 2025
+**Last Updated**: August 18, 2025
