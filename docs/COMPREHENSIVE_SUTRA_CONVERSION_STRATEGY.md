@@ -443,6 +443,135 @@ Key Strategies:
 8. Testing emphasizes pair permutations, absence cases, conflicting gender flags, and context negative controls.
 When To Reuse: Any selection/elision rule choosing one representative among parallel forms (future pronoun/gotra expansions).
 
+**Pattern L: Kāraka Relationship Analysis (Sutras 1.4.41–1.4.55)** 🆕
+```javascript
+/**
+ * Comprehensive कारक (grammatical relationship) analysis pattern
+ * Handles agent, object, instrument, locus, beneficiary, and cause relationships
+ */
+export function analyzeKarakaRelationship(word, verb, context = {}) {
+  const analysis = {
+    word: word,
+    verb: verb,
+    karaka: null,  // सम्प्रदान|करण|अधिकरण|कर्म|कर्ता|हेतु
+    applies: false,
+    confidence: 0,
+    reasons: [],
+    semanticRole: null,
+    contextualFactors: {
+      hasCommission: false,
+      isPotential: false,
+      hasUpapada: false,
+      isEffort: false,
+      isOptional: false
+    }
+  };
+
+  // Multi-layer analysis for different कारक types
+  const sampradanaAnalysis = analyzeSampradana(word, context);
+  const karanaAnalysis = analyzeKarana(word, context);
+  const adhikaranaAnalysis = analyzeAdhikarana(word, context);
+  // ... etc for all कारक types
+
+  // Precedence resolution based on contextual strength
+  return resolveKarakaPrecedence([
+    sampradanaAnalysis, karanaAnalysis, adhikaranaAnalysis
+  ], context);
+}
+```
+
+**Pattern M: Triple Classification System (Sutras 1.4.56–1.4.60)** 🆕
+```javascript
+/**
+ * Advanced triple classification for निपात/उपसर्ग/गति designations
+ * Handles context-dependent classification with precedence rules
+ */
+export function analyzeTripleClassification(element, verb, context = {}) {
+  const classification = {
+    element: element,
+    verb: verb,
+    applies: false,
+    designations: [],  // Can have multiple: ['निपात', 'उपसर्ग', 'गति']
+    primaryDesignation: null,
+    confidence: 0,
+    contextualAnalysis: {
+      signifiesSubstance: false,  // असत्त्व criterion
+      inKriyaYoga: false,        // क्रियायोग presence
+      hasMotionVerb: false,      // Motion verb requirement
+      hasAdhikaraScope: false    // Within अधिकार scope
+    }
+  };
+
+  // Layer 1: निपात analysis (असत्त्व criterion)
+  const nipataAnalysis = analyzeAsattva(element, context);
+  
+  // Layer 2: उपसर्ग analysis (क्रियायोग requirement)
+  const upasargaAnalysis = analyzeUpasargaFunction(element, verb, context);
+  
+  // Layer 3: गति analysis (motion verb requirement)
+  const gatiAnalysis = analyzeGatiFunction(element, verb, context);
+
+  // Precedence: गति > उपसर्ग > निपात (when multiple apply)
+  return resolveTripleClassificationPrecedence([
+    nipataAnalysis, upasargaAnalysis, gatiAnalysis
+  ], context);
+}
+```
+
+**Pattern N: Scope Management for Adhikāra Rules (Sutras 1.4.56+)** 🆕
+```javascript
+/**
+ * अधिकार (governing authority) scope management pattern
+ * Handles rule inheritance and scope validation
+ */
+export class AdhikaraManager {
+  constructor() {
+    this.scopes = new Map();
+    this.initializeKnownScopes();
+  }
+
+  /**
+   * Check if a sutra is within an अधिकार scope
+   */
+  isInScope(sutraNumber, scopeName) {
+    const scope = this.scopes.get(scopeName);
+    if (!scope) return false;
+
+    return this.compareSutraNumbers(sutraNumber, scope.start) >= 0 &&
+           this.compareSutraNumbers(sutraNumber, scope.end) <= 0;
+  }
+
+  /**
+   * Get all active scopes for a sutra
+   */
+  getActiveScopesForSutra(sutraNumber) {
+    const activeScopes = [];
+    for (const [name, scope] of this.scopes) {
+      if (this.isInScope(sutraNumber, name)) {
+        activeScopes.push({ name, ...scope });
+      }
+    }
+    return activeScopes;
+  }
+}
+```
+
+**Key Strategies for Advanced Grammar Patterns:**
+1. **Multi-layered Analysis**: कारक analysis uses cascading semantic detection with confidence scoring
+2. **Precedence Resolution**: Triple classification implements गति > उपसर्ग > निपात precedence automatically
+3. **Contextual Gating**: All patterns use rich context objects to handle complex grammatical conditions
+4. **Scope Management**: अधिकार patterns provide systematic rule inheritance and validation
+5. **Confidence Scoring**: All analyses include confidence metrics for disambiguation
+6. **Semantic Integration**: Pattern recognition incorporates semantic roles alongside syntactic analysis
+7. **Multi-script Robustness**: All patterns handle IAST and Devanagari inputs seamlessly
+8. **Error Resilience**: Comprehensive error handling with meaningful diagnostic messages
+
+When To Reuse: 
+- कारक patterns for any grammatical relationship analysis (1.4.x series and beyond)
+- Triple classification for any multi-designation scenarios in Sanskrit grammar
+- Scope management for any अधिकार rules requiring inheritance validation
+- These patterns scale to thousands of sutras requiring sophisticated grammatical analysis
+
 
 ## 🧪 **PART 3: TESTING STRATEGY FRAMEWORK**
 
