@@ -1,19 +1,204 @@
-{
-    "sutra_number": "1.4.61",
-    "sutra_text_iast": "ūrayādicaviḍācaśaca",
-    "sutra_text_devanagari": "ऊर्यादिच्विडाचश्च",
+  {
+    "sutra_number": "1.4.71",
+    "sutra_text_iast": "tiro'nataradadhau",
+    "sutra_text_devanagari": "तिरोऽन्तर्द्धौ",
     "type": "sanja",
     "scope": {
       "anuvrutti": [
-        "ऊर्यादिच्विडाचः",
+        "तिरः",
+        "अन्तर्धौ",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "गतिः"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "The word तिरस् when used in the sense of 'disappearance' is called गति when in composition with a verb.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 772,
+      "akaradi_krama": 1736
+    },
+    "categories": {
+      "vishaya1": "गतिः",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "गति-अदस्",
+      "desc2": "",
+      "english": "The word तिरस् when used in the sense of 'disappearance' is called गति when in composition with a verb."
+    }
+  },
+  {
+    "sutra_number": "1.4.72",
+    "sutra_text_iast": "vibhāṣā kṛñi",
+    "sutra_text_devanagari": "विभाषा कृञि",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "विभाषा",
+        "कृञि",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "गतिः",
+        "तिरः",
+        "अन्तर्धौ"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "The word तिरस् 'disappearance' is optionally called गति when the verb कृ follows.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 773,
+      "akaradi_krama": 3188
+    },
+    "categories": {
+      "vishaya1": "गतिः",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "गति-तिरस्",
+      "desc2": "",
+      "english": "The word तिरस् 'disappearance' is optionally called गति when the verb कृ follows."
+    }
+  },
+  {
+    "sutra_number": "1.4.73",
+    "sutra_text_iast": "upāje'navāje",
+    "sutra_text_devanagari": "उपाजेऽन्वाजे",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "उपाजे",
+        "अन्वाजे",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "गतिः",
+        "विभाषा",
+        "कृञि"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "The words उपाजे and अनवाजे both meaning 'supporting or assisting the weak', are optionally called गति when used along with the verb कृ।",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 774,
+      "akaradi_krama": 798
+    },
+    "categories": {
+      "vishaya1": "गतिः",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "गति-तिरस्-कृ",
+      "desc2": "",
+      "english": "The words उपाजे and अनवाजे both meaning 'supporting or assisting the weak', are optionally called गति when used along with the verb कृ।"
+    }
+  },
+  {
+    "sutra_number": "1.4.74",
+    "sutra_text_iast": "sākaṣātaparabhṛtīni ca",
+    "sutra_text_devanagari": "साक्षात्प्रभृतीनि च",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "साक्षात्प्रभृतीनि",
         "च",
         "आ",
         "कडारात्",
         "एका",
         "सञ्ज्ञा",
         "निपाताः",
-        "क्रियायोगे",
-        "गतिः"
+        "गतिः",
+        "विभाषा",
+        "कृञि"
       ],
       "adhyaya": 1,
       "pada": 4,
@@ -39,13 +224,13 @@
         "notes": ""
       }
     },
-    "notes": "The words उरी 'assent' etc. and those that end with च्वि 5.4.50 and those that end with डाच् 5.4.57 (when in composition with the verb भू , कृ or अस् ) are called गति।",
+    "notes": "The words साक्षात् 'in the presence of' etc. are optionally called गति when used along with the verb कृ।",
     "examples": "",
     "description": "",
     "krama_numbers": {
       "sutra_krama": 0,
-      "kaumudi_krama": 762,
-      "akaradi_krama": 844
+      "kaumudi_krama": 775,
+      "akaradi_krama": 3711
     },
     "categories": {
       "vishaya1": "गतिः",
@@ -54,28 +239,93 @@
       "parinam": ""
     },
     "original_descriptions": {
-      "desc1": "गति-संज्ञा",
+      "desc1": "गति-उपाजे-अनवाजे-कृ",
       "desc2": "",
-      "english": "The words उरी 'assent' etc. and those that end with च्वि 5.4.50 and those that end with डाच् 5.4.57 (when in composition with the verb भू , कृ or अस् ) are called गति।"
+      "english": "The words साक्षात् 'in the presence of' etc. are optionally called गति when used along with the verb कृ।"
     }
   },
   {
-    "sutra_number": "1.4.62",
-    "sutra_text_iast": "anukaraṇaṃ cānitiparama",
-    "sutra_text_devanagari": "अनुकरणं चानितिपरम्",
+    "sutra_number": "1.4.75",
+    "sutra_text_iast": "anatayādhāna urasimanasī",
+    "sutra_text_devanagari": "अनत्याधान उरसिमनसी",
     "type": "sanja",
     "scope": {
       "anuvrutti": [
-        "अनुकरणं",
+        "अनत्याधाने",
+        "उरसिमनसी",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "गतिः",
+        "विभाषा",
+        "कृञि"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "The word उर्सि 'in the breast' and मनसि 'in the mind' ae optionally called गति when the verb कृ follows, provided that they are not used in the sense of 'placing'.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 776,
+      "akaradi_krama": 171
+    },
+    "categories": {
+      "vishaya1": "गतिः",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "गति-साक्षात्-कृ",
+      "desc2": "",
+      "english": "The word उर्सि 'in the breast' and मनसि 'in the mind' ae optionally called गति when the verb कृ follows, provided that they are not used in the sense of 'placing'."
+    }
+  },
+  {
+    "sutra_number": "1.4.76",
+    "sutra_text_iast": "madhayepadenivacane ca",
+    "sutra_text_devanagari": "मध्येपदेनिवचने च",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "मध्ये",
+        "पदे",
+        "निवचने",
         "च",
-        "अनितिपरम्",
         "आ",
         "कडारात्",
         "एका",
         "सञ्ज्ञा",
         "निपाताः",
-        "क्रियायोगे",
-        "गतिः"
+        "गतिः",
+        "विभाषा",
+        "कृञि",
+        "अनत्याधाने"
       ],
       "adhyaya": 1,
       "pada": 4,
@@ -101,13 +351,13 @@
         "notes": ""
       }
     },
-    "notes": "A word imitative of sounds is also called गति when it is not followed by the word इति।",
+    "notes": "And the words मध्ये 'in the middle', पदे 'in the foot' and निवचने 'speechless' are optionally called गति , when कृ follows, the sense not being of placing.",
     "examples": "",
     "description": "",
     "krama_numbers": {
       "sutra_krama": 0,
-      "kaumudi_krama": 763,
-      "akaradi_krama": 186
+      "kaumudi_krama": 777,
+      "akaradi_krama": 2731
     },
     "categories": {
       "vishaya1": "गतिः",
@@ -116,26 +366,29 @@
       "parinam": ""
     },
     "original_descriptions": {
-      "desc1": "गति-संज्ञा",
+      "desc1": "गति-उर्सि-मनसि",
       "desc2": "",
-      "english": "A word imitative of sounds is also called गति when it is not followed by the word इति।"
+      "english": "And the words मध्ये 'in the middle', पदे 'in the foot' and निवचने 'speechless' are optionally called गति , when कृ follows, the sense not being of placing."
     }
   },
   {
-    "sutra_number": "1.4.63",
-    "sutra_text_iast": "ādarānādarayoḥ sadasatī",
-    "sutra_text_devanagari": "आदरानादरयोः सदसती",
+    "sutra_number": "1.4.77",
+    "sutra_text_iast": "nitayaṃ hasate pāṇāvupayamane",
+    "sutra_text_devanagari": "नित्यं हस्ते पाणावुपयमने",
     "type": "sanja",
     "scope": {
       "anuvrutti": [
-        "आदरानादरयोः",
-        "सदसती",
+        "नित्यं",
+        "हस्ते",
+        "पाणौ",
+        "उपयमने",
         "आ",
         "कडारात्",
         "एका",
         "सञ्ज्ञा",
         "निपाताः",
-        "गतिः"
+        "गतिः",
+        "कृञि"
       ],
       "adhyaya": 1,
       "pada": 4,
@@ -161,13 +414,13 @@
         "notes": ""
       }
     },
-    "notes": "The words सत् and असत् when in composition with a verb ae called गति , when used in the sense of 'respect or love' and 'disrespect or indifference'.",
+    "notes": "The word हस्ते 'in the hand', पाणौ 'in the hand' are always necessarily called गति when used with the verb कृ in the sense of 'marriage'.",
     "examples": "",
     "description": "",
     "krama_numbers": {
       "sutra_krama": 0,
-      "kaumudi_krama": 764,
-      "akaradi_krama": 517
+      "kaumudi_krama": 778,
+      "akaradi_krama": 2184
     },
     "categories": {
       "vishaya1": "गतिः",
@@ -176,26 +429,27 @@
       "parinam": ""
     },
     "original_descriptions": {
-      "desc1": "गति-संज्ञा",
+      "desc1": "गति-मध्ये",
       "desc2": "",
-      "english": "The words सत् and असत् when in composition with a verb ae called गति , when used in the sense of 'respect or love' and 'disrespect or indifference'."
+      "english": "The word हस्ते 'in the hand', पाणौ 'in the hand' are always necessarily called गति when used with the verb कृ in the sense of 'marriage'."
     }
   },
   {
-    "sutra_number": "1.4.64",
-    "sutra_text_iast": "bhūṣaṇe'lama",
-    "sutra_text_devanagari": "भूषणेऽलम्",
+    "sutra_number": "1.4.78",
+    "sutra_text_iast": "parādhavaṃ banadhane",
+    "sutra_text_devanagari": "प्राध्वं बन्धने",
     "type": "sanja",
     "scope": {
       "anuvrutti": [
-        "भूषणे",
-        "अलम्",
+        "प्राध्वं",
+        "बन्धने",
         "आ",
         "कडारात्",
         "एका",
         "सञ्ज्ञा",
         "निपाताः",
-        "गतिः"
+        "गतिः",
+        "कृञि"
       ],
       "adhyaya": 1,
       "pada": 4,
@@ -221,13 +475,13 @@
         "notes": ""
       }
     },
-    "notes": "The word अलम् when in composition with a verb is called गति , when used in the sense of 'ornament'.",
+    "notes": "The indeclinable word प्रध्वम् followed by the verb कृ , is always called गति when in used in the sense of 'binding'.",
     "examples": "",
     "description": "",
     "krama_numbers": {
       "sutra_krama": 0,
-      "kaumudi_krama": 765,
-      "akaradi_krama": 2695
+      "kaumudi_krama": 779,
+      "akaradi_krama": 2544
     },
     "categories": {
       "vishaya1": "गतिः",
@@ -236,26 +490,27 @@
       "parinam": ""
     },
     "original_descriptions": {
-      "desc1": "गति-संज्ञा",
+      "desc1": "गति-हस्ते",
       "desc2": "",
-      "english": "The word अलम् when in composition with a verb is called गति , when used in the sense of 'ornament'."
+      "english": "The indeclinable word प्रध्वम् followed by the verb कृ , is always called गति when in used in the sense of 'binding'."
     }
   },
   {
-    "sutra_number": "1.4.65",
-    "sutra_text_iast": "anataraparigarahe",
-    "sutra_text_devanagari": "अन्तरपरिग्रहे",
+    "sutra_number": "1.4.79",
+    "sutra_text_iast": "jīvikopaniṣadāvaupamaye",
+    "sutra_text_devanagari": "जीविकोपनिषदावौपम्ये",
     "type": "sanja",
     "scope": {
       "anuvrutti": [
-        "अन्तः",
-        "अपरिग्रहे",
+        "जीविकोपनिषदौ",
+        "औपम्ये",
         "आ",
         "कडारात्",
         "एका",
         "सञ्ज्ञा",
         "निपाताः",
-        "गतिः"
+        "गतिः",
+        "कृञि"
       ],
       "adhyaya": 1,
       "pada": 4,
@@ -281,13 +536,13 @@
         "notes": ""
       }
     },
-    "notes": "The word अन्तर् is called गति , when used in the sense of 'non-accepting', when in composition with a verb.",
+    "notes": "The words जीविका and उपनिषद् followed by the verb कृ are called गति when used in the sense of 'likeness and resemblance'.",
     "examples": "",
     "description": "",
     "krama_numbers": {
       "sutra_krama": 0,
-      "kaumudi_krama": 766,
-      "akaradi_krama": 242
+      "kaumudi_krama": 780,
+      "akaradi_krama": 1521
     },
     "categories": {
       "vishaya1": "गतिः",
@@ -296,8 +551,61 @@
       "parinam": ""
     },
     "original_descriptions": {
-      "desc1": "गति-अलम्",
+      "desc1": "गति-प्रध्वम्",
       "desc2": "",
-      "english": "The word अन्तर् is called गति , when used in the sense of 'non-accepting', when in composition with a verb."
+      "english": "The words जीविका and उपनिषद् followed by the verb कृ are called गति when used in the sense of 'likeness and resemblance'."
+    }
+  },
+  {
+    "sutra_number": "1.4.80",
+    "sutra_text_iast": "1780",
+    "sutra_text_devanagari": "1780",
+    "type": "vidhi",
+    "scope": {
+      "anuvrutti": [
+        "2230"
+      ],
+      "adhyaya": 0,
+      "pada": 0,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 0,
+      "akaradi_krama": 0
+    },
+    "categories": {
+      "vishaya1": "ते प्राग्धातोः",
+      "vishaya2": "",
+      "vishaya3": "",
+      "parinam": "ते प्राक् धातोः आ कडारात् एका सञ्ज्ञा निपाताः"
+    },
+    "original_descriptions": {
+      "desc1": "",
+      "desc2": "",
+      "english": ""
     }
   },
