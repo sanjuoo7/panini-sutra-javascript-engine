@@ -45,6 +45,7 @@ The agent has a focused scope: **documentation, test case generation, and direct
    - Include **error cases**:
      - Invalid inputs (empty strings, non-Sanskrit characters, undefined context)  
    - Document all cases clearly inside the README under **Test Coverage**.  
+   - **Each sutra must have at least 50 unique test cases** ensuring comprehensive coverage.  
 
 4. **Test Suite (`index.test.js`)**
    - Implement tests covering all documented cases.  
@@ -103,5 +104,5 @@ The agent has a focused scope: **documentation, test case generation, and direct
 
 3. **Comprehensive testing is mandatory.**  
    - Tests must include positive, negative, edge, error-handling, and multi-script cases.  
+   - **At least 50 unique test cases per sutra.**  
    - Each test must be designed to anticipate real-world usage of the sutra engine.  
-
