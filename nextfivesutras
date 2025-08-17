@@ -1,18 +1,122 @@
-  {
-    "sutra_number": "1.4.66",
-    "sutra_text_iast": "kaṇemanasī śaradadhāparatīghāte",
-    "sutra_text_devanagari": "कणेमनसी श्रद्धाप्रतीघाते",
-    "type": "sanja",
+{
+    "sutra_number": "1.4.81",
+    "sutra_text_iast": "1449",
+    "sutra_text_devanagari": "1449",
+    "type": "vidhi",
     "scope": {
       "anuvrutti": [
-        "कणेमनसी",
-        "श्रद्धाप्रतीघाते",
+        "3391"
+      ],
+      "adhyaya": 0,
+      "pada": 0,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 0,
+      "akaradi_krama": 0
+    },
+    "categories": {
+      "vishaya1": "छन्दसि परेऽपि",
+      "vishaya2": "",
+      "vishaya3": "",
+      "parinam": "छन्दसि परे अपि आ कडारात् एका सञ्ज्ञा निपाताः ते प्राक् धातोः"
+    },
+    "original_descriptions": {
+      "desc1": "",
+      "desc2": "",
+      "english": ""
+    }
+  },
+  {
+    "sutra_number": "1.4.82",
+    "sutra_text_iast": "3326",
+    "sutra_text_devanagari": "3326",
+    "type": "vidhi",
+    "scope": {
+      "anuvrutti": [
+        "3392"
+      ],
+      "adhyaya": 0,
+      "pada": 0,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 0,
+      "akaradi_krama": 0
+    },
+    "categories": {
+      "vishaya1": "व्यवहिताश्च",
+      "vishaya2": "",
+      "vishaya3": "",
+      "parinam": "व्यवहिताः च आ कडारात् एका सञ्ज्ञा निपाताः ते प्राक् धातोः छन्दसि"
+    },
+    "original_descriptions": {
+      "desc1": "",
+      "desc2": "",
+      "english": ""
+    }
+  },
+  {
+    "sutra_number": "1.4.83",
+    "sutra_text_iast": "karamaparavacanīyāḥ",
+    "sutra_text_devanagari": "कर्मप्रवचनीयाः",
+    "type": "vidhi",
+    "scope": {
+      "anuvrutti": [
+        "कर्मप्रवचनीयाः",
         "आ",
         "कडारात्",
         "एका",
         "सञ्ज्ञा",
-        "निपाताः",
-        "गतिः"
+        "निपाताः"
       ],
       "adhyaya": 1,
       "pada": 4,
@@ -38,41 +142,41 @@
         "notes": ""
       }
     },
-    "notes": "The words कणे and मनस् are गति when in composition with a verb and used in the sense of 'reaction by satiation'.",
+    "notes": "From this point as far as aphorism 1.4.97 treated of, are to be understood as having the name of कर्म-प्रवचनीय।",
     "examples": "",
     "description": "",
     "krama_numbers": {
       "sutra_krama": 0,
-      "kaumudi_krama": 767,
-      "akaradi_krama": 963
+      "kaumudi_krama": 546,
+      "akaradi_krama": 1025
     },
     "categories": {
-      "vishaya1": "गतिः",
+      "vishaya1": "कर्मप्रवचनीया",
       "vishaya2": "निपातः",
       "vishaya3": "प्राङ्",
-      "parinam": ""
+      "parinam": "14083-14098"
     },
     "original_descriptions": {
-      "desc1": "गति-अन्तर्",
+      "desc1": "छन्दस्",
       "desc2": "",
-      "english": "The words कणे and मनस् are गति when in composition with a verb and used in the sense of 'reaction by satiation'."
+      "english": "From this point as far as aphorism 1.4.97 treated of, are to be understood as having the name of कर्म-प्रवचनीय।"
     }
   },
   {
-    "sutra_number": "1.4.67",
-    "sutra_text_iast": "puro'vayayama",
-    "sutra_text_devanagari": "पुरोऽव्ययम्",
+    "sutra_number": "1.4.84",
+    "sutra_text_iast": "anuralakaṣaṇe",
+    "sutra_text_devanagari": "अनुर्लक्षणे",
     "type": "sanja",
     "scope": {
       "anuvrutti": [
-        "पुरोः",
-        "अव्ययम्",
+        "अनुः",
+        "लक्षणे",
         "आ",
         "कडारात्",
         "एका",
         "सञ्ज्ञा",
         "निपाताः",
-        "गतिः"
+        "कर्मप्रवचनीयाः"
       ],
       "adhyaya": 1,
       "pada": 4,
@@ -98,42 +202,163 @@
         "notes": ""
       }
     },
-    "notes": "The word पुरः 'in front of', when indeclinable and in composition with a verb, is called गति।",
+    "notes": "The word अनु , when it denotes a sign, is called कर्म-प्रवचनीय।",
     "examples": "",
     "description": "",
     "krama_numbers": {
       "sutra_krama": 0,
-      "kaumudi_krama": 768,
-      "akaradi_krama": 2398
+      "kaumudi_krama": 547,
+      "akaradi_krama": 219
     },
     "categories": {
-      "vishaya1": "गतिः",
+      "vishaya1": "कर्मप्रवचनीया",
       "vishaya2": "निपातः",
       "vishaya3": "प्राङ्",
       "parinam": ""
     },
     "original_descriptions": {
-      "desc1": "गति-मनस्-कणे",
+      "desc1": "कर्मप्रवचनीय-संज्ञा",
       "desc2": "",
-      "english": "The word पुरः 'in front of', when indeclinable and in composition with a verb, is called गति।"
+      "english": "The word अनु , when it denotes a sign, is called कर्म-प्रवचनीय।"
     }
   },
   {
-    "sutra_number": "1.4.68",
-    "sutra_text_iast": "asataṃ ca",
-    "sutra_text_devanagari": "अस्तं च",
+    "sutra_number": "1.4.85",
+    "sutra_text_iast": "tṛtīyā'rathe",
+    "sutra_text_devanagari": "तृतीयाऽर्थे",
     "type": "sanja",
     "scope": {
       "anuvrutti": [
-        "अस्तं",
+        "तृतीयार्थे",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "कर्मप्रवचनीयाः",
+        "अनुः"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "The word अनु , कर्म-प्रवचनीय when it has the force of the 3rd case.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 549,
+      "akaradi_krama": 1772
+    },
+    "categories": {
+      "vishaya1": "कर्मप्रवचनीया",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "कर्मप्रवचनीय-अनु",
+      "desc2": "",
+      "english": "The word अनु , कर्म-प्रवचनीय when it has the force of the 3rd case."
+    }
+  },
+  {
+    "sutra_number": "1.4.86",
+    "sutra_text_iast": "hīne",
+    "sutra_text_devanagari": "हीने",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "हीने",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "कर्मप्रवचनीयाः",
+        "अनुः"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "The word अनु , कर्म-प्रवचनीय when it is used in the sense of 'inferior or subordinate to'.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 550,
+      "akaradi_krama": 3943
+    },
+    "categories": {
+      "vishaya1": "कर्मप्रवचनीया",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "कर्मप्रवचनीय-अनु",
+      "desc2": "",
+      "english": "The word अनु , कर्म-प्रवचनीय when it is used in the sense of 'inferior or subordinate to'."
+    }
+  },
+  {
+    "sutra_number": "1.4.87",
+    "sutra_text_iast": "upo'dhike ca",
+    "sutra_text_devanagari": "उपोऽधिके च",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "उपः",
+        "अधिके",
         "च",
         "आ",
         "कडारात्",
         "एका",
         "सञ्ज्ञा",
         "निपाताः",
-        "गतिः",
-        "अव्ययम्"
+        "कर्मप्रवचनीयाः",
+        "हीने"
       ],
       "adhyaya": 1,
       "pada": 4,
@@ -159,41 +384,41 @@
         "notes": ""
       }
     },
-    "notes": "And the indeclinable word अस्तम् 'at home' is called गति , when in composition with a verb.",
+    "notes": "The word उप when it means 'superior' or 'inferior to' is कर्म-प्रवचनीय।",
     "examples": "",
     "description": "",
     "krama_numbers": {
       "sutra_krama": 0,
-      "kaumudi_krama": 769,
-      "akaradi_krama": 434
+      "kaumudi_krama": 551,
+      "akaradi_krama": 807
     },
     "categories": {
-      "vishaya1": "गतिः",
+      "vishaya1": "कर्मप्रवचनीया",
       "vishaya2": "निपातः",
       "vishaya3": "प्राङ्",
       "parinam": ""
     },
     "original_descriptions": {
-      "desc1": "गति-पुरः",
+      "desc1": "कर्मप्रवचनीय-अनु",
       "desc2": "",
-      "english": "And the indeclinable word अस्तम् 'at home' is called गति , when in composition with a verb."
+      "english": "The word उप when it means 'superior' or 'inferior to' is कर्म-प्रवचनीय।"
     }
   },
   {
-    "sutra_number": "1.4.69",
-    "sutra_text_iast": "acacha gatayarathavadeṣu",
-    "sutra_text_devanagari": "अच्छ गत्यर्थवदेषु",
+    "sutra_number": "1.4.88",
+    "sutra_text_iast": "apaparī varajane",
+    "sutra_text_devanagari": "अपपरी वर्जने",
     "type": "sanja",
     "scope": {
       "anuvrutti": [
-        "अच्छगत्यर्थवदेषु",
+        "अपपरी",
+        "वर्जने",
         "आ",
         "कडारात्",
         "एका",
         "सञ्ज्ञा",
         "निपाताः",
-        "गतिः",
-        "अव्ययम्"
+        "कर्मप्रवचनीयाः"
       ],
       "adhyaya": 1,
       "pada": 4,
@@ -219,41 +444,41 @@
         "notes": ""
       }
     },
-    "notes": "The indeclinable word अच्छ 'before in the presence of' is called गति , when used in the composition with verbs denoting 'motion' or with the verb वद् 'to speak'.",
+    "notes": "The words अप and परि are कर्म-प्रवचनीय when meaning 'exclusion'.",
     "examples": "",
     "description": "",
     "krama_numbers": {
       "sutra_krama": 0,
-      "kaumudi_krama": 770,
-      "akaradi_krama": 61
+      "kaumudi_krama": 596,
+      "akaradi_krama": 277
     },
     "categories": {
-      "vishaya1": "गतिः",
+      "vishaya1": "कर्मप्रवचनीया",
       "vishaya2": "निपातः",
       "vishaya3": "प्राङ्",
       "parinam": ""
     },
     "original_descriptions": {
-      "desc1": "गति-अस्तम्",
+      "desc1": "कर्मप्रवचनीय-उप",
       "desc2": "",
-      "english": "The indeclinable word अच्छ 'before in the presence of' is called गति , when used in the composition with verbs denoting 'motion' or with the verb वद् 'to speak'."
+      "english": "The words अप and परि are कर्म-प्रवचनीय when meaning 'exclusion'."
     }
   },
   {
-    "sutra_number": "1.4.70",
-    "sutra_text_iast": "ado'nupadeśe",
-    "sutra_text_devanagari": "अदोऽनुपदेशे",
+    "sutra_number": "1.4.89",
+    "sutra_text_iast": "āṅa marayādāvacane",
+    "sutra_text_devanagari": "आङ् मर्यादावचने",
     "type": "sanja",
     "scope": {
       "anuvrutti": [
-        "अदः",
-        "अनुपदेशे",
+        "आङ्",
+        "मर्यादावचने",
         "आ",
         "कडारात्",
         "एका",
         "सञ्ज्ञा",
         "निपाताः",
-        "गतिः"
+        "कर्मप्रवचनीयाः"
       ],
       "adhyaya": 1,
       "pada": 4,
@@ -279,23 +504,83 @@
         "notes": ""
       }
     },
-    "notes": "The word अदस् 'that' is called गति when in composition with a verb and not implying a direction to another.",
+    "notes": "The word आङ् 'as far as', is कर्म-प्रवचनीय when it expresses limit (e.g. when it means 'as far as inclusive of' or 'as far as exclusive of').",
     "examples": "",
     "description": "",
     "krama_numbers": {
       "sutra_krama": 0,
-      "kaumudi_krama": 771,
-      "akaradi_krama": 137
+      "kaumudi_krama": 597,
+      "akaradi_krama": 483
     },
     "categories": {
-      "vishaya1": "गतिः",
+      "vishaya1": "कर्मप्रवचनीया",
       "vishaya2": "निपातः",
       "vishaya3": "प्राङ्",
       "parinam": ""
     },
     "original_descriptions": {
-      "desc1": "गति-अच्छ",
+      "desc1": "कर्मप्रवचनीय-उप",
       "desc2": "",
-      "english": "The word अदस् 'that' is called गति when in composition with a verb and not implying a direction to another."
+      "english": "The word आङ् 'as far as', is कर्म-प्रवचनीय when it expresses limit (e.g. when it means 'as far as inclusive of' or 'as far as exclusive of')."
+    }
+  },
+  {
+    "sutra_number": "1.4.90",
+    "sutra_text_iast": "lakaṣaṇetathamabhūtākhayānabhāgavīpasāsu paratiparayanavaḥ",
+    "sutra_text_devanagari": "लक्षणेत्थम्भूताख्यानभागवीप्सासु प्रतिपर्यनवः",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "लक्षणेत्थंभूताख्यानभागवीप्सासु",
+        "प्रतिपर्यनवः",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "निपाताः",
+        "कर्मप्रवचनीयाः"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "The words प्रति , परि and अनु are कर्म-प्रवचनीय when used in the sense of 'sign' ('in the direction of') , 'mere statement of circumstances' ('as regards'), 'division', 'share of' and 'pervasion', severally.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 552,
+      "akaradi_krama": 2966
+    },
+    "categories": {
+      "vishaya1": "कर्मप्रवचनीया",
+      "vishaya2": "निपातः",
+      "vishaya3": "प्राङ्",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "कर्मप्रवचनीय",
+      "desc2": "",
+      "english": "The words प्रति , परि and अनु are कर्म-प्रवचनीय when used in the sense of 'sign' ('in the direction of') , 'mere statement of circumstances' ('as regards'), 'division', 'share of' and 'pervasion', severally."
     }
   },
