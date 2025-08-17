@@ -1,6 +1,7 @@
 # Agents Plan
 
-This document defines the responsibilities of agents working on the Panini Sutra Engine project. Each agent has a clear and limited scope to ensure systematic development, test-first methodology, and consistency across all sutras.
+This document defines the responsibilities of the agent working on the Panini Sutra Engine project.  
+The agent has a focused scope: **documentation, test case generation, and directory setup**.  
 
 ---
 
@@ -10,7 +11,7 @@ This document defines the responsibilities of agents working on the Panini Sutra
 
 ### Responsibilities
 1. **Directory and File Setup**
-   - For each sutra, create a directory under `sutras/` if it does not exist.
+   - For each sutra, create a directory under `sutras/` if it does not exist.  
    - Directory format:  
      ```
      sutras/X.X.XX/
@@ -57,51 +58,26 @@ This document defines the responsibilities of agents working on the Panini Sutra
      });
      ```
 
-### Boundaries
-- Jules never writes sutra logic (`index.js`).  
-- Jules never modifies shared utilities.  
-- Jules only produces: `README.md` + `index.test.js` + ensures folder structure.  
-
 ---
 
-## Agent: Arjun
-
-**Scope:** Sutra Implementation  
-
-### Responsibilities
-1. **Logic Implementation**
-   - Create `index.js` inside the sutra directory.  
-   - Implement sutra function using shared utilities from `sanskrit-utils`.  
-   - Must satisfy Jules’s `index.test.js` test cases.  
-
-2. **Code Standards**
-   - Function signature format:  
-     ```js
-     function sutraXXXX(word, context = {}) { /* ... */ }
-     export default sutraXXXX;
-     ```
-   - Support both IAST and Devanagari inputs.  
-   - Include input validation (type, script, invalid inputs).  
-
-3. **Integration**
-   - Reference dependencies documented by Jules.  
-   - Ensure consistency with related sutras.  
-
-### Boundaries
-- Arjun does not write documentation or tests.  
-- Arjun only edits `index.js` files inside sutra folders.  
+## Boundaries
+- Jules never writes sutra logic (`index.js`).  
+- Jules never modifies shared utilities.  
+- Jules only produces:  
+  - `README.md` (docs)  
+  - `index.test.js` (tests)  
+  - Ensures folder structure exists.  
 
 ---
 
 ## Workflow Principle
 
-1. **Jules goes first**: Documentation and tests must exist before logic is implemented.  
-2. **Arjun follows**: Implementation must satisfy Jules’s test suite.  
-3. After implementation:
-   - Run all tests (`npm test`).  
-   - Ensure coverage >95% for the sutra module.  
-   - Update project documentation index if required.  
+1. **Jules always goes first.**  
+   - Documentation and tests must exist before any implementation begins.  
+
+2. **Test-first development.**  
+   - The generated test suite is the contract that later implementation must satisfy.  
 
 ---
 
-## Example Directory After Both Agents
+## Example Directory After Jules
