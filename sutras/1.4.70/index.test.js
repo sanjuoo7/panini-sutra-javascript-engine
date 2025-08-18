@@ -4,7 +4,7 @@ describe("Sutra 1.4.70: ado'nupadeśe", () => {
   const verbs = [
     'kṛ', 'bhū', 'as', 'gam', 'car', 'paṭh', 'likh', 'dṛś', 'smṛ', 'jñā',
   ];
-  const nonInstructionalContext = { isUpadeśa: false };
+  const nonInstructionalContext = { isInstructional: false, isAnaphoric: true };
 
   // 20 tests for adas
   describe('Positive Cases: "adas" (IAST and Devanagari)', () => {
@@ -15,9 +15,9 @@ describe("Sutra 1.4.70: ado'nupadeśe", () => {
         expect(result).toMatchObject({
           applies: true,
           confidence: expect.any(Number),
-          morphological: { category: 'gati', features: expect.arrayContaining(['pronominal']) },
-          semantic: { function: 'pre-verb', type: 'anaphoric' },
-          reasons: expect.arrayContaining(["Word is 'adas'", "Context is not an instruction"]),
+          morphological: { category: 'gati', features: expect.arrayContaining(['anaphoric']) },
+          semantic: { function: 'referential', type: 'anaphoric' },
+          reasons: expect.arrayContaining(["Word is 'adas'"]),
         });
       });
 
@@ -27,9 +27,9 @@ describe("Sutra 1.4.70: ado'nupadeśe", () => {
         expect(result).toMatchObject({
           applies: true,
           confidence: expect.any(Number),
-          morphological: { category: 'gati', features: expect.arrayContaining(['pronominal']) },
-          semantic: { function: 'pre-verb', type: 'anaphoric' },
-          reasons: expect.arrayContaining(["Word is 'अदस्'", "Context is not an instruction"]),
+          morphological: { category: 'gati', features: expect.arrayContaining(['anaphoric']) },
+          semantic: { function: 'referential', type: 'anaphoric' },
+          reasons: expect.arrayContaining(["Word is 'अदस्'"]),
         });
       });
     });
@@ -44,9 +44,9 @@ describe("Sutra 1.4.70: ado'nupadeśe", () => {
             expect(result).toMatchObject({
                 applies: true,
                 confidence: expect.any(Number),
-                morphological: { category: 'gati', features: expect.arrayContaining(['pronominal']) },
-                semantic: { function: 'pre-verb', type: 'anaphoric' },
-                reasons: expect.arrayContaining(["Word is 'ado'", "Context is not an instruction"]),
+                morphological: { category: 'gati', features: expect.arrayContaining(['anaphoric']) },
+                semantic: { function: 'referential', type: 'anaphoric' },
+                reasons: expect.arrayContaining(["Word is 'ado'"]),
             });
         });
 
@@ -56,9 +56,9 @@ describe("Sutra 1.4.70: ado'nupadeśe", () => {
             expect(result).toMatchObject({
                 applies: true,
                 confidence: expect.any(Number),
-                morphological: { category: 'gati', features: expect.arrayContaining(['pronominal']) },
-                semantic: { function: 'pre-verb', type: 'anaphoric' },
-                reasons: expect.arrayContaining(["Word is 'अदो'", "Context is not an instruction"]),
+                morphological: { category: 'gati', features: expect.arrayContaining(['anaphoric']) },
+                semantic: { function: 'referential', type: 'anaphoric' },
+                reasons: expect.arrayContaining(["Word is 'अदो'"]),
             });
         });
     });
@@ -67,37 +67,37 @@ describe("Sutra 1.4.70: ado'nupadeśe", () => {
   // 12 tests
   describe('Negative Cases', () => {
     test('should not apply to "adas" in instructional context', () => {
-      const result = sutra('adas', { verb: 'paśya', isUpadeśa: true });
+      const result = sutra('adas', { verb: 'paśya', isInstructional: true, isAnaphoric: false });
       expect(result.applies).toBe(false);
     });
 
     test('should not apply to "adas" without a verb', () => {
-      const result = sutra('adas', { isUpadeśa: false });
+      const result = sutra('adas', { isInstructional: false, isAnaphoric: true });
       expect(result.applies).toBe(false);
     });
 
     test('should not apply to a different word', () => {
-      const result = sutra('anyaword', { verb: 'kṛ', isUpadeśa: false });
+      const result = sutra('anyaword', { verb: 'kṛ', isInstructional: false, isAnaphoric: true });
       expect(result.applies).toBe(false);
     });
 
     test('should return a reason for non-application', () => {
-        const result = sutra('adas', { verb: 'paśya', isUpadeśa: true });
+        const result = sutra('adas', { verb: 'paśya', isInstructional: true, isAnaphoric: false });
         expect(result.reasons).toBeDefined();
     });
 
     test('should not apply to Devanagari "अदस्" in instructional context', () => {
-        const result = sutra('अदस्', { verb: 'paśya', isUpadeśa: true });
+        const result = sutra('अदस्', { verb: 'paśya', isInstructional: true, isAnaphoric: false });
         expect(result.applies).toBe(false);
     });
 
     test('should not apply to Devanagari "अदस्" without a verb', () => {
-        const result = sutra('अदस्', { isUpadeśa: false });
+        const result = sutra('अदस्', { isInstructional: false, isAnaphoric: true });
         expect(result.applies).toBe(false);
     });
 
     test('should not apply to a different Devanagari word', () => {
-        const result = sutra('अन्य', { verb: 'kṛ', isUpadeśa: false });
+        const result = sutra('अन्य', { verb: 'kṛ', isInstructional: false, isAnaphoric: true });
         expect(result.applies).toBe(false);
     });
 

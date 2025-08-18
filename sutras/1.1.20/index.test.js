@@ -3,7 +3,7 @@
  * "The words having the form of दा 'to give' and धा 'to place' are called घु।"
  */
 
-import { isGhu, getGhuRoots, hasGhuBehavior } from './index.js';
+import { isGhu, getGhuRoots, hasGhuBehavior, analyzeGhu } from './index.js';
 
 describe('Sutra 1.1.20: दाधा घ्वदाप्', () => {
   describe('isGhu', () => {
@@ -108,6 +108,181 @@ describe('Sutra 1.1.20: दाधा घ्वदाप्', () => {
       const nonGhuRoots = ['kar', 'gam', 'bhū', 'as', 'kṛ'];
       nonGhuRoots.forEach(root => {
         expect(hasGhuBehavior(root)).toBe(false);
+      });
+    });
+  });
+
+  describe('analyzeGhu (Comprehensive Analysis)', () => {
+    describe('Valid घु Roots', () => {
+      it('should analyze दा (dā - to give) correctly', () => {
+        const result = analyzeGhu('दा');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.input).toBe('दा');
+        expect(result.normalizedInput).toBe('dā');
+        expect(result.isGhu).toBe(true);
+        expect(result.analysis).toBeDefined();
+        expect(result.analysis.morphological.root).toBe('dā');
+        expect(result.analysis.morphological.meaning).toBe('to give');
+        expect(result.analysis.morphological.dhatu).toBe('दा');
+        expect(result.analysis.morphological.rootClass).toBe('root');
+        expect(result.analysis.morphological.vocalLength).toBe('long');
+        
+        expect(result.analysis.semantic.primaryMeaning).toBe('to give, bestow, grant');
+        expect(result.analysis.semantic.category).toBe('transitive action');
+        expect(result.analysis.semantic.domain).toBe('giving/donation');
+        
+        expect(result.analysis.syntactic.grammaticalRole).toBe('verbal root');
+        expect(result.analysis.syntactic.classification).toBe('ghu');
+        expect(result.analysis.syntactic.applicableRules).toContain('1.1.20');
+        
+        expect(result.confidence).toBeGreaterThan(0.9);
+        expect(result.metadata.sutraNumber).toBe('1.1.20');
+        expect(result.metadata.sutraText).toBe('दाधा घ्वदाप्');
+        expect(result.metadata.commentaryReferences).toContain('Kāśikā');
+      });
+
+      it('should analyze धा (dhā - to place) correctly', () => {
+        const result = analyzeGhu('धा');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.input).toBe('धा');
+        expect(result.normalizedInput).toBe('dhā');
+        expect(result.isGhu).toBe(true);
+        expect(result.analysis.morphological.root).toBe('dhā');
+        expect(result.analysis.morphological.meaning).toBe('to place');
+        expect(result.analysis.morphological.dhatu).toBe('धा');
+        
+        expect(result.analysis.semantic.primaryMeaning).toBe('to place, put, hold');
+        expect(result.analysis.semantic.category).toBe('transitive action');
+        expect(result.analysis.semantic.domain).toBe('placement/positioning');
+        
+        expect(result.analysis.syntactic.classification).toBe('ghu');
+        expect(result.confidence).toBeGreaterThan(0.9);
+      });
+
+      it('should handle IAST input correctly', () => {
+        const result1 = analyzeGhu('dā');
+        const result2 = analyzeGhu('dhā');
+        
+        expect(result1.isGhu).toBe(true);
+        expect(result1.normalizedInput).toBe('dā');
+        expect(result2.isGhu).toBe(true);
+        expect(result2.normalizedInput).toBe('dhā');
+      });
+
+      it('should provide traditional commentary references', () => {
+        const result = analyzeGhu('दा');
+        
+        expect(result.metadata.commentaryReferences).toContain('Kāśikā');
+        expect(result.metadata.traditionalExplanation).toContain('दा धा इत्येतौ घु संज्ञौ भवतः');
+        expect(result.metadata.modernExplanation).toContain('This sutra defines the technical term');
+      });
+    });
+
+    describe('Invalid Inputs', () => {
+      it('should handle non-घु roots correctly', () => {
+        const result = analyzeGhu('कर्');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isGhu).toBe(false);
+        expect(result.analysis.syntactic.classification).toBe('non-ghu');
+        expect(result.confidence).toBeLessThan(0.5);
+      });
+
+      it('should handle invalid Sanskrit words', () => {
+        const result = analyzeGhu('xyz');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.isGhu).toBe(false);
+        expect(result.errors).toContain('Invalid Sanskrit word');
+        expect(result.confidence).toBe(0);
+      });
+
+      it('should handle empty or null input', () => {
+        const result1 = analyzeGhu('');
+        const result2 = analyzeGhu(null);
+        const result3 = analyzeGhu(undefined);
+        
+        [result1, result2, result3].forEach(result => {
+          expect(result.isValid).toBe(false);
+          expect(result.isGhu).toBe(false);
+          expect(result.errors).toContain('Input is required');
+          expect(result.confidence).toBe(0);
+        });
+      });
+    });
+
+    describe('Context-Aware Analysis', () => {
+      it('should provide enhanced analysis with grammatical context', () => {
+        const result = analyzeGhu('दा', { 
+          includeUsageExamples: true,
+          includeRelatedRules: true 
+        });
+        
+        expect(result.isGhu).toBe(true);
+        expect(result.metadata.usageExamples).toBeDefined();
+        expect(result.metadata.relatedRules).toBeDefined();
+        expect(result.metadata.relatedRules.length).toBeGreaterThan(0);
+      });
+
+      it('should handle script variations consistently', () => {
+        const resultDev = analyzeGhu('दा');
+        const resultIAST = analyzeGhu('dā');
+        
+        expect(resultDev.isGhu).toBe(resultIAST.isGhu);
+        expect(resultDev.analysis.morphological.root).toBe(resultIAST.analysis.morphological.root);
+        expect(resultDev.confidence).toBe(resultIAST.confidence);
+      });
+    });
+
+    describe('Morphological Analysis', () => {
+      it('should identify root characteristics correctly', () => {
+        const result = analyzeGhu('दा');
+        
+        expect(result.analysis.morphological.rootClass).toBe('root');
+        expect(result.analysis.morphological.vocalLength).toBe('long');
+        expect(result.analysis.morphological.structure).toBe('consonant + long vowel');
+      });
+
+      it('should distinguish from reduplicated forms', () => {
+        const result = analyzeGhu('ददा'); // reduplicated दा
+        
+        expect(result.isGhu).toBe(false);
+        expect(result.analysis.syntactic.classification).toBe('non-ghu');
+      });
+    });
+
+    describe('Semantic Analysis', () => {
+      it('should categorize semantic domains correctly', () => {
+        const resultDa = analyzeGhu('दा');
+        const resultDha = analyzeGhu('धा');
+        
+        expect(resultDa.analysis.semantic.domain).toBe('giving/donation');
+        expect(resultDha.analysis.semantic.domain).toBe('placement/positioning');
+        
+        expect(resultDa.analysis.semantic.category).toBe('transitive action');
+        expect(resultDha.analysis.semantic.category).toBe('transitive action');
+      });
+    });
+
+    describe('Confidence Scoring', () => {
+      it('should assign high confidence to valid घु roots', () => {
+        const result1 = analyzeGhu('दा');
+        const result2 = analyzeGhu('धा');
+        
+        expect(result1.confidence).toBeGreaterThan(0.9);
+        expect(result2.confidence).toBeGreaterThan(0.9);
+      });
+
+      it('should assign low confidence to non-घु roots', () => {
+        const result = analyzeGhu('कर्');
+        expect(result.confidence).toBeLessThan(0.5);
+      });
+
+      it('should assign zero confidence to invalid inputs', () => {
+        const result = analyzeGhu('invalid');
+        expect(result.confidence).toBe(0);
       });
     });
   });

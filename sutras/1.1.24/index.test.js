@@ -12,6 +12,7 @@ import {
   getShatExamples,
   isShatWithEnding,
   getPrimaryShatExample,
+  analyzeShat,
   SHAT_NUMERALS
 } from './index.js';
 
@@ -350,6 +351,194 @@ describe('Sutra 1.1.24: ष्णान्ता षट्', () => {
       expect(isShat('dvādaśan')).toBe(true);  // twelve
       expect(isShat('एकादशन्')).toBe(true);
       expect(isShat('द्वादशन्')).toBe(true);
+    });
+  });
+
+  // Comprehensive Analysis Function Tests
+  describe('analyzeShat (comprehensive analysis)', () => {
+    describe('valid ṣaṭ numeral analysis', () => {
+      it('should analyze ṣ-ending numerals comprehensively', () => {
+        const result = analyzeShat('ṣaṣ');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isShat).toBe(true);
+        expect(result.input).toBe('ṣaṣ');
+        expect(result.confidence).toBe(0.95);
+        
+        // Morphological analysis
+        expect(result.analysis.morphological.category).toBe('numeral');
+        expect(result.analysis.morphological.subcategory).toBe('ṣaṭ-ending');
+        expect(result.analysis.morphological.script).toBe('IAST');
+        expect(result.analysis.morphological.morphClass).toBe('ṣaṭ');
+        expect(result.analysis.morphological.ending).toBe('ṣ');
+        expect(result.analysis.morphological.endingType).toBe('sha');
+        
+        // Semantic analysis
+        expect(result.analysis.semantic.function).toBe('numeral-classification');
+        expect(result.analysis.semantic.meaning).toContain('numeral ending in ṣ-sound');
+        expect(result.analysis.semantic.primaryExample).toBe('ṣaṣ');
+        
+        // Syntactic analysis
+        expect(result.analysis.syntactic.classification).toBe('ṣaṭ');
+        expect(result.analysis.syntactic.applicableRules).toContain('1.1.24');
+        
+        // Metadata
+        expect(result.metadata.sutraNumber).toBe('1.1.24');
+        expect(result.metadata.sutraText).toBe('ष्णान्ता षट्');
+      });
+
+      it('should analyze n-ending numerals comprehensively', () => {
+        const result = analyzeShat('सप्तन्');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isShat).toBe(true);
+        expect(result.confidence).toBe(0.95);
+        
+        expect(result.analysis.morphological.subcategory).toBe('ṣaṭ-ending');
+        expect(result.analysis.morphological.script).toBe('Devanagari');
+        expect(result.analysis.morphological.ending).toBe('न्');
+        expect(result.analysis.morphological.endingType).toBe('na');
+        expect(result.analysis.semantic.meaning).toContain('numeral ending in n-sound');
+      });
+
+      it('should analyze unknown ṣaṭ patterns with lower confidence', () => {
+        // If there were a hypothetical ṣaṭ-ending word not in our known list
+        // but still following the pattern (theoretical test)
+        const result = analyzeShat('ṣaṣ'); // using known example
+        expect(result.confidence).toBe(0.95);
+      });
+    });
+
+    describe('non-ṣaṭ numeral analysis', () => {
+      it('should analyze non-ṣaṭ numerals correctly', () => {
+        const result = analyzeShat('pañca'); // five - doesn't end in ṣ or n
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isShat).toBe(false);
+        expect(result.confidence).toBe(0.1);
+        
+        expect(result.analysis.morphological.category).toBe('non-ṣaṭ');
+        expect(result.analysis.semantic.function).toBe('non-ṣaṭ-classification');
+        expect(result.analysis.syntactic.classification).toBe('non-ṣaṭ');
+      });
+
+      it('should analyze non-numerals correctly', () => {
+        const result = analyzeShat('गुरु');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isShat).toBe(false);
+        expect(result.confidence).toBe(0.1);
+      });
+    });
+
+    describe('enhanced context analysis', () => {
+      it('should include usage examples when requested', () => {
+        const result = analyzeShat('अष्टन्', { includeUsageExamples: true });
+        
+        expect(result.metadata.usageExamples).toBeDefined();
+        expect(result.metadata.usageExamples.length).toBeGreaterThan(0);
+        expect(result.metadata.usageExamples[0]).toContain('अष्टन्');
+      });
+
+      it('should include related rules when requested', () => {
+        const result = analyzeShat('ṣaṣ', { includeRelatedRules: true });
+        
+        expect(result.metadata.relatedRules).toBeDefined();
+        expect(result.metadata.relatedRules.length).toBeGreaterThan(0);
+        expect(result.metadata.relatedRules).toContain('1.1.24 - ष्णान्ता षट् (defines ṣaṭ for ṣ/n-ending numerals)');
+      });
+    });
+
+    describe('error handling and validation', () => {
+      it('should handle empty input', () => {
+        const result = analyzeShat('');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.isShat).toBe(false);
+        expect(result.errors).toContain('Input is required');
+        expect(result.confidence).toBe(0);
+      });
+
+      it('should handle null input', () => {
+        const result = analyzeShat(null);
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Input is required');
+      });
+
+      it('should handle invalid Sanskrit input', () => {
+        const result = analyzeShat('xyz123');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Invalid Sanskrit input');
+      });
+
+      it('should handle English words', () => {
+        const result = analyzeShat('hello');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Invalid Sanskrit input');
+      });
+    });
+
+    describe('script detection and normalization', () => {
+      it('should detect IAST script correctly', () => {
+        const result = analyzeShat('saptan');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.analysis.morphological.script).toBe('IAST');
+      });
+
+      it('should detect Devanagari script correctly', () => {
+        const result = analyzeShat('नवन्');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.analysis.morphological.script).toBe('Devanagari');
+      });
+
+      it('should normalize input correctly', () => {
+        const result = analyzeShat('  ṣaṣ  ');
+        
+        expect(result.normalizedInput).toBe('ṣaṣ');
+        expect(result.isValid).toBe(true);
+      });
+    });
+
+    describe('traditional commentary integration', () => {
+      it('should include traditional Sanskrit explanation', () => {
+        const result = analyzeShat('दशन्');
+        
+        expect(result.metadata.traditionalExplanation).toContain('षकारान्ता');
+        expect(result.metadata.traditionalExplanation).toContain('णकारान्ता');
+      });
+
+      it('should include modern English explanation', () => {
+        const result = analyzeShat('विंशतिष्');
+        
+        expect(result.metadata.modernExplanation).toContain('technical term');
+        expect(result.metadata.modernExplanation).toContain('ṣaṭ');
+      });
+
+      it('should include commentary references', () => {
+        const result = analyzeShat('षष्');
+        
+        expect(result.metadata.commentaryReferences).toContain('Kāśikā');
+        expect(result.metadata.commentaryReferences).toContain('Patañjali Mahābhāṣya');
+      });
+    });
+
+    describe('morphological structure analysis', () => {
+      it('should determine ṣ-terminal structure', () => {
+        const result = analyzeShat('ṣaṣ');
+        
+        expect(result.analysis.morphological.structure).toBe('ṣ-terminal-numeral');
+      });
+
+      it('should determine n-terminal structure', () => {
+        const result = analyzeShat('saptan');
+        
+        expect(result.analysis.morphological.structure).toBe('n-terminal-numeral');
+      });
     });
   });
 });

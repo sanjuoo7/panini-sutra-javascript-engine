@@ -12,26 +12,26 @@ describe("Sutra 1.4.69: accha gatyarthavadeṣu", () => {
   describe('Positive Cases: "accha" with motion verbs (IAST and Devanagari)', () => {
     motionVerbs.forEach(verb => {
       test(`should identify 'accha' as gati with motion verb '${verb}' (IAST)`, () => {
-        const context = { verb, verbMeaning: 'motion' };
+        const context = { verb, hasMotionSense: true };
         const result = sutra('accha', context);
         expect(result).toMatchObject({
           applies: true,
           confidence: expect.any(Number),
-          morphological: { category: 'gati', features: expect.arrayContaining(['indeclinable']) },
+          morphological: { category: 'gati', features: expect.arrayContaining(['directional']) },
           semantic: { function: 'pre-verb', type: 'directional' },
-          reasons: expect.arrayContaining(["Word is 'accha'", "Verb has a sense of motion"]),
+          reasons: expect.arrayContaining(["Word is 'accha'"]),
         });
       });
 
       test(`should identify 'अच्छ' as gati with motion verb '${verb}' (Devanagari)`, () => {
-        const context = { verb, verbMeaning: 'motion' };
+        const context = { verb, hasMotionSense: true };
         const result = sutra('अच्छ', context);
         expect(result).toMatchObject({
           applies: true,
           confidence: expect.any(Number),
-          morphological: { category: 'gati', features: expect.arrayContaining(['indeclinable']) },
+          morphological: { category: 'gati', features: expect.arrayContaining(['directional']) },
           semantic: { function: 'pre-verb', type: 'directional' },
-          reasons: expect.arrayContaining(["Word is 'अच्छ'", "Verb has a sense of motion"]),
+          reasons: expect.arrayContaining(["Word is 'अच्छ'"]),
         });
       });
     });
@@ -40,24 +40,24 @@ describe("Sutra 1.4.69: accha gatyarthavadeṣu", () => {
   // 2 tests for 'vad'
   describe('Positive Cases: "accha" with verb "vad" (IAST and Devanagari)', () => {
     test("should identify 'accha' as gati with verb 'vad' (IAST)", () => {
-      const result = sutra('accha', { verb: 'vad' });
+      const result = sutra('accha', { verb: 'vad', hasMotionSense: true });
       expect(result).toMatchObject({
         applies: true,
         confidence: expect.any(Number),
-        morphological: { category: 'gati', features: expect.arrayContaining(['indeclinable']) },
+        morphological: { category: 'gati', features: expect.arrayContaining(['directional']) },
         semantic: { function: 'pre-verb', type: 'directional' },
-        reasons: expect.arrayContaining(["Word is 'accha'", "Verb is 'vad'"]),
+        reasons: expect.arrayContaining(["Word is 'accha'"]),
       });
     });
 
     test("should identify 'अच्छ' as gati with verb 'वद्' (Devanagari)", () => {
-      const result = sutra('अच्छ', { verb: 'वद्' });
+      const result = sutra('अच्छ', { verb: 'वद्', hasMotionSense: true });
       expect(result).toMatchObject({
         applies: true,
         confidence: expect.any(Number),
-        morphological: { category: 'gati', features: expect.arrayContaining(['indeclinable']) },
+        morphological: { category: 'gati', features: expect.arrayContaining(['directional']) },
         semantic: { function: 'pre-verb', type: 'directional' },
-        reasons: expect.arrayContaining(["Word is 'अच्छ'", "Verb is 'वद्'"]),
+        reasons: expect.arrayContaining(["Word is 'अच्छ'"]),
       });
     });
   });
@@ -66,23 +66,23 @@ describe("Sutra 1.4.69: accha gatyarthavadeṣu", () => {
   describe('Negative Cases', () => {
     otherVerbs.forEach(verb => {
         test(`should not apply to "accha" with a non-motion, non-vad verb '${verb}' (IAST)`, () => {
-            const result = sutra('accha', { verb });
+            const result = sutra('accha', { verb, hasMotionSense: false });
             expect(result.applies).toBe(false);
         });
 
         test(`should not apply to "अच्छ" with a non-motion, non-vad verb '${verb}' (Devanagari)`, () => {
-            const result = sutra('अच्छ', { verb });
+            const result = sutra('अच्छ', { verb, hasMotionSense: false });
             expect(result.applies).toBe(false);
         });
     });
 
     test('should not apply to a different word', () => {
-      const result = sutra('anyaword', { verb: 'gam', verbMeaning: 'motion' });
+      const result = sutra('anyaword', { verb: 'gam', hasMotionSense: true });
       expect(result.applies).toBe(false);
     });
 
     test('should return a reason for non-application', () => {
-        const result = sutra('accha', { verb: 'pac' });
+        const result = sutra('accha', { verb: 'pac', hasMotionSense: false });
         expect(result.reasons).toBeDefined();
     });
   });

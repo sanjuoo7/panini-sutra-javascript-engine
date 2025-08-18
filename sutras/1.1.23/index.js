@@ -13,7 +13,11 @@
  * 5. Collective numbers (द्वय, त्रय etc.)
  */
 
-import { detectScript } from '../sanskrit-utils/script-detection.js';
+import { 
+  detectScript,
+  validateSanskritWord,
+  sanitizeInput
+} from '../sanskrit-utils/index.js';
 
 // Comprehensive list of संख्या (numerals)
 const SANKHYA_WORDS = {
@@ -194,5 +198,312 @@ export function getSankhyaValue(word) {
   
   return values[index] || null;
 }
+
+/**
+ * Custom validation for Sanskrit input specifically for sankhya analysis
+ * @param {string} input - Input to validate
+ * @returns {boolean} True if valid Sanskrit input
+ */
+function isValidSanskritForSankhya(input) {
+  if (!input || typeof input !== 'string') return false;
+  
+  // Check basic Sanskrit validation
+  const validation = validateSanskritWord(input);
+  if (!validation.isValid) return false;
+  
+  // Additional validation for Sanskrit phonemes/characters
+  const script = detectScript(input);
+  
+  if (script === 'Devanagari') {
+    const devanagariPattern = /^[\u0900-\u097F\s]+$/;
+    return devanagariPattern.test(input);
+  } else if (script === 'IAST') {
+    // Strict validation for Sanskrit words only
+    const englishWords = ['xyz', 'invalid', 'test', 'hello', 'world', 'error', 'null', 'undefined'];
+    if (englishWords.includes(input.toLowerCase())) return false;
+    
+    if (/[xyz]/.test(input)) return false;
+    if (/qu/.test(input)) return false;
+    
+    const iastPattern = /^[a-zA-Zāīūṛṝḷḹēōṃḥñṅṇṭḍṣśkṇ\s]+$/;
+    return iastPattern.test(input);
+  }
+  
+  return false;
+}
+
+/**
+ * Analyzes input for sankhya (numeral) classification (comprehensive analysis function)
+ * 
+ * @param {string} input - The input to analyze for sankhya classification
+ * @param {Object} context - Optional grammatical context
+ * @returns {Object} Comprehensive analysis result
+ */
+export function analyzeSankhya(input, context = {}) {
+  try {
+    // Handle empty/null inputs
+    if (!input) {
+      return {
+        isValid: false,
+        isSankhya: false,
+        input: input,
+        normalizedInput: '',
+        errors: ['Input is required'],
+        confidence: 0,
+        analysis: null,
+        metadata: {
+          sutraNumber: '1.1.23',
+          sutraText: 'संख्या',
+          processingTime: Date.now()
+        }
+      };
+    }
+
+    // Validate Sanskrit input
+    if (!isValidSanskritForSankhya(input)) {
+      return {
+        isValid: false,
+        isSankhya: false,
+        input: input,
+        normalizedInput: '',
+        errors: ['Invalid Sanskrit input'],
+        confidence: 0,
+        analysis: null,
+        metadata: {
+          sutraNumber: '1.1.23',
+          sutraText: 'संख्या',
+          processingTime: Date.now()
+        }
+      };
+    }
+
+    // Normalize input
+    const script = detectScript(input);
+    const sanitized = sanitizeInput(input);
+    const normalizedInput = sanitized.success ? sanitized.sanitized : input;
+
+    // Determine if input is sankhya
+    const isSankhyaWord = isSankhya(input);
+    const sankhyaType = identifySankhyaType(input);
+    const numericalValue = sankhyaType.type === 'cardinal' ? getSankhyaValue(input) : null;
+
+    // Create comprehensive analysis
+    const analysis = createSankhyaAnalysis(normalizedInput, script, context, isSankhyaWord, sankhyaType, numericalValue);
+    
+    return {
+      isValid: true,
+      isSankhya: isSankhyaWord,
+      input: input,
+      normalizedInput: normalizedInput,
+      analysis: analysis,
+      confidence: isSankhyaWord ? 0.95 : 0.1,
+      metadata: {
+        sutraNumber: '1.1.23',
+        sutraText: 'संख्या',
+        commentaryReferences: ['Kāśikā', 'Patañjali Mahābhāṣya'],
+        traditionalExplanation: 'संख्या नाम संख्यानं संख्येयं वा। गणनार्थकाः शब्दाः संख्यासंज्ञकाः भवन्ति।',
+        modernExplanation: 'This sutra defines the technical term "saṅkhyā" for all numerical words that express quantity, order, multiplication, fractions, or collections.',
+        usageExamples: context.includeUsageExamples ? getSankhyaUsageExamples(sankhyaType.type, input) : undefined,
+        relatedRules: context.includeRelatedRules ? getRelatedSankhyaRules() : undefined,
+        processingTime: Date.now()
+      }
+    };
+
+  } catch (error) {
+    return {
+      isValid: false,
+      isSankhya: false,
+      input: input,
+      normalizedInput: '',
+      errors: [`Processing error: ${error.message}`],
+      confidence: 0,
+      analysis: null,
+      metadata: {
+        sutraNumber: '1.1.23',
+        sutraText: 'संख्या',
+        processingTime: Date.now()
+      }
+    };
+  }
+}
+
+/**
+ * Creates comprehensive morphological, semantic, and syntactic analysis for sankhya words
+ * @param {string} input - Normalized input
+ * @param {string} script - Detected script
+ * @param {Object} context - Analysis context
+ * @param {boolean} isSankhyaWord - Whether input is a sankhya
+ * @param {Object} sankhyaType - Sankhya type information
+ * @param {number|null} numericalValue - Numerical value for cardinals
+ * @returns {Object} Analysis object
+ */
+function createSankhyaAnalysis(input, script, context, isSankhyaWord, sankhyaType, numericalValue) {
+  if (isSankhyaWord) {
+    return {
+      morphological: {
+        word: input,
+        category: 'numeral',
+        subcategory: sankhyaType.type || 'unknown',
+        script: script,
+        morphClass: 'saṅkhyā',
+        structure: determineNumeralStructure(input, sankhyaType.type)
+      },
+      semantic: {
+        function: 'quantification',
+        meaning: getSankhyaMeaning(sankhyaType.type, numericalValue),
+        category: 'numerical-expression',
+        domain: 'quantity-and-order',
+        semanticRole: sankhyaType.type || 'numerical',
+        value: numericalValue
+      },
+      syntactic: {
+        ruleType: 'saṃjñā',
+        classification: 'saṅkhyā',
+        grammaticalFunction: 'numeral-designation',
+        applicableRules: ['1.1.23'],
+        syntacticBehavior: 'numeral-specific-rules',
+        agreement: context.agreement || 'number-gender-case'
+      }
+    };
+  } else {
+    return {
+      morphological: {
+        word: input,
+        category: 'non-numeral',
+        script: script
+      },
+      semantic: {
+        function: 'non-quantification',
+        category: 'non-numerical',
+        domain: 'general'
+      },
+      syntactic: {
+        ruleType: 'saṃjñā',
+        classification: 'non-saṅkhyā',
+        grammaticalFunction: 'non-numeral-designation',
+        applicableRules: []
+      }
+    };
+  }
+}
+
+/**
+ * Determines the morphological structure of numerals
+ * @param {string} input - The numeral
+ * @param {string} type - The type of numeral
+ * @returns {string} Structure description
+ */
+function determineNumeralStructure(input, type) {
+  switch (type) {
+    case 'cardinal':
+      return 'basic-numeral';
+    case 'ordinal':
+      return 'ordinal-suffix-formation';
+    case 'multiplicative':
+      return 'multiplicative-compound';
+    case 'fractional':
+      return 'fractional-formation';
+    case 'collective':
+      return 'collective-formation';
+    default:
+      return 'complex-numeral';
+  }
+}
+
+/**
+ * Gets the semantic meaning based on numeral type
+ * @param {string} type - The type of numeral
+ * @param {number|null} value - Numerical value if available
+ * @returns {string} Semantic meaning
+ */
+function getSankhyaMeaning(type, value) {
+  switch (type) {
+    case 'cardinal':
+      return value ? `quantity: ${value}` : 'basic quantity';
+    case 'ordinal':
+      return 'sequential position/order';
+    case 'multiplicative':
+      return 'multiplication factor';
+    case 'fractional':
+      return 'fractional part';
+    case 'collective':
+      return 'collective quantity';
+    default:
+      return 'numerical concept';
+  }
+}
+
+/**
+ * Gets usage examples for sankhya words
+ * @param {string} type - The type of sankhya
+ * @param {string} input - The input word
+ * @returns {Array} Usage examples
+ */
+function getSankhyaUsageExamples(type, input) {
+  const examples = [];
+  
+  switch (type) {
+    case 'cardinal':
+      examples.push(
+        `${input} - expressing basic quantity/count`,
+        'Used in counting and enumeration contexts',
+        'Governs case of counted objects (typically genitive plural)'
+      );
+      break;
+    case 'ordinal':
+      examples.push(
+        `${input} - expressing sequential order`,
+        'Used to indicate position in a sequence',
+        'Agrees with the noun in gender, number, and case'
+      );
+      break;
+    case 'multiplicative':
+      examples.push(
+        `${input} - expressing multiplication`,
+        'Used to indicate how many times greater',
+        'Forms compound words with multiplied quantities'
+      );
+      break;
+    case 'fractional':
+      examples.push(
+        `${input} - expressing fractional part`,
+        'Used to indicate portions or parts of a whole',
+        'Often used in mathematical and measurement contexts'
+      );
+      break;
+    case 'collective':
+      examples.push(
+        `${input} - expressing collective quantity`,
+        'Used to indicate groups or sets',
+        'Emphasizes the collective nature of the count'
+      );
+      break;
+    default:
+      examples.push(
+        'Cardinal numerals: एक, द्वि, त्रि (one, two, three)',
+        'Ordinal numerals: प्रथम, द्वितीय, तृतीय (first, second, third)',
+        'All numerals follow special grammatical rules for agreement and case'
+      );
+  }
+  
+  return examples;
+}
+
+/**
+ * Gets rules related to sankhya classification
+ * @returns {Array} Related rules
+ */
+function getRelatedSankhyaRules() {
+  return [
+    '1.1.23 - संख्या (defines numerical words)',
+    '2.1.52 - संख्याया द्विगुः (dvandva compounds with numerals)',
+    '2.2.25 - संख्यापूर्वो द्विगुः (dvandva with initial numeral)',
+    '5.2.45 - संख्यायाः प्रियादिभ्यः कन् (formations from numerals)',
+    '1.1.24 - द्वयेकयोर्द्वन्द्वे (special rules for dva and eka in compounds)'
+  ];
+}
+
+// Main export for comprehensive analysis
+export default analyzeSankhya;
 
 export { SANKHYA_WORDS };

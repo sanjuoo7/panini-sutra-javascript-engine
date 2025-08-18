@@ -11,6 +11,7 @@ import {
   getSankhyaExamples,
   isSankhyaType,
   getSankhyaValue,
+  analyzeSankhya,
   SANKHYA_WORDS
 } from './index.js';
 
@@ -352,6 +353,195 @@ describe('Sutra 1.1.23: संख्या', () => {
       // Value extraction for cardinals only
       expect(getSankhyaValue('pañca')).toBe(5);
       expect(getSankhyaValue('pañcama')).toBe(null); // ordinal, not cardinal
+    });
+  });
+
+  // Comprehensive Analysis Function Tests
+  describe('analyzeSankhya (comprehensive analysis)', () => {
+    describe('valid numeral analysis', () => {
+      it('should analyze cardinal numerals comprehensively', () => {
+        const result = analyzeSankhya('pañca');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isSankhya).toBe(true);
+        expect(result.input).toBe('pañca');
+        expect(result.confidence).toBe(0.95);
+        
+        // Morphological analysis
+        expect(result.analysis.morphological.category).toBe('numeral');
+        expect(result.analysis.morphological.subcategory).toBe('cardinal');
+        expect(result.analysis.morphological.script).toBe('IAST');
+        expect(result.analysis.morphological.morphClass).toBe('saṅkhyā');
+        
+        // Semantic analysis
+        expect(result.analysis.semantic.function).toBe('quantification');
+        expect(result.analysis.semantic.meaning).toBe('quantity: 5');
+        expect(result.analysis.semantic.value).toBe(5);
+        
+        // Syntactic analysis
+        expect(result.analysis.syntactic.classification).toBe('saṅkhyā');
+        expect(result.analysis.syntactic.applicableRules).toContain('1.1.23');
+        
+        // Metadata
+        expect(result.metadata.sutraNumber).toBe('1.1.23');
+        expect(result.metadata.sutraText).toBe('संख्या');
+      });
+
+      it('should analyze ordinal numerals comprehensively', () => {
+        const result = analyzeSankhya('प्रथम');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isSankhya).toBe(true);
+        expect(result.confidence).toBe(0.95);
+        
+        expect(result.analysis.morphological.subcategory).toBe('ordinal');
+        expect(result.analysis.morphological.script).toBe('Devanagari');
+        expect(result.analysis.semantic.meaning).toBe('sequential position/order');
+        expect(result.analysis.semantic.value).toBe(null); // ordinals don't have numeric values
+      });
+
+      it('should analyze multiplicative numerals comprehensively', () => {
+        const result = analyzeSankhya('द्विगुण');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isSankhya).toBe(true);
+        expect(result.analysis.morphological.subcategory).toBe('multiplicative');
+        expect(result.analysis.semantic.meaning).toBe('multiplication factor');
+      });
+
+      it('should analyze fractional numerals comprehensively', () => {
+        const result = analyzeSankhya('ardha');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isSankhya).toBe(true);
+        expect(result.analysis.morphological.subcategory).toBe('fractional');
+        expect(result.analysis.semantic.meaning).toBe('fractional part');
+      });
+
+      it('should analyze collective numerals comprehensively', () => {
+        const result = analyzeSankhya('त्रय');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isSankhya).toBe(true);
+        expect(result.analysis.morphological.subcategory).toBe('collective');
+        expect(result.analysis.semantic.meaning).toBe('collective quantity');
+      });
+    });
+
+    describe('non-numeral analysis', () => {
+      it('should analyze non-numerals correctly', () => {
+        const result = analyzeSankhya('गुरु');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isSankhya).toBe(false);
+        expect(result.confidence).toBe(0.1);
+        
+        expect(result.analysis.morphological.category).toBe('non-numeral');
+        expect(result.analysis.semantic.function).toBe('non-quantification');
+        expect(result.analysis.syntactic.classification).toBe('non-saṅkhyā');
+      });
+    });
+
+    describe('enhanced context analysis', () => {
+      it('should include usage examples when requested', () => {
+        const result = analyzeSankhya('tri', { includeUsageExamples: true });
+        
+        expect(result.metadata.usageExamples).toBeDefined();
+        expect(result.metadata.usageExamples.length).toBeGreaterThan(0);
+        expect(result.metadata.usageExamples[0]).toContain('tri');
+      });
+
+      it('should include related rules when requested', () => {
+        const result = analyzeSankhya('dvi', { includeRelatedRules: true });
+        
+        expect(result.metadata.relatedRules).toBeDefined();
+        expect(result.metadata.relatedRules.length).toBeGreaterThan(0);
+        expect(result.metadata.relatedRules).toContain('1.1.23 - संख्या (defines numerical words)');
+      });
+
+      it('should handle agreement context', () => {
+        const result = analyzeSankhya('eka', { agreement: 'masculine-singular-nominative' });
+        
+        expect(result.analysis.syntactic.agreement).toBe('masculine-singular-nominative');
+      });
+    });
+
+    describe('error handling and validation', () => {
+      it('should handle empty input', () => {
+        const result = analyzeSankhya('');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.isSankhya).toBe(false);
+        expect(result.errors).toContain('Input is required');
+        expect(result.confidence).toBe(0);
+      });
+
+      it('should handle null input', () => {
+        const result = analyzeSankhya(null);
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Input is required');
+      });
+
+      it('should handle invalid Sanskrit input', () => {
+        const result = analyzeSankhya('xyz123');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Invalid Sanskrit input');
+      });
+
+      it('should handle English words', () => {
+        const result = analyzeSankhya('hello');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Invalid Sanskrit input');
+      });
+    });
+
+    describe('script detection and normalization', () => {
+      it('should detect IAST script correctly', () => {
+        const result = analyzeSankhya('ṣaṭ');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.analysis.morphological.script).toBe('IAST');
+      });
+
+      it('should detect Devanagari script correctly', () => {
+        const result = analyzeSankhya('षट्');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.analysis.morphological.script).toBe('Devanagari');
+      });
+
+      it('should normalize input correctly', () => {
+        const result = analyzeSankhya('  tri  ');
+        
+        expect(result.normalizedInput).toBe('tri');
+        expect(result.isValid).toBe(true);
+      });
+    });
+
+    describe('traditional commentary integration', () => {
+      it('should include traditional Sanskrit explanation', () => {
+        const result = analyzeSankhya('aṣṭa');
+        
+        expect(result.metadata.traditionalExplanation).toContain('संख्या');
+        expect(result.metadata.traditionalExplanation).toContain('गणनार्थकाः');
+      });
+
+      it('should include modern English explanation', () => {
+        const result = analyzeSankhya('nava');
+        
+        expect(result.metadata.modernExplanation).toContain('technical term');
+        expect(result.metadata.modernExplanation).toContain('saṅkhyā');
+      });
+
+      it('should include commentary references', () => {
+        const result = analyzeSankhya('daśa');
+        
+        expect(result.metadata.commentaryReferences).toContain('Kāśikā');
+        expect(result.metadata.commentaryReferences).toContain('Patañjali Mahābhāṣya');
+      });
     });
   });
 });

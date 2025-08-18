@@ -9,7 +9,8 @@ import {
   hasGhaAffix,
   identifyGhaType,
   hasGhaBehavior,
-  getGhaExamples
+  getGhaExamples,
+  analyzeGha
 } from './index.js';
 
 describe('Sutra 1.1.22: तरप्तमपौ घः', () => {
@@ -252,6 +253,185 @@ describe('Sutra 1.1.22: तरप्तमपौ घः', () => {
       expect(analysis.degree).toBe('comparative');
       
       // Base word would be 'laghu', affix is 'tarap' (which is घ)
+    });
+  });
+
+  describe('analyzeGha (Comprehensive Analysis)', () => {
+    describe('Valid Gha Affixes', () => {
+      it('should analyze तरप् (tarap - comparative) correctly', () => {
+        const result = analyzeGha('tarap');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isGha).toBe(true);
+        expect(result.input).toBe('tarap');
+        expect(result.normalizedInput).toBe('tarap');
+        expect(result.analysis).toBeDefined();
+        expect(result.analysis.morphological.affixType).toBe('tarap');
+        expect(result.analysis.morphological.degree).toBe('comparative');
+        expect(result.analysis.morphological.category).toBe('comparative-superlative');
+        expect(result.analysis.semantic.function).toBe('degree-formation');
+        expect(result.analysis.semantic.meaning).toBe('more/greater degree');
+        expect(result.analysis.syntactic.classification).toBe('gha');
+        expect(result.confidence).toBeGreaterThan(0.9);
+        expect(result.metadata.sutraNumber).toBe('1.1.22');
+      });
+
+      it('should analyze तमप् (tamap - superlative) correctly', () => {
+        const result = analyzeGha('tamap');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isGha).toBe(true);
+        expect(result.analysis.morphological.affixType).toBe('tamap');
+        expect(result.analysis.morphological.degree).toBe('superlative');
+        expect(result.analysis.semantic.meaning).toBe('most/highest degree');
+        expect(result.analysis.semantic.semanticRole).toBe('superlative');
+        expect(result.confidence).toBeGreaterThan(0.9);
+      });
+
+      it('should analyze Devanagari gha affixes correctly', () => {
+        const result1 = analyzeGha('तरप्');
+        const result2 = analyzeGha('तमप्');
+        
+        expect(result1.isGha).toBe(true);
+        expect(result1.analysis.morphological.script).toBe('Devanagari');
+        expect(result2.isGha).toBe(true);
+        expect(result2.analysis.morphological.script).toBe('Devanagari');
+      });
+
+      it('should provide traditional commentary references', () => {
+        const result = analyzeGha('tarap');
+        
+        expect(result.metadata.commentaryReferences).toContain('Kāśikā');
+        expect(result.metadata.traditionalExplanation).toContain('तरप्तमपौ इत्येतौ प्रत्ययौ');
+        expect(result.metadata.modernExplanation).toContain('technical term "gha"');
+      });
+    });
+
+    describe('Non-Gha Inputs', () => {
+      it('should handle non-gha affixes correctly', () => {
+        const result = analyzeGha('kta');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isGha).toBe(false);
+        expect(result.analysis.morphological.affixType).toBe('non-gha');
+        expect(result.analysis.semantic.function).toBe('non-degree-formation');
+        expect(result.analysis.syntactic.classification).toBe('non-gha');
+        expect(result.confidence).toBeLessThan(0.5);
+      });
+
+      it('should handle invalid Sanskrit input', () => {
+        const result = analyzeGha('xyz');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.isGha).toBe(false);
+        expect(result.errors).toContain('Invalid Sanskrit input');
+        expect(result.confidence).toBe(0);
+      });
+
+      it('should handle empty or null input', () => {
+        const result1 = analyzeGha('');
+        const result2 = analyzeGha(null);
+        const result3 = analyzeGha(undefined);
+        
+        [result1, result2, result3].forEach(result => {
+          expect(result.isValid).toBe(false);
+          expect(result.isGha).toBe(false);
+          expect(result.errors).toContain('Input is required');
+          expect(result.confidence).toBe(0);
+        });
+      });
+    });
+
+    describe('Context-Aware Analysis', () => {
+      it('should provide enhanced analysis with usage examples', () => {
+        const result = analyzeGha('tarap', { 
+          includeUsageExamples: true,
+          includeRelatedRules: true 
+        });
+        
+        expect(result.isGha).toBe(true);
+        expect(result.metadata.usageExamples).toBeDefined();
+        expect(result.metadata.relatedRules).toBeDefined();
+        expect(result.metadata.relatedRules.length).toBeGreaterThan(0);
+      });
+
+      it('should handle attachment context', () => {
+        const result = analyzeGha('tamap', { attachmentType: 'suffix' });
+        
+        expect(result.isGha).toBe(true);
+        expect(result.analysis.syntactic.attachmentType).toBe('suffix');
+      });
+
+      it('should handle script variations consistently', () => {
+        const resultIAST = analyzeGha('tarap');
+        const resultDev = analyzeGha('तरप्');
+        
+        expect(resultIAST.isGha).toBe(resultDev.isGha);
+        expect(resultIAST.analysis.semantic.domain).toBe(resultDev.analysis.semantic.domain);
+        expect(resultIAST.confidence).toBe(resultDev.confidence);
+      });
+    });
+
+    describe('Morphological Analysis', () => {
+      it('should identify affix characteristics correctly', () => {
+        const result = analyzeGha('tarap');
+        
+        expect(result.analysis.morphological.morphClass).toBe('taddhita-pratyaya');
+        expect(result.analysis.morphological.formation).toBe('primary-affix');
+        expect(result.analysis.morphological.category).toBe('comparative-superlative');
+      });
+
+      it('should distinguish between comparative and superlative', () => {
+        const comparativeResult = analyzeGha('tarap');
+        const superlativeResult = analyzeGha('tamap');
+        
+        expect(comparativeResult.analysis.morphological.degree).toBe('comparative');
+        expect(superlativeResult.analysis.morphological.degree).toBe('superlative');
+        
+        expect(comparativeResult.analysis.semantic.meaning).toContain('more');
+        expect(superlativeResult.analysis.semantic.meaning).toContain('most');
+      });
+    });
+
+    describe('Semantic Analysis', () => {
+      it('should categorize semantic functions correctly', () => {
+        const result = analyzeGha('tamap');
+        
+        expect(result.analysis.semantic.function).toBe('degree-formation');
+        expect(result.analysis.semantic.category).toBe('qualitative-gradation');
+        expect(result.analysis.semantic.domain).toBe('degree-comparison');
+      });
+    });
+
+    describe('Syntactic Analysis', () => {
+      it('should identify grammatical function correctly', () => {
+        const result = analyzeGha('tarap');
+        
+        expect(result.analysis.syntactic.ruleType).toBe('saṃjñā');
+        expect(result.analysis.syntactic.grammaticalFunction).toBe('affix-designation');
+        expect(result.analysis.syntactic.applicableRules).toContain('1.1.22');
+        expect(result.analysis.syntactic.syntacticBehavior).toBe('special-gha-rules');
+      });
+    });
+
+    describe('Confidence Scoring', () => {
+      it('should assign high confidence to valid gha affixes', () => {
+        const result1 = analyzeGha('tarap');
+        const result2 = analyzeGha('tamap');
+        
+        expect(result1.confidence).toBeGreaterThan(0.9);
+        expect(result2.confidence).toBeGreaterThan(0.9);
+      });
+
+      it('should assign low confidence to non-gha affixes', () => {
+        const result = analyzeGha('kta');
+        expect(result.confidence).toBeLessThan(0.5);
+      });
+
+      it('should assign zero confidence to invalid inputs', () => {
+        const result = analyzeGha('invalid');
+        expect(result.confidence).toBe(0);
+      });
     });
   });
 });

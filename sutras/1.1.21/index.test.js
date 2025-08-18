@@ -8,7 +8,8 @@ import {
   applyAdyantavat,
   shouldApplyToSinglePhoneme,
   getSingleLetterExamples,
-  isParibhashaApplicable
+  isParibhashaApplicable,
+  analyzeAdyantavat
 } from './index.js';
 
 describe('Sutra 1.1.21: आद्यन्तवदेकस्मिन्', () => {
@@ -215,6 +216,181 @@ describe('Sutra 1.1.21: आद्यन्तवदेकस्मिन्', ()
       // Single phonemes in morphological contexts
       expect(shouldApplyToSinglePhoneme('अ', 'vowel-gradation', { ruleScope: 'initial' })).toBe(true);
       expect(shouldApplyToSinglePhoneme('इ', 'vowel-change', { ruleScope: 'final' })).toBe(true);
+    });
+  });
+
+  describe('analyzeAdyantavat (Comprehensive Analysis)', () => {
+    describe('Valid Single-Letter Inputs', () => {
+      it('should analyze single vowel correctly', () => {
+        const result = analyzeAdyantavat('a');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.applies).toBe(true);
+        expect(result.input).toBe('a');
+        expect(result.normalizedInput).toBe('a');
+        expect(result.analysis).toBeDefined();
+        expect(result.analysis.morphological.inputType).toBe('single-letter');
+        expect(result.analysis.morphological.isPhoneme).toBe(true);
+        expect(result.analysis.semantic.paribhashaType).toBe('operational-guidance');
+        expect(result.analysis.syntactic.ruleType).toBe('paribhāṣā');
+        expect(result.confidence).toBeGreaterThan(0.9);
+        expect(result.metadata.sutraNumber).toBe('1.1.21');
+      });
+
+      it('should analyze single consonant correctly', () => {
+        const result = analyzeAdyantavat('k');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.applies).toBe(true);
+        expect(result.analysis.morphological.inputType).toBe('single-letter');
+        expect(result.analysis.semantic.domain).toBe('single-letter-operations');
+        expect(result.confidence).toBeGreaterThan(0.9);
+      });
+
+      it('should analyze Devanagari single letters correctly', () => {
+        const result = analyzeAdyantavat('अ');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.applies).toBe(true);
+        expect(result.analysis.morphological.script).toBe('Devanagari');
+        expect(result.analysis.morphological.isPhoneme).toBe(true);
+      });
+
+      it('should handle consonant with halanta correctly', () => {
+        const result = analyzeAdyantavat('क्');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.applies).toBe(true);
+        expect(result.analysis.morphological.isPhoneme).toBe(true);
+      });
+
+      it('should provide traditional commentary references', () => {
+        const result = analyzeAdyantavat('a');
+        
+        expect(result.metadata.commentaryReferences).toContain('Kāśikā');
+        expect(result.metadata.traditionalExplanation).toContain('एकस्मिन् वर्णे आद्यन्तवत्');
+        expect(result.metadata.modernExplanation).toContain('paribhāṣā establishes');
+      });
+    });
+
+    describe('Context-Aware Analysis', () => {
+      it('should analyze with initial position context', () => {
+        const result = analyzeAdyantavat('a', { position: 'initial', operationType: 'vowel-change' });
+        
+        expect(result.applies).toBe(true);
+        expect(result.analysis.syntactic.treatmentMode).toBe('treat-as-initial');
+        expect(result.analysis.syntactic.applicableOperations).toContain('vowel-change');
+        expect(result.analysis.syntactic.applicableOperations).toContain('initial-position-operations');
+      });
+
+      it('should analyze with final position context', () => {
+        const result = analyzeAdyantavat('k', { position: 'final', operationType: 'consonant-change' });
+        
+        expect(result.applies).toBe(true);
+        expect(result.analysis.syntactic.treatmentMode).toBe('treat-as-final');
+        expect(result.analysis.syntactic.applicableOperations).toContain('final-position-operations');
+      });
+
+      it('should analyze with phoneme-level context', () => {
+        const result = analyzeAdyantavat('राम', { targetType: 'phoneme' });
+        
+        expect(result.applies).toBe(true);
+        expect(result.analysis.morphological.inputType).toBe('multi-character');
+        expect(result.analysis.syntactic.applicableOperations).toContain('phoneme-level-operations');
+      });
+
+      it('should provide enhanced analysis with usage examples', () => {
+        const result = analyzeAdyantavat('a', { 
+          includeUsageExamples: true,
+          includeRelatedRules: true 
+        });
+        
+        expect(result.applies).toBe(true);
+        expect(result.metadata.usageExamples).toBeDefined();
+        expect(result.metadata.relatedRules).toBeDefined();
+        expect(result.metadata.relatedRules.length).toBeGreaterThan(0);
+      });
+    });
+
+    describe('Non-Applicable Cases', () => {
+      it('should handle multi-character input without context', () => {
+        const result = analyzeAdyantavat('rama');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.applies).toBe(false);
+        expect(result.analysis.morphological.inputType).toBe('non-applicable');
+        expect(result.analysis.semantic.paribhashaType).toBe('not-applicable');
+        expect(result.confidence).toBeLessThan(0.5);
+      });
+
+      it('should handle invalid Sanskrit input', () => {
+        const result = analyzeAdyantavat('xyz');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.applies).toBe(false);
+        expect(result.errors).toContain('Invalid Sanskrit input');
+        expect(result.confidence).toBe(0);
+      });
+
+      it('should handle empty or null input', () => {
+        const result1 = analyzeAdyantavat('');
+        const result2 = analyzeAdyantavat(null);
+        const result3 = analyzeAdyantavat(undefined);
+        
+        [result1, result2, result3].forEach(result => {
+          expect(result.isValid).toBe(false);
+          expect(result.applies).toBe(false);
+          expect(result.errors).toContain('Input is required');
+          expect(result.confidence).toBe(0);
+        });
+      });
+    });
+
+    describe('Treatment Mode Analysis', () => {
+      it('should default to both-initial-and-final for single letters', () => {
+        const result = analyzeAdyantavat('i');
+        
+        expect(result.analysis.syntactic.treatmentMode).toBe('treat-as-both-initial-and-final');
+      });
+
+      it('should respect explicit position context', () => {
+        const initialResult = analyzeAdyantavat('u', { targetPosition: 'initial' });
+        const finalResult = analyzeAdyantavat('u', { targetPosition: 'final' });
+        
+        expect(initialResult.analysis.syntactic.treatmentMode).toBe('treat-as-initial');
+        expect(finalResult.analysis.syntactic.treatmentMode).toBe('treat-as-final');
+      });
+    });
+
+    describe('Script Handling', () => {
+      it('should handle script variations consistently', () => {
+        const resultIAST = analyzeAdyantavat('a');
+        const resultDev = analyzeAdyantavat('अ');
+        
+        expect(resultIAST.applies).toBe(resultDev.applies);
+        expect(resultIAST.analysis.semantic.domain).toBe(resultDev.analysis.semantic.domain);
+        expect(resultIAST.confidence).toBe(resultDev.confidence);
+      });
+    });
+
+    describe('Confidence Scoring', () => {
+      it('should assign high confidence to applicable cases', () => {
+        const result1 = analyzeAdyantavat('a');
+        const result2 = analyzeAdyantavat('k', { position: 'initial' });
+        
+        expect(result1.confidence).toBeGreaterThan(0.9);
+        expect(result2.confidence).toBeGreaterThan(0.9);
+      });
+
+      it('should assign low confidence to non-applicable cases', () => {
+        const result = analyzeAdyantavat('rama');
+        expect(result.confidence).toBeLessThan(0.5);
+      });
+
+      it('should assign zero confidence to invalid inputs', () => {
+        const result = analyzeAdyantavat('invalid');
+        expect(result.confidence).toBe(0);
+      });
     });
   });
 });

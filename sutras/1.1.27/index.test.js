@@ -3,7 +3,7 @@
  * "The words सर्व 'all' and the rest are called सर्वनाम or pronouns."
  */
 
-import { isSarvanama, getSarvadiWords, hasSarvanamaBehavior } from './index.js';
+import { isSarvanama, getSarvadiWords, hasSarvanamaBehavior, analyzeSarvanama } from './index.js';
 
 describe('Sutra 1.1.27: सर्वादीनि सर्वनामानि', () => {
   describe('isSarvanama', () => {
@@ -148,6 +148,250 @@ describe('Sutra 1.1.27: सर्वादीनि सर्वनामान�
       expect(isSarvanama('kim')).toBe(true); // what? (interrogative)
       expect(isSarvanama('yad')).toBe(true); // which/that (relative)
       expect(isSarvanama('tad')).toBe(true); // that (demonstrative)
+    });
+  });
+
+  // Comprehensive Analysis Function Tests
+  describe('analyzeSarvanama (comprehensive analysis)', () => {
+    describe('valid sarvanāma analysis', () => {
+      it('should analyze demonstrative pronouns comprehensively', () => {
+        const result = analyzeSarvanama('tad');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isSarvanama).toBe(true);
+        expect(result.input).toBe('tad');
+        expect(result.confidence).toBe(0.95);
+        
+        // Morphological analysis
+        expect(result.analysis.morphological.category).toBe('pronoun');
+        expect(result.analysis.morphological.subcategory).toBe('demonstrative');
+        expect(result.analysis.morphological.script).toBe('IAST');
+        expect(result.analysis.morphological.morphClass).toBe('sarvanāma');
+        expect(result.analysis.morphological.baseForm).toBe('tad');
+        
+        // Semantic analysis
+        expect(result.analysis.semantic.function).toBe('pronominal-reference');
+        expect(result.analysis.semantic.meaning).toContain('demonstrative pronoun');
+        expect(result.analysis.semantic.referenceType).toBe('deictic');
+        
+        // Syntactic analysis
+        expect(result.analysis.syntactic.classification).toBe('sarvanāma');
+        expect(result.analysis.syntactic.applicableRules).toContain('1.1.27');
+        
+        // Metadata
+        expect(result.metadata.sutraNumber).toBe('1.1.27');
+        expect(result.metadata.sutraText).toBe('सर्वादीनि सर्वनामानि');
+      });
+
+      it('should analyze interrogative pronouns comprehensively', () => {
+        const result = analyzeSarvanama('किम्');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isSarvanama).toBe(true);
+        expect(result.confidence).toBe(0.95);
+        
+        expect(result.analysis.morphological.subcategory).toBe('interrogative');
+        expect(result.analysis.morphological.script).toBe('Devanagari');
+        expect(result.analysis.semantic.meaning).toContain('interrogative pronoun');
+        expect(result.analysis.semantic.referenceType).toBe('question');
+      });
+
+      it('should analyze personal pronouns comprehensively', () => {
+        const result = analyzeSarvanama('asmad');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isSarvanama).toBe(true);
+        expect(result.analysis.morphological.subcategory).toBe('personal');
+        expect(result.analysis.semantic.meaning).toContain('personal pronoun');
+        expect(result.analysis.semantic.referenceType).toBe('participant');
+      });
+
+      it('should analyze universal quantifiers comprehensively', () => {
+        const result = analyzeSarvanama('सर्व');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isSarvanama).toBe(true);
+        expect(result.analysis.morphological.subcategory).toBe('universal');
+        expect(result.analysis.semantic.meaning).toContain('universal quantifier');
+        expect(result.analysis.semantic.referenceType).toBe('universal');
+      });
+
+      it('should analyze indefinite pronouns comprehensively', () => {
+        const result = analyzeSarvanama('anya');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isSarvanama).toBe(true);
+        expect(result.analysis.morphological.subcategory).toBe('indefinite');
+        expect(result.analysis.semantic.meaning).toContain('indefinite pronoun');
+      });
+    });
+
+    describe('non-sarvanāma analysis', () => {
+      it('should analyze non-pronouns correctly', () => {
+        const result = analyzeSarvanama('गुरु');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isSarvanama).toBe(false);
+        expect(result.confidence).toBe(0.1);
+        
+        expect(result.analysis.morphological.category).toBe('non-pronoun');
+        expect(result.analysis.semantic.function).toBe('non-pronominal');
+        expect(result.analysis.syntactic.classification).toBe('non-sarvanāma');
+      });
+    });
+
+    describe('enhanced context analysis', () => {
+      it('should include usage examples when requested', () => {
+        const result = analyzeSarvanama('yad', { includeUsageExamples: true });
+        
+        expect(result.metadata.usageExamples).toBeDefined();
+        expect(result.metadata.usageExamples.length).toBeGreaterThan(0);
+        expect(result.metadata.usageExamples[0]).toContain('yad');
+      });
+
+      it('should include related rules when requested', () => {
+        const result = analyzeSarvanama('etad', { includeRelatedRules: true });
+        
+        expect(result.metadata.relatedRules).toBeDefined();
+        expect(result.metadata.relatedRules.length).toBeGreaterThan(0);
+        expect(result.metadata.relatedRules).toContain('1.1.27 - सर्वादीनि सर्वनामानि (defines sarvanāma for sarvādi words)');
+      });
+
+      it('should handle agreement context', () => {
+        const result = analyzeSarvanama('idam', { agreement: 'neuter-singular-nominative' });
+        
+        expect(result.analysis.syntactic.agreementPattern).toBe('neuter-singular-nominative');
+      });
+    });
+
+    describe('error handling and validation', () => {
+      it('should handle empty input', () => {
+        const result = analyzeSarvanama('');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.isSarvanama).toBe(false);
+        expect(result.errors).toContain('Input is required');
+        expect(result.confidence).toBe(0);
+      });
+
+      it('should handle null input', () => {
+        const result = analyzeSarvanama(null);
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Input is required');
+      });
+
+      it('should handle invalid Sanskrit input', () => {
+        const result = analyzeSarvanama('xyz123');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Invalid Sanskrit input');
+      });
+
+      it('should handle English words', () => {
+        const result = analyzeSarvanama('hello');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Invalid Sanskrit input');
+      });
+    });
+
+    describe('script detection and normalization', () => {
+      it('should detect IAST script correctly', () => {
+        const result = analyzeSarvanama('bhavat');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.analysis.morphological.script).toBe('IAST');
+      });
+
+      it('should detect Devanagari script correctly', () => {
+        const result = analyzeSarvanama('युष्मद्');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.analysis.morphological.script).toBe('Devanagari');
+      });
+
+      it('should normalize input correctly', () => {
+        const result = analyzeSarvanama('  ka  ');
+        
+        expect(result.normalizedInput).toBe('ka');
+        expect(result.isValid).toBe(true);
+      });
+    });
+
+    describe('traditional commentary integration', () => {
+      it('should include traditional Sanskrit explanation', () => {
+        const result = analyzeSarvanama('विश्व');
+        
+        expect(result.metadata.traditionalExplanation).toContain('सर्वप्रभृतयः');
+        expect(result.metadata.traditionalExplanation).toContain('सर्वनामसंज्ञकाः');
+      });
+
+      it('should include modern English explanation', () => {
+        const result = analyzeSarvanama('ubha');
+        
+        expect(result.metadata.modernExplanation).toContain('technical term');
+        expect(result.metadata.modernExplanation).toContain('sarvanāma');
+      });
+
+      it('should include commentary references', () => {
+        const result = analyzeSarvanama('अदस्');
+        
+        expect(result.metadata.commentaryReferences).toContain('Kāśikā');
+        expect(result.metadata.commentaryReferences).toContain('Patañjali Mahābhāṣya');
+      });
+    });
+
+    describe('morphological structure analysis', () => {
+      it('should determine demonstrative structure', () => {
+        const result = analyzeSarvanama('adas');
+        
+        expect(result.analysis.morphological.structure).toBe('demonstrative-pronoun');
+      });
+
+      it('should determine interrogative structure', () => {
+        const result = analyzeSarvanama('ka');
+        
+        expect(result.analysis.morphological.structure).toBe('interrogative-pronoun');
+      });
+
+      it('should determine personal structure', () => {
+        const result = analyzeSarvanama('युष्मद्');
+        
+        expect(result.analysis.morphological.structure).toBe('personal-pronoun');
+      });
+
+      it('should determine universal structure', () => {
+        const result = analyzeSarvanama('विश्व');
+        
+        expect(result.analysis.morphological.structure).toBe('universal-quantifier');
+      });
+    });
+
+    describe('semantic reference type analysis', () => {
+      it('should identify deictic reference', () => {
+        const result = analyzeSarvanama('etat');
+        
+        expect(result.analysis.semantic.referenceType).toBe('deictic');
+      });
+
+      it('should identify question reference', () => {
+        const result = analyzeSarvanama('kim');
+        
+        expect(result.analysis.semantic.referenceType).toBe('question');
+      });
+
+      it('should identify participant reference', () => {
+        const result = analyzeSarvanama('asmad');
+        
+        expect(result.analysis.semantic.referenceType).toBe('participant');
+      });
+
+      it('should identify universal reference', () => {
+        const result = analyzeSarvanama('sarva');
+        
+        expect(result.analysis.semantic.referenceType).toBe('universal');
+      });
     });
   });
 });

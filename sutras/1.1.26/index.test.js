@@ -15,6 +15,7 @@ import {
   getNishthaRoot,
   isPassiveParticiple,
   isActiveParticiple,
+  analyzeNishtha,
   NISHTHA_AFFIXES
 } from './index.js';
 
@@ -411,6 +412,240 @@ describe('Sutra 1.1.26: क्तक्तवतू निष्ठा', () => {
       
       expect(hasNishthaBehavior('kṛta', context)).toBe(true);
       expect(hasNishthaBehavior('unknown', context)).toBe(true); // context-based
+    });
+  });
+
+  // Comprehensive Analysis Function Tests
+  describe('analyzeNishtha (comprehensive analysis)', () => {
+    describe('valid niṣṭhā participle analysis', () => {
+      it('should analyze kta forms comprehensively', () => {
+        const result = analyzeNishtha('kṛta');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.hasNishtha).toBe(true);
+        expect(result.input).toBe('kṛta');
+        expect(result.confidence).toBe(0.95);
+        
+        // Morphological analysis
+        expect(result.analysis.morphological.category).toBe('participle');
+        expect(result.analysis.morphological.subcategory).toBe('past-passive-participle');
+        expect(result.analysis.morphological.script).toBe('IAST');
+        expect(result.analysis.morphological.morphClass).toBe('niṣṭhā');
+        expect(result.analysis.morphological.affix).toBe('kta');
+        expect(result.analysis.morphological.affixType).toBe('kta');
+        expect(result.analysis.morphological.rootVerb).toBe('kṛ');
+        
+        // Semantic analysis
+        expect(result.analysis.semantic.function).toBe('participial-qualification');
+        expect(result.analysis.semantic.meaning).toContain('past passive participle');
+        expect(result.analysis.semantic.tense).toBe('past');
+        expect(result.analysis.semantic.voice).toBe('passive');
+        expect(result.analysis.semantic.aspect).toBe('perfective');
+        
+        // Syntactic analysis
+        expect(result.analysis.syntactic.classification).toBe('niṣṭhā');
+        expect(result.analysis.syntactic.applicableRules).toContain('1.1.26');
+        expect(result.analysis.syntactic.participleType).toBe('kta');
+        
+        // Metadata
+        expect(result.metadata.sutraNumber).toBe('1.1.26');
+        expect(result.metadata.sutraText).toBe('क्तक्तवतू निष्ठा');
+      });
+
+      it('should analyze ktavatu forms comprehensively', () => {
+        const result = analyzeNishtha('कृतवत्');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.hasNishtha).toBe(true);
+        expect(result.confidence).toBe(0.95);
+        
+        expect(result.analysis.morphological.subcategory).toBe('past-active-participle');
+        expect(result.analysis.morphological.script).toBe('Devanagari');
+        expect(result.analysis.morphological.affix).toBe('क्तवतु');
+        expect(result.analysis.morphological.affixType).toBe('ktavatu');
+        expect(result.analysis.semantic.voice).toBe('active');
+      });
+
+      it('should identify root verbs when possible', () => {
+        const result = analyzeNishtha('गत');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.hasNishtha).toBe(true);
+        expect(result.analysis.morphological.rootVerb).toBe('गम्');
+        expect(result.analysis.semantic.meaning).toContain('√गम्');
+      });
+
+      it('should handle participles without identifiable roots', () => {
+        const result = analyzeNishtha('likhita');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.hasNishtha).toBe(true);
+        expect(result.analysis.morphological.rootVerb).toBe(null);
+      });
+    });
+
+    describe('non-niṣṭhā analysis', () => {
+      it('should analyze non-participles correctly', () => {
+        const result = analyzeNishtha('गुरु');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.hasNishtha).toBe(false);
+        expect(result.confidence).toBe(0.1);
+        
+        expect(result.analysis.morphological.category).toBe('non-participle');
+        expect(result.analysis.semantic.function).toBe('non-participial');
+        expect(result.analysis.syntactic.classification).toBe('non-niṣṭhā');
+      });
+    });
+
+    describe('enhanced context analysis', () => {
+      it('should include usage examples when requested', () => {
+        const result = analyzeNishtha('bhukta', { includeUsageExamples: true });
+        
+        expect(result.metadata.usageExamples).toBeDefined();
+        expect(result.metadata.usageExamples.length).toBeGreaterThan(0);
+        expect(result.metadata.usageExamples[0]).toContain('bhukta');
+      });
+
+      it('should include related rules when requested', () => {
+        const result = analyzeNishtha('dṛṣṭa', { includeRelatedRules: true });
+        
+        expect(result.metadata.relatedRules).toBeDefined();
+        expect(result.metadata.relatedRules.length).toBeGreaterThan(0);
+        expect(result.metadata.relatedRules).toContain('1.1.26 - क्तक्तवतू निष्ठा (defines niṣṭhā for kta and ktavatu affixes)');
+      });
+
+      it('should handle agreement context', () => {
+        const result = analyzeNishtha('śruta', { agreement: 'neuter-singular-nominative' });
+        
+        expect(result.analysis.syntactic.agreement).toBe('neuter-singular-nominative');
+      });
+    });
+
+    describe('error handling and validation', () => {
+      it('should handle empty input', () => {
+        const result = analyzeNishtha('');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.hasNishtha).toBe(false);
+        expect(result.errors).toContain('Input is required');
+        expect(result.confidence).toBe(0);
+      });
+
+      it('should handle null input', () => {
+        const result = analyzeNishtha(null);
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Input is required');
+      });
+
+      it('should handle invalid Sanskrit input', () => {
+        const result = analyzeNishtha('xyz123');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Invalid Sanskrit input');
+      });
+
+      it('should handle English words', () => {
+        const result = analyzeNishtha('hello');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Invalid Sanskrit input');
+      });
+    });
+
+    describe('script detection and normalization', () => {
+      it('should detect IAST script correctly', () => {
+        const result = analyzeNishtha('nīta');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.analysis.morphological.script).toBe('IAST');
+      });
+
+      it('should detect Devanagari script correctly', () => {
+        const result = analyzeNishtha('नीत');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.analysis.morphological.script).toBe('Devanagari');
+      });
+
+      it('should normalize input correctly', () => {
+        const result = analyzeNishtha('  datta  ');
+        
+        expect(result.normalizedInput).toBe('datta');
+        expect(result.isValid).toBe(true);
+      });
+    });
+
+    describe('traditional commentary integration', () => {
+      it('should include traditional Sanskrit explanation', () => {
+        const result = analyzeNishtha('लब्ध');
+        
+        expect(result.metadata.traditionalExplanation).toContain('क्तप्रत्ययः');
+        expect(result.metadata.traditionalExplanation).toContain('निष्ठासंज्ञकौ');
+      });
+
+      it('should include modern English explanation', () => {
+        const result = analyzeNishtha('paṭhita');
+        
+        expect(result.metadata.modernExplanation).toContain('technical term');
+        expect(result.metadata.modernExplanation).toContain('niṣṭhā');
+      });
+
+      it('should include commentary references', () => {
+        const result = analyzeNishtha('दत्त');
+        
+        expect(result.metadata.commentaryReferences).toContain('Kāśikā');
+        expect(result.metadata.commentaryReferences).toContain('Patañjali Mahābhāṣya');
+      });
+    });
+
+    describe('morphological structure analysis', () => {
+      it('should determine kta structure', () => {
+        const result = analyzeNishtha('gata');
+        
+        expect(result.analysis.morphological.structure).toBe('root-kta-affix');
+      });
+
+      it('should determine ktavatu structure', () => {
+        const result = analyzeNishtha('gatavat');
+        
+        expect(result.analysis.morphological.structure).toBe('root-ktavatu-affix');
+      });
+    });
+
+    describe('semantic analysis specifics', () => {
+      it('should correctly analyze passive voice semantics', () => {
+        const result = analyzeNishtha('bhukta');
+        
+        expect(result.analysis.semantic.voice).toBe('passive');
+        expect(result.analysis.semantic.semanticRole).toBe('past_passive_participle');
+        expect(result.analysis.semantic.category).toBe('verbal-adjective');
+      });
+
+      it('should correctly analyze active voice semantics', () => {
+        const result = analyzeNishtha('bhuktavat');
+        
+        expect(result.analysis.semantic.voice).toBe('active');
+        expect(result.analysis.semantic.semanticRole).toBe('past_active_participle');
+        expect(result.analysis.semantic.aspect).toBe('perfective');
+      });
+    });
+
+    describe('syntactic behavior analysis', () => {
+      it('should identify adjectival agreement pattern', () => {
+        const result = analyzeNishtha('kṛta');
+        
+        expect(result.analysis.syntactic.syntacticBehavior).toBe('adjectival-agreement');
+        expect(result.analysis.syntactic.agreement).toBe('gender-number-case');
+      });
+
+      it('should classify grammatical function correctly', () => {
+        const result = analyzeNishtha('śrutavat');
+        
+        expect(result.analysis.syntactic.grammaticalFunction).toBe('participial-affix-designation');
+        expect(result.analysis.syntactic.ruleType).toBe('saṃjñā');
+      });
     });
   });
 });

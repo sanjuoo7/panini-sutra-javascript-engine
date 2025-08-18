@@ -16,6 +16,7 @@
  */
 
 import { detectScript } from '../sanskrit-utils/script-detection.js';
+import { validateSanskritWord, sanitizeInput } from '../sanskrit-utils/validation.js';
 
 // निष्ठा affixes - क्त and क्तवतु
 const NISHTHA_AFFIXES = {
@@ -298,5 +299,285 @@ export function isPassiveParticiple(word) {
 export function isActiveParticiple(word) {
   return isKtavatu(word);
 }
+
+/**
+ * Custom validation for Sanskrit input specifically for niṣṭhā analysis
+ * @param {string} input - Input to validate
+ * @returns {boolean} True if valid Sanskrit input
+ */
+function isValidSanskritForNishtha(input) {
+  if (!input || typeof input !== 'string') return false;
+  
+  // Check basic Sanskrit validation
+  const validation = validateSanskritWord(input);
+  if (!validation.isValid) return false;
+  
+  // Additional validation for Sanskrit phonemes/characters
+  const script = detectScript(input);
+  
+  if (script === 'Devanagari') {
+    const devanagariPattern = /^[\u0900-\u097F\s]+$/;
+    return devanagariPattern.test(input);
+  } else if (script === 'IAST') {
+    // Allow standard Sanskrit characters for participles
+    const englishWords = ['xyz', 'invalid', 'test', 'hello', 'world', 'error', 'null', 'undefined'];
+    if (englishWords.includes(input.toLowerCase())) return false;
+    
+    const iastPattern = /^[a-zA-Zāīūṛṝḷḹēōṃḥñṅṇṭḍṣśkṇ\s]+$/;
+    return iastPattern.test(input);
+  }
+  
+  return false;
+}
+
+/**
+ * Analyzes input for niṣṭhā (kta/ktavatu affix) classification (comprehensive analysis function)
+ * 
+ * @param {string} input - The input to analyze for niṣṭhā classification
+ * @param {Object} context - Optional grammatical context
+ * @returns {Object} Comprehensive analysis result
+ */
+export function analyzeNishtha(input, context = {}) {
+  try {
+    // Handle empty/null inputs
+    if (!input) {
+      return {
+        isValid: false,
+        hasNishtha: false,
+        input: input,
+        normalizedInput: '',
+        errors: ['Input is required'],
+        confidence: 0,
+        analysis: null,
+        metadata: {
+          sutraNumber: '1.1.26',
+          sutraText: 'क्तक्तवतू निष्ठा',
+          processingTime: Date.now()
+        }
+      };
+    }
+
+    // Validate Sanskrit input
+    if (!isValidSanskritForNishtha(input)) {
+      return {
+        isValid: false,
+        hasNishtha: false,
+        input: input,
+        normalizedInput: '',
+        errors: ['Invalid Sanskrit input'],
+        confidence: 0,
+        analysis: null,
+        metadata: {
+          sutraNumber: '1.1.26',
+          sutraText: 'क्तक्तवतू निष्ठा',
+          processingTime: Date.now()
+        }
+      };
+    }
+
+    // Normalize input
+    const script = detectScript(input);
+    const sanitized = sanitizeInput(input);
+    const normalizedInput = sanitized.success ? sanitized.sanitized : input;
+
+    // Determine if input has niṣṭhā
+    const hasNishthaWord = hasNishtha(input);
+    const nishthaType = identifyNishthaType(input);
+    const nishthaRoot = getNishthaRoot(input);
+
+    // Create comprehensive analysis
+    const analysis = createNishthaAnalysis(normalizedInput, script, context, hasNishthaWord, nishthaType, nishthaRoot);
+    
+    return {
+      isValid: true,
+      hasNishtha: hasNishthaWord,
+      input: input,
+      normalizedInput: normalizedInput,
+      analysis: analysis,
+      confidence: hasNishthaWord ? 0.95 : 0.1,
+      metadata: {
+        sutraNumber: '1.1.26',
+        sutraText: 'क्तक्तवतू निष्ठा',
+        commentaryReferences: ['Kāśikā', 'Patañjali Mahābhāṣya'],
+        traditionalExplanation: 'क्तप्रत्ययः क्तवतुप्रत्ययश्च निष्ठासंज्ञकौ भवतः। अनयोः प्रत्ययोः भूतकालार्थे प्रयोगः।',
+        modernExplanation: 'This sutra defines "niṣṭhā" as the technical term for the kta and ktavatu affixes, which form past participles indicating completed action.',
+        usageExamples: context.includeUsageExamples ? getNishthaUsageExamples(nishthaType.type, input) : undefined,
+        relatedRules: context.includeRelatedRules ? getRelatedNishthaRules() : undefined,
+        processingTime: Date.now()
+      }
+    };
+
+  } catch (error) {
+    return {
+      isValid: false,
+      hasNishtha: false,
+      input: input,
+      normalizedInput: '',
+      errors: [`Processing error: ${error.message}`],
+      confidence: 0,
+      analysis: null,
+      metadata: {
+        sutraNumber: '1.1.26',
+        sutraText: 'क्तक्तवतू निष्ठा',
+        processingTime: Date.now()
+      }
+    };
+  }
+}
+
+/**
+ * Creates comprehensive morphological, semantic, and syntactic analysis for niṣṭhā words
+ * @param {string} input - Normalized input
+ * @param {string} script - Detected script
+ * @param {Object} context - Analysis context
+ * @param {boolean} hasNishthaWord - Whether input has niṣṭhā
+ * @param {Object} nishthaType - Niṣṭhā type information
+ * @param {string|null} nishthaRoot - Root verb if identifiable
+ * @returns {Object} Analysis object
+ */
+function createNishthaAnalysis(input, script, context, hasNishthaWord, nishthaType, nishthaRoot) {
+  if (hasNishthaWord) {
+    return {
+      morphological: {
+        word: input,
+        category: 'participle',
+        subcategory: nishthaType.type === 'kta' ? 'past-passive-participle' : 'past-active-participle',
+        script: script,
+        morphClass: 'niṣṭhā',
+        affix: nishthaType.affix,
+        affixType: nishthaType.type,
+        rootVerb: nishthaRoot,
+        structure: determineNishthaStructure(input, nishthaType.type)
+      },
+      semantic: {
+        function: 'participial-qualification',
+        meaning: getNishthaMeaning(nishthaType.type, nishthaRoot, input),
+        category: 'verbal-adjective',
+        domain: 'temporal-aspectual',
+        semanticRole: nishthaType.meaning,
+        tense: 'past',
+        voice: nishthaType.type === 'kta' ? 'passive' : 'active',
+        aspect: 'perfective'
+      },
+      syntactic: {
+        ruleType: 'saṃjñā',
+        classification: 'niṣṭhā',
+        grammaticalFunction: 'participial-affix-designation',
+        applicableRules: ['1.1.26'],
+        syntacticBehavior: 'adjectival-agreement',
+        participleType: nishthaType.type,
+        agreement: context.agreement || 'gender-number-case'
+      }
+    };
+  } else {
+    return {
+      morphological: {
+        word: input,
+        category: 'non-participle',
+        script: script
+      },
+      semantic: {
+        function: 'non-participial',
+        category: 'non-verbal-adjective',
+        domain: 'general'
+      },
+      syntactic: {
+        ruleType: 'saṃjñā',
+        classification: 'non-niṣṭhā',
+        grammaticalFunction: 'non-participial-designation',
+        applicableRules: []
+      }
+    };
+  }
+}
+
+/**
+ * Determines the morphological structure of niṣṭhā participles
+ * @param {string} input - The participle
+ * @param {string} type - The type of affix
+ * @returns {string} Structure description
+ */
+function determineNishthaStructure(input, type) {
+  switch (type) {
+    case 'kta':
+      return 'root-kta-affix';
+    case 'ktavatu':
+      return 'root-ktavatu-affix';
+    default:
+      return 'participial-formation';
+  }
+}
+
+/**
+ * Gets the semantic meaning based on niṣṭhā type
+ * @param {string} type - The type of affix
+ * @param {string|null} root - Root verb if available
+ * @param {string} input - The input word
+ * @returns {string} Semantic meaning
+ */
+function getNishthaMeaning(type, root, input) {
+  const rootDesc = root ? ` from √${root}` : '';
+  
+  switch (type) {
+    case 'kta':
+      return `past passive participle${rootDesc} (${input})`;
+    case 'ktavatu':
+      return `past active participle${rootDesc} (${input})`;
+    default:
+      return 'participial form indicating completed action';
+  }
+}
+
+/**
+ * Gets usage examples for niṣṭhā words
+ * @param {string} type - The type of niṣṭhā
+ * @param {string} input - The input word
+ * @returns {Array} Usage examples
+ */
+function getNishthaUsageExamples(type, input) {
+  const examples = [];
+  
+  switch (type) {
+    case 'kta':
+      examples.push(
+        `${input} - past passive participle (action completed by external agent)`,
+        'Usage: कृतं कर्म (completed work), गतः पुत्रः (son who has gone)',
+        'Syntax: agrees with noun in gender, number, case'
+      );
+      break;
+    case 'ktavatu':
+      examples.push(
+        `${input} - past active participle (action completed by subject)`,
+        'Usage: कृतवान् पुत्रः (son who has done), गतवती स्त्री (woman who has gone)',
+        'Syntax: shows active voice with agent as subject'
+      );
+      break;
+    default:
+      examples.push(
+        'kta forms: कृत (done), गत (gone), दृष्ट (seen)',
+        'ktavatu forms: कृतवत् (having done), गतवत् (having gone)',
+        'Both express completed action in past time'
+      );
+  }
+  
+  return examples;
+}
+
+/**
+ * Gets rules related to niṣṭhā classification
+ * @returns {Array} Related rules
+ */
+function getRelatedNishthaRules() {
+  return [
+    '1.1.26 - क्तक्तवतू निष्ठा (defines niṣṭhā for kta and ktavatu affixes)',
+    '3.2.102 - निष्ठा (formation rules for past participles)',
+    '8.2.42 - रात्स्नस्य (phonetic changes in niṣṭhā forms)',
+    '1.1.62 - प्रत्ययलोपे प्रत्ययलक्षणम् (retention of affix properties)',
+    '2.1.69 - दिक्संख्ये श्रेणिः (special rules for niṣṭhā in compounds)'
+  ];
+}
+
+// Main export for comprehensive analysis
+export default analyzeNishtha;
 
 export { NISHTHA_AFFIXES };

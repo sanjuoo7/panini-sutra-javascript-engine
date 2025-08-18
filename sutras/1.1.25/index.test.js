@@ -14,6 +14,7 @@ import {
   getDatiShatExamples,
   isInterrogativeDati,
   isDemonstrativeDati,
+  analyzeDatiShat,
   DATI_AFFIX_FORMS
 } from './index.js';
 
@@ -340,6 +341,216 @@ describe('Sutra 1.1.25: डति च', () => {
       expect(analysis2.isShat).toBe(true);
       expect(analysis2.source).toBe('1.1.25');
       expect(analysis2.type).toBe('dati_affix');
+    });
+  });
+
+  // Comprehensive Analysis Function Tests
+  describe('analyzeDatiShat (comprehensive analysis)', () => {
+    describe('valid ḍati-based ṣaṭ analysis', () => {
+      it('should analyze known ḍati forms comprehensively', () => {
+        const result = analyzeDatiShat('kati');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isShat).toBe(true);
+        expect(result.input).toBe('kati');
+        expect(result.confidence).toBe(0.95);
+        
+        // Morphological analysis
+        expect(result.analysis.morphological.category).toBe('numeral');
+        expect(result.analysis.morphological.subcategory).toBe('ḍati-ṣaṭ');
+        expect(result.analysis.morphological.script).toBe('IAST');
+        expect(result.analysis.morphological.morphClass).toBe('ṣaṭ');
+        expect(result.analysis.morphological.classificationSource).toBe('1.1.25');
+        
+        // Semantic analysis
+        expect(result.analysis.semantic.function).toBe('numeral-classification-extension');
+        expect(result.analysis.semantic.meaning).toContain('known ḍati-affix numeral');
+        expect(result.analysis.semantic.semanticRole).toBe('interrogative-quantifier');
+        
+        // Syntactic analysis
+        expect(result.analysis.syntactic.classification).toBe('ṣaṭ');
+        expect(result.analysis.syntactic.applicableRules).toContain('1.1.25');
+        
+        // Metadata
+        expect(result.metadata.sutraNumber).toBe('1.1.25');
+        expect(result.metadata.sutraText).toBe('डति च');
+      });
+
+      it('should analyze ḍati forms in Devanagari comprehensively', () => {
+        const result = analyzeDatiShat('यति');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isShat).toBe(true);
+        expect(result.confidence).toBe(0.95);
+        
+        expect(result.analysis.morphological.subcategory).toBe('ḍati-ṣaṭ');
+        expect(result.analysis.morphological.script).toBe('Devanagari');
+        expect(result.analysis.semantic.meaning).toContain('known ḍati-affix numeral');
+      });
+
+      it('should analyze demonstrative ḍati forms', () => {
+        const result = analyzeDatiShat('iyati');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isShat).toBe(true);
+        expect(result.analysis.semantic.semanticRole).toBe('demonstrative-quantifier');
+      });
+
+      it('should analyze ṣaṭ from 1.1.24 with extended classification', () => {
+        const result = analyzeDatiShat('ṣaṣ'); // this is ṣaṭ from 1.1.24, not 1.1.25
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isShat).toBe(true);
+        expect(result.confidence).toBe(0.85); // lower confidence as it's inherited ṣaṭ
+        expect(result.analysis.morphological.subcategory).toBe('extended-ṣaṭ');
+        expect(result.analysis.morphological.classificationSource).toBe('1.1.24');
+      });
+    });
+
+    describe('non-ḍati ṣaṭ analysis', () => {
+      it('should analyze non-ṣaṭ numerals correctly', () => {
+        const result = analyzeDatiShat('pañca'); // five - not ṣaṭ
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isShat).toBe(false);
+        expect(result.confidence).toBe(0.1);
+        
+        expect(result.analysis.morphological.category).toBe('non-ṣaṭ');
+        expect(result.analysis.semantic.function).toBe('non-ṣaṭ-classification');
+        expect(result.analysis.syntactic.classification).toBe('non-ṣaṭ');
+      });
+
+      it('should analyze non-numerals correctly', () => {
+        const result = analyzeDatiShat('गुरु');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.isShat).toBe(false);
+        expect(result.confidence).toBe(0.1);
+      });
+    });
+
+    describe('enhanced context analysis', () => {
+      it('should include usage examples when requested', () => {
+        const result = analyzeDatiShat('tati', { includeUsageExamples: true });
+        
+        expect(result.metadata.usageExamples).toBeDefined();
+        expect(result.metadata.usageExamples.length).toBeGreaterThan(0);
+        expect(result.metadata.usageExamples[0]).toContain('tati');
+      });
+
+      it('should include related rules when requested', () => {
+        const result = analyzeDatiShat('कति', { includeRelatedRules: true });
+        
+        expect(result.metadata.relatedRules).toBeDefined();
+        expect(result.metadata.relatedRules.length).toBeGreaterThan(0);
+        expect(result.metadata.relatedRules).toContain('1.1.25 - डति च (extends ṣaṭ to ḍati-affix numerals)');
+      });
+    });
+
+    describe('error handling and validation', () => {
+      it('should handle empty input', () => {
+        const result = analyzeDatiShat('');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.isShat).toBe(false);
+        expect(result.errors).toContain('Input is required');
+        expect(result.confidence).toBe(0);
+      });
+
+      it('should handle null input', () => {
+        const result = analyzeDatiShat(null);
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Input is required');
+      });
+
+      it('should handle invalid Sanskrit input', () => {
+        const result = analyzeDatiShat('xyz123');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Invalid Sanskrit input');
+      });
+
+      it('should handle English words', () => {
+        const result = analyzeDatiShat('hello');
+        
+        expect(result.isValid).toBe(false);
+        expect(result.errors).toContain('Invalid Sanskrit input');
+      });
+    });
+
+    describe('script detection and normalization', () => {
+      it('should detect IAST script correctly', () => {
+        const result = analyzeDatiShat('etati');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.analysis.morphological.script).toBe('IAST');
+      });
+
+      it('should detect Devanagari script correctly', () => {
+        const result = analyzeDatiShat('इयति');
+        
+        expect(result.isValid).toBe(true);
+        expect(result.analysis.morphological.script).toBe('Devanagari');
+      });
+
+      it('should normalize input correctly', () => {
+        const result = analyzeDatiShat('  kati  ');
+        
+        expect(result.normalizedInput).toBe('kati');
+        expect(result.isValid).toBe(true);
+      });
+    });
+
+    describe('traditional commentary integration', () => {
+      it('should include traditional Sanskrit explanation', () => {
+        const result = analyzeDatiShat('एतति');
+        
+        expect(result.metadata.traditionalExplanation).toContain('डत्यन्ताः');
+        expect(result.metadata.traditionalExplanation).toContain('षट्संज्ञकाः');
+      });
+
+      it('should include modern English explanation', () => {
+        const result = analyzeDatiShat('kiyati');
+        
+        expect(result.metadata.modernExplanation).toContain('extends');
+        expect(result.metadata.modernExplanation).toContain('ḍati affix');
+      });
+
+      it('should include commentary references', () => {
+        const result = analyzeDatiShat('तति');
+        
+        expect(result.metadata.commentaryReferences).toContain('Kāśikā');
+        expect(result.metadata.commentaryReferences).toContain('Patañjali Mahābhāṣya');
+      });
+    });
+
+    describe('morphological structure analysis', () => {
+      it('should determine ḍati-affix structure', () => {
+        const result = analyzeDatiShat('yati');
+        
+        expect(result.analysis.morphological.structure).toBe('ḍati-affix-numeral');
+      });
+
+      it('should determine inherited ṣaṭ structure', () => {
+        const result = analyzeDatiShat('saptan'); // this is ṣaṭ from 1.1.24
+        
+        expect(result.analysis.morphological.structure).toBe('inherited-ṣaṭ-numeral');
+      });
+    });
+
+    describe('semantic role classification', () => {
+      it('should classify interrogative quantifiers', () => {
+        const result = analyzeDatiShat('kati');
+        
+        expect(result.analysis.semantic.semanticRole).toBe('interrogative-quantifier');
+      });
+
+      it('should classify demonstrative quantifiers', () => {
+        const result = analyzeDatiShat('iyati');
+        
+        expect(result.analysis.semantic.semanticRole).toBe('demonstrative-quantifier');
+      });
     });
   });
 });

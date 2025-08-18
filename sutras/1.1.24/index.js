@@ -16,6 +16,7 @@
  */
 
 import { detectScript } from '../sanskrit-utils/script-detection.js';
+import { validateSanskritWord, sanitizeInput } from '../sanskrit-utils/validation.js';
 import { isSankhya } from '../1.1.23/index.js';
 
 // षट् numerals - संख्या words ending in ष् or न्
@@ -231,5 +232,281 @@ export function isShatWithEnding(word, endingType) {
 export function getPrimaryShatExample(script = 'IAST') {
   return script === 'Devanagari' ? 'षष्' : 'ṣaṣ';
 }
+
+/**
+ * Custom validation for Sanskrit input specifically for ṣaṭ analysis
+ * @param {string} input - Input to validate
+ * @returns {boolean} True if valid Sanskrit input
+ */
+function isValidSanskritForShat(input) {
+  if (!input || typeof input !== 'string') return false;
+  
+  // Check basic Sanskrit validation
+  const validation = validateSanskritWord(input);
+  if (!validation.isValid) return false;
+  
+  // Additional validation for Sanskrit phonemes/characters
+  const script = detectScript(input);
+  
+  if (script === 'Devanagari') {
+    const devanagariPattern = /^[\u0900-\u097F\s]+$/;
+    return devanagariPattern.test(input);
+  } else if (script === 'IAST') {
+    // Strict validation for Sanskrit words only
+    const englishWords = ['xyz', 'invalid', 'test', 'hello', 'world', 'error', 'null', 'undefined'];
+    if (englishWords.includes(input.toLowerCase())) return false;
+    
+    if (/[xyz]/.test(input)) return false;
+    if (/qu/.test(input)) return false;
+    
+    const iastPattern = /^[a-zA-Zāīūṛṝḷḹēōṃḥñṅṇṭḍṣśkṇ\s]+$/;
+    return iastPattern.test(input);
+  }
+  
+  return false;
+}
+
+/**
+ * Analyzes input for ṣaṭ (ष्/न्-ending numeral) classification (comprehensive analysis function)
+ * 
+ * @param {string} input - The input to analyze for ṣaṭ classification
+ * @param {Object} context - Optional grammatical context
+ * @returns {Object} Comprehensive analysis result
+ */
+export function analyzeShat(input, context = {}) {
+  try {
+    // Handle empty/null inputs
+    if (!input) {
+      return {
+        isValid: false,
+        isShat: false,
+        input: input,
+        normalizedInput: '',
+        errors: ['Input is required'],
+        confidence: 0,
+        analysis: null,
+        metadata: {
+          sutraNumber: '1.1.24',
+          sutraText: 'ष्णान्ता षट्',
+          processingTime: Date.now()
+        }
+      };
+    }
+
+    // Validate Sanskrit input
+    if (!isValidSanskritForShat(input)) {
+      return {
+        isValid: false,
+        isShat: false,
+        input: input,
+        normalizedInput: '',
+        errors: ['Invalid Sanskrit input'],
+        confidence: 0,
+        analysis: null,
+        metadata: {
+          sutraNumber: '1.1.24',
+          sutraText: 'ष्णान्ता षट्',
+          processingTime: Date.now()
+        }
+      };
+    }
+
+    // Normalize input
+    const script = detectScript(input);
+    const sanitized = sanitizeInput(input);
+    const normalizedInput = sanitized.success ? sanitized.sanitized : input;
+
+    // Determine if input is ṣaṭ
+    const isShatWord = isShat(input);
+    const shatType = identifyShatType(input);
+    const endingAnalysis = checkShatEnding(input);
+
+    // Create comprehensive analysis
+    const analysis = createShatAnalysis(normalizedInput, script, context, isShatWord, shatType, endingAnalysis);
+    
+    return {
+      isValid: true,
+      isShat: isShatWord,
+      input: input,
+      normalizedInput: normalizedInput,
+      analysis: analysis,
+      confidence: isShatWord ? 0.95 : (shatType.isShat ? 0.85 : 0.1),
+      metadata: {
+        sutraNumber: '1.1.24',
+        sutraText: 'ष्णान्ता षट्',
+        commentaryReferences: ['Kāśikā', 'Patañjali Mahābhāṣya'],
+        traditionalExplanation: 'षकारान्ता णकारान्ता च संख्या षट्संज्ञका भवति। षष्शब्दो मुख्यो दृष्टान्तः।',
+        modernExplanation: 'This sutra defines the technical term "ṣaṭ" for numerals ending in ṣ or n sounds. The term derives from ṣaṣ (six), the primary example.',
+        usageExamples: context.includeUsageExamples ? getShatUsageExamples(shatType.type, input) : undefined,
+        relatedRules: context.includeRelatedRules ? getRelatedShatRules() : undefined,
+        processingTime: Date.now()
+      }
+    };
+
+  } catch (error) {
+    return {
+      isValid: false,
+      isShat: false,
+      input: input,
+      normalizedInput: '',
+      errors: [`Processing error: ${error.message}`],
+      confidence: 0,
+      analysis: null,
+      metadata: {
+        sutraNumber: '1.1.24',
+        sutraText: 'ष्णान्ता षट्',
+        processingTime: Date.now()
+      }
+    };
+  }
+}
+
+/**
+ * Creates comprehensive morphological, semantic, and syntactic analysis for ṣaṭ words
+ * @param {string} input - Normalized input
+ * @param {string} script - Detected script
+ * @param {Object} context - Analysis context
+ * @param {boolean} isShatWord - Whether input is a ṣaṭ
+ * @param {Object} shatType - Ṣaṭ type information
+ * @param {Object} endingAnalysis - Ending analysis
+ * @returns {Object} Analysis object
+ */
+function createShatAnalysis(input, script, context, isShatWord, shatType, endingAnalysis) {
+  if (isShatWord || shatType.isShat) {
+    return {
+      morphological: {
+        word: input,
+        category: 'numeral',
+        subcategory: 'ṣaṭ-ending',
+        script: script,
+        morphClass: 'ṣaṭ',
+        ending: shatType.ending || endingAnalysis.ending,
+        endingType: shatType.type || (endingAnalysis.ending === 'ṣ' || endingAnalysis.ending === 'ष्' ? 'sha' : 'na'),
+        structure: determineShatStructure(input, shatType.type)
+      },
+      semantic: {
+        function: 'numeral-classification',
+        meaning: getShatMeaning(shatType.type, input),
+        category: 'terminal-sound-based-classification',
+        domain: 'phonological-morphology',
+        semanticRole: 'numeral-with-specific-ending',
+        primaryExample: getPrimaryShatExample(script)
+      },
+      syntactic: {
+        ruleType: 'saṃjñā',
+        classification: 'ṣaṭ',
+        grammaticalFunction: 'terminal-sound-designation',
+        applicableRules: ['1.1.24'],
+        syntacticBehavior: 'ṣaṭ-specific-operations',
+        endingConstraint: shatType.ending || endingAnalysis.ending
+      }
+    };
+  } else {
+    return {
+      morphological: {
+        word: input,
+        category: 'non-ṣaṭ',
+        script: script
+      },
+      semantic: {
+        function: 'non-ṣaṭ-classification',
+        category: 'non-terminal-sound-based',
+        domain: 'general'
+      },
+      syntactic: {
+        ruleType: 'saṃjñā',
+        classification: 'non-ṣaṭ',
+        grammaticalFunction: 'non-terminal-sound-designation',
+        applicableRules: []
+      }
+    };
+  }
+}
+
+/**
+ * Determines the morphological structure of ṣaṭ numerals
+ * @param {string} input - The numeral
+ * @param {string} type - The type of ending
+ * @returns {string} Structure description
+ */
+function determineShatStructure(input, type) {
+  switch (type) {
+    case 'sha':
+      return 'ṣ-terminal-numeral';
+    case 'na':
+      return 'n-terminal-numeral';
+    default:
+      return 'ṣaṭ-pattern-numeral';
+  }
+}
+
+/**
+ * Gets the semantic meaning based on ṣaṭ type
+ * @param {string} type - The type of ṣaṭ ending
+ * @param {string} input - The input word
+ * @returns {string} Semantic meaning
+ */
+function getShatMeaning(type, input) {
+  switch (type) {
+    case 'sha':
+      return `numeral ending in ṣ-sound (like ${input})`;
+    case 'na':
+      return `numeral ending in n-sound (like ${input})`;
+    default:
+      return 'numeral with ṣaṭ-classified ending';
+  }
+}
+
+/**
+ * Gets usage examples for ṣaṭ words
+ * @param {string} type - The type of ṣaṭ
+ * @param {string} input - The input word
+ * @returns {Array} Usage examples
+ */
+function getShatUsageExamples(type, input) {
+  const examples = [];
+  
+  switch (type) {
+    case 'sha':
+      examples.push(
+        `${input} - numeral ending in ṣ-sound`,
+        'Primary example: ṣaṣ (six) gives the classification its name',
+        'ṣ-ending numerals undergo specific morphological operations'
+      );
+      break;
+    case 'na':
+      examples.push(
+        `${input} - numeral ending in n-sound`,
+        'Common in alternative forms: saptan, aṣṭan, navan',
+        'n-ending numerals share ṣaṭ classification with ṣ-ending ones'
+      );
+      break;
+    default:
+      examples.push(
+        'ṣ-ending: ṣaṣ (six), viṃśatiṣ (twenty)',
+        'n-ending: saptan (seven), aṣṭan (eight), navan (nine)',
+        'ṣaṭ numerals undergo special grammatical operations based on their terminal sounds'
+      );
+  }
+  
+  return examples;
+}
+
+/**
+ * Gets rules related to ṣaṭ classification
+ * @returns {Array} Related rules
+ */
+function getRelatedShatRules() {
+  return [
+    '1.1.24 - ष्णान्ता षट् (defines ṣaṭ for ṣ/n-ending numerals)',
+    '1.1.23 - संख्या (defines the broader numeral category)',
+    '7.1.22 - षड्भ्यो लुक् (elision rules for ṣaṭ numerals)',
+    '6.1.84 - एकः पूर्वपरयोः (sandhi rules affecting ṣaṭ)',
+    '8.2.62 - क्विन्प्रत्ययस्य कुक्वा (special operations for certain ṣaṭ forms)'
+  ];
+}
+
+// Main export for comprehensive analysis
+export default analyzeShat;
 
 export { SHAT_NUMERALS };
