@@ -1,23 +1,28 @@
 import isGatiMadhyePadeNivacane from './index.js';
 
 describe('Sutra 1.4.76: madhayepadenivacane ca', () => {
-    // Positive Test Cases (36 tests)
     describe('Positive Cases: Optional "gati" when not meaning "placing"', () => {
         const positiveCases = [
             // IAST - madhye
             { word: 'madhyekṛtya', context: { verb: 'kṛ', meaning: 'interrupting' } },
             { word: 'madhyekṛtvā', context: { verb: 'kṛ', meaning: 'halting' } },
             { word: 'madhyekaroti', context: { verb: 'kṛ', meaning: 'bisecting' } },
+            { word: 'madhyekariṣyati', context: { verb: 'kṛ', meaning: 'will bisect' } },
+            { word: 'madhyecakāra', context: { verb: 'kṛ', meaning: 'bisected' } },
 
             // IAST - pade
             { word: 'padekṛtya', context: { verb: 'kṛ', meaning: 'stumbling' } },
             { word: 'padekṛtvā', context: { verb: 'kṛ', meaning: 'trapping' } },
             { word: 'padekaroti', context: { verb: 'kṛ', meaning: 'tripping' } },
+            { word: 'padekariṣyati', context: { verb: 'kṛ', meaning: 'will trip' } },
+            { word: 'padecakāra', context: { verb: 'kṛ', meaning: 'tripped' } },
 
             // IAST - nivacane
             { word: 'nivacanekṛtya', context: { verb: 'kṛ', meaning: 'silencing' } },
             { word: 'nivacanekṛtvā', context: { verb: 'kṛ', meaning: 'muting' } },
             { word: 'nivacanekaroti', context: { verb: 'kṛ', meaning: 'making speechless' } },
+            { word: 'nivacanekariṣyati', context: { verb: 'kṛ', meaning: 'will silence' } },
+            { word: 'nivacanecakāra', context: { verb: 'kṛ', meaning: 'silenced' } },
 
             // Devanagari - madhye
             { word: 'मध्येकृत्य', context: { verb: 'कृ', meaning: 'interrupting' } },
@@ -38,103 +43,81 @@ describe('Sutra 1.4.76: madhayepadenivacane ca', () => {
         positiveCases.forEach(({ word, context }) => {
             test(`should apply optionally to "${word}" with meaning "${context.meaning}"`, () => {
                 const result = isGatiMadhyePadeNivacane(word, context);
-                expect(result.applies).toBe(true);
-                expect(result.optional).toBe(true);
+                expect(result).toMatchObject({
+                    applies: true,
+                    optional: true,
+                    classification: 'गति',
+                    confidence: expect.any(Number),
+                    reason: expect.any(String)
+                });
             });
         });
     });
 
-    // Negative Test Cases (20 tests)
     describe('Negative Cases', () => {
         const negativeCases = [
             // anatyādhāna condition: meaning is 'placing'
-            { word: 'madhyekṛtya dhanam', context: { verb: 'kṛ', meaning: 'placing' } },
-            { word: 'मध्येकृत्य धनम्', context: { verb: 'कृ', meaning: 'placing' } },
-            { word: 'padekṛtya jalam', context: { verb: 'kṛ', meaning: 'placing' } },
-            { word: 'पदेकृत्य जलम्', context: { verb: 'कृ', meaning: 'placing' } },
+            { word: 'madhyekṛtya dhanam', context: { verb: 'kṛ', meaning: 'placing' }, reason: "The meaning is 'placing' (anatyādhāna)." },
+            { word: 'मध्येकृत्य धनम्', context: { verb: 'कृ', meaning: 'placing' }, reason: "The meaning is 'placing' (anatyādhāna)." },
+            { word: 'padekṛtya jalam', context: { verb: 'kṛ', meaning: 'placing' }, reason: "The meaning is 'placing' (anatyādhāna)." },
+            { word: 'पदेकृत्य जलम्', context: { verb: 'कृ', meaning: 'placing' }, reason: "The meaning is 'placing' (anatyādhāna)." },
 
             // Wrong verb
-            { word: 'madhyebhavati', context: { verb: 'bhū', meaning: 'interrupting' } },
-            { word: 'मध्येभवति', context: { verb: 'भू', meaning: 'interrupting' } },
-            { word: 'padegacchati', context: { verb: 'gam', meaning: 'stumbling' } },
-            { word: 'पदेगच्छति', context: { verb: 'गम्', meaning: 'stumbling' } },
+            { word: 'madhyebhavati', context: { verb: 'bhū', meaning: 'interrupting' }, reason: "The verb is not 'kṛ'." },
+            { word: 'मध्येभवति', context: { verb: 'भू', meaning: 'interrupting' }, reason: "The verb is not 'kṛ'." },
+            { word: 'padegacchati', context: { verb: 'gam', meaning: 'stumbling' }, reason: "The verb is not 'kṛ'." },
+            { word: 'पदेगच्छति', context: { verb: 'गम्', meaning: 'stumbling' }, reason: "The verb is not 'kṛ'." },
 
             // Word is not one of the three
-            { word: 'hastekṛtya', context: { verb: 'kṛ', meaning: 'taking in hand' } },
-            { word: 'हस्तेकृत्य', context: { verb: 'कृ', meaning: 'taking in hand' } },
-            { word: 'manasikṛtya', context: { verb: 'kṛ', meaning: 'pondering' } },
-            { word: 'मनसिकृत्य', context: { verb: 'कृ', meaning: 'pondering' } },
+            { word: 'hastekṛtya', context: { verb: 'kṛ', meaning: 'taking in hand' }, reason: "The word is not 'madhye', 'pade', or 'nivacane'." },
+            { word: 'हस्तेकृत्य', context: { verb: 'कृ', meaning: 'taking in hand' }, reason: "The word is not 'madhye', 'pade', or 'nivacane'." },
+            { word: 'manasikṛtya', context: { verb: 'kṛ', meaning: 'pondering' }, reason: "The word is not 'madhye', 'pade', or 'nivacane'." },
+            { word: 'मनसिकृत्य', context: { verb: 'कृ', meaning: 'pondering' }, reason: "The word is not 'madhye', 'pade', or 'nivacane'." },
 
             // Incomplete words
-            { word: 'madhye', context: { verb: 'kṛ', meaning: 'interrupting' } },
-            { word: 'मध्ये', context: { verb: 'कृ', meaning: 'interrupting' } },
-            { word: 'pade', context: { verb: 'kṛ', meaning: 'stumbling' } },
-            { word: 'पदे', context: { verb: 'कृ', meaning: 'stumbling' } },
-            { word: 'nivacane', context: { verb: 'kṛ', meaning: 'silencing' } },
-            { word: 'निवचने', context: { verb: 'कृ', meaning: 'silencing' } },
-            { word: 'kṛtvā', context: { verb: 'kṛ', meaning: 'interrupting' } },
-            { word: 'कृत्वा', context: { verb: 'कृ', meaning: 'stumbling' } },
+            { word: 'madhye', context: { verb: 'kṛ', meaning: 'interrupting' }, reason: "The word is incomplete." },
+            { word: 'मध्ये', context: { verb: 'कृ', meaning: 'interrupting' }, reason: "The word is incomplete." },
+            { word: 'pade', context: { verb: 'kṛ', meaning: 'stumbling' }, reason: "The word is incomplete." },
+            { word: 'पदे', context: { verb: 'कृ', meaning: 'stumbling' }, reason: "The word is incomplete." },
+            { word: 'nivacane', context: { verb: 'kṛ', meaning: 'silencing' }, reason: "The word is incomplete." },
+            { word: 'निवचने', context: { verb: 'कृ', meaning: 'silencing' }, reason: "The word is incomplete." },
+            { word: 'kṛtvā', context: { verb: 'kṛ', meaning: 'interrupting' }, reason: "The word is not 'madhye', 'pade', or 'nivacane'." },
+            { word: 'कृत्वा', context: { verb: 'कृ', meaning: 'stumbling' }, reason: "The word is not 'madhye', 'pade', or 'nivacane'." },
         ];
 
-        negativeCases.forEach(({ word, context }) => {
-            test(`should not apply to "${word}" with meaning "${context.meaning}"`, () => {
+        negativeCases.forEach(({ word, context, reason }) => {
+            test(`should not apply to "${word}" because ${reason}`, () => {
                 const result = isGatiMadhyePadeNivacane(word, context);
-                expect(result.applies).toBe(false);
+                expect(result).toMatchObject({
+                    applies: false,
+                    reason: expect.any(String)
+                });
             });
         });
     });
 
-    // Edge Cases (10 tests)
-    describe('Edge Cases', () => {
-        test('should handle null input gracefully', () => {
-            const result = isGatiMadhyePadeNivacane(null);
-            expect(result.applies).toBe(false);
-        });
+    describe('Edge Cases and Error Handling', () => {
+        const edgeCases = [
+            { input: null, description: 'null input' },
+            { input: undefined, description: 'undefined input' },
+            { input: [1, 2, 3], description: 'non-string input' },
+            { input: '', description: 'empty string' },
+            { input: 'madhyekṛtya', context: undefined, description: 'missing context' },
+            { input: 'madhyekṛtya', context: {}, description: 'empty context' },
+            { input: 'madhyekṛtya', context: { meaning: 'interrupting' }, description: 'context missing verb' },
+            { input: 'madhyekṛtya', context: { verb: 'kṛ' }, description: 'context missing meaning' },
+            { input: 'madhyekṛtya', context: { verb: null, meaning: 'interrupting' }, description: 'context with null verb' },
+            { input: 'madhyekṛtya' + 'a'.repeat(1000), context: { verb: 'kṛ', meaning: 'interrupting' }, description: 'long string input' },
+        ];
 
-        test('should handle undefined input gracefully', () => {
-            const result = isGatiMadhyePadeNivacane(undefined);
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle non-string input', () => {
-            const result = isGatiMadhyePadeNivacane([1, 2, 3]);
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle empty string', () => {
-            const result = isGatiMadhyePadeNivacane('');
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle missing context', () => {
-            const result = isGatiMadhyePadeNivacane('madhyekṛtya');
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle empty context', () => {
-            const result = isGatiMadhyePadeNivacane('madhyekṛtya', {});
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle context missing verb', () => {
-            const result = isGatiMadhyePadeNivacane('madhyekṛtya', { meaning: 'interrupting' });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle context missing meaning', () => {
-            const result = isGatiMadhyePadeNivacane('madhyekṛtya', { verb: 'kṛ' });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle context with null verb', () => {
-            const result = isGatiMadhyePadeNivacane('madhyekṛtya', { verb: null, meaning: 'interrupting' });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle long string input', () => {
-            const longString = 'madhyekṛtya' + 'a'.repeat(1000);
-            const result = isGatiMadhyePadeNivacane(longString, { verb: 'kṛ', meaning: 'interrupting' });
-            expect(result.applies).toBe(false); // Assuming it looks for exact words
+        edgeCases.forEach(({ input, context, description }) => {
+            test(`should handle ${description} gracefully`, () => {
+                const result = isGatiMadhyePadeNivacane(input, context);
+                expect(result).toMatchObject({
+                    applies: false,
+                    error: expect.any(String)
+                });
+            });
         });
     });
 });

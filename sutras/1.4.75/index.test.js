@@ -1,7 +1,6 @@
 import isGatiUrasiManasi from './index.js';
 
 describe('Sutra 1.4.75: anatayādhāna urasimanasī', () => {
-    // Positive Test Cases (24 tests)
     describe('Positive Cases: Optional "gati" when not meaning "placing"', () => {
         const positiveCases = [
             // IAST - urasi
@@ -40,102 +39,81 @@ describe('Sutra 1.4.75: anatayādhāna urasimanasī', () => {
         positiveCases.forEach(({ word, context }) => {
             test(`should apply optionally to "${word}" with meaning "${context.meaning}"`, () => {
                 const result = isGatiUrasiManasi(word, context);
-                expect(result.applies).toBe(true);
-                expect(result.optional).toBe(true);
+                expect(result).toMatchObject({
+                    applies: true,
+                    optional: true,
+                    classification: 'गति',
+                    confidence: expect.any(Number),
+                    reason: expect.any(String)
+                });
             });
         });
     });
 
-    // Negative Test Cases (20 tests)
     describe('Negative Cases', () => {
         const negativeCases = [
             // anatyādhāna condition: meaning is 'placing'
-            { word: 'urasikṛtya pāṇim', context: { verb: 'kṛ', meaning: 'placing' } },
-            { word: 'उरसिकृत्य पाणिम्', context: { verb: 'कृ', meaning: 'placing' } },
-            { word: 'manasikṛtya viṣayam', context: { verb: 'kṛ', meaning: 'placing' } },
-            { word: 'मनसिकृत्य विषयम्', context: { verb: 'कृ', meaning: 'placing' } },
+            { word: 'urasikṛtya pāṇim', context: { verb: 'kṛ', meaning: 'placing' }, reason: "The meaning is 'placing' (anatyādhāna)." },
+            { word: 'उरसिकृत्य पाणिम्', context: { verb: 'कृ', meaning: 'placing' }, reason: "The meaning is 'placing' (anatyādhāna)." },
+            { word: 'manasikṛtya viṣayam', context: { verb: 'kṛ', meaning: 'placing' }, reason: "The meaning is 'placing' (anatyādhāna)." },
+            { word: 'मनसिकृत्य विषयम्', context: { verb: 'कृ', meaning: 'placing' }, reason: "The meaning is 'placing' (anatyādhāna)." },
 
             // Wrong verb
-            { word: 'urasigacchati', context: { verb: 'gam', meaning: 'accepting' } },
-            { word: 'उरसिगच्छति', context: { verb: 'गम्', meaning: 'accepting' } },
-            { word: 'manasibhavati', context: { verb: 'bhū', meaning: 'pondering' } },
-            { word: 'मनसिभवति', context: { verb: 'भू', meaning: 'pondering' } },
+            { word: 'urasigacchati', context: { verb: 'gam', meaning: 'accepting' }, reason: "The verb is not 'kṛ'." },
+            { word: 'उरसिगच्छति', context: { verb: 'गम्', meaning: 'accepting' }, reason: "The verb is not 'kṛ'." },
+            { word: 'manasibhavati', context: { verb: 'bhū', meaning: 'pondering' }, reason: "The verb is not 'kṛ'." },
+            { word: 'मनसिभवति', context: { verb: 'भू', meaning: 'pondering' }, reason: "The verb is not 'kṛ'." },
 
             // Word is not urasi or manasi
-            { word: 'hastekṛtya', context: { verb: 'kṛ', meaning: 'taking in hand' } },
-            { word: 'हस्तेकृत्य', context: { verb: 'कृ', meaning: 'taking in hand' } },
-            { word: 'śirasi kṛtvā', context: { verb: 'kṛ', meaning: 'placing on head' } },
-            { word: 'शिरसि कृत्वा', context: { verb: 'कृ', meaning: 'placing on head' } },
+            { word: 'hastekṛtya', context: { verb: 'kṛ', meaning: 'taking in hand' }, reason: "The word is not 'urasi' or 'manasi'." },
+            { word: 'हस्तेकृत्य', context: { verb: 'कृ', meaning: 'taking in hand' }, reason: "The word is not 'urasi' or 'manasi'." },
+            { word: 'śirasi kṛtvā', context: { verb: 'kṛ', meaning: 'placing on head' }, reason: "The word is not 'urasi' or 'manasi'." },
+            { word: 'शिरसि कृत्वा', context: { verb: 'कृ', meaning: 'placing on head' }, reason: "The word is not 'urasi' or 'manasi'." },
 
             // Incomplete word
-            { word: 'urasi', context: { verb: 'kṛ', meaning: 'accepting' } },
-            { word: 'उरसि', context: { verb: 'कृ', meaning: 'accepting' } },
-            { word: 'manasi', context: { verb: 'kṛ', meaning: 'pondering' } },
-            { word: 'मनसि', context: { verb: 'कृ', meaning: 'pondering' } },
-            { word: 'kṛtya', context: { verb: 'kṛ', meaning: 'accepting' } },
-            { word: 'कृत्य', context: { verb: 'कृ', meaning: 'pondering' } },
-            { word: 'anyat kṛtvā', context: { verb: 'kṛ', meaning: 'doing something else' } },
-            { word: 'अन्यत् कृत्वा', context: { verb: 'कृ', meaning: 'doing something else' } },
+            { word: 'urasi', context: { verb: 'kṛ', meaning: 'accepting' }, reason: "The word is incomplete." },
+            { word: 'उरसि', context: { verb: 'कृ', meaning: 'accepting' }, reason: "The word is incomplete." },
+            { word: 'manasi', context: { verb: 'kṛ', meaning: 'pondering' }, reason: "The word is incomplete." },
+            { word: 'मनसि', context: { verb: 'कृ', meaning: 'pondering' }, reason: "The word is incomplete." },
+            { word: 'kṛtya', context: { verb: 'kṛ', meaning: 'accepting' }, reason: "The word is not 'urasi' or 'manasi'." },
+            { word: 'कृत्य', context: { verb: 'कृ', meaning: 'pondering' }, reason: "The word is not 'urasi' or 'manasi'." },
+            { word: 'anyat kṛtvā', context: { verb: 'kṛ', meaning: 'doing something else' }, reason: "The word is not 'urasi' or 'manasi'." },
+            { word: 'अन्यत् कृत्वा', context: { verb: 'कृ', meaning: 'doing something else' }, reason: "The word is not 'urasi' or 'manasi'." },
         ];
 
-        negativeCases.forEach(({ word, context }) => {
-            test(`should not apply to "${word}" with meaning "${context.meaning}"`, () => {
+        negativeCases.forEach(({ word, context, reason }) => {
+            test(`should not apply to "${word}" because ${reason}`, () => {
                 const result = isGatiUrasiManasi(word, context);
-                expect(result.applies).toBe(false);
+                expect(result).toMatchObject({
+                    applies: false,
+                    reason: expect.any(String)
+                });
             });
         });
     });
 
-    // Edge Cases (10 tests)
-    describe('Edge Cases', () => {
-        test('should handle null input gracefully', () => {
-            const result = isGatiUrasiManasi(null);
-            expect(result.applies).toBe(false);
-        });
+    describe('Edge Cases and Error Handling', () => {
+        const edgeCases = [
+            { input: null, description: 'null input' },
+            { input: undefined, description: 'undefined input' },
+            { input: 123, description: 'non-string input' },
+            { input: '', description: 'empty string' },
+            { input: 'urasikṛtya', context: undefined, description: 'missing context' },
+            { input: 'urasikṛtya', context: {}, description: 'empty context' },
+            { input: 'urasikṛtya', context: { meaning: 'accepting' }, description: 'context missing verb' },
+            { input: 'urasikṛtya', context: { verb: 'kṛ' }, description: 'context missing meaning' },
+            { input: 'urasikṛtya', context: { verb: 'kṛ', meaning: null }, description: 'context with null meaning' },
+            { input: 'urasikṛtya', context: { verb: 'kṛ', meaning: 123 }, description: 'context with non-string meaning' },
+        ];
 
-        test('should handle undefined input gracefully', () => {
-            const result = isGatiUrasiManasi(undefined);
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle non-string input', () => {
-            const result = isGatiUrasiManasi(123);
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle empty string', () => {
-            const result = isGatiUrasiManasi('');
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle missing context', () => {
-            const result = isGatiUrasiManasi('urasikṛtya');
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle empty context', () => {
-            const result = isGatiUrasiManasi('urasikṛtya', {});
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle context missing verb', () => {
-            const result = isGatiUrasiManasi('urasikṛtya', { meaning: 'accepting' });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle context missing meaning', () => {
-            const result = isGatiUrasiManasi('urasikṛtya', { verb: 'kṛ' });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle context with null meaning', () => {
-            const result = isGatiUrasiManasi('urasikṛtya', { verb: 'kṛ', meaning: null });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle context with non-string meaning', () => {
-            const result = isGatiUrasiManasi('urasikṛtya', { verb: 'kṛ', meaning: 123 });
-            expect(result.applies).toBe(false);
+        edgeCases.forEach(({ input, context, description }) => {
+            test(`should handle ${description} gracefully`, () => {
+                const result = isGatiUrasiManasi(input, context);
+                expect(result).toMatchObject({
+                    applies: false,
+                    error: expect.any(String)
+                });
+            });
         });
     });
 });

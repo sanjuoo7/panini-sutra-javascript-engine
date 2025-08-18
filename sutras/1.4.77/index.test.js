@@ -1,7 +1,6 @@
 import isGatiHastePanau from './index.js';
 
 describe('Sutra 1.4.77: nityaṃ haste pāṇāvupayamane', () => {
-    // Positive Test Cases (20 tests)
     describe('Positive Cases: Mandatory "gati" in the sense of marriage', () => {
         const positiveCases = [
             // IAST - haste
@@ -36,103 +35,81 @@ describe('Sutra 1.4.77: nityaṃ haste pāṇāvupayamane', () => {
         positiveCases.forEach(({ word, context }) => {
             test(`should apply mandatorily to "${word}"`, () => {
                 const result = isGatiHastePanau(word, context);
-                expect(result.applies).toBe(true);
-                expect(result.optional).toBe(false);
+                expect(result).toMatchObject({
+                    applies: true,
+                    optional: false,
+                    classification: 'गति',
+                    confidence: expect.any(Number),
+                    reason: expect.any(String)
+                });
             });
         });
     });
 
-    // Negative Test Cases (20 tests)
     describe('Negative Cases', () => {
         const negativeCases = [
             // Wrong meaning
-            { word: 'hastekṛtya dhanam', context: { verb: 'kṛ', meaning: 'taking money' } },
-            { word: 'हस्तेकृत्य धनम्', context: { verb: 'कृ', meaning: 'taking money' } },
-            { word: 'pāṇaukṛtya jalam', context: { verb: 'kṛ', meaning: 'cupping water' } },
-            { word: 'पाणौकृत्य जलम्', context: { verb: 'कृ', meaning: 'cupping water' } },
+            { word: 'hastekṛtya dhanam', context: { verb: 'kṛ', meaning: 'taking money' }, reason: "The meaning is not 'marriage'." },
+            { word: 'हस्तेकृत्य धनम्', context: { verb: 'कृ', meaning: 'taking money' }, reason: "The meaning is not 'marriage'." },
+            { word: 'pāṇaukṛtya jalam', context: { verb: 'kṛ', meaning: 'cupping water' }, reason: "The meaning is not 'marriage'." },
+            { word: 'पाणौकृत्य जलम्', context: { verb: 'कृ', meaning: 'cupping water' }, reason: "The meaning is not 'marriage'." },
 
             // Wrong verb
-            { word: 'hastegacchati kanyām', context: { verb: 'gam', meaning: 'marriage' } },
-            { word: 'हस्तेगच्छति कन्याम्', context: { verb: 'गम्', meaning: 'marriage' } },
-            { word: 'pāṇubhavati vadhūm', context: { verb: 'bhū', meaning: 'marriage' } },
-            { word: 'पाणौभवति वधूम्', context: { verb: 'भू', meaning: 'marriage' } },
+            { word: 'hastegacchati kanyām', context: { verb: 'gam', meaning: 'marriage' }, reason: "The verb is not 'kṛ'." },
+            { word: 'हस्तेगच्छति कन्याम्', context: { verb: 'गम्', meaning: 'marriage' }, reason: "The verb is not 'kṛ'." },
+            { word: 'pāṇubhavati vadhūm', context: { verb: 'bhū', meaning: 'marriage' }, reason: "The verb is not 'kṛ'." },
+            { word: 'पाणौभवति वधूम्', context: { verb: 'भू', meaning: 'marriage' }, reason: "The verb is not 'kṛ'." },
 
             // Word is not haste or pāṇau
-            { word: 'urasikṛtya', context: { verb: 'kṛ', meaning: 'marriage' } }, // from previous sutra
-            { word: 'उरसिकृत्य', context: { verb: 'कृ', meaning: 'marriage' } },
-            { word: 'śirasi kṛtvā', context: { verb: 'kṛ', meaning: 'marriage' } },
-            { word: 'शिरसि कृत्वा', context: { verb: 'कृ', meaning: 'marriage' } },
+            { word: 'urasikṛtya', context: { verb: 'kṛ', meaning: 'marriage' }, reason: "The word is not 'haste' or 'pāṇau'." },
+            { word: 'उरसिकृत्य', context: { verb: 'कृ', meaning: 'marriage' }, reason: "The word is not 'haste' or 'pāṇau'." },
+            { word: 'śirasi kṛtvā', context: { verb: 'kṛ', meaning: 'marriage' }, reason: "The word is not 'haste' or 'pāṇau'." },
+            { word: 'शिरसि कृत्वा', context: { verb: 'कृ', meaning: 'marriage' }, reason: "The word is not 'haste' or 'pāṇau'." },
 
             // Incomplete words
-            { word: 'haste', context: { verb: 'kṛ', meaning: 'marriage' } },
-            { word: 'हस्ते', context: { verb: 'कृ', meaning: 'marriage' } },
-            { word: 'pāṇau', context: { verb: 'kṛ', meaning: 'marriage' } },
-            { word: 'पाणौ', context: { verb: 'कृ', meaning: 'marriage' } },
-            { word: 'kṛtvā', context: { verb: 'kṛ', meaning: 'marriage' } },
-            { word: 'कृत्वा', context: { verb: 'कृ', meaning: 'marriage' } },
-            { word: 'anyat kṛtvā', context: { verb: 'kṛ', meaning: 'doing something else' } },
-            { word: 'अन्यत् कृत्वा', context: { verb: 'कृ', meaning: 'doing something else' } },
+            { word: 'haste', context: { verb: 'kṛ', meaning: 'marriage' }, reason: "The word is incomplete." },
+            { word: 'हस्ते', context: { verb: 'कृ', meaning: 'marriage' }, reason: "The word is incomplete." },
+            { word: 'pāṇau', context: { verb: 'kṛ', meaning: 'marriage' }, reason: "The word is incomplete." },
+            { word: 'पाणौ', context: { verb: 'कृ', meaning: 'marriage' }, reason: "The word is incomplete." },
+            { word: 'kṛtvā', context: { verb: 'kṛ', meaning: 'marriage' }, reason: "The word is not 'haste' or 'pāṇau'." },
+            { word: 'कृत्वा', context: { verb: 'कृ', meaning: 'marriage' }, reason: "The word is not 'haste' or 'pāṇau'." },
+            { word: 'anyat kṛtvā', context: { verb: 'kṛ', meaning: 'doing something else' }, reason: "The word is not 'haste' or 'pāṇau'." },
+            { word: 'अन्यत् कृत्वा', context: { verb: 'कृ', meaning: 'doing something else' }, reason: "The word is not 'haste' or 'pāṇau'." },
         ];
 
-        negativeCases.forEach(({ word, context }) => {
-            test(`should not apply to "${word}"`, () => {
+        negativeCases.forEach(({ word, context, reason }) => {
+            test(`should not apply to "${word}" because ${reason}`, () => {
                 const result = isGatiHastePanau(word, context);
-                expect(result.applies).toBe(false);
+                expect(result).toMatchObject({
+                    applies: false,
+                    reason: expect.any(String)
+                });
             });
         });
     });
 
-    // Edge Cases (10 tests)
-    describe('Edge Cases', () => {
-        test('should handle null input gracefully', () => {
-            const result = isGatiHastePanau(null);
-            expect(result.applies).toBe(false);
-        });
+    describe('Edge Cases and Error Handling', () => {
+        const edgeCases = [
+            { input: null, description: 'null input' },
+            { input: undefined, description: 'undefined input' },
+            { input: { key: 'value' }, description: 'non-string input' },
+            { input: '', description: 'empty string' },
+            { input: 'hastekṛtya', context: undefined, description: 'missing context' },
+            { input: 'hastekṛtya', context: {}, description: 'empty context' },
+            { input: 'hastekṛtya', context: { meaning: 'marriage' }, description: 'context missing verb' },
+            { input: 'hastekṛtya', context: { verb: 'kṛ' }, description: 'context missing meaning' },
+            { input: 'hastekṛtya', context: { verb: 'kṛ', meaning: 123 }, description: 'context with wrong type for meaning' },
+            { input: 'hastekṛtya' + 'a'.repeat(1000), context: { verb: 'kṛ', meaning: 'marriage' }, description: 'long string input' },
+        ];
 
-        test('should handle undefined input gracefully', () => {
-            const result = isGatiHastePanau(undefined);
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle non-string input', () => {
-            const result = isGatiHastePanau({ key: 'value' });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle empty string', () => {
-            const result = isGatiHastePanau('');
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle missing context', () => {
-            const result = isGatiHastePanau('hastekṛtya');
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle empty context', () => {
-            const result = isGatiHastePanau('hastekṛtya', {});
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle context missing verb', () => {
-            const result = isGatiHastePanau('hastekṛtya', { meaning: 'marriage' });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle context missing meaning', () => {
-            const result = isGatiHastePanau('hastekṛtya', { verb: 'kṛ' });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle context with wrong type for meaning', () => {
-            const result = isGatiHastePanau('hastekṛtya', { verb: 'kṛ', meaning: 123 });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle long string input', () => {
-            const longString = 'hastekṛtya' + 'a'.repeat(1000);
-            const result = isGatiHastePanau(longString, { verb: 'kṛ', meaning: 'marriage' });
-            expect(result.applies).toBe(false);
+        edgeCases.forEach(({ input, context, description }) => {
+            test(`should handle ${description} gracefully`, () => {
+                const result = isGatiHastePanau(input, context);
+                expect(result).toMatchObject({
+                    applies: false,
+                    error: expect.any(String)
+                });
+            });
         });
     });
 });

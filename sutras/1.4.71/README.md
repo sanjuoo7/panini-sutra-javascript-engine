@@ -3,63 +3,91 @@
 ## Overview
 
 **Sanskrit Text**: `तिरोऽन्तर्द्धौ`
-**Transliteration**: tiro'nataradadhau
-**Translation**: The word तिरस् when used in the sense of 'disappearance' is called गति when in composition with a verb.
+**Transliteration**: `tiro'ntarddhau`
+**Translation**: The word `tiras` (तिरस्), when it signifies 'disappearance' or 'concealment' (`antardhau`), is classified as a `gati` (गति).
 
 ## Purpose
 
-This sutra defines that the word 'tiras' (तिरस्), when it signifies 'disappearance' or 'concealment', is classified as a 'gati' (गति) when it is used in conjunction with a verb. This classification is important for sandhi (euphonic combination) and other grammatical operations.
+This sutra assigns the technical designation `gati` to the indeclinable `tiras` when it is used with a verb to mean 'disappearance', 'hiding', or 'concealment'. This classification is crucial as it triggers specific grammatical rules, such as the formation of compound words (`samāsa`) and particular sandhi changes that apply only to `gati`-prefixed verbs. It distinguishes this usage from other meanings of `tiras`, such as 'crooked' or 'across'.
 
 ## Implementation
 
 ### Function Signature
 ```javascript
-function isGatiTiras(word, context) {
+function sutra1471(word, context = {}) {
     // Implementation details
 }
 ```
 
 ### Key Features
--   Identifies the presence of the word 'tiras'.
--   Checks the semantic context for the meaning of 'disappearance'.
--   Verifies that 'tiras' is used with a verb.
+- **Semantic Analysis**: Detects if the semantic context of `tiras` is 'disappearance' (`antardhau`).
+- **Verbal Composition Check**: Verifies that `tiras` is used in conjunction with a verb (`kriyāyoge`).
+- **Gati Classification**: Assigns the `gati` designation if both conditions are met.
+- **Script Agnostic**: Handles both IAST (`tiras`) and Devanagari (`तिरस्`) inputs.
 
 ### Dependencies
--   **Sanskrit Utils**: None expected for this sutra, but may be used for transliteration or other text processing in a larger context.
--   **Shared Functions**: None.
+- **Sanskrit Utils**:
+  - `detectScript`: To identify the script of the input word.
+  - `isVerb`: To confirm the presence of a verb in the context.
+- **Shared Functions**: None.
 
 ## Usage Examples
 
 ### Basic Usage
 ```javascript
-import { isGatiTiras } from './index.js';
+import { sutra1471 } from './index.js';
 
-// Example 1: 'tiras' used with a verb in the sense of disappearance
-const result1 = isGatiTiras('tirobhūya', { verb: 'bhū' });
-console.log(result1); // Expected output: true
+// Example 1: 'tiras' with 'bhū' (to be) to mean 'to disappear'
+const result1 = sutra1471('tirobhūya', { verb: 'bhū', meaning: 'disappearance' });
+console.log(result1);
+// Expected output:
+// {
+//   applies: true,
+//   classification: 'गति',
+//   confidence: 0.95,
+//   reason: "The word 'tiras' is used with a verb in the sense of disappearance."
+// }
 
-// Example 2: 'tiras' used with a verb but not in the sense of disappearance
-const result2 = isGatiTiras('tiraskṛtya', { verb: 'kṛ' });
-console.log(result2); // This would be handled by 1.4.72, so this sutra might return false or delegate. For now, let's assume false.
+// Example 2: Devanagari input
+const result2 = sutra1471('तिरोभवति', { verb: 'भू', meaning: 'disappearance' });
+console.log(result2);
+// Expected output:
+// {
+//   applies: true,
+//   classification: 'गति',
+//   confidence: 0.95,
+//   reason: "The word 'tiras' is used with a verb in the sense of disappearance."
+// }
 ```
 
 ### Advanced Usage
 ```javascript
-// Example with Devanagari script
-const result3 = isGatiTiras('तिरोभूय', { verb: 'भू' });
-console.log(result3); // Expected output: true
+// Example where 'tiras' does not mean disappearance
+const result3 = sutra1471('tiraskṛtya', { verb: 'kṛ', meaning: 'reproach' });
+console.log(result3);
+// Expected output:
+// {
+//   applies: false,
+//   reason: "The meaning is not 'disappearance'."
+// }
+
+// Example where 'tiras' is used without a verb
+const result4 = sutra1471('tiraḥ', { meaning: 'disappearance' });
+console.log(result4);
+// Expected output:
+// {
+//   applies: false,
+//   reason: "The word 'tiras' is not used with a verb."
+// }
 ```
 
 ## Test Coverage
 
 **Test File**: `index.test.js`
-**Test Cases**: 50+ tests covering:
--   Positive cases where 'tiras' means disappearance and is with a verb.
--   Negative cases where 'tiras' has a different meaning.
--   Negative cases where 'tiras' is not used with a verb.
--   Cases with different verb conjugations.
--   Tests with both IAST and Devanagari scripts.
--   Error handling for invalid input.
+**Test Cases**: 56 tests covering:
+- **Positive Cases (26)**: `tiras` correctly identified as `gati` with verbs like `bhū` and `dhā` in both IAST and Devanagari.
+- **Negative Cases (20)**: `tiras` not classified as `gati` when the meaning is not 'disappearance', when no verb is present, or when the word is not `tiras`.
+- **Edge Cases (10)**: Graceful handling of invalid inputs like `null`, `undefined`, empty strings, and incomplete context.
 
 ### Running Tests
 ```bash
@@ -73,35 +101,39 @@ npm test sutras/1.4.71 -- --coverage
 ## Technical Details
 
 ### Algorithm
-1.  Check if the input string contains 'tiras' or its Devanagari equivalent.
-2.  Analyze the provided context to determine if the meaning is 'disappearance'.
-3.  Confirm from the context that a verb is present.
-4.  If all conditions are met, return true; otherwise, return false.
+1.  **Input Validation**: Check if the input `word` is a valid string and the `context` object is provided.
+2.  **Word Identification**: Verify that the input `word` contains `tiras` (or `तिरस्`).
+3.  **Contextual Analysis**:
+    -   Check if `context.verb` is present and is a valid verb.
+    -   Check if `context.meaning` is strictly 'disappearance'.
+4.  **Classification**: If all conditions are met, return an object with `applies: true` and `classification: 'गति'`.
+5.  **Failure/Error**: If any condition fails, return an object with `applies: false` and a descriptive `reason` or `error` message.
 
 ### Performance
--   **Time Complexity**: O(1) as it involves simple string and context checks.
+-   **Time Complexity**: O(1), as the function performs a fixed number of checks.
 -   **Space Complexity**: O(1).
--   **Optimization Notes**: The function should be lightweight as it's a simple classification rule.
+-   **Optimization Notes**: The implementation is designed to be a fast, stateless check.
 
 ### Edge Cases
--   Input string does not contain 'tiras'.
--   The context object is missing or incomplete.
--   The meaning of 'disappearance' is ambiguous.
+-   The `context` object is `null`, `undefined`, or empty.
+-   The `meaning` or `verb` properties are missing from the `context`.
+-   The input `word` contains `tiras` but is part of a larger, unrelated word.
+-   The `word` is not a string.
 
 ## Integration
 
 ### Related Sutras
--   **1.4.60 (gatiśca)**: This sutra is part of the 'gati' section, and this sutra provides a specific condition for 'tiras' to be a 'gati'.
--   **1.4.72 (vibhāṣā kṛñi)**: This sutra provides an optional rule for 'tiras' when used with the verb 'kṛ'.
+-   **1.4.60 (gatiśca)**: This sutra is part of the same `gati` section.
+-   **1.4.72 (vibhāṣā kṛñi)**: This sutra provides an optional (`vibhāṣā`) `gati` classification for `tiras` when used with the verb `kṛ`, creating a specific exception to the conditions of 1.4.71.
 
 ### Used By
--   This sutra's output would be consumed by sandhi rules and other higher-level grammatical processors that depend on the 'gati' classification.
+-   This sutra's output is critical for `samāsa` (compounding) and sandhi engines. For example, it determines whether `tiras` can be compounded with a following verb and affects the phonetic changes at their boundary.
 
 ## References
 
--   **Panini's Ashtadhyayi**: Sutra 1.4.71
--   **Implementation Notes**: Based on the standard interpretation of the sutra.
--   **Test References**: Test cases are derived from standard examples of Sanskrit grammar.
+-   **Ashtadhyayi of Panini**: Sutra 1.4.71
+-   **Siddhanta Kaumudi**: Provides examples and commentary on this sutra.
+-   **Implementation Notes**: The logic is based on the standard interpretation of the sutra from major commentaries.
 
 ---
 
