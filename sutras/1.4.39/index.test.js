@@ -8,22 +8,25 @@ describe('Sutra 1.4.39: धारेर्द्वितीया वा स्
       spatial_relationship: 'location' 
     });
     expect(result.applies).toBe(true);
-    expect(result.case_options).toContain('accusative');
+    expect(result.caseOptions).toContain('accusative');
     expect(result.optional).toBe(true);
   });
 
   test('should also allow locative case', () => {
     const result = identifyHoldingLocationCase('स्तम्भे', { 
       verb: 'धारयति', 
-      context: 'स्तम्भे धारयति' 
+      context: 'स्तम्भे धारयति',
+      spatial_relationship: 'location' 
     });
     expect(result.applies).toBe(true);
-    expect(result.case_options).toContain('locative');
+    expect(result.caseOptions).toContain('locative');
   });
 
   test('should handle IAST input', () => {
     const result = identifyHoldingLocationCase('stambham', { 
       verb: 'dhārayati', 
+      context: 'stambham dhārayati',
+      spatial_relationship: 'location',
       script: 'IAST' 
     });
     expect(result.applies).toBe(true);

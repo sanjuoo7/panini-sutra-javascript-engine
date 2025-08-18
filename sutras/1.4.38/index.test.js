@@ -9,7 +9,7 @@ describe('Sutra 1.4.38: क्रुधद्रुहोरुपसृष्�
     });
     expect(result.applies).toBe(true);
     expect(result.karaka).toBe('कर्म');
-    expect(result.case_required).toBe('accusative');
+    expect(result.morphologicalAnalysis.expectedCase).toBe('accusative');
   });
 
   test('should handle prefixed द्रुह् verbs', () => {

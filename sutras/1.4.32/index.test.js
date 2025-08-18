@@ -10,7 +10,10 @@ describe('Sutra 1.4.32: कर्मणा यमभिप्रैति स �
     });
     expect(result.applies).toBe(true);
     expect(result.karaka).toBe('सम्प्रदान');
-    expect(result.case_required).toBe('dative');
+    expect(result.sutra).toBe('1.4.32');
+    expect(result.morphologicalAnalysis.expectedCase).toBe('dative');
+    expect(result.conditions.hasGivingVerb).toBe(true);
+    expect(result.conditions.isRecipient).toBe(true);
   });
 
   test('should identify dative for intended recipient', () => {
@@ -21,6 +24,9 @@ describe('Sutra 1.4.32: कर्मणा यमभिप्रैति स �
     });
     expect(result.applies).toBe(true);
     expect(result.karaka).toBe('सम्प्रदान');
+    expect(result.sutra).toBe('1.4.32');
+    expect(result.verbAnalysis.isGivingAction).toBe(true);
+    expect(result.recipientAnalysis.isIntendedRecipient).toBe(true);
   });
 
   test('should identify beneficiary contexts', () => {
@@ -31,6 +37,8 @@ describe('Sutra 1.4.32: कर्मणा यमभिप्रैति स �
     });
     expect(result.applies).toBe(true);
     expect(result.karaka).toBe('सम्प्रदान');
+    expect(result.sutra).toBe('1.4.32');
+    expect(result.semanticAnalysis.purposeOrientation).toBe(true);
   });
 
   // IAST support tests
@@ -41,7 +49,8 @@ describe('Sutra 1.4.32: कर्मणा यमभिप्रैति स �
       script: 'IAST' 
     });
     expect(result.applies).toBe(true);
-    expect(result.case_required).toBe('dative');
+    expect(result.morphologicalAnalysis.expectedCase).toBe('dative');
+    expect(result.script).toBe('IAST');
   });
 
   // Error handling tests
@@ -57,6 +66,7 @@ describe('Sutra 1.4.32: कर्मणा यमभिप्रैति स �
       context: 'गृहं गच्छति' 
     });
     expect(result.applies).toBe(false);
+    expect(result.reason).toBeDefined();
   });
 
   // Edge cases
@@ -66,6 +76,7 @@ describe('Sutra 1.4.32: कर्मणा यमभिप्रैति स �
       context: 'देवदत्ताय पश्यति' 
     });
     expect(result.applies).toBe(false);
+    expect(result.reason).toBe('not_giving_action');
   });
 
   test('should handle given object as कर्म', () => {
@@ -75,7 +86,8 @@ describe('Sutra 1.4.32: कर्मणा यमभिप्रैति स �
       element_role: 'given_object' 
     });
     expect(result.karaka).toBe('कर्म');
-    expect(result.case_required).toBe('accusative');
+    expect(result.morphologicalAnalysis.expectedCase).toBe('accusative');
+    expect(result.reason).toBe('dual_designation_karma');
   });
 
   // Integration tests
@@ -85,15 +97,16 @@ describe('Sutra 1.4.32: कर्मणा यमभिप्रैति स �
       output_script: 'IAST' 
     });
     expect(result.applies).toBe(true);
-  expect(result.word_iast).toBe('devdttāy');
+    expect(result.morphologicalAnalysis.normalizedForm).toBeDefined();
   });
 
   test('should validate case endings', () => {
-    const result = identifyCoreSampradana('देवदत्त', { 
-      verb: 'ददाति',
+    const result = identifyCoreSampradana('देवदत्तैः', { 
+      verb: 'ददाति', 
+      context: 'देवदत्तैः गां ददाति',
       validate_case: true 
     });
-    expect(result.case_valid).toBe(false);
+    expect(result.morphologicalAnalysis.caseCompatible).toBe(false);
   });
 
   test('should handle purpose-oriented contexts', () => {

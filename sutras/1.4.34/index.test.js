@@ -9,7 +9,7 @@ describe('Sutra 1.4.34: शापानुग्रहयोश्च', () => {
     });
     expect(result.applies).toBe(true);
     expect(result.karaka).toBe('सम्प्रदान');
-    expect(result.case_required).toBe('dative');
+    expect(result.morphologicalAnalysis.expectedCase).toBe('dative');
   });
 
   test('should identify dative case for curse recipient', () => {

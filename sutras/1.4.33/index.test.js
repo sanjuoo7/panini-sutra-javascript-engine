@@ -9,7 +9,7 @@ describe('Sutra 1.4.33: रुच्यर्थानां प्रीयम�
     });
     expect(result.applies).toBe(true);
     expect(result.karaka).toBe('सम्प्रदान');
-    expect(result.case_required).toBe('dative');
+    expect(result.morphologicalAnalysis.expectedCase).toBe('dative');
   });
 
   test('should handle IAST input', () => {
