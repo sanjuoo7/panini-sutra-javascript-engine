@@ -1,117 +1,167 @@
-const sutra = require('./index'); // Assuming the function is exported from index.js
+import sutra from './index.js';
 
-describe('Sutra 1.4.66: kaṇemanasī śaradadhāparatīghāte', () => {
-  const SEMANTIC_CONTEXT = 'śraddhāpratīghāta';
+describe('Sutra 1.4.66: kaṇemanasī śraddhāpratīghāte', () => {
+  const verbs = [
+    'kṛ', 'han', 'bhū', 'as', 'gam', 'car', 'paṭh', 'likh', 'dṛś', 'smṛ',
+  ];
+  const satiationContext = { meaning: 'śraddhāpratīghāta' };
 
-  // Positive Test Cases (IAST)
-  test('should apply to "kaṇe" with correct semantic context (IAST)', () => {
-    const result = sutra('kaṇehanoti', { semanticContext: SEMANTIC_CONTEXT });
-    expect(result.applies).toBe(true);
-  });
+  // 20 tests for kaṇe
+  describe('Positive Cases: "kaṇe" (IAST and Devanagari)', () => {
+    verbs.forEach(verb => {
+      test(`should identify 'kaṇe' as gati with verb '${verb}' (IAST)`, () => {
+        const context = { ...satiationContext, verb };
+        const result = sutra('kaṇe', context);
+        expect(result).toMatchObject({
+          applies: true,
+          confidence: expect.any(Number),
+          morphological: { category: 'gati', features: expect.arrayContaining(['indeclinable']) },
+          semantic: { function: 'pre-verb', type: 'qualifier' },
+          reasons: expect.arrayContaining(["Word is 'kaṇe'", "Context meaning is 'śraddhāpratīghāta'"]),
+        });
+      });
 
-  test('should apply to "manas" with correct semantic context (IAST)', () => {
-    const result = sutra('manaḥkaroti', { semanticContext: SEMANTIC_CONTEXT });
-    expect(result.applies).toBe(true);
-  });
-
-  // Positive Test Cases (Devanagari)
-  test('should apply to "कणे" with correct semantic context (Devanagari)', () => {
-    const result = sutra('कणेहनोति', { semanticContext: SEMANTIC_CONTEXT });
-    expect(result.applies).toBe(true);
-  });
-
-  test('should apply to "मनस्" with correct semantic context (Devanagari)', () => {
-    const result = sutra('मनःकरोति', { semanticContext: SEMANTIC_CONTEXT });
-    expect(result.applies).toBe(true);
-  });
-
-  // Negative Test Cases (IAST)
-  test('should not apply to "kaṇe" with incorrect semantic context', () => {
-    const result = sutra('kaṇehanoti', { semanticContext: 'another_context' });
-    expect(result.applies).toBe(false);
-  });
-
-  test('should not apply to "manas" without semantic context', () => {
-    const result = sutra('manaḥkaroti', {});
-    expect(result.applies).toBe(false);
-  });
-
-  test('should not apply to other words even with correct context', () => {
-    const result = sutra('anyaword', { semanticContext: SEMANTIC_CONTEXT });
-    expect(result.applies).toBe(false);
-  });
-
-  // Negative Test Cases (Devanagari)
-  test('should not apply to "कणे" with incorrect semantic context', () => {
-    const result = sutra('कणेहनोति', { semanticContext: 'another_context' });
-    expect(result.applies).toBe(false);
-  });
-
-  test('should not apply to "मनस्" without semantic context', () => {
-    const result = sutra('मनःकरोति', {});
-    expect(result.applies).toBe(false);
-  });
-
-  // Edge Cases
-  test('should handle empty string input gracefully', () => {
-    const result = sutra('', { semanticContext: SEMANTIC_CONTEXT });
-    expect(result.applies).toBe(false);
-  });
-
-  test('should handle null input gracefully', () => {
-    const result = sutra(null, { semanticContext: SEMANTIC_CONTEXT });
-    expect(result.applies).toBe(false);
-  });
-
-  test('should handle undefined input gracefully', () => {
-    const result = sutra(undefined, { semanticContext: SEMANTIC_CONTEXT });
-    expect(result.applies).toBe(false);
-  });
-
-  test('should handle missing context object gracefully', () => {
-    const result = sutra('kaṇehanoti');
-    expect(result.applies).toBe(false);
-  });
-
-  test('should not apply if "kaṇe" is not at the beginning', () => {
-    const result = sutra('akṣikaṇe', { semanticContext: SEMANTIC_CONTEXT });
-    expect(result.applies).toBe(false);
-  });
-
-  // Bulk generation of 40 more tests to meet the 50 test case requirement.
-  // These will be variations of the above to ensure robustness.
-
-  for (let i = 0; i < 10; i++) {
-    // Variations on valid kaṇe words (IAST)
-    test(`Positive case variation ${i+1} for kaṇe (IAST)`, () => {
-      const result = sutra(`kaṇeword${i}`, { semanticContext: SEMANTIC_CONTEXT });
-      expect(result.applies).toBe(true);
+      test(`should identify 'कणे' as gati with verb '${verb}' (Devanagari)`, () => {
+        const context = { ...satiationContext, verb };
+        const result = sutra('कणे', context);
+        expect(result).toMatchObject({
+          applies: true,
+          confidence: expect.any(Number),
+          morphological: { category: 'gati', features: expect.arrayContaining(['indeclinable']) },
+          semantic: { function: 'pre-verb', type: 'qualifier' },
+          reasons: expect.arrayContaining(["Word is 'कणे'", "Context meaning is 'śraddhāpratīghāta'"]),
+        });
+      });
     });
+  });
 
-    // Variations on valid manas words (IAST)
-    test(`Positive case variation ${i+1} for manas (IAST)`, () => {
-      const result = sutra(`manasword${i}`, { semanticContext: SEMANTIC_CONTEXT });
-      expect(result.applies).toBe(true);
+  // 20 tests for manas
+  describe('Positive Cases: "manas" (IAST and Devanagari)', () => {
+    verbs.forEach(verb => {
+      test(`should identify 'manas' as gati with verb '${verb}' (IAST)`, () => {
+        const context = { ...satiationContext, verb };
+        const result = sutra('manas', context);
+        expect(result).toMatchObject({
+          applies: true,
+          confidence: expect.any(Number),
+          morphological: { category: 'gati', features: expect.arrayContaining(['indeclinable']) },
+          semantic: { function: 'pre-verb', type: 'qualifier' },
+          reasons: expect.arrayContaining(["Word is 'manas'", "Context meaning is 'śraddhāpratīghāta'"]),
+        });
+      });
+
+      test(`should identify 'मनस्' as gati with verb '${verb}' (Devanagari)`, () => {
+        const context = { ...satiationContext, verb };
+        const result = sutra('मनस्', context);
+        expect(result).toMatchObject({
+          applies: true,
+          confidence: expect.any(Number),
+          morphological: { category: 'gati', features: expect.arrayContaining(['indeclinable']) },
+          semantic: { function: 'pre-verb', type: 'qualifier' },
+          reasons: expect.arrayContaining(["Word is 'मनस्'", "Context meaning is 'śraddhāpratīghāta'"]),
+        });
+      });
     });
+  });
 
-    // Variations on valid कणे words (Devanagari)
-    test(`Positive case variation ${i+1} for कणे (Devanagari)`, () => {
-        const result = sutra(`कणेशब्द${i}`, { semanticContext: SEMANTIC_CONTEXT });
-        expect(result.applies).toBe(true);
-    });
-
-    // Variations on valid मनस् words (Devanagari)
-    test(`Positive case variation ${i+1} for मनस् (Devanagari)`, () => {
-        const result = sutra(`मनश्शब्द${i}`, { semanticContext: SEMANTIC_CONTEXT });
-        expect(result.applies).toBe(true);
-    });
-  }
-
-  for (let i = 0; i < 10; i++) {
-    // Negative cases with wrong context
-    test(`Negative context case ${i+1}`, () => {
-      const result = sutra(`kaṇe${i}`, { semanticContext: `wrong${i}` });
+  // 12 tests
+  describe('Negative Cases', () => {
+    test('should not apply to "kaṇe" with a different meaning', () => {
+      const result = sutra('kaṇe', { verb: 'han', meaning: 'other' });
       expect(result.applies).toBe(false);
     });
-  }
+
+    test('should not apply to "manas" with a different meaning', () => {
+      const result = sutra('manas', { verb: 'kṛ', meaning: 'mind' });
+      expect(result.applies).toBe(false);
+    });
+
+    test('should not apply to "kaṇe" without a verb', () => {
+      const result = sutra('kaṇe', { meaning: 'śraddhāpratīghāta' });
+      expect(result.applies).toBe(false);
+    });
+
+    test('should not apply to "manas" without a verb', () => {
+      const result = sutra('manas', { meaning: 'śraddhāpratīghāta' });
+      expect(result.applies).toBe(false);
+    });
+
+    test('should not apply to a different word', () => {
+      const result = sutra('anyaword', { verb: 'kṛ', meaning: 'śraddhāpratīghāta' });
+      expect(result.applies).toBe(false);
+    });
+
+    test('should not apply to "kaṇe" with misspelled meaning', () => {
+      const result = sutra('kaṇe', { verb: 'han', meaning: 'śraddhāpratīghāte' });
+      expect(result.applies).toBe(false);
+    });
+
+    test('should return a reason for non-application', () => {
+      const result = sutra('manas', { verb: 'kṛ', meaning: 'mind' });
+      expect(result.reasons).toBeDefined();
+    });
+
+    test('should not apply to Devanagari "कणे" with wrong meaning', () => {
+      const result = sutra('कणे', { verb: 'han', meaning: 'other' });
+      expect(result.applies).toBe(false);
+    });
+
+    test('should not apply to Devanagari "मनस्" with wrong meaning', () => {
+      const result = sutra('मनस्', { verb: 'kṛ', meaning: 'mind' });
+      expect(result.applies).toBe(false);
+    });
+
+    test('should not apply to Devanagari "कणे" without a verb', () => {
+      const result = sutra('कणे', { meaning: 'śraddhāpratīghāta' });
+      expect(result.applies).toBe(false);
+    });
+
+    test('should not apply to Devanagari "मनस्" without a verb', () => {
+      const result = sutra('मनस्', { meaning: 'śraddhāpratīghāta' });
+      expect(result.applies).toBe(false);
+    });
+
+    test('should not apply to a different Devanagari word', () => {
+        const result = sutra('अन्य', { verb: 'kṛ', meaning: 'śraddhāpratīghāta' });
+        expect(result.applies).toBe(false);
+    });
+  });
+
+  // 6 tests
+  describe('Edge Cases', () => {
+    test('should handle null input', () => {
+      const result = sutra(null, satiationContext);
+      expect(result.applies).toBe(false);
+      expect(result.error).toBeDefined();
+    });
+
+    test('should handle undefined input', () => {
+      const result = sutra(undefined, satiationContext);
+      expect(result.applies).toBe(false);
+      expect(result.error).toBeDefined();
+    });
+
+    test('should handle null context', () => {
+      const result = sutra('kaṇe', null);
+      expect(result.applies).toBe(false);
+      expect(result.error).toBeDefined();
+    });
+
+    test('should handle empty context', () => {
+      const result = sutra('manas', {});
+      expect(result.applies).toBe(false);
+    });
+
+    test('should handle number as input', () => {
+        const result = sutra(123, satiationContext);
+        expect(result.applies).toBe(false);
+        expect(result.error).toBeDefined();
+    });
+
+    test('should handle object as input', () => {
+        const result = sutra({word: 'kaṇe'}, satiationContext);
+        expect(result.applies).toBe(false);
+        expect(result.error).toBeDefined();
+    });
+  });
 });

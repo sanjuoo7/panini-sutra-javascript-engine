@@ -23,6 +23,7 @@ function isGatiAlam(word, context) {
 - Checks if the input word is `alam`.
 - Verifies the semantic context implies `bhūṣaṇa` (ornament/decoration).
 - Confirms the presence of a verb in the context.
+- Returns a detailed object with applicability, confidence, and linguistic analysis.
 
 ### Dependencies
 - **Sanskrit Utils**: `transliterate`.
@@ -36,22 +37,66 @@ import { isGatiAlam } from './index.js';
 
 // Example 1: 'alam' meaning 'ornament'
 const result1 = isGatiAlam('alam', { verb: 'kṛ', meaning: 'ornament' });
-console.log(result1); // Expected output: { applies: true, word: 'alam', term: 'gati' }
+console.log(result1);
+/* Expected output:
+{
+  applies: true,
+  confidence: 1,
+  morphological: {
+    category: 'gati',
+    features: ['indeclinable']
+  },
+  semantic: {
+    function: 'pre-verb',
+    type: 'qualifier'
+  },
+  reasons: ["Word is 'alam'", "Context meaning is 'ornament'", "Verb is present in context"]
+}
+*/
 
 // Example 2: Devanagari
 const result2 = isGatiAlam('अलम्', { verb: 'kṛ', meaning: 'ornament' });
-console.log(result2); // Expected output: { applies: true, word: 'अलम्', term: 'gati' }
+console.log(result2);
+/* Expected output:
+{
+  applies: true,
+  confidence: 1,
+  morphological: {
+    category: 'gati',
+    features: ['indeclinable']
+  },
+  semantic: {
+    function: 'pre-verb',
+    type: 'qualifier'
+  },
+  reasons: ["Word is 'अलम्'", "Context meaning is 'ornament'", "Verb is present in context"]
+}
+*/
 ```
 
 ### Advanced Usage
 ```javascript
 // Example of 'alam' used in the sense of 'enough'
 const result3 = isGatiAlam('alam', { verb: 'kṛ', meaning: 'enough' });
-console.log(result3); // Expected output: { applies: false, reason: "Meaning is not 'ornament'" }
+console.log(result3);
+/* Expected output:
+{
+  applies: false,
+  confidence: 0.9,
+  reasons: ["Context meaning is not 'ornament'"]
+}
+*/
 
 // Example without a verb
 const result4 = isGatiAlam('alam', { meaning: 'ornament' });
-console.log(result4); // Expected output: { applies: false, reason: 'Verb context missing' }
+console.log(result4);
+/* Expected output:
+{
+  applies: false,
+  confidence: 1,
+  reasons: ['Verb context missing']
+}
+*/
 ```
 
 ## Test Coverage
@@ -63,6 +108,7 @@ console.log(result4); // Expected output: { applies: false, reason: 'Verb contex
 - Negative cases where the verb is missing.
 - Negative cases for other words.
 - Edge cases with invalid inputs.
+- Validation of the full structured output object.
 
 ### Running Tests
 ```bash
@@ -76,10 +122,10 @@ npm test sutras/1.4.64 --coverage
 ## Technical Details
 
 ### Algorithm
-1.  Check if the input `word` is `alam` (`अलम्`). If not, return `applies: false`.
-2.  Verify that `context.verb` is present. If not, return `applies: false`.
+1.  Check if the input `word` is `alam` (`अलम्`). If not, return a detailed object with `applies: false`.
+2.  Verify that `context.verb` is present. If not, return a detailed object with `applies: false`.
 3.  Check the semantic `context.meaning`. It must be `ornament`.
-4.  If all conditions are met, return `applies: true`. Otherwise, return `applies: false`.
+4.  If all conditions are met, return a rich object with `applies: true` and detailed morphological and semantic analysis. Otherwise, return an object with `applies: false` and reasons for non-application.
 
 ### Performance
 - **Time Complexity**: O(1).
