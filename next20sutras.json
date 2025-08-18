@@ -1,0 +1,307 @@
+Found 20 sutras
+[
+  {
+    "sutra_number": "1.4.41",
+    "sutra_text_iast": "anuparatigṛṇaśaca",
+    "sutra_text_devanagari": "अनुप्रतिगृणश्च",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "अनुप्रतिगृणः",
+        "च",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "कारके",
+        "सम्प्रदानम्",
+        "पूर्वस्य",
+        "कर्ता"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "In the case of the verb गृ preceded by अनु and प्रति and meaning 'to encourage by repeating', the person who was the agent of the prior action, which is repeated, is called सम्प्रदान।",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 579,
+      "akaradi_krama": 215
+    },
+    "categories": {
+      "vishaya1": "संप्रदानम्‌ कारकम्‌",
+      "vishaya2": "कारकम्",
+      "vishaya3": "",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "कारक-सम्प्रदान",
+      "desc2": "",
+      "english": "In the case of the verb गृ preceded by अनु and प्रति and meaning 'to encourage by repeating', the person who was the agent of the prior action, which is repeated, is called सम्प्रदान।"
+    }
+  },
+  {
+    "sutra_number": "1.4.42",
+    "sutra_text_iast": "sādhakatamaṃ karaṇama",
+    "sutra_text_devanagari": "साधकतमं करणम्",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "साधकतमं",
+        "करणम्",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "कारके"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "That which is especially auxiliary in the accomplishment of the action is called Instrument or करण कारक।",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 560,
+      "akaradi_krama": 3715
+    },
+    "categories": {
+      "vishaya1": "करणम्‌ कारकम्‌",
+      "vishaya2": "कारकम्",
+      "vishaya3": "",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "कारक-सम्प्रदान",
+      "desc2": "",
+      "english": "That which is especially auxiliary in the accomplishment of the action is called Instrument or करण कारक।"
+    }
+  },
+  {
+    "sutra_number": "1.4.43",
+    "sutra_text_iast": "divaḥ karama ca",
+    "sutra_text_devanagari": "दिवः कर्म च",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "दिवः",
+        "कर्म",
+        "च",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "कारके",
+        "साधकतमं",
+        "करणम्"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "That which is especially auxiliary in the accomplishment of the action, of the verb दिव् 'to play' is called कर्म - object, as well as करण।",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 562,
+      "akaradi_krama": 1865
+    },
+    "categories": {
+      "vishaya1": "करणम्‌ कारकम्‌",
+      "vishaya2": "कारकम्",
+      "vishaya3": "",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "कारक-करण",
+      "desc2": "",
+      "english": "That which is especially auxiliary in the accomplishment of the action, of the verb दिव् 'to play' is called कर्म - object, as well as करण।"
+    }
+  },
+  {
+    "sutra_number": "1.4.44",
+    "sutra_text_iast": "parikarayaṇe samaparadānamanayatarasayāma",
+    "sutra_text_devanagari": "परिक्रयणे सम्प्रदानमन्यतरस्याम्",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "परिक्रयणे",
+        "सम्प्रदानम्",
+        "अन्यतरस्याम्",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "कारके",
+        "साधकतमं",
+        "करणम्"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "In the case of hiring on wages, that which is especially auxiliary in the accomplishment of the action of the verb परिक्री 'employing on stipulated wages', is optionally called सम्प्रदान or receipient.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 580,
+      "akaradi_krama": 2308
+    },
+    "categories": {
+      "vishaya1": "करणम्‌ कारकम्‌",
+      "vishaya2": "कारकम्",
+      "vishaya3": "",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "कारक-करण",
+      "desc2": "",
+      "english": "In the case of hiring on wages, that which is especially auxiliary in the accomplishment of the action of the verb परिक्री 'employing on stipulated wages', is optionally called सम्प्रदान or receipient."
+    }
+  },
+  {
+    "sutra_number": "1.4.45",
+    "sutra_text_iast": "ādhāro'dhikaraṇama",
+    "sutra_text_devanagari": "आधारोऽधिकरणम्",
+    "type": "sanja",
+    "scope": {
+      "anuvrutti": [
+        "आधारः",
+        "अधिकरणम्",
+        "आ",
+        "कडारात्",
+        "एका",
+        "सञ्ज्ञा",
+        "कारके"
+      ],
+      "adhyaya": 1,
+      "pada": 4,
+      "topic": ""
+    },
+    "sthani": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "adesha": {
+      "phoneme": "",
+      "notes": ""
+    },
+    "context": {
+      "left_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      },
+      "right_context": {
+        "phoneme": "",
+        "properties": [],
+        "notes": ""
+      }
+    },
+    "notes": "That which is related to the action as the site where the action is performed by reason of the agent or the object being in that place is called अधिकरण or location.",
+    "examples": "",
+    "description": "",
+    "krama_numbers": {
+      "sutra_krama": 0,
+      "kaumudi_krama": 632,
+      "akaradi_krama": 536
+    },
+    "categories": {
+      "vishaya1": "अधिकरणम्‌ कारकम्‌",
+      "vishaya2": "कारकम्",
+      "vishaya3": "",
+      "parinam": ""
+    },
+    "original_descriptions": {
+      "desc1": "कारक-सम्प्रदान",
+      "desc2": "",
+      "english": "That which is related to the action as the site where the action is performed by reason of the agent or the object being in that place is called अधिकरण or location."
+    }
+  }
+]
