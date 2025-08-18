@@ -1,7 +1,6 @@
 import isGatiPradhvam from './index.js';
 
 describe('Sutra 1.4.78: prādhvaṃ bandhane', () => {
-    // Positive Test Cases (20 tests)
     describe('Positive Cases: Mandatory "gati" in the sense of binding', () => {
         const positiveCases = [
             // IAST
@@ -32,104 +31,83 @@ describe('Sutra 1.4.78: prādhvaṃ bandhane', () => {
         positiveCases.forEach(({ word, context }) => {
             test(`should apply mandatorily to "${word}"`, () => {
                 const result = isGatiPradhvam(word, context);
-                expect(result.applies).toBe(true);
-                expect(result.optional).toBe(false);
+                expect(result).toMatchObject({
+                    applies: true,
+                    optional: false,
+                    classification: 'गति',
+                    confidence: expect.any(Number),
+                    reason: expect.any(String)
+                });
             });
         });
     });
 
-    // Negative Test Cases (20 tests)
     describe('Negative Cases', () => {
         const negativeCases = [
             // Wrong meaning
-            { word: 'prādhvaṅkṛtya', context: { verb: 'kṛ', meaning: 'sending' } },
-            { word: 'प्राध्वंकृत्य', context: { verb: 'कृ', meaning: 'sending' } },
-            { word: 'prādhvaṅkaroti', context: { verb: 'kṛ', meaning: 'decorating' } },
-            { word: 'प्राध्वंकरोति', context: { verb: 'कृ', meaning: 'decorating' } },
+            { word: 'prādhvaṅkṛtya', context: { verb: 'kṛ', meaning: 'sending' }, reason: "The meaning is not 'binding'." },
+            { word: 'प्राध्वंकृत्य', context: { verb: 'कृ', meaning: 'sending' }, reason: "The meaning is not 'binding'." },
+            { word: 'prādhvaṅkaroti', context: { verb: 'kṛ', meaning: 'decorating' }, reason: "The meaning is not 'binding'." },
+            { word: 'प्राध्वंकरोति', context: { verb: 'कृ', meaning: 'decorating' }, reason: "The meaning is not 'binding'." },
 
             // Wrong verb
-            { word: 'prādhvaṅgacchati', context: { verb: 'gam', meaning: 'binding' } },
-            { word: 'प्राध्वंगच्छति', context: { verb: 'गम्', meaning: 'binding' } },
-            { word: 'prādhvaṃbhavati', context: { verb: 'bhū', meaning: 'binding' } },
-            { word: 'प्राध्वंभवति', context: { verb: 'भू', meaning: 'binding' } },
+            { word: 'prādhvaṅgacchati', context: { verb: 'gam', meaning: 'binding' }, reason: "The verb is not 'kṛ'." },
+            { word: 'प्राध्वंगच्छति', context: { verb: 'गम्', meaning: 'binding' }, reason: "The verb is not 'kṛ'." },
+            { word: 'prādhvaṃbhavati', context: { verb: 'bhū', meaning: 'binding' }, reason: "The verb is not 'kṛ'." },
+            { word: 'प्राध्वंभवति', context: { verb: 'भू', meaning: 'binding' }, reason: "The verb is not 'kṛ'." },
 
             // Word is not prādhvam
-            { word: 'bandhanaṃ kṛtvā', context: { verb: 'kṛ', meaning: 'binding' } },
-            { word: 'बन्धनं कृत्वा', context: { verb: 'कृ', meaning: 'binding' } },
-            { word: 'anyat kṛtvā', context: { verb: 'kṛ', meaning: 'binding' } },
-            { word: 'अन्यत् कृत्वा', context: { verb: 'कृ', meaning: 'binding' } },
+            { word: 'bandhanaṃ kṛtvā', context: { verb: 'kṛ', meaning: 'binding' }, reason: "The word is not 'prādhvam'." },
+            { word: 'बन्धनं कृत्वा', context: { verb: 'कृ', meaning: 'binding' }, reason: "The word is not 'prādhvam'." },
+            { word: 'anyat kṛtvā', context: { verb: 'kṛ', meaning: 'binding' }, reason: "The word is not 'prādhvam'." },
+            { word: 'अन्यत् कृत्वा', context: { verb: 'कृ', meaning: 'binding' }, reason: "The word is not 'prādhvam'." },
 
             // Incomplete words
-            { word: 'prādhvam', context: { verb: 'kṛ', meaning: 'binding' } },
-            { word: 'प्राध्वम्', context: { verb: 'कृ', meaning: 'binding' } },
-            { word: 'kṛtvā', context: { verb: 'kṛ', meaning: 'binding' } },
-            { word: 'कृत्वा', context: { verb: 'कृ', meaning: 'binding' } },
+            { word: 'prādhvam', context: { verb: 'kṛ', meaning: 'binding' }, reason: "The word is incomplete." },
+            { word: 'प्राध्वम्', context: { verb: 'कृ', meaning: 'binding' }, reason: "The word is incomplete." },
+            { word: 'kṛtvā', context: { verb: 'kṛ', meaning: 'binding' }, reason: "The word is not 'prādhvam'." },
+            { word: 'कृत्वा', context: { verb: 'कृ', meaning: 'binding' }, reason: "The word is not 'prādhvam'." },
 
             // Similar sounding words
-            { word: 'prādhānyam kṛtvā', context: { verb: 'kṛ', meaning: 'making important' } },
-            { word: 'प्राधान्यं कृत्वा', context: { verb: 'कृ', meaning: 'making important' } },
-            { word: 'dhvaṃsanam kṛtvā', context: { verb: 'kṛ', meaning: 'destroying' } },
-            { word: 'ध्वंसनं कृत्वा', context: { verb: 'कृ', meaning: 'destroying' } },
+            { word: 'prādhānyam kṛtvā', context: { verb: 'kṛ', meaning: 'making important' }, reason: "The word is not 'prādhvam'." },
+            { word: 'प्राधान्यं कृत्वा', context: { verb: 'कृ', meaning: 'making important' }, reason: "The word is not 'prādhvam'." },
+            { word: 'dhvaṃsanam kṛtvā', context: { verb: 'kṛ', meaning: 'destroying' }, reason: "The word is not 'prādhvam'." },
+            { word: 'ध्वंसनं कृत्वा', context: { verb: 'कृ', meaning: 'destroying' }, reason: "The word is not 'prādhvam'." },
         ];
 
-        negativeCases.forEach(({ word, context }) => {
-            test(`should not apply to "${word}"`, () => {
+        negativeCases.forEach(({ word, context, reason }) => {
+            test(`should not apply to "${word}" because ${reason}`, () => {
                 const result = isGatiPradhvam(word, context);
-                expect(result.applies).toBe(false);
+                expect(result).toMatchObject({
+                    applies: false,
+                    reason: expect.any(String)
+                });
             });
         });
     });
 
-    // Edge Cases (10 tests)
-    describe('Edge Cases', () => {
-        test('should handle null input gracefully', () => {
-            const result = isGatiPradhvam(null);
-            expect(result.applies).toBe(false);
-        });
+    describe('Edge Cases and Error Handling', () => {
+        const edgeCases = [
+            { input: null, description: 'null input' },
+            { input: undefined, description: 'undefined input' },
+            { input: 12345, description: 'non-string input' },
+            { input: '', description: 'empty string' },
+            { input: 'prādhvaṅkṛtya', context: undefined, description: 'missing context' },
+            { input: 'prādhvaṅkṛtya', context: {}, description: 'empty context' },
+            { input: 'prādhvaṅkṛtya', context: { meaning: 'binding' }, description: 'context missing verb' },
+            { input: 'prādhvaṅkṛtya', context: { verb: 'kṛ' }, description: 'context missing meaning' },
+            { input: 'prādhvaṅkṛtya', context: { verb: null, meaning: 'binding' }, description: 'context with null verb' },
+            { input: 'prādhvam-kṛtya!', context: { verb: 'kṛ', meaning: 'binding' }, description: 'word with special characters' },
+        ];
 
-        test('should handle undefined input gracefully', () => {
-            const result = isGatiPradhvam(undefined);
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle non-string input', () => {
-            const result = isGatiPradhvam(12345);
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle empty string', () => {
-            const result = isGatiPradhvam('');
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle missing context', () => {
-            const result = isGatiPradhvam('prādhvaṅkṛtya');
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle empty context', () => {
-            const result = isGatiPradhvam('prādhvaṅkṛtya', {});
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle context missing verb', () => {
-            const result = isGatiPradhvam('prādhvaṅkṛtya', { meaning: 'binding' });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle context missing meaning', () => {
-            const result = isGatiPradhvam('prādhvaṅkṛtya', { verb: 'kṛ' });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle context with null verb', () => {
-            const result = isGatiPradhvam('prādhvaṅkṛtya', { verb: null, meaning: 'binding' });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle word with special characters', () => {
-            const result = isGatiPradhvam('prādhvam-kṛtya!', { verb: 'kṛ', meaning: 'binding' });
-            expect(result.applies).toBe(false);
+        edgeCases.forEach(({ input, context, description }) => {
+            test(`should handle ${description} gracefully`, () => {
+                const result = isGatiPradhvam(input, context);
+                expect(result).toMatchObject({
+                    applies: false,
+                    error: expect.any(String)
+                });
+            });
         });
     });
 });

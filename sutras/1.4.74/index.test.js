@@ -1,149 +1,110 @@
 import isGatiSaksatPrabhrtini from './index.js';
 
 describe('Sutra 1.4.74: sākaṣātaparabhṛtīni ca', () => {
-    // Positive Test Cases (32 tests)
     describe('Positive Cases: Optional "gati" for "sākṣāt" and other words with "kṛ"', () => {
         const positiveCases = [
-            // IAST - sākṣāt
-            { word: 'sākṣātkṛtya', context: { verb: 'kṛ' } },
-            { word: 'sākṣātkṛtvā', context: { verb: 'kṛ' } },
-            { word: 'sākṣātkaroti', context: { verb: 'kṛ' } },
-            { word: 'sākṣātkṛtam', context: { verb: 'kṛ' } },
-            // IAST - mithyā
-            { word: 'mithyākṛtya', context: { verb: 'kṛ' } },
-            { word: 'mithyākaroti', context: { verb: 'kṛ' } },
-            // IAST - lavaṇam
-            { word: 'lavaṇankṛtya', context: { verb: 'kṛ' } },
-            { word: 'lavaṇamkaroti', context: { verb: 'kṛ' } },
-            // IAST - uṣṇam
-            { word: 'uṣṇankṛtya', context: { verb: 'kṛ' } },
-            { word: 'uṣṇamkaroti', context: { verb: 'kṛ' } },
-             // IAST - mañju
-            { word: 'mañjukṛtya', context: { verb: 'kṛ' } },
-            { word: 'mañjukaroti', context: { verb: 'kṛ' } },
-            // IAST - pṛthak
-            { word: 'pṛthakkṛtya', context: { verb: 'kṛ' } },
-            { word: 'pṛthakkaroti', context: { verb: 'kṛ' } },
-             // IAST - śukla
-            { word: 'śuklīkṛtya', context: { verb: 'kṛ' } },
-            { word: 'śuklīkaroti', context: { verb: 'kṛ' } },
+            // IAST
+            { word: 'sākṣātkṛtya', keyword: 'sākṣāt', context: { verb: 'kṛ' } },
+            { word: 'sākṣātkaroti', keyword: 'sākṣāt', context: { verb: 'kṛ' } },
+            { word: 'mithyākṛtya', keyword: 'mithyā', context: { verb: 'kṛ' } },
+            { word: 'mithyākaroti', keyword: 'mithyā', context: { verb: 'kṛ' } },
+            { word: 'lavaṇaṅkṛtya', keyword: 'lavaṇam', context: { verb: 'kṛ' } },
+            { word: 'lavaṇaṅkaroti', keyword: 'lavaṇam', context: { verb: 'kṛ' } },
+            { word: 'uṣṇaṅkṛtya', keyword: 'uṣṇam', context: { verb: 'kṛ' } },
+            { word: 'uṣṇaṅkaroti', keyword: 'uṣṇam', context: { verb: 'kṛ' } },
+            { word: 'mañjukṛtya', keyword: 'mañju', context: { verb: 'kṛ' } },
+            { word: 'mañjukaroti', keyword: 'mañju', context: { verb: 'kṛ' } },
+            { word: 'pṛthakkṛtya', keyword: 'pṛthak', context: { verb: 'kṛ' } },
+            { word: 'pṛthakkaroti', keyword: 'pṛthak', context: { verb: 'kṛ' } },
+            { word: 'śuklīkṛtya', keyword: 'śukla', context: { verb: 'kṛ' } },
+            { word: 'śuklīkaroti', keyword: 'śukla', context: { verb: 'kṛ' } },
 
-
-            // Devanagari - साक्षात्
-            { word: 'साक्षात्कृत्य', context: { verb: 'कृ' } },
-            { word: 'साक्षात्कृत्वा', context: { verb: 'कृ' } },
-            { word: 'साक्षात्कारोति', context: { verb: 'कृ' } },
-            { word: 'साक्षात्कृतम्', context: { verb: 'कृ' } },
-            // Devanagari - मिथ्या
-            { word: 'मिथ्याकृत्य', context: { verb: 'कृ' } },
-            { word: 'मिथ्याकरोति', context: { verb: 'कृ' } },
-            // Devanagari - लवणम्
-            { word: 'लवणंकृत्य', context: { verb: 'कृ' } },
-            { word: 'लवणंकरोति', context: { verb: 'कृ' } },
-            // Devanagari - उष्णम्
-            { word: 'उष्णंकृत्य', context: { verb: 'कृ' } },
-            { word: 'उष्णंकरोति', context: { verb: 'कृ' } },
-            // Devanagari - मञ्जु
-            { word: 'मञ्जुृत्य', context: { verb: 'कृ' } },
-            { word: 'मञ्जुकरोति', context: { verb: 'कृ' } },
-             // Devanagari - पृथक्
-            { word: 'पृथक्कृत्य', context: { verb: 'कृ' } },
-            { word: 'पृथक्करोति', context: { verb: 'कृ' } },
-             // Devanagari - शुक्ल
-            { word: 'शुक्लीकृत्य', context: { verb: 'कृ' } },
-            { word: 'शुक्लीकरोति', context: { verb: 'कृ' } },
+            // Devanagari
+            { word: 'साक्षात्कृत्य', keyword: 'साक्षात्', context: { verb: 'कृ' } },
+            { word: 'साक्षात्कारोति', keyword: 'साक्षात्', context: { verb: 'कृ' } },
+            { word: 'मिथ्याकृत्य', keyword: 'मिथ्या', context: { verb: 'कृ' } },
+            { word: 'मिथ्याकरोति', keyword: 'मिथ्या', context: { verb: 'कृ' } },
+            { word: 'लवणंकृत्य', keyword: 'लवणम्', context: { verb: 'कृ' } },
+            { word: 'लवणंकरोति', keyword: 'लवणम्', context: { verb: 'कृ' } },
+            { word: 'उष्णंकृत्य', keyword: 'उष्णम्', context: { verb: 'कृ' } },
+            { word: 'उष्णंकरोति', keyword: 'उष्णम्', context: { verb: 'कृ' } },
+            { word: 'मञ्जुृत्य', keyword: 'मञ्जु', context: { verb: 'कृ' } },
+            { word: 'मञ्जुकरोति', keyword: 'मञ्जु', context: { verb: 'कृ' } },
+            { word: 'पृथक्कृत्य', keyword: 'पृथक्', context: { verb: 'कृ' } },
+            { word: 'पृथक्करोति', keyword: 'पृथक्', context: { verb: 'कृ' } },
+            { word: 'शुक्लीकृत्य', keyword: 'शुक्ल', context: { verb: 'कृ' } },
+            { word: 'शुक्लीकरोति', keyword: 'शुक्ल', context: { verb: 'कृ' } },
         ];
 
-        positiveCases.forEach(({ word, context }) => {
+        positiveCases.forEach(({ word, keyword, context }) => {
             test(`should apply optionally to "${word}"`, () => {
                 const result = isGatiSaksatPrabhrtini(word, context);
-                expect(result.applies).toBe(true);
-                expect(result.optional).toBe(true);
+                expect(result).toMatchObject({
+                    applies: true,
+                    optional: true,
+                    classification: 'गति',
+                    keyword: keyword,
+                    confidence: expect.any(Number),
+                    reason: expect.any(String)
+                });
             });
         });
     });
 
-    // Negative Test Cases (12 tests)
     describe('Negative Cases', () => {
         const negativeCases = [
             // Wrong verb
-            { word: 'sākṣātbhavati', context: { verb: 'bhū' } },
-            { word: 'साक्षाद्भवति', context: { verb: 'भू' } },
-            { word: 'mithyāvadati', context: { verb: 'vad' } },
-            { word: 'मिथ्यावदति', context: { verb: 'वद्' } },
+            { word: 'sākṣātbhavati', context: { verb: 'bhū' }, reason: "The verb is not 'kṛ'." },
+            { word: 'साक्षाद्भवति', context: { verb: 'भू' }, reason: "The verb is not 'kṛ'." },
+            { word: 'mithyāvadati', context: { verb: 'vad' }, reason: "The verb is not 'kṛ'." },
+            { word: 'मिथ्यावदति', context: { verb: 'वद्' }, reason: "The verb is not 'kṛ'." },
 
             // Word not in the group
-            { word: 'anyathākṛtya', context: { verb: 'kṛ' } },
-            { word: 'अन्यथाकृत्य', context: { verb: 'कृ' } },
-            { word: 'gṛhaṃkṛtvā', context: { verb: 'kṛ' } },
-            { word: 'गृहंकृत्वा', context: { verb: 'कृ' } },
+            { word: 'anyathākṛtya', context: { verb: 'kṛ' }, reason: "The word is not in the sākṣātprabhṛtīni group." },
+            { word: 'अन्यथाकृत्य', context: { verb: 'कृ' }, reason: "The word is not in the sākṣātprabhṛtīni group." },
+            { word: 'gṛhaṃkṛtvā', context: { verb: 'kṛ' }, reason: "The word is not in the sākṣātprabhṛtīni group." },
+            { word: 'गृहंकृत्वा', context: { verb: 'कृ' }, reason: "The word is not in the sākṣātprabhṛtīni group." },
 
             // Incomplete word
-            { word: 'sākṣāt', context: { verb: 'kṛ' } },
-            { word: 'साक्षात्', context: { verb: 'कृ' } },
-            { word: 'mithyā', context: { verb: 'kṛ' } },
-            { word: 'मिथ्या', context: { verb: 'कृ' } },
+            { word: 'sākṣāt', context: { verb: 'kṛ' }, reason: "The word is incomplete." },
+            { word: 'साक्षात्', context: { verb: 'कृ' }, reason: "The word is incomplete." },
+            { word: 'mithyā', context: { verb: 'kṛ' }, reason: "The word is incomplete." },
+            { word: 'मिथ्या', context: { verb: 'कृ' }, reason: "The word is incomplete." },
         ];
 
-        negativeCases.forEach(({ word, context }) => {
-            test(`should not apply to "${word}"`, () => {
+        negativeCases.forEach(({ word, context, reason }) => {
+            test(`should not apply to "${word}" because ${reason}`, () => {
                 const result = isGatiSaksatPrabhrtini(word, context);
-                expect(result.applies).toBe(false);
+                expect(result).toMatchObject({
+                    applies: false,
+                    reason: expect.any(String)
+                });
             });
         });
     });
 
-    // Edge Cases (10 tests)
-    describe('Edge Cases', () => {
-        test('should handle null input gracefully', () => {
-            const result = isGatiSaksatPrabhrtini(null);
-            expect(result.applies).toBe(false);
-        });
+    describe('Edge Cases and Error Handling', () => {
+        const edgeCases = [
+            { input: null, description: 'null input' },
+            { input: undefined, description: 'undefined input' },
+            { input: 54321, description: 'non-string input' },
+            { input: '', description: 'empty string' },
+            { input: 'sākṣātkṛtya', context: undefined, description: 'missing context' },
+            { input: 'sākṣātkṛtya', context: {}, description: 'empty context object' },
+            { input: 'sākṣātkṛtya', context: { meaning: 'some meaning' }, description: 'context missing verb' },
+            { input: 'sākṣāt-kṛtya!', context: { verb: 'kṛ' }, description: 'word with special characters' },
+            { input: 'sākṣātkṛtya' + 'b'.repeat(1000), context: { verb: 'kṛ' }, description: 'long string input' },
+            { input: 'asākṣātkṛtya', context: { verb: 'kṛ' }, description: 'word not starting with a keyword from the gana' },
+        ];
 
-        test('should handle undefined input gracefully', () => {
-            const result = isGatiSaksatPrabhrtini(undefined);
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle non-string input', () => {
-            const result = isGatiSaksatPrabhrtini(54321);
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle empty string', () => {
-            const result = isGatiSaksatPrabhrtini('');
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle missing context', () => {
-            const result = isGatiSaksatPrabhrtini('sākṣātkṛtya');
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle empty context object', () => {
-            const result = isGatiSaksatPrabhrtini('sākṣātkṛtya', {});
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle context missing verb', () => {
-            const result = isGatiSaksatPrabhrtini('sākṣātkṛtya', { meaning: 'some meaning' });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle word with special characters', () => {
-            const result = isGatiSaksatPrabhrtini('sākṣāt-kṛtya!', { verb: 'kṛ' });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should handle long string input', () => {
-            const longString = 'sākṣātkṛtya' + 'b'.repeat(1000);
-            const result = isGatiSaksatPrabhrtini(longString, { verb: 'kṛ' });
-            expect(result.applies).toBe(false);
-        });
-
-        test('should require a full word from the gana, not a substring', () => {
-            const result = isGatiSaksatPrabhrtini('asākṣātkṛtya', { verb: 'kṛ' });
-            expect(result.applies).toBe(false);
+        edgeCases.forEach(({ input, context, description }) => {
+            test(`should handle ${description} gracefully`, () => {
+                const result = isGatiSaksatPrabhrtini(input, context);
+                expect(result).toMatchObject({
+                    applies: false,
+                    error: expect.any(String)
+                });
+            });
         });
     });
 });
