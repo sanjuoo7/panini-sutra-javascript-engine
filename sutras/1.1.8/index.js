@@ -27,126 +27,164 @@ const ARTICULATION_DATA = {
 };
 
 /**
- * Enhanced educational function implementing Sutra 1.1.8
+ * Main educational analysis function - Core sutra implementation
+ * 
  * @param {string} phoneme - The phoneme to analyze for anunāsika classification
- * @param {Object} options - Analysis options for educational detail
- * @returns {Object} - Comprehensive educational analysis
+ * @param {Object} context - Additional context for analysis
+ * @returns {Object} - Comprehensive educational analysis object
  */
-export function sutra118(phoneme, options = {}) {
-  const {
-    includeExamples = true,
-    includeArticulation = true,
-    includeTradition = true,
-    scriptPreference = null
-  } = options;
-
-  // Handle empty input
-  if (typeof phoneme !== 'string' || phoneme.trim() === '') {
+export function sutra118(phoneme, context = {}) {
+  // Input validation and normalization
+  if (!phoneme || typeof phoneme !== 'string') {
     return {
-      input: phoneme,
-      sutraApplied: '1.1.8',
-      sutraName: 'mukhanāsikāvacano\'nunāsikaḥ',
-      sutraText: 'मुखनासिकावचनो\'नुनासिकः',
-      applies: false,
       isAnunasika: false,
-      error: phoneme === '' ? 'empty_input' : 'invalid_phoneme_input',
-      explanation: 'Invalid input provided for anunāsika analysis'
+      sutraApplied: '1.1.8',
+      confidence: 0.0,
+      analysis: {
+        error: 'Invalid input',
+        traditionalCommentary: 'अशुद्धं पदम्',
+        modernExplanation: 'Input validation failed - phoneme must be a non-empty string',
+        educationalNote: 'प्रविष्टि परीक्षा विफलता (Input validation failure)'
+      }
     };
   }
 
-  const script = detectScript(phoneme);
-  const normalizedPhoneme = normalizeScript(phoneme);
-  
-  // Core anunāsika analysis
-  let isAnunasika = false;
-  let articulationDetails = null;
-  
   try {
-    const phonemeObj = new Phoneme(phoneme);
-    isAnunasika = phonemeObj.isAnunasika();
+    const script = detectScript(phoneme);
+    const normalizedPhoneme = normalizeScript(phoneme);
     
-    // Get detailed articulation information
-    if (includeArticulation && isAnunasika) {
-      const phonemeKey = script === 'devanagari' ? phoneme : normalizedPhoneme;
-      articulationDetails = ARTICULATION_DATA[phonemeKey] || null;
+    // Educational analysis object
+    const analysis = {
+      phoneme: phoneme,
+      script: script,
+      sutraApplied: '1.1.8',
+      rule: 'मुखनासिकावचनो\'नुनासिकः',
+      meaning: 'A sound pronounced through both mouth and nose is anunāsika',
+      
+      traditionalCommentary: {
+        primary: 'मुखेन नासिकया च उच्चार्यमाणो वर्णो अनुनासिक इत्युच्यते। द्विमार्गेण प्राणवायोः निर्गमनम्।',
+        explanation: 'A sound articulated through both mouth (मुख) and nose (नासिका) is termed anunāsika. This requires airflow through two channels simultaneously.',
+        authorityReference: 'व्याकरणमहाभाष्यम् - Mahābhāṣya commentary on fundamental phoneme classification',
+        phoneticPrinciple: 'द्विमार्गीय प्राणप्रवाह - Dual-channel airflow principle'
+      },
+      
+      modernExplanation: {
+        grammaticalContext: 'Foundational phoneme classification for Sanskrit sound system',
+        phoneticReasoning: 'Defines nasality as simultaneous oral and nasal articulation',
+        functionalPurpose: 'Essential for distinguishing nasal consonants and anusvāra',
+        linguisticSignificance: 'Establishes basis for all nasal sound operations in Sanskrit grammar',
+        articulatoryMechanism: 'Requires lowered velum allowing nasal cavity resonance'
+      },
+      
+      phoneticAnalysis: {
+        articulatoryProcess: 'Simultaneous oral and nasal airflow during sound production',
+        anatomicalRequirement: 'Lowered soft palate (velum) for nasal cavity access',
+        acousticProperties: 'Additional nasal resonance modifying oral sound quality',
+        distinctiveFeature: '[+nasal] in phonological feature system'
+      },
+      
+      examples: {
+        devanagari: [
+          { phoneme: 'ङ्', type: 'कवर्ग nasal', place: 'कण्ठ (velar)', word: 'अङ्गम्', meaning: 'limb' },
+          { phoneme: 'ञ्', type: 'चवर्ग nasal', place: 'तालु (palatal)', word: 'यज्ञ', meaning: 'sacrifice' },
+          { phoneme: 'ण्', type: 'टवर्ग nasal', place: 'मूर्धा (retroflex)', word: 'गुण', meaning: 'quality' },
+          { phoneme: 'न्', type: 'तवर्ग nasal', place: 'दन्त (dental)', word: 'नाम', meaning: 'name' },
+          { phoneme: 'म्', type: 'पवर्ग nasal', place: 'ओष्ठ (labial)', word: 'माम', meaning: 'me' },
+          { phoneme: 'ं', type: 'अनुस्वार', place: 'universal', word: 'संस्कृत', meaning: 'Sanskrit' }
+        ],
+        iast: [
+          { phoneme: 'ṅ', type: 'kavarga nasal', place: 'velar', word: 'aṅgam', meaning: 'limb' },
+          { phoneme: 'ñ', type: 'cavarga nasal', place: 'palatal', word: 'yajña', meaning: 'sacrifice' },
+          { phoneme: 'ṇ', type: 'ṭavarga nasal', place: 'retroflex', word: 'guṇa', meaning: 'quality' },
+          { phoneme: 'n', type: 'tavarga nasal', place: 'dental', word: 'nāma', meaning: 'name' },
+          { phoneme: 'm', type: 'pavarga nasal', place: 'labial', word: 'mām', meaning: 'me' },
+          { phoneme: 'ṃ', type: 'anusvāra', place: 'universal', word: 'saṃskṛta', meaning: 'Sanskrit' }
+        ],
+        counterExamples: [
+          { phoneme: 'क', reason: 'Oral stop - no nasal airflow', classification: 'अननुनासिक' },
+          { phoneme: 'त', reason: 'Oral stop - no nasal airflow', classification: 'अननुनासिक' },
+          { phoneme: 'प', reason: 'Oral stop - no nasal airflow', classification: 'अननुनासिक' }
+        ]
+      },
+      
+      articulationMatrix: {
+        places: {
+          कण्ठ: { anunasika: 'ङ्', oral: ['क्', 'ख्', 'ग्', 'घ्'] },
+          तालु: { anunasika: 'ञ्', oral: ['च्', 'छ्', 'ज्', 'झ्'] },
+          मूर्धा: { anunasika: 'ण्', oral: ['ट्', 'ठ्', 'ड्', 'ढ्'] },
+          दन्त: { anunasika: 'न्', oral: ['त्', 'थ्', 'द्', 'ध्'] },
+          ओष्ठ: { anunasika: 'म्', oral: ['प्', 'फ्', 'ब्', 'भ्'] }
+        },
+        systematicPattern: 'Each consonant series (वर्ग) has exactly one anunāsika member'
+      },
+      
+      relatedSutras: {
+        preceding: ['1.1.7 (संयोग definition)', '1.1.6 (IT marker rules)'],
+        following: ['1.1.9 (सवर्ण definition)', '1.1.10 (अच्-हल् prohibition)'],
+        crossReferences: ['8.4.58 (Anusvāra rules)', '1.3.2 (IT marker designation)'],
+        integrationNote: 'Foundation for all nasal consonant operations and anusvāra placement rules'
+      }
+    };
+
+    // Determine if phoneme is anunāsika
+    let isAnunasika = false;
+    let detailedReasoning = '';
+    let articulationDetails = null;
+    
+    try {
+      // Primary classification method using phoneme object
+      const phonemeObj = new Phoneme(phoneme);
+      isAnunasika = phonemeObj.isAnunasika();
+    } catch (error) {
+      // Fallback method: Direct lookup
+      isAnunasika = ANUNASIKA_PHONEMES.devanagari.includes(phoneme) || 
+                    ANUNASIKA_PHONEMES.iast.includes(phoneme) ||
+                    ANUNASIKA_PHONEMES.iast.includes(normalizedPhoneme);
     }
+    
+    // Get articulation details
+    const phonemeKey = script === 'devanagari' ? phoneme : normalizedPhoneme;
+    articulationDetails = ARTICULATION_DATA[phonemeKey];
+    
+    if (isAnunasika) {
+      detailedReasoning = 'मुखनासिकावचनः - Requires simultaneous oral and nasal airflow during articulation';
+    } else {
+      detailedReasoning = 'केवलमुखोच्चारणम् - Articulated only through oral cavity without nasal resonance';
+    }
+
+    return {
+      isAnunasika: isAnunasika,
+      sutraApplied: '1.1.8',
+      confidence: 1.0,
+      analysis: {
+        ...analysis,
+        result: isAnunasika ? 'अनुनासिक (anunāsika)' : 'अननुनासिक (not anunāsika)',
+        detailedReasoning: detailedReasoning,
+        phoneticClassification: {
+          nasality: isAnunasika ? 'nasal' : 'oral',
+          articulatoryDetails: articulationDetails || 'Not found in classification matrix',
+          phoneticFeatures: isAnunasika ? '[+nasal, +consonantal]' : '[−nasal]',
+          functionalRole: isAnunasika ? 'Nasal stop in consonant series' : 'Oral consonant or vowel'
+        },
+        educationalNote: isAnunasika ? 
+          'Anunāsika phonemes form the nasal component of each consonant series (वर्ग)' :
+          'Non-anunāsika sounds are articulated without nasal cavity involvement'
+      }
+    };
+    
   } catch (error) {
-    isAnunasika = false;
+    return {
+      isAnunasika: false,
+      sutraApplied: '1.1.8',
+      confidence: 0.0,
+      analysis: {
+        error: error.message,
+        traditionalCommentary: 'दोषः उत्पन्नः',
+        modernExplanation: 'Processing error occurred during phonetic analysis',
+        educationalNote: 'विश्लेषणे त्रुटिः (Analysis error)'
+      }
+    };
   }
-
-  // Alternative method: Direct classification check
-  if (!isAnunasika) {
-    isAnunasika = ANUNASIKA_PHONEMES.devanagari.includes(phoneme) || 
-                  ANUNASIKA_PHONEMES.iast.includes(phoneme) ||
-                  ANUNASIKA_PHONEMES.iast.includes(normalizedPhoneme);
-  }
-
-  // Build comprehensive analysis
-  const analysis = {
-    input: phoneme,
-    sutraApplied: '1.1.8',
-    sutraName: 'mukhanāsikāvacano\'nunāsikaḥ',
-    sutraText: 'मुखनासिकावचनो\'नुनासिकः',
-    applies: isAnunasika,
-    isAnunasika: isAnunasika,
-    
-    // Classification details
-    classification: isAnunasika ? 'अनुनासिक (anunāsika)' : 'अननुनासिक (ananunāsika)',
-    phoneticNature: isAnunasika ? 'nasal_sound' : 'oral_sound',
-    
-    // Script information
-    script: script,
-    normalizedForm: normalizedPhoneme,
-    
-    // Linguistic explanation
-    explanation: isAnunasika 
-      ? `The phoneme '${phoneme}' is classified as अनुनासिक (anunāsika) because it requires simultaneous pronunciation through both mouth (मुख) and nose (नासिका)`
-      : `The phoneme '${phoneme}' is not अनुनासिक (anunāsika) as it does not require nasal airflow during pronunciation`,
-    
-    // Traditional definition
-    traditionalDefinition: includeTradition ? {
-      sanskrit: 'मुखनासिकावचनः अनुनासिकः',
-      translation: 'That which is pronounced through mouth and nose is anunāsika',
-      commentary: 'This sutra establishes the technical definition for nasal sounds in Sanskrit phonology'
-    } : null,
-    
-    // Detailed phonetic analysis
-    phoneticAnalysis: includeArticulation && articulationDetails ? {
-      placeOfArticulation: articulationDetails.place,
-      mannerOfArticulation: articulationDetails.manner,
-      phoneticClass: articulationDetails.class,
-      nasalAirflow: isAnunasika ? 'required' : 'not_required',
-      oralAirflow: 'always_required'
-    } : null,
-    
-    // Educational examples
-    examples: includeExamples ? {
-      anunasika: [
-        { phoneme: 'ङ', word: 'अङ्गम्', meaning: 'limb', context: 'kavarga nasal' },
-        { phoneme: 'ञ', word: 'यज्ञ', meaning: 'sacrifice', context: 'cavarga nasal' },
-        { phoneme: 'ण', word: 'गुण', meaning: 'quality', context: 'ṭavarga nasal' },
-        { phoneme: 'न', word: 'नाम', meaning: 'name', context: 'tavarga nasal' },
-        { phoneme: 'म', word: 'माम', meaning: 'me', context: 'pavarga nasal' }
-      ],
-      nonAnunasika: [
-        { phoneme: 'क', word: 'कमल', meaning: 'lotus', context: 'oral stop' },
-        { phoneme: 'त', word: 'तत्', meaning: 'that', context: 'oral stop' },
-        { phoneme: 'प', word: 'पत्र', meaning: 'leaf', context: 'oral stop' }
-      ]
-    } : null,
-    
-    // Cross-reference information
-    relatedSutras: [
-      { sutra: '1.1.9', name: 'tulyāsyaprayatnaṃ savarṇam', relation: 'savarna classification depends on anunāsika nature' },
-      { sutra: '1.1.10', name: 'nājjhalau', relation: 'prohibits savarna between vowels and consonants' }
-    ],
-    
-    // Confidence scoring
-    confidence: isAnunasika ? 1.0 : 1.0, // Definitive classification
-    analysisMethod: 'traditional_phoneme_matrix'
-  };
-
-  return analysis;
 }
 
 // Maintain backward compatibility

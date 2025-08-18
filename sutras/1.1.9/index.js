@@ -42,162 +42,211 @@ const ARTICULATION_PROPERTIES = {
 };
 
 /**
- * Enhanced educational function implementing Sutra 1.1.9
+ * Main educational analysis function - Core sutra implementation
+ * 
  * @param {string} phoneme1 - First phoneme to compare
  * @param {string} phoneme2 - Second phoneme to compare  
- * @param {Object} options - Analysis options for educational detail
- * @returns {Object} - Comprehensive savarṇa analysis
+ * @param {Object} context - Additional context for analysis
+ * @returns {Object} - Comprehensive educational analysis object
  */
-export function sutra119(phoneme1, phoneme2, options = {}) {
-  const {
-    includeExamples = true,
-    includeArticulation = true,
-    includeTradition = true,
-    scriptPreference = null,
-    explainNonSavarna = true
-  } = options;
-
-  // Handle invalid input
+export function sutra119(phoneme1, phoneme2, context = {}) {
+  // Input validation and normalization
   if (!phoneme1 || !phoneme2 || typeof phoneme1 !== 'string' || typeof phoneme2 !== 'string') {
     return {
-      input: { phoneme1, phoneme2 },
-      sutraApplied: '1.1.9',
-      sutraName: 'tulyāsyaprayatnaṃ savarṇam',
-      sutraText: 'तुल्यास्यप्रयत्नं सवर्णम्',
-      applies: false,
       areSavarna: false,
-      error: 'invalid_phoneme_input',
-      explanation: 'Both phonemes must be valid strings for savarṇa analysis'
+      sutraApplied: '1.1.9',
+      confidence: 0.0,
+      analysis: {
+        error: 'Invalid input',
+        traditionalCommentary: 'अशुद्धे पदे',
+        modernExplanation: 'Input validation failed - both phonemes must be non-empty strings',
+        educationalNote: 'प्रविष्टि परीक्षा विफलता (Input validation failure)'
+      }
     };
   }
 
-  const script1 = detectScript(phoneme1);
-  const script2 = detectScript(phoneme2);
-  const normalized1 = normalizeScript(phoneme1);
-  const normalized2 = normalizeScript(phoneme2);
-  
-  // Core savarṇa analysis using multiple methods
-  let areSavarna = false;
-  let articulationAnalysis = null;
-  let savarnaGroup = null;
-  let prohibitionReason = null;
-  
   try {
-    // Method 1: Using Phoneme class
-    const phonemeObj1 = new Phoneme(phoneme1);
-    const phonemeObj2 = new Phoneme(phoneme2);
-
-    // Check Sutra 1.1.10 prohibition (no savarṇa between vowels and consonants)
-    if (phonemeObj1.type !== phonemeObj2.type) {
-      areSavarna = false;
-      prohibitionReason = 'sutra_1_1_10_prohibition';
-    } else {
-      areSavarna = (
-        phonemeObj1.placeOfArticulation === phonemeObj2.placeOfArticulation &&
-        phonemeObj1.mannerOfArticulation === phonemeObj2.mannerOfArticulation
-      );
-    }
+    const script1 = detectScript(phoneme1);
+    const script2 = detectScript(phoneme2);
+    const normalized1 = normalizeScript(phoneme1);
+    const normalized2 = normalizeScript(phoneme2);
     
-    // Get detailed articulation analysis
-    if (includeArticulation) {
-      articulationAnalysis = {
-        phoneme1: {
-          place: phonemeObj1.placeOfArticulation,
-          manner: phonemeObj1.mannerOfArticulation,
-          type: phonemeObj1.type
+    // Educational analysis object
+    const analysis = {
+      phonemes: { first: phoneme1, second: phoneme2 },
+      scripts: { first: script1, second: script2 },
+      sutraApplied: '1.1.9',
+      rule: 'तुल्यास्यप्रयत्नं सवर्णम्',
+      meaning: 'Phonemes with identical place and manner of articulation are savarṇa',
+      
+      traditionalCommentary: {
+        primary: 'तुल्यं समानमास्यं मुखस्थानं प्रयत्नश्च यत्नो येषां ते सवर्णाः। समानोच्चारणस्थानप्रयत्नवन्तः।',
+        explanation: 'Phonemes sharing identical आस्य (place of articulation in mouth) and प्रयत्न (articulatory effort/manner) are designated as सवर्ण (homogeneous).',
+        authorityReference: 'पाणिनीयशिक्षा व महाभाष्यम् - Traditional phonetic treatises and Mahābhāṣya',
+        technicalPrinciple: 'स्थानप्रयत्नसाम्य - Principle of articulatory identity'
+      },
+      
+      modernExplanation: {
+        grammaticalContext: 'Fundamental phonemic classification for Sanskrit morphophonology',
+        phoneticReasoning: 'Defines phonemic equivalence based on articulatory features',
+        functionalPurpose: 'Essential for vowel gradation (guṇa/vṛddhi) and morphophonemic alternations',
+        linguisticSignificance: 'Establishes phonological natural classes for grammatical operations',
+        articulatoryBasis: 'Place and manner features define phonemic categories'
+      },
+      
+      phoneticPrinciples: {
+        placeRequirement: 'आस्य (āsya) - Identical place of articulation required',
+        mannerRequirement: 'प्रयत्न (prayatna) - Identical manner of articulation required',
+        dualCondition: 'Both conditions must be satisfied simultaneously',
+        systematicOrganization: 'Creates natural phonemic classes (वर्ग) in Sanskrit'
+      },
+      
+      savarnaGroups: {
+        vowelGroups: {
+          'अ-वर्ग': { members: ['अ', 'आ'], place: 'कण्ठ', feature: 'low_central' },
+          'इ-वर्ग': { members: ['इ', 'ई'], place: 'तालु', feature: 'high_front' },
+          'उ-वर्ग': { members: ['उ', 'ऊ'], place: 'ओष्ठ', feature: 'high_back' },
+          'ऋ-वर्ग': { members: ['ऋ', 'ॠ'], place: 'मूर्धा', feature: 'rhotic_vowel' }
         },
-        phoneme2: {
-          place: phonemeObj2.placeOfArticulation,
-          manner: phonemeObj2.mannerOfArticulation,
-          type: phonemeObj2.type
-        },
-        comparison: {
-          placeMatch: phonemeObj1.placeOfArticulation === phonemeObj2.placeOfArticulation,
-          mannerMatch: phonemeObj1.mannerOfArticulation === phonemeObj2.mannerOfArticulation,
-          typeMatch: phonemeObj1.type === phonemeObj2.type
+        consonantGroups: {
+          'क-वर्ग': { members: ['क्', 'ख्', 'ग्', 'घ्', 'ङ्'], place: 'कण्ठ', type: 'velar_series' },
+          'च-वर्ग': { members: ['च्', 'छ्', 'ज्', 'झ्', 'ञ्'], place: 'तालु', type: 'palatal_series' },
+          'ट-वर्ग': { members: ['ट्', 'ठ्', 'ड्', 'ढ्', 'ण्'], place: 'मूर्धा', type: 'retroflex_series' },
+          'त-वर्ग': { members: ['त्', 'थ्', 'द्', 'ध्', 'न्'], place: 'दन्त', type: 'dental_series' },
+          'प-वर्ग': { members: ['प्', 'फ्', 'ब्', 'भ्', 'म्'], place: 'ओष्ठ', type: 'labial_series' }
         }
-      };
-    }
-  } catch (error) {
-    // Method 2: Direct savarṇa group classification
-    for (const [groupName, phonemes] of Object.entries(SAVARNA_GROUPS)) {
-      if (phonemes.includes(phoneme1) && phonemes.includes(phoneme2)) {
-        areSavarna = true;
-        savarnaGroup = groupName;
-        break;
+      },
+      
+      examples: {
+        savarnaVowels: [
+          { pair: ['अ', 'आ'], reason: 'Same place (कण्ठ) and manner (विवृत)', operation: 'guṇa/vṛddhi base' },
+          { pair: ['इ', 'ई'], reason: 'Same place (तालु) and manner (संवृत)', operation: 'guṇa → ए' },
+          { pair: ['उ', 'ऊ'], reason: 'Same place (ओष्ठ) and manner (संवृत)', operation: 'guṇa → ओ' }
+        ],
+        savarnaConsonants: [
+          { pair: ['क्', 'ग्'], reason: 'Same place (कण्ठ) and manner (स्पर्श)', operation: 'voicing alternation' },
+          { pair: ['त्', 'द्'], reason: 'Same place (दन्त) and manner (स्पर्श)', operation: 'voicing alternation' },
+          { pair: ['प्', 'ब्'], reason: 'Same place (ओष्ठ) and manner (स्पर्श)', operation: 'voicing alternation' }
+        ],
+        nonSavarnaExamples: [
+          { pair: ['क्', 'च्'], reason: 'Different places: कण्ठ vs तालु', result: 'असवर्ण' },
+          { pair: ['क्', 'अ'], reason: 'Different types: consonant vs vowel (see 1.1.10)', result: 'असवर्ण' }
+        ]
+      },
+      
+      articulatoryMatrix: {
+        places: ['कण्ठ', 'तालु', 'मूर्धा', 'दन्त', 'ओष्ठ'],
+        manners: ['स्पर्श', 'ऊष्म', 'अन्तस्थ', 'स्वर'],
+        principle: 'Phonemes sharing both place and manner form savarṇa classes'
+      },
+      
+      relatedSutras: {
+        preceding: ['1.1.8 (अनुनासिक definition)', '1.1.7 (संयोग definition)'],
+        following: ['1.1.10 (अच्-हल् prohibition)', '1.1.11 (प्रगृह्य definition)'],
+        applications: ['1.1.2 (गुण definition)', '1.1.3 (इको गुणवृद्धी)', '7.4.25 (अकः सवर्णे दीर्घः)'],
+        integrationNote: 'Foundation for all morphophonemic operations in Sanskrit grammar'
+      }
+    };
+
+    // Determine if phonemes are savarṇa
+    let areSavarna = false;
+    let detailedReasoning = '';
+    let savarnaGroup = null;
+    let articulationComparison = null;
+    
+    try {
+      // Primary method: Use Phoneme class for detailed analysis
+      const phonemeObj1 = new Phoneme(phoneme1);
+      const phonemeObj2 = new Phoneme(phoneme2);
+      
+      // Check 1.1.10 prohibition first (no savarṇa between vowels and consonants)
+      if (phonemeObj1.type !== phonemeObj2.type) {
+        areSavarna = false;
+        detailedReasoning = 'सूत्र १.१.१० नाज्झलौ - Vowels and consonants cannot be savarṇa (see 1.1.10)';
+      } else {
+        // Check place and manner identity
+        const placeMatch = phonemeObj1.placeOfArticulation === phonemeObj2.placeOfArticulation;
+        const mannerMatch = phonemeObj1.mannerOfArticulation === phonemeObj2.mannerOfArticulation;
+        
+        areSavarna = placeMatch && mannerMatch;
+        
+        if (areSavarna) {
+          detailedReasoning = `तुल्यास्यप्रयत्नत्वात् - Same place (${phonemeObj1.placeOfArticulation}) and manner (${phonemeObj1.mannerOfArticulation})`;
+        } else {
+          if (!placeMatch) {
+            detailedReasoning = `विभिन्नास्य - Different places: ${phonemeObj1.placeOfArticulation} vs ${phonemeObj2.placeOfArticulation}`;
+          } else {
+            detailedReasoning = `विभिन्नप्रयत्न - Different manners: ${phonemeObj1.mannerOfArticulation} vs ${phonemeObj2.mannerOfArticulation}`;
+          }
+        }
+        
+        articulationComparison = {
+          place: { first: phonemeObj1.placeOfArticulation, second: phonemeObj2.placeOfArticulation, match: placeMatch },
+          manner: { first: phonemeObj1.mannerOfArticulation, second: phonemeObj2.mannerOfArticulation, match: mannerMatch },
+          type: { first: phonemeObj1.type, second: phonemeObj2.type, match: phonemeObj1.type === phonemeObj2.type }
+        };
+      }
+    } catch (error) {
+      // Fallback method: Direct group lookup
+      for (const [groupName, groupData] of Object.entries(analysis.savarnaGroups.vowelGroups)) {
+        if (groupData.members.includes(phoneme1) && groupData.members.includes(phoneme2)) {
+          areSavarna = true;
+          savarnaGroup = groupName;
+          detailedReasoning = `${groupName} सदस्यत्वात् - Both belong to ${groupName} vowel group`;
+          break;
+        }
+      }
+      
+      if (!areSavarna) {
+        for (const [groupName, groupData] of Object.entries(analysis.savarnaGroups.consonantGroups)) {
+          if (groupData.members.includes(phoneme1) && groupData.members.includes(phoneme2)) {
+            areSavarna = true;
+            savarnaGroup = groupName;
+            detailedReasoning = `${groupName} सदस्यत्वात् - Both belong to ${groupName} consonant group`;
+            break;
+          }
+        }
+      }
+      
+      if (!areSavarna) {
+        detailedReasoning = 'न सवर्णौ - No shared savarṇa group found';
       }
     }
+
+    return {
+      areSavarna: areSavarna,
+      sutraApplied: '1.1.9',
+      confidence: 1.0,
+      analysis: {
+        ...analysis,
+        result: areSavarna ? 'सवर्ण (savarṇa)' : 'असवर्ण (not savarṇa)',
+        detailedReasoning: detailedReasoning,
+        savarnaGroup: savarnaGroup,
+        articulatoryComparison: articulationComparison,
+        phoneticClassification: {
+          relationship: areSavarna ? 'homogeneous' : 'heterogeneous',
+          grammaticalImplication: areSavarna ? 'Can undergo morphophonemic operations' : 'No direct morphophonemic relationship',
+          systematicPosition: savarnaGroup ? `Member of ${savarnaGroup}` : 'No shared classification'
+        },
+        educationalNote: areSavarna ? 
+          'Savarṇa phonemes can participate in morphophonemic alternations like guṇa and vṛddhi' :
+          'Non-savarṇa phonemes do not undergo systematic morphophonemic operations together'
+      }
+    };
+    
+  } catch (error) {
+    return {
+      areSavarna: false,
+      sutraApplied: '1.1.9',
+      confidence: 0.0,
+      analysis: {
+        error: error.message,
+        traditionalCommentary: 'दोषः उत्पन्नः',
+        modernExplanation: 'Processing error occurred during savarṇa analysis',
+        educationalNote: 'विश्लेषणे त्रुटिः (Analysis error)'
+      }
+    };
   }
-
-  // Build comprehensive analysis
-  const analysis = {
-    input: { phoneme1, phoneme2 },
-    sutraApplied: '1.1.9',
-    sutraName: 'tulyāsyaprayatnaṃ savarṇam',
-    sutraText: 'तुल्यास्यप्रयत्नं सवर्णम्',
-    applies: areSavarna,
-    areSavarna: areSavarna,
-    
-    // Classification details
-    classification: areSavarna ? 'सवर्ण (savarṇa)' : 'असवर्ण (asavarṇa)',
-    relationship: areSavarna ? 'homogeneous_phonemes' : 'heterogeneous_phonemes',
-    savarnaGroup: savarnaGroup,
-    
-    // Script information
-    scripts: { phoneme1: script1, phoneme2: script2 },
-    normalizedForms: { phoneme1: normalized1, phoneme2: normalized2 },
-    
-    // Detailed explanation
-    explanation: areSavarna 
-      ? `'${phoneme1}' and '${phoneme2}' are सवर्ण (savarṇa) because they share the same आस्य (place of articulation) and प्रयत्न (manner of effort)`
-      : explainNonSavarna 
-        ? `'${phoneme1}' and '${phoneme2}' are not सवर्ण because they differ in ${articulationAnalysis?.comparison.placeMatch ? 'manner of effort' : 'place of articulation'}${prohibitionReason ? ' (also prohibited by Sutra 1.1.10)' : ''}`
-        : `'${phoneme1}' and '${phoneme2}' are असवर्ण (asavarṇa)`,
-    
-    // Traditional definition
-    traditionalDefinition: includeTradition ? {
-      sanskrit: 'तुल्यास्यप्रयत्नं सवर्णम्',
-      translation: 'Having equal place of articulation and effort is savarṇa',
-      commentary: 'This sutra establishes the fundamental criterion for phonemic homogeneity in Sanskrit'
-    } : null,
-    
-    // Detailed articulatory analysis
-    articulationAnalysis: articulationAnalysis,
-    
-    // Educational examples
-    examples: includeExamples ? {
-      savarnaExamples: [
-        { pair: ['अ', 'आ'], group: 'अ_वर्ग', explanation: 'Same place (कण्ठ) and manner (विवृत), differ only in duration' },
-        { pair: ['क', 'ख'], group: 'क_वर्ग', explanation: 'Same place (कण्ठ), differ in aspiration within same manner class' },
-        { pair: ['त', 'न'], group: 'त_वर्ग', explanation: 'Same place (दन्त), differ in manner (स्पर्श vs अनुनासिक) but still savarṇa' }
-      ],
-      nonSavarnaExamples: [
-        { pair: ['क', 'त'], reason: 'Different places: कण्ठ vs दन्त' },
-        { pair: ['अ', 'क'], reason: 'Different types: स्वर vs व्यञ्जन (prohibited by 1.1.10)' },
-        { pair: ['प', 'य'], reason: 'Different places and manners: ओष्ठ स्पर्श vs तालु अन्तःस्थ' }
-      ]
-    } : null,
-    
-    // Cross-reference information
-    relatedSutras: [
-      { sutra: '1.1.8', name: 'mukhanāsikāvacano\'nunāsikaḥ', relation: 'anunāsika classification affects savarṇa grouping' },
-      { sutra: '1.1.10', name: 'nājjhalau', relation: 'prohibits savarṇa between vowels and consonants' },
-      { sutra: '6.1.101', name: 'akaḥ savarṇe dīrghaḥ', relation: 'savarṇa vowels undergo lengthening' }
-    ],
-    
-    // Prohibition analysis
-    prohibitionAnalysis: prohibitionReason ? {
-      prohibited: true,
-      reason: prohibitionReason,
-      explanation: 'Sutra 1.1.10 (nājjhalau) prohibits savarṇa relationship between vowels (अच्) and consonants (हल्)'
-    } : null,
-    
-    // Confidence scoring
-    confidence: areSavarna ? 1.0 : 1.0, // Definitive classification
-    analysisMethod: 'traditional_articulatory_comparison'
-  };
-
-  return analysis;
 }
 
 // Maintain backward compatibility
