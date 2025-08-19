@@ -1,42 +1,99 @@
-# Sutra 1.4.28: अन्तर्द्धौ येनादर्शनमिच्छति
+# Sutra 1.4.28: अन्तर्धौ येनादर्शनमिच्छति
 
-## Overview
+## Summary
+**In concealment: from whom one desires non-visibility (takes ablative case)**
 
-**Sanskrit Text**: `अन्तर्द्धौ येनादर्शनमिच्छति`  
-**Transliteration**: antarddhau yenādarśanamicchati  
-**Translation**: When concealment is indicated, the person whose sight one wishes to avoid is called अपादान कारक
+This sutra establishes अपादान कारक (ablative case) for the source from which concealment is sought. When verbs of concealment (अन्तर्धान) are used, the person or entity from whose sight one wishes to remain hidden receives ablative case designation. This distinguishes the concealed object (कर्म) from the source of potential detection (अपादान).
 
-## Purpose
+## Technical Implementation
 
-This sutra specifies अपादान कारक (ablative case) for concealment contexts (अन्तर्धान). When someone wishes to avoid being seen by another person or to remain hidden from their sight, the person from whose sight one wants to hide takes अपादान designation and requires ablative case marking. This covers contexts of hiding, concealment, and avoiding detection.
-
-## Implementation
-
-### Function Signature
+### Core Function
 ```javascript
-function identifyConcealment Apadana(word, context = {}) {
-    // Identifies अपादान relationships in concealment and hiding contexts
-    // Returns ablative case assignment for persons one wishes to avoid
-}
+import sutra1428 from './index.js';
+
+const result = sutra1428('गुरु', { 
+  verb: 'अन्तर्धत्ते', 
+  context: 'गुरोः अन्तर्धत्ते',
+  concealment_context: true,
+  avoid_detection: true 
+});
+// Returns comprehensive analysis with ablative case assignment
 ```
 
 ### Key Features
-- Identifies persons from whose sight one wishes to hide
-- Recognizes concealment and hiding contexts (अन्तर्धान)
-- Handles avoidance of detection scenarios
-- Supports various concealment verbs and constructions
-- Integrates with अदर्शन (non-seeing) semantic analysis
-- Validates concealment intentions and hiding motivations
 
-### Dependencies
-- **Sanskrit Utils**: 
-  - `script-detection.js` - Script identification and conversion
-  - `classification.js` - Grammatical classification
-  - `verbal-analysis.js` - Concealment verb identification
-  - `semantic-analysis.js` - Concealment and hiding semantics
-  - `case-assignment.js` - Ablative case assignment
-  - `intention-analysis.js` - इच्छा (desire/intention) analysis
-- **Shared Functions**: Kāraka analysis, concealment detection, intentional analysis
+#### 1. Concealment Context Recognition
+- **Primary Context**: `अन्तर्धान` (concealment, hiding, disappearance)
+- **Detection Avoidance**: `अदर्शन` (non-seeing, avoiding sight)
+- **Intentional Hiding**: `इच्छा` (desire to remain unseen)
+
+#### 2. Source of Detection Analysis
+- **Personal Sources**: Teachers, parents, authorities, enemies
+- **Institutional Sources**: Courts, assemblies, public gatherings
+- **Abstract Sources**: Scrutiny, observation, surveillance
+- **Divine Sources**: Deities, spiritual authorities
+
+#### 3. Concealment Motivation Validation
+- **Fear-Based**: Hiding from punishment or consequences
+- **Strategic**: Tactical concealment for advantage
+- **Privacy**: Personal or intimate concealment
+- **Protection**: Hiding for safety or security
+
+#### 4. Case Assignment Logic
+- **Ablative Marking**: Assigns पञ्चमी विभक्ति (fifth case) to detection sources
+- **Semantic Clarity**: Distinguishes from concealed objects (accusative)
+- **Morphological Integration**: Handles various ablative endings
+
+## Implementation Architecture
+
+#### Phase 1: Concealment Detection
+```javascript
+const analysis = {
+  concealment Analysis: {
+    hasConcealment Context: true,
+    concealment Type: 'personal_hiding',
+    intentionality: 'deliberate_avoidance',
+    applicabilityReason: 'Explicit concealment context with detection source'
+  }
+}
+```
+
+#### Phase 2: Source Classification
+```javascript
+const analysis = {
+  sourceAnalysis: {
+    detectionSource: 'authority_figure',
+    sourceCategory: 'personal_relationship',
+    avoidanceReason: 'disciplinary_consequence',
+    sourceValidity: 'appropriate_context'
+  }
+}
+```
+
+#### Phase 3: Motivational Analysis
+```javascript
+const analysis = {
+  motivationalAnalysis: {
+    concealmentMotivation: 'fear_based',
+    desiredOutcome: 'अदर्शन_achieved',
+    temporalContext: 'immediate_hiding',
+    urgencyLevel: 'high'
+  }
+}
+```
+
+#### Phase 4: Confidence Assessment
+```javascript
+const analysis = {
+  confidence: {
+    overall: 0.93,
+    contextual: 0.95,
+    motivational: 0.91,
+    morphological: 0.94,
+    traditionalSupport: 0.96
+  }
+}
+```
 
 ## Usage Examples
 
