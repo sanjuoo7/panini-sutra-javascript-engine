@@ -1,0 +1,72 @@
+=== COMPARISON: Basic vs Comprehensive Implementations ===
+
+ULTRA-MINIMAL (1.2.53): 4 lines
+/** Sutra 1.2.53: तदशिष्यं संज्ञाप्रमाणत्वात् */
+import { classifyAshishya } from '../sanskrit-utils/non-elision-classification.js';
+export function applySutra1_2_53(item, context={}) { return { sutra:'1.2.53', ...classifyAshishya(item, { ...context, ashishyaFlags:{ s1_2_53:true } }) }; }
+export default applySutra1_2_53;
+
+COMPREHENSIVE (1.2.39): 583 lines, 46 tests
+/**
+ * Sutra 1.2.39: स्वरितात् संहितायामनुदात्तानाम्
+ * From svarita: in saṃhitā, of anudātta vowels (monotone assimilation)
+ * 
+ * In sandhi contexts, anudātta vowels following a svarita vowel can undergo 
+ * monotone assimilation, creating a continuous low-tone span. This rule applies
+ * in close phonetic juncture (saṃhitā) but can be blocked by certain domain
+ * restrictions (like Subrahmaṇyā contexts).
+ * 
+ * References:
+
+
+ Summary of Findings
+📊 Analysis Results (120+ sutras from 1.1.1 to 1.4.60):
+🔴 CRITICAL - Ultra-Minimal Implementations (15 sutras)
+These need immediate comprehensive enhancement:
+
+1.2.51-1.2.60: 4-8 lines each, 1-2 tests - Accent/prosody system gaps
+1.2.41-1.2.44: 8-14 lines each, 1-5 tests - Core prosodic rules missing
+🟡 MODERATE - Basic Implementations (25 sutras)
+These need architectural enhancement:
+
+1.3.1: भूवादयो धातवः (13 lines, 7 tests) - Critical dhātu foundation
+1.4.1-1.4.14: Meta-rules and early kāraka (50-150 lines, 2-10 tests)
+1.3.2-1.3.10: Foundational verbal system rules
+🟢 COMPREHENSIVE - Well Implemented (40+ sutras)
+No enhancement needed:
+
+1.2.33-1.2.39: ✅ Phase 2 enhanced (400-600 lines, 35-50 tests each)
+1.4.41-1.4.60: Most have substantial implementations
+1.1.x: Foundational phonetic sutras (adequate for scope)
+📈 Impact Analysis:
+Most Critical Gap: Accent/Prosody System
+1.2.40-1.2.60: Missing comprehensive accent processing
+Business Impact: Incomplete Vedic recitation support
+Technical Impact: Gaps in prosodic analysis pipeline
+Most Strategic Gap: Verbal Foundation
+1.3.1: भūवादयो धातवः - Only 13 lines for core dhātu classification
+Business Impact: Limited verbal analysis capabilities
+Technical Impact: Affects all downstream verbal processing
+Quality Comparison:
+Ultra-minimal: 4 lines (1.2.53) vs Comprehensive: 583 lines (1.2.39)
+Test coverage: 1 test vs 46 tests
+Enhancement factor: 145x increase in implementation depth
+🎯 Recommended Enhancement Phases:
+Phase 3a: Accent Completion (Priority 1)
+Target: 1.2.40-1.2.60 (20+ sutras)
+Impact: Complete prosodic analysis system
+Effort: High (many ultra-minimal)
+Phase 3b: Verbal Foundation (Priority 2)
+Target: 1.3.1-1.3.10 (10 sutras)
+Impact: Core dhātu system enhancement
+Effort: Medium (foundational importance)
+Phase 3c: Meta-Rules (Priority 3)
+Target: 1.4.1-1.4.14 (14 sutras)
+Impact: System coherence and rule interaction
+Effort: Medium (architectural complexity)
+✅ Immediate Actions Available:
+Begin Phase 3a with ultra-minimal accent sutras
+Enhance 1.3.1 as critical verbal foundation
+Apply proven comprehensive architecture from Phase 2
+Target Phase 2 standard: 400-600 lines, 35-50 tests per sutra
+The analysis reveals significant opportunities for systematic enhancement, with clear priorities and proven architectural patterns ready for application! 

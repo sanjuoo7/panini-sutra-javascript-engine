@@ -216,7 +216,7 @@ export function identifyTeachingAblative(word, context = {}) {
     sutra: result.sutra,
     script: result.script,
     word_iast: result.normalizedWord,
-    case_valid: result.morphological?.validation?.isValid || undefined,
+    case_valid: result.morphological?.validation?.isValid ?? false,
     error: result.error
   };
 }

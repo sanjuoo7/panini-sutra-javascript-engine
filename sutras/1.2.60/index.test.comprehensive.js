@@ -266,13 +266,7 @@ describe('Sutra 1.2.60: फल्गुनीप्रोष्ठपदान�
   });
 
   test('integration with class noun sutra results', () => {
-    // Create a mock class noun result to test integration
-    const classNounResult = { 
-      numberOptions: ['singular', 'plural'], 
-      applied: true, 
-      sutra: '1.2.58',
-      semanticPlural: true 
-    };
+    const classNounResult = applySutra1_2_58('nakshatra', null, { semanticCategory: 'astronomy' });
     const r = applySutra1_2_60('phalgunī', classNounResult, { domain: 'nakshatra' });
     expect(r.applied).toBe(true);
     expect(r.analysis.priorResultIntegration.hasPriorResult).toBe(true);

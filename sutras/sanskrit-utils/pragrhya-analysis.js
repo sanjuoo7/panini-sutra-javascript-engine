@@ -237,7 +237,7 @@ export function isPragrhyaParticleEndingInO(word, context = {}) {
   if (!word) return false;
   
   const script = detectScript(word);
-  const isParticle = context.isParticle !== false;
+  const isParticle = context.isParticle === true;
   
   if (!isParticle) return false;
   

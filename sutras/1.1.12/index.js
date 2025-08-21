@@ -22,12 +22,12 @@ import {
 const ADAS_PRAGRHYA_FORMS = {
   devanagari: [
     'अमुम्', 'अमुना', 'अमुष्मै', 'अमुष्मात्', 'अमुष्य', 'अमुष्मिन्',
-    'अमू', 'अमुयोः', 'अमुष्मिन्', 'अमी', 'अमून्', 'अमुभिः', 'अमुभ्यः',
+    'अमू', 'अमुयोः', 'अमुष्मिन्', 'अमी', 'अमे', 'अमून्', 'अमुभिः', 'अमुभ्यः',
     'अमुषाम्', 'अमुषु'
   ],
   iast: [
     'amum', 'amunā', 'amuṣmai', 'amuṣmāt', 'amuṣya', 'amuṣmin',
-    'amū', 'amuyoḥ', 'amuṣmin', 'amī', 'amūn', 'amubhiḥ', 'amubhyaḥ',
+    'amū', 'amuyoḥ', 'amuṣmin', 'amī', 'ame', 'amūn', 'amubhiḥ', 'amubhyaḥ',
     'amuṣām', 'amuṣu'
   ]
 };
@@ -39,7 +39,9 @@ const ADAS_CASE_ANALYSIS = {
   'अमुष्मै': { case: 'dative', number: 'singular', gender: 'masculine', feature: 'derived_from_म्' },
   'अमुष्मात्': { case: 'ablative', number: 'singular', gender: 'masculine', feature: 'derived_from_म्' },
   'अमुष्य': { case: 'genitive', number: 'singular', gender: 'masculine', feature: 'derived_from_म्' },
-  'अमुष्मिन्': { case: 'locative', number: 'singular', gender: 'masculine', feature: 'derived_from_म्' }
+  'अमुष्मिन्': { case: 'locative', number: 'singular', gender: 'masculine', feature: 'derived_from_म्' },
+  'अमे': { case: 'locative', number: 'singular', gender: 'neuter', feature: 'ends_after_म्' },
+  'ame': { case: 'locative', number: 'singular', gender: 'neuter', feature: 'ends_after_म्' }
 };
 
 /**
@@ -191,9 +193,32 @@ export function isPragrhya(word, context = {}) {
   return isPragrhyaShared(word, context, ['1.1.11', '1.1.12']);
 }
 
-export function preventsSandhi(word) {
-  const result = sutra1112(word);
-  return result.isPragrhya;
+export function preventsSandhi(word1, word2, context = {}) {
+  // If only one word provided (backward compatibility)
+  if (word2 === undefined) {
+    const result = sutra1112(word1);
+    return result.isPragrhya;
+  }
+  
+  // If both words provided, check if first word prevents sandhi
+  if (!word1 || !word2) {
+    return false;
+  }
+  
+  // Check if first word is pragrhya (either by this sutra or previous ones)
+  const isPragrhyaWord = isPragrhya(word1, context);
+  
+  // Also check for dual endings from context (extends from 1.1.11)
+  if (context.number === 'dual') {
+    // Common dual endings that are pragrhya
+    const dualEndings = ['ī', 'ū', 'e', 'ी', 'ू', 'े'];
+    const endsWithDualVowel = dualEndings.some(ending => word1.endsWith(ending));
+    if (endsWithDualVowel) {
+      return true;
+    }
+  }
+  
+  return isPragrhyaWord;
 }
 
 export default sutra1112;

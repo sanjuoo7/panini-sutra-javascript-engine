@@ -180,8 +180,8 @@ export function sutra1118(word, context = {}) {
  * @returns {boolean} - True if the word qualifies for this pragṛhya rule
  */
 export function isPragrhyaOm(word, context = {}) {
-  const result = sutra1118(word, context);
-  return result.isPragrhya;
+  // This function should ONLY check for Om particles, not other pragrhya forms
+  return isOmParticle(word);
 }
 
 /**

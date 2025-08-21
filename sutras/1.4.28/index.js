@@ -125,10 +125,10 @@ export function sutra1428(word, context = {}) {
     const ablativeMarkersDeva = ['भ्यः', 'ात्', 'ोः', 'ेभ्यः', 'स्मात्', 'तः'];
     const ablativeMarkersIAST = ['bhyaḥ', 'āt', 'oḥ', 'ebhyaḥ', 'smāt', 'taḥ'];
     
-    const accusativeMarkers = [...accusativeMarkersDeva.filter(m => word.includes(m)), 
-                             ...accusativeMarkersIAST.filter(m => normalizedWord.includes(m))];
-    const ablativeMarkers = [...ablativeMarkersDeva.filter(m => word.includes(m)), 
-                           ...ablativeMarkersIAST.filter(m => normalizedWord.includes(m))];
+    const accusativeMarkers = [...accusativeMarkersDeva.filter(m => word.endsWith(m)), 
+                             ...accusativeMarkersIAST.filter(m => normalizedWord.endsWith(m))];
+    const ablativeMarkers = [...ablativeMarkersDeva.filter(m => word.endsWith(m)), 
+                           ...ablativeMarkersIAST.filter(m => normalizedWord.endsWith(m))];
     
     // Determine role based on context and morphology
     const isObject = element_role === 'object' || object_type || accusativeMarkers.length > 0;
@@ -204,6 +204,19 @@ export function sutra1428(word, context = {}) {
 // Maintain backward compatibility
 export function identifyConcealmentAblative(word, context = {}) {
   const result = sutra1428(word, context);
+  
+  // Handle case validation explicitly
+  let case_valid = undefined;
+  if (context.validate_case) {
+    if (result.morphological?.validation?.isValid !== undefined) {
+      case_valid = result.morphological.validation.isValid;
+    } else {
+      // If validation wasn't set but was requested, check manually
+      const caseMarkers = result.morphological?.caseMarkers || [];
+      case_valid = caseMarkers.length > 0;
+    }
+  }
+  
   return {
     applies: result.applies,
     karaka: result.karaka,
@@ -211,7 +224,7 @@ export function identifyConcealmentAblative(word, context = {}) {
     sutra: result.sutra,
     script: result.script,
     word_iast: result.normalizedWord,
-    case_valid: result.morphological?.validation?.isValid || undefined,
+    case_valid: case_valid,
     error: result.error
   };
 }

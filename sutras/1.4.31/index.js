@@ -126,10 +126,10 @@ export function sutra1431(word, context = {}) {
     const ablativeMarkersDeva = ['भ्यः', 'ात्', 'ोः', 'ेभ्यः', 'स्मात्', 'तः'];
     const ablativeMarkersIAST = ['bhyaḥ', 'āt', 'oḥ', 'ebhyaḥ', 'smāt', 'taḥ'];
     
-    const nominativeMarkers = [...nominativeMarkersDeva.filter(m => word.includes(m)), 
-                             ...nominativeMarkersIAST.filter(m => normalizedWord.includes(m))];
-    const ablativeMarkers = [...ablativeMarkersDeva.filter(m => word.includes(m)), 
-                           ...ablativeMarkersIAST.filter(m => normalizedWord.includes(m))];
+    const nominativeMarkers = [...nominativeMarkersDeva.filter(m => word.endsWith(m)), 
+                             ...nominativeMarkersIAST.filter(m => normalizedWord.endsWith(m))];
+    const ablativeMarkers = [...ablativeMarkersDeva.filter(m => word.endsWith(m)), 
+                           ...ablativeMarkersIAST.filter(m => normalizedWord.endsWith(m))];
     
     // Determine role based on context and morphology
     const isResultEntity = element_role === 'result_entity' || element_role === 'transformed_entity' || 
@@ -169,6 +169,18 @@ export function sutra1431(word, context = {}) {
         analysis.semantic.transformationType = 'explicit_verb';
       }
       
+      // Case validation if requested
+      if (validate_case) {
+        const expectedMarkers = analysis.case === 'nominative' ? nominativeMarkersDeva : ablativeMarkersDeva;
+        const foundMarkers = analysis.morphological.caseMarkers;
+        analysis.morphological.validation = {
+          isValid: foundMarkers.length > 0,
+          expectedMarkers: expectedMarkers,
+          foundMarkers: foundMarkers,
+          message: foundMarkers.length > 0 ? `correct_${analysis.case}_case` : `missing_${analysis.case}_markers`
+        };
+      }
+      
       if (hasBecomingActionType) {
         confidence += 0.15;
         reasons.push('becoming_action_type');
@@ -186,18 +198,6 @@ export function sutra1431(word, context = {}) {
       
       analysis.confidence = Math.min(confidence, 1.0);
       analysis.reasons = reasons;
-      
-      // Case validation if requested
-      if (validate_case) {
-        const expectedMarkers = analysis.case === 'nominative' ? nominativeMarkersDeva : ablativeMarkersDeva;
-        const foundMarkers = analysis.morphological.caseMarkers;
-        analysis.morphological.validation = {
-          isValid: foundMarkers.length > 0,
-          expectedMarkers: expectedMarkers,
-          foundMarkers: foundMarkers,
-          message: foundMarkers.length > 0 ? `correct_${analysis.case}_case` : `missing_${analysis.case}_markers`
-        };
-      }
     }
   }
 
@@ -207,6 +207,19 @@ export function sutra1431(word, context = {}) {
 // Maintain backward compatibility
 export function identifyBecomingSourceAblative(word, context = {}) {
   const result = sutra1431(word, context);
+  
+  // Handle case validation explicitly
+  let case_valid = undefined;
+  if (context.validate_case) {
+    if (result.morphological?.validation?.isValid !== undefined) {
+      case_valid = result.morphological.validation.isValid;
+    } else {
+      // If validation wasn't set but was requested, check manually
+      const caseMarkers = result.morphological?.caseMarkers || [];
+      case_valid = caseMarkers.length > 0;
+    }
+  }
+  
   return {
     applies: result.applies,
     karaka: result.karaka,
@@ -214,7 +227,7 @@ export function identifyBecomingSourceAblative(word, context = {}) {
     sutra: result.sutra,
     script: result.script,
     word_iast: result.normalizedWord,
-    case_valid: result.morphological?.validation?.isValid || undefined,
+    case_valid: case_valid,
     error: result.error
   };
 }

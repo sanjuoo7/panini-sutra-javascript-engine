@@ -1,29 +1,8 @@
 import sutra from './index.js';
 
 describe('Sutra 1.4.81: chandasi pare\'pi', () => {
-    // Mock sutra function for testing purposes
-    const mockSutra = (sentence, context) => {
-        if (!context || !context.isVedic) {
-            return { applies: false, reason: 'Non-Vedic context' };
-        }
-        if (!context.verb || !context.particles || context.particles.length === 0) {
-            return { error: 'Invalid context' };
-        }
-        const words = sentence.split(' ');
-        const verbIndex = words.indexOf(context.verb);
-        const particleIndex = words.indexOf(context.particles[0]);
-
-        if (verbIndex === -1 || particleIndex === -1) {
-            return { error: 'Verb or particle not in sentence' };
-        }
-
-        if (particleIndex > verbIndex) {
-            return { applies: true };
-        }
-        return { applies: false, reason: 'Particle does not follow verb' };
-    };
-
-    const sutraModule = { default: mockSutra };
+    // Use the actual sutra implementation
+    const sutraModule = { default: sutra };
 
     // Positive Test Cases (IAST)
     test('IAST: Gati "ā" after verb', () => {
