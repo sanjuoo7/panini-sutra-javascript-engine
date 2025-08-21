@@ -12,7 +12,7 @@ export function sutra1362(word, context = {}) {
   const script = detectScript(clean);
   if (script === 'Unknown') return no('Unknown script');
 
-  const isSan = context.isDesiderative === true || /\b(san|सन्)\b/.test(String(context.affix||context.affixes||''));
+  const isSan = context.isDesiderative === true || /(san|सन्)/i.test(String(context.affix||context.affixes||''));
   if (!isSan) return no('Not desiderative');
 
   const baseAt = context.baseAtmanepada === true || context.baseWouldBeAtmanepada === true;
