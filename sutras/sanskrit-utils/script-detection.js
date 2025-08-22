@@ -1,5 +1,10 @@
 /**
- * Script Detection Utilities
+ * Script const SCRIPT_PATTERNS = {
+  devanagari: /[\u0900-\u097F]/,
+  iastDiacritics: /[āīūṛṝḷḹṅñṭḍṇśṣḥṃ]/,
+  iastAccents: /[àáâèéêìíîòóôùúûāàāáāâīìīíīîūùūúūûṛ̀ṛ́ṛ̂ṝ̀ṝ́ṝ̂]|[aeiouāīūṛṝ][́̀̂]/,  // Accented vowels
+  basicLatin: /^[a-zA-Z\s_]+$/  // Include underscores for IAST
+};ion Utilities
  * 
  * This module provides script detection and validation functions:
  * - Detect IAST, Devanagari, Mixed, or Unknown scripts
@@ -16,7 +21,7 @@ const SCRIPT_PATTERNS = {
   devanagari: /[\u0900-\u097F]/,
   iastDiacritics: /[āīūṛṝḷḹṅñṭḍṇśṣḥṃ]/,
   iastAccents: /[àáâèéêìíîòóôùúûāàāáāâīìīíīîūùūúūûṛ̀ṛ́ṛ̂ṝ̀ṝ́ṝ̂]|[aeiouāīūṛṝ][́̀̂]/,  // Accented vowels
-  basicLatin: /^[a-zA-Z\s]+$/
+  basicLatin: /^[a-zA-Z\s_]+$/  // Include underscores for IAST
 };
 
 /**

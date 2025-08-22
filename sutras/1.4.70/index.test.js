@@ -163,5 +163,33 @@ describe("Sutra 1.4.70: ado'nupadeśe", () => {
         expect(result.applies).toBe(false);
         expect(result.error).toBeDefined();
     });
+
+    test('should handle null context', () => {
+        const result = sutra('adas', null);
+        expect(result.applies).toBe(false);
+        expect(result.error).toBeDefined();
+    });
+
+    test('should handle invalid context type', () => {
+        const result = sutra('adas', 'invalid-context');
+        expect(result.applies).toBe(false);
+        expect(result.error).toBeDefined();
+    });
+
+    test('should handle missing isInstructional and isAnaphoric flags', () => {
+        const result = sutra('adas', { verb: 'kṛ' });
+        expect(result.applies).toBe(false);
+    });
+
+    test('should handle empty verb in context', () => {
+        const result = sutra('adas', { verb: '', isInstructional: false, isAnaphoric: true });
+        expect(result.applies).toBe(false);
+    });
+
+    test('should handle whitespace-only input', () => {
+        const result = sutra('   ', { verb: 'kṛ', isInstructional: false, isAnaphoric: true });
+        expect(result.applies).toBe(false);
+        expect(result.error).toBeDefined();
+    });
   });
 });

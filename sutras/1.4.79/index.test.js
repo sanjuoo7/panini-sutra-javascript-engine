@@ -117,5 +117,36 @@ describe('Sutra 1.4.79: jīvikopaniṣadāvaupamaye', () => {
                 });
             });
         });
+
+        // Additional comprehensive edge cases
+        test('should handle boolean input', () => {
+            const result = isGatiJivikaUpanisad(true, { verb: 'kṛ', meaning: 'likeness' });
+            expect(result.applies).toBe(false);
+            expect(result.error).toBeDefined();
+        });
+
+        test('should handle object input', () => {
+            const result = isGatiJivikaUpanisad({ word: 'jīvikā' }, { verb: 'kṛ', meaning: 'likeness' });
+            expect(result.applies).toBe(false);
+            expect(result.error).toBeDefined();
+        });
+
+        test('should handle context with invalid verb type', () => {
+            const result = isGatiJivikaUpanisad('jīvikākṛtya', { verb: [], meaning: 'likeness' });
+            expect(result.applies).toBe(false);
+            // Note: Implementation may not return explicit error for invalid context
+        });
+
+        test('should handle context with invalid meaning type', () => {
+            const result = isGatiJivikaUpanisad('jīvikākṛtya', { verb: 'kṛ', meaning: 123 });
+            expect(result.applies).toBe(false);
+            // Note: Implementation may not return explicit error for invalid context
+        });
+
+        test('should handle context that is a string', () => {
+            const result = isGatiJivikaUpanisad('jīvikākṛtya', 'invalid-context');
+            expect(result.applies).toBe(false);
+            expect(result.error).toBeDefined();
+        });
     });
 });

@@ -114,5 +114,24 @@ describe("Sutra 1.4.71: tiro'nataradadhau", () => {
                 });
             });
         });
+
+        // Additional edge cases for better coverage
+        test('should handle null input', () => {
+            const result = isGatiTiras(null, { verb: 'bhū', meaning: 'disappearance' });
+            expect(result.applies).toBe(false);
+            expect(result.error).toBeDefined();
+        });
+
+        test('should handle non-string context values', () => {
+            const result = isGatiTiras('tirobhūya', { verb: 123, meaning: 'disappearance' });
+            expect(result.applies).toBe(false);
+            // Note: Implementation may not return error for invalid context values
+        });
+
+        test('should handle invalid meaning values', () => {
+            const result = isGatiTiras('tirobhūya', { verb: 'bhū', meaning: null });
+            expect(result.applies).toBe(false);
+            // Note: Implementation handles null meaning gracefully
+        });
     });
 });

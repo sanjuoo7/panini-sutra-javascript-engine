@@ -57,7 +57,7 @@ const NON_CURRENCY_DEGREES = {
 
 // Currency validation patterns
 const CURRENCY_PATTERNS = {
-  vedic_only: /^(वेद|ऋक्|साम|यजुस्|अथर्व)/,
+  vedic_only: /^(वेदमन्त्र|ऋक्मन्त्र|सामवेद|यजुर्वेद|अथर्ववेद|वैदिक)/,
   classical_obsolete: /^(प्राचीन|पुरातन|लुप्त)/,
   technical_archaic: /^(शास्त्रीय|तकनीकी).*?(अप्रचलित|लुप्त)/,
   literary_restricted: /^(काव्य|साहित्य).*?(सीमित|विशिष्ट)/
@@ -288,6 +288,46 @@ function classifyLubhElision(item, context, analysis) {
     }
   }
 
+  // Check string patterns in object text property
+  if (!hasLubhOperation && typeof item === 'object' && item.text) {
+    const lubhAnalysis = analyzeLubhPatterns(item.text);
+    if (lubhAnalysis.hasLubhCharacteristics) {
+      hasLubhOperation = true;
+      lubhOperationType = 'object_text_pattern_lubh';
+      lubhReasoning = lubhAnalysis.reasoning;
+      operationEvidence.push('object_text_pattern_lubh_detection');
+    }
+  }
+
+  // Check currency patterns for implicit lubh context
+  if (!hasLubhOperation && typeof item === 'string') {
+    const currencyAnalysis = analyzeCurrencyPatterns(item);
+    if (currencyAnalysis.isNonCurrent) {
+      // Only vedic and clearly archaic patterns suggest lubh operations
+      // Exclude generic non-currency patterns that might be false positives  
+      if (currencyAnalysis.pattern === 'vedic_only') {
+        hasLubhOperation = true;
+        lubhOperationType = 'currency_pattern_implied_lubh';
+        lubhReasoning = `Currency pattern ${currencyAnalysis.pattern} suggests potential lubh operations`;
+        operationEvidence.push('currency_pattern_lubh_implication');
+      }
+    }
+  }
+
+  // Check currency patterns in object text property
+  if (!hasLubhOperation && typeof item === 'object' && item.text) {
+    const currencyAnalysis = analyzeCurrencyPatterns(item.text);
+    if (currencyAnalysis.isNonCurrent) {
+      // Only vedic and clearly archaic patterns suggest lubh operations
+      if (currencyAnalysis.pattern === 'vedic_only') {
+        hasLubhOperation = true;
+        lubhOperationType = 'object_text_currency_pattern_implied_lubh';
+        lubhReasoning = `Currency pattern ${currencyAnalysis.pattern} in object text suggests potential lubh operations`;
+        operationEvidence.push('object_text_currency_pattern_lubh_implication');
+      }
+    }
+  }
+
   // Check semantic properties for lubh operations
   if (!hasLubhOperation && typeof item === 'object') {
     const semanticAnalysis = analyzeSemanticLubhProperties(item);
@@ -296,6 +336,17 @@ function classifyLubhElision(item, context, analysis) {
       lubhOperationType = 'semantic_lubh_properties';
       lubhReasoning = semanticAnalysis.reasoning;
       operationEvidence.push('semantic_lubh_property_analysis');
+    }
+  }
+
+  // Check temporal context for implied lubh operations
+  if (!hasLubhOperation && context.temporalContext) {
+    const temporalContexts = ['vedic', 'classical-obsolete', 'archaic'];
+    if (temporalContexts.includes(context.temporalContext)) {
+      hasLubhOperation = true;
+      lubhOperationType = 'temporal_context_implied_lubh';
+      lubhReasoning = `Temporal context ${context.temporalContext} implies potential lubh operations`;
+      operationEvidence.push('temporal_context_lubh_implication');
     }
   }
 
@@ -396,16 +447,30 @@ function assessNonCurrency(item, context, analysis) {
     currencyDegree = 'explicit_non_current';
     nonCurrencyIndicators.push('explicit_non_currency_flag');
     currencyEvidence.push('explicit_designation');
+  } else if (typeof item === 'object' && item.isNonCurrent === false) {
+    // Explicit current flag - don't override with defaults
+    isNonCurrent = false;
+    currencyDegree = 'explicit_current';
+    nonCurrencyIndicators.push('explicit_currency_flag');
+    currencyEvidence.push('explicit_current_designation');
   }
 
   // Check context for currency information
-  if (!isNonCurrent && context.currency) {
+  if (context.currency) {
     if (context.currency === 'non-current' || context.currency === 'archaic' || 
-        context.currency === 'obsolete') {
-      isNonCurrent = true;
-      currencyDegree = context.currency;
-      nonCurrencyIndicators.push('context_currency_specification');
-      currencyEvidence.push(`context_currency: ${context.currency}`);
+        context.currency === 'obsolete' || context.currency === 'moderate') {
+      // Context currency can refine explicit flags
+      if (isNonCurrent) {
+        // If already non-current, use context currency as more specific degree
+        currencyDegree = context.currency;
+        currencyEvidence.push(`context_currency_refinement: ${context.currency}`);
+      } else {
+        // If not already non-current, context currency establishes it
+        isNonCurrent = true;
+        currencyDegree = context.currency;
+        nonCurrencyIndicators.push('context_currency_specification');
+        currencyEvidence.push(`context_currency: ${context.currency}`);
+      }
     }
   }
 
@@ -448,8 +513,9 @@ function assessNonCurrency(item, context, analysis) {
     }
   }
 
-  // Default assessment based on lubh operation type
-  if (!isNonCurrent && analysis.lubhElisionAnalysis.hasLubhOperation) {
+  // Default assessment based on lubh operation type (only if not explicitly set)
+  if (!isNonCurrent && analysis.lubhElisionAnalysis.hasLubhOperation && 
+      !(typeof item === 'object' && typeof item.isNonCurrent === 'boolean')) {
     // Lubh operations typically produce non-current forms
     isNonCurrent = true;
     currencyDegree = 'lubh_operation_default';
@@ -645,7 +711,12 @@ function calculateConfidence(analysis) {
         factors.push('currency_assessment_moderate');
     }
   } else {
-    currencyAssessment = 0.8; // High confidence in non-application when current
+    // When forms remain current, confidence depends on lubh detection
+    if (analysis.lubhElisionAnalysis.hasLubhOperation) {
+      currencyAssessment = 0.8; // High confidence in non-application when current  
+    } else {
+      currencyAssessment = 0.2; // Low confidence when no lubh operation detected
+    }
     factors.push('forms_remain_current');
   }
 
@@ -654,7 +725,12 @@ function calculateConfidence(analysis) {
     ashishyaClassification = 0.85;
     factors.push('ashishya_classification_applied');
   } else {
-    ashishyaClassification = 0.8; // High confidence in non-application
+    // When no ashishya classification, confidence depends on lubh detection
+    if (analysis.lubhElisionAnalysis.hasLubhOperation) {
+      ashishyaClassification = 0.8; // High confidence in non-application
+    } else {
+      ashishyaClassification = 0.2; // Low confidence when no lubh operation
+    }
     factors.push('ashishya_classification_not_applicable');
   }
 

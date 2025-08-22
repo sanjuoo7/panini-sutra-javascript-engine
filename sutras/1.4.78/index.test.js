@@ -109,5 +109,30 @@ describe('Sutra 1.4.78: prādhvaṃ bandhane', () => {
                 });
             });
         });
+
+        // Additional comprehensive edge cases
+        test('should handle numeric input', () => {
+            const result = isGatiPradhvam(123, { verb: 'kṛ', meaning: 'binding' });
+            expect(result.applies).toBe(false);
+            expect(result.error).toBeDefined();
+        });
+
+        test('should handle array input', () => {
+            const result = isGatiPradhvam(['prādhvam'], { verb: 'kṛ', meaning: 'binding' });
+            expect(result.applies).toBe(false);
+            expect(result.error).toBeDefined();
+        });
+
+        test('should handle context with non-string verb', () => {
+            const result = isGatiPradhvam('prādhvamkṛtya', { verb: {}, meaning: 'binding' });
+            expect(result.applies).toBe(false);
+            // Note: Implementation may not return explicit error for invalid context
+        });
+
+        test('should handle context with non-string meaning', () => {
+            const result = isGatiPradhvam('prādhvamkṛtya', { verb: 'kṛ', meaning: [] });
+            expect(result.applies).toBe(false);
+            // Note: Implementation may not return explicit error for invalid context
+        });
     });
 });

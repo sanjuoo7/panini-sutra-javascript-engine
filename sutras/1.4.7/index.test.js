@@ -1,4 +1,4 @@
-import applySutra from './index';
+import applySutra from './index.js';
 
 describe('Sutra 1.4.7', () => {
   test('should apply to masculine words in short i/u', () => {
@@ -30,5 +30,51 @@ describe('Sutra 1.4.7', () => {
   test('should not apply to words with other endings', () => {
     const result = applySutra('rāma', {});
     expect(result.applies).toBe(false);
+  });
+
+  // Additional edge cases for better coverage
+  test('should handle null/undefined input', () => {
+    const resultNull = applySutra(null, {});
+    expect(resultNull.applies).toBe(false);
+    expect(resultNull.reason).toBe('Invalid input');
+
+    const resultUndefined = applySutra(undefined, {});
+    expect(resultUndefined.applies).toBe(false);
+    expect(resultUndefined.reason).toBe('Invalid input');
+  });
+
+  test('should handle empty string input', () => {
+    const result = applySutra('', {});
+    expect(result.applies).toBe(false);
+    expect(result.reason).toBe('Invalid input');
+  });
+
+  test('should handle non-string input', () => {
+    const result = applySutra(123, {});
+    expect(result.applies).toBe(false);
+    expect(result.reason).toBe('Invalid input');
+  });
+
+  test('should handle Devanagari sakhi', () => {
+    const result = applySutra('सखि', {});
+    expect(result.applies).toBe(false);
+    expect(result.reason).toBe('sakhi is exempt from ghi saṃjñā');
+  });
+
+  test('should handle nadī saṃjñā with different context keys', () => {
+    const result1 = applySutra('mati', { hasNadiSamjna: true });
+    expect(result1.applies).toBe(false);
+
+    const result2 = applySutra('mati', { saṃjñā: 'nadī' });
+    expect(result2.applies).toBe(false);
+
+    const result3 = applySutra('mati', { sanjna: 'nadī' });
+    expect(result3.applies).toBe(false);
+  });
+
+  test('should handle Devanagari words', () => {
+    const result = applySutra('हरि', { hasNadīSaṃjñā: false });
+    expect(result.applies).toBe(true);
+    expect(result.sanjna).toBe('ghi');
   });
 });
