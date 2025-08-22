@@ -18,15 +18,63 @@ Jules goes first: Documentation and tests must be completed before any implement
 
 Test-first development: The generated test suite serves as the contract that the later implementation must satisfy.
 
-3. Detailed Responsibilities
-# Comprehensive Testing Methodology Guide
+Detailed Responsibilities 
 
-**Created**: August 21, 2025  
-**Purpose**: Complete testing framework for Sanskrit sutra development  
-**Target Audience**: AI agents and developers implementing Panini sutras  
-**Status**: Production-ready methodology based on 8,240+ passing tests
+Phase 1: Directory & File Setup For each new sutra, Jules must create the following structure:
+sutras/X.X.XX/ ├── README.md └── index.test.js
 
----
+Phase 2: Documentation (README.md) Jules must generate a comprehensive README.md for each sutra, following the SUTRA_README_TEMPLATE.md template. The documentation must include:
+
+Sutra Header: Sutra X.X.XX: [Sanskrit text]
+
+Overview: The sutra's Sanskrit text, IAST transliteration, and English translation.
+
+Purpose: A clear explanation of what the sutra does.
+
+Implementation Stub: A function signature and a summary of key features.
+
+Dependencies: A list of utils, related sutras, or external data the sutra relies on.
+
+Usage Examples: Both basic and advanced examples of the sutra in use.
+
+Technical Details: An outline of the algorithm, complexity notes, and anticipated edge cases.
+
+Test Coverage: A detailed summary of all test cases, including the types of tests covered.
+
+Integration: How this sutra interacts with or relates to other parts of the grammar.
+
+References: Links to source texts, commentaries, or other relevant resources.
+
+Phase 3: Test Suite (index.test.js) Jules must design and implement a comprehensive test suite. Each test must be descriptive, deterministic, and validate the correct output format.
+
+Test Case Requirements Minimum Coverage: Each sutra must have at least 50 unique test cases to ensure comprehensive coverage.
+
+Test Types:
+
+Positive Cases: The rule applies as expected.
+
+Negative Cases: The rule does not apply.
+
+Edge Cases: Boundary conditions or unusual inputs.
+
+Error Cases: Invalid inputs, missing context, or other scenarios that should throw an error.
+
+Multi-Script Support: Every positive test case must be validated with both IAST and Devanagari inputs.
+
+Context Variations: Test with and without optional context parameters and validate correct behavior based on the morphological context.
+
+Integration Safety: Include tests to verify that the sutra doesn't break when chained with other sutras.
+
+Regression Tests: If any bugs were previously identified, include tests to prevent them from reoccurring.
+
+Output Format and Assertion Jules must ensure all tests validate the structured output object, not just a simple boolean.
+
+The returned object must contain detailed analysis, including reasons, confidence, and linguistic features (morphological, semantic, syntactic). Sutra functions must never return a simple { applies: true }.
+
+Test File Structure The test file should be structured clearly, with descriptive describe and test blocks.
+
+
+3. Phase 4: Detail Testing
 
 ## 🎯 **Executive Summary**
 
@@ -36,7 +84,7 @@ This document provides the complete testing methodology for Sanskrit sutra imple
 - **99.8% Test Pass Rate**: Achieved across 300+ sutra implementations
 - **>95% Code Coverage**: Mandatory minimum for all implementations
 - **<10ms Execution Time**: Performance requirement for all test cases
-- **40+ Test Cases**: Minimum comprehensive test coverage per sutra
+- **50+ Test Cases**: Minimum comprehensive test coverage per sutra in Sanskrit text, IAST transliteration, and English translation, every test cases must contains atleast 50 unique sanskrit words.
 
 ---
 
@@ -879,7 +927,7 @@ npm test -- --testPathPattern="X.X"
 
 **MANDATORY Validation Points:**
 - [ ] **15 Phases Complete**: All phases implemented with minimum test counts
-- [ ] **40+ Total Tests**: Comprehensive coverage achieved
+- [ ] **50+ Total Tests**: Comprehensive coverage achieved with 50 unique sanskrit words
 - [ ] **Coverage >95%**: Code coverage meets requirements
 - [ ] **Performance <10ms**: Execution time within limits
 - [ ] **Error Handling**: All edge cases covered
